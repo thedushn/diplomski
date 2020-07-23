@@ -1,0 +1,7 @@
+/home/dushn/clion/clion-2017.1.3/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/dushn/Diplomski/dclient
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.1") 
+-- Checking for module 'gtk+-3.0'
+--   Found gtk+-3.0, version 3.18.9
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/dushn/Diplomski/dclient/cmake-build-debug
