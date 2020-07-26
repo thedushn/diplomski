@@ -7,7 +7,6 @@
 #include <inttypes.h>
 #include <memory.h>
 #include <stdlib.h>
-#include <printf.h>
 #include <dirent.h>
 #include <stdio.h>
 
@@ -16,7 +15,7 @@
 #define BUFFER_SIZE2 64
 static struct DataItem_net *hash_network_rec = NULL;
 static struct DataItem_net *hash_network_trans = NULL;
-static int broj;
+static int number_bandwidth;
 
 
 __uint64_t search_net(char *key, struct DataItem_net *hashArray, int hash_size, bool *ima, __uint64_t data
@@ -52,7 +51,7 @@ __uint64_t search_net(char *key, struct DataItem_net *hashArray, int hash_size, 
 
 
 void get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct, __uint64_t transmitted,
-                   __uint64_t *transmited_struct) {
+                   __uint64_t *transmitted_struct) {
     __uint64_t received_bytes_old = 0, transmit_bytes_old = 0;
     static int hash_size = 0;
     bool ima = false;
@@ -132,18 +131,18 @@ void get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct,
     if (transmit_bytes_old == 0) {
 
 
-        *transmited_struct = 0;
+        *transmitted_struct = 0;
 
     } else {
 
         if (received < received_bytes_old || transmitted < transmit_bytes_old) {
 
             *received_struct = 0;
-            *transmited_struct = 0;
+            *transmitted_struct = 0;
         } else {
 
             *received_struct = (received - received_bytes_old);
-            *transmited_struct = (transmitted - transmit_bytes_old);
+            *transmitted_struct = (transmitted - transmit_bytes_old);
         }
 
 
@@ -217,7 +216,7 @@ int interface_name(Network *network1) {
                 if (buffer3[g] == '\0')
                     break;
                 else
-                    broj++;
+                    number_bandwidth++;
             }
 
 
@@ -240,7 +239,7 @@ int interface_name(Network *network1) {
                 }
 
 
-                if (strncmp(temp, buffer3, (size_t) broj) == 0) {
+                if (strncmp(temp, buffer3, (size_t) number_bandwidth) == 0) {
 
                     break;
                 }
@@ -279,7 +278,7 @@ int interface_name(Network *network1) {
             network_rc += network_rc1;
             network_ts += network_ts1;
 
-            broj = 0;
+            number_bandwidth = 0;
             fclose(file);
 
 
@@ -292,7 +291,7 @@ int interface_name(Network *network1) {
     network1->received_bytes = network_rc;
     network1->transmited_bytes = network_ts;
 
-    broj = 0;
+    number_bandwidth = 0;
     closedir(pDir);
 
     return 0;

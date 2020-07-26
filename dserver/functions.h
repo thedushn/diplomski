@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include "common.h"
 
-void *slanje(void *socket);
+void *sending(void *socket);
 
 void *accept_c(void *socket);
 

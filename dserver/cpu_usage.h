@@ -17,7 +17,7 @@ int cpu_number();
 
 void cpu_percentage(int ncpu, Cpu_usage *cpu_usage);
 
-void uradi(bool clean);
+void do_check(bool clean);
 
 int
 get_cpu_percent(unsigned int pid, __uint64_t jiffies_user, float *cpu_user, __uint64_t jiffies_system,

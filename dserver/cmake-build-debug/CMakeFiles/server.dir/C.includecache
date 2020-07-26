@@ -23,8 +23,6 @@ string.h
 -
 inttypes.h
 -
-cpu_usage.h
-/home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
 
 /home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
 common.h
@@ -63,8 +61,6 @@ sys/socket.h
 /home/dushn/Diplomski/diplomski/dserver/sys/socket.h
 pthread.h
 /home/dushn/Diplomski/diplomski/dserver/pthread.h
-functions.h
-/home/dushn/Diplomski/diplomski/dserver/functions.h
 interrupts.h
 /home/dushn/Diplomski/diplomski/dserver/interrupts.h
 cpu_usage.h
@@ -99,8 +95,6 @@ stdlib.h
 -
 string.h
 -
-interrupts.h
-/home/dushn/Diplomski/diplomski/dserver/interrupts.h
 
 /home/dushn/Diplomski/diplomski/dserver/interrupts.h
 common.h
@@ -149,10 +143,6 @@ memory.h
 -
 stdio.h
 -
-stdlib.h
--
-memory_usage.h
-/home/dushn/Diplomski/diplomski/dserver/memory_usage.h
 
 /home/dushn/Diplomski/diplomski/dserver/memory_usage.h
 common.h
@@ -168,8 +158,6 @@ inttypes.h
 memory.h
 -
 stdlib.h
--
-printf.h
 -
 dirent.h
 -

@@ -2403,7 +2403,6 @@ CMakeFiles/client.dir/interrupts.c.o: /usr/include/pango-1.0/pango/pangocairo.h
 CMakeFiles/client.dir/interrupts.c.o: /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h
 
 CMakeFiles/client.dir/main.c.o: ../buttons.h
-CMakeFiles/client.dir/main.c.o: ../buttons_s.h
 CMakeFiles/client.dir/main.c.o: ../common.h
 CMakeFiles/client.dir/main.c.o: ../drawing.h
 CMakeFiles/client.dir/main.c.o: ../functions.h

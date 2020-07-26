@@ -9,7 +9,7 @@
 #include"sys/socket.h"
 #include"pthread.h"
 
-#include "functions.h"
+
 #include "interrupts.h"
 #include "cpu_usage.h"
 #include "memory_usage.h"
@@ -31,7 +31,7 @@ ssize_t test_send(int socket) {
 
     if (ret < 0) {
 
-        printf("error receing data\n %d", (int) ret);
+        printf("error receiving data\n %d", (int) ret);
         return ret;
     }
     if (ret == 0) {
@@ -50,7 +50,7 @@ ssize_t test_send(int socket) {
 
             if (ret < 0) {
 
-                printf("error receing data\n %d", (int) ret);
+                printf("error receiving data\n %d", (int) ret);
                 return ret;
             }
             if (ret == 0) {
@@ -63,7 +63,7 @@ ssize_t test_send(int socket) {
     }
     if (strcmp(buffer, "stiglo sve") != 0) {
 
-        printf("conforamtion didnt get received  \n");
+        printf("conformation didnt get received  \n");
 
         return -1;
     }
@@ -114,12 +114,12 @@ void send_signal_to_task(char *task_id, char *signal) {
 
     if (task_id != NULL && signal != NULL) {
         char command[64] = "kill -";
-        strncat(command, signal, sizeof command);
+        strncat(command, signal, sizeof(command) );
         strncat(command, " ", sizeof command);
         strncat(command, task_id, sizeof command);
 
         if (system(command) != 0)
-            printf("comand failed\n");
+            printf("command failed\n");
     }
 }
 
@@ -167,7 +167,7 @@ void *accept_c(void *socket) {
 };
 
 
-void *slanje(void *socket) {
+void *sending(void *socket) {
 
     ssize_t ret = 0;
 
@@ -244,7 +244,7 @@ void *slanje(void *socket) {
         ret = test_send(sockfd);
         if (ret < 0) {
 
-            printf("error receing data\n %d", (int) ret);
+            printf("error receiving data\n %d", (int) ret);
             break;
         }
         if (ret == 0) {
@@ -313,7 +313,7 @@ void *slanje(void *socket) {
         ret = test_send(sockfd);
         if (ret < 0) {
 
-            printf("error receing data\n %d", (int) ret);
+            printf("error receiving data\n %d", (int) ret);
             break;
         }
         if (ret == 0) {
@@ -446,7 +446,7 @@ void *slanje(void *socket) {
         ret = test_send(sockfd);
         if (ret < 0) {
 
-            printf("error receing data\n %d", (int) ret);
+            printf("error receiving data\n %d", (int) ret);
             break;
         }
         if (ret == 0) {
@@ -500,4 +500,4 @@ void *slanje(void *socket) {
 
 
     return 0;
-};
+}

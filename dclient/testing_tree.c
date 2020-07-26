@@ -4,7 +4,7 @@
 
 #include "testing_tree.h"
 #include <errno.h>
-#include "testing_tree.h"
+
 #include "buttons.h"
 
 #include "main_header.h"
@@ -250,8 +250,8 @@ void fill_list_item(gint i, GtkTreeIter *iter) {
         char *duration;
         float cpu_user = 0;
         float cpu_system = 0;
-        cpu_user = (float) atof(task->cpu_user);
-        cpu_system = (float) atof(task->cpu_system);
+        cpu_user = (float) strtod(task->cpu_user,NULL);
+        cpu_system = (float) strtod(task->cpu_system,NULL);
 
         rss = g_format_size_full(task->rss, G_FORMAT_SIZE_IEC_UNITS);
         vsz = g_format_size_full(task->vsz, G_FORMAT_SIZE_IEC_UNITS);
@@ -618,8 +618,8 @@ gint compare_int_list_item_size(GtkTreeModel *model, GtkTreeIter *iter1, GtkTree
     }
 
     if (z != NULL) {
-        //ako su iste velicine
-        i3 = (int) strtol(z + 1, &end, 10);//preskacemo zarez
+        //when they are the same size
+        i3 = (int) strtol(z + 1, &end, 10);//jump over the comma
         if(errno!=0){
             test_strtol(i3);
         }
@@ -628,7 +628,7 @@ gint compare_int_list_item_size(GtkTreeModel *model, GtkTreeIter *iter1, GtkTree
 
 
     if (z1 != NULL) {
-        i4 = (int) strtol(z1 + 1, &end, 10); //preskacemo zarez
+        i4 = (int) strtol(z1 + 1, &end, 10); //jump over the comma
         if(errno!=0){
             test_strtol(i4);
         }
@@ -659,7 +659,7 @@ gint compare_int_list_item_size(GtkTreeModel *model, GtkTreeIter *iter1, GtkTree
 
     ret = i1 - i2;
     ret1 = i3 - i4;
-    if (ret == 0) { //ako je vrednost pre zareza jednaka
+    if (ret == 0) { //when the value before the comma is equal
 
         return ret1;
     }

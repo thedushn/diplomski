@@ -12,8 +12,8 @@
 ssize_t test_recv(int socket);
 
 
-void primanje3(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage, GArray *array_devices,
-               GArray *array_int, GArray *array_tasks
+void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage, GArray *array_devices,
+                GArray *array_int, GArray *array_tasks
 );
 
 

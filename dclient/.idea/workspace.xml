@@ -1,116 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
       <config projectName="dclient" targetName="client" />
     </generated>
   </component>
   <component name="CMakeSettings">
     <configurations>
-      <configuration CONFIG_NAME="Debug" />
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2f364259-615a-4cdb-a45f-2c6364e54462" name="Default" comment="" />
-    <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
+    <list default="true" id="2f364259-615a-4cdb-a45f-2c6364e54462" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buttons.c" beforeDir="false" afterPath="$PROJECT_DIR$/buttons.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buttons.h" beforeDir="false" afterPath="$PROJECT_DIR$/buttons.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buttons_s.h" beforeDir="false" afterPath="$PROJECT_DIR$/buttons_s.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/C.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/C.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/buttons.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/buttons.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/drawing.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/drawing.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/functions.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/functions.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/interrupts.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/interrupts.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/main.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/main.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/testing_tree.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/testing_tree.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/window.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/window.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/client" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/client" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawing.c" beforeDir="false" afterPath="$PROJECT_DIR$/drawing.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/drawing.h" beforeDir="false" afterPath="$PROJECT_DIR$/drawing.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.c" beforeDir="false" afterPath="$PROJECT_DIR$/functions.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions.h" beforeDir="false" afterPath="$PROJECT_DIR$/functions.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interrupts.c" beforeDir="false" afterPath="$PROJECT_DIR$/interrupts.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interrupts.h" beforeDir="false" afterPath="$PROJECT_DIR$/interrupts.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_header.h" beforeDir="false" afterPath="$PROJECT_DIR$/main_header.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing_tree.c" beforeDir="false" afterPath="$PROJECT_DIR$/testing_tree.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testing_tree.h" beforeDir="false" afterPath="$PROJECT_DIR$/testing_tree.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/window.c" beforeDir="false" afterPath="$PROJECT_DIR$/window.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/C.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/C.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/cpu_usage.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/cpu_usage.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/devices.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/devices.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/functions.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/functions.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/interrupts.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/interrupts.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/main.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/main.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/memory_usage.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/memory_usage.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/network_bandwith.c.o" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/network_bandwith.c.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/server" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/server" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/cpu_usage.c" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/cpu_usage.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/cpu_usage.h" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/cpu_usage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/devices.c" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/devices.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/devices.h" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/devices.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/functions.c" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/functions.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/functions.h" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/functions.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/interrupts.c" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/interrupts.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/memory_usage.c" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/memory_usage.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/network_bandwith.c" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/network_bandwith.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dserver/network_bandwith.h" beforeDir="false" afterPath="$PROJECT_DIR$/../dserver/network_bandwith.h" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
-  <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="CMakeLists.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.c" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/main.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-720">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/main.c" />
-        <option value="$PROJECT_DIR$/CMakeLists.txt" />
-      </list>
-    </option>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="65" />
-    <option name="y" value="-4" />
-    <option name="width" value="1855" />
-    <option name="height" value="979" />
-  </component>
-  <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-      <flattenPackages />
-      <showMembers />
-      <showModules />
-      <showLibraryContents />
-      <hideEmptyPackages />
-      <abbreviatePackageNames />
-      <autoscrollToSource />
-      <autoscrollFromSource />
-      <sortByType />
-      <manualOrder />
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dclient" />
-              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dclient" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-    </panes>
+  <component name="ProjectId" id="1f6HXEsshWJL1hxaV3gJ4c8B2X9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JSON" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RunManager" selected="CMake Application.client">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" EXPLICIT_BUILD_TARGET_NAME="all">
@@ -187,8 +162,8 @@
       <item itemvalue="CMake Application.client" />
     </list>
   </component>
-  <component name="ShelveChangesManager" show_recycled="false">
-    <option name="remove_strategy" value="false" />
+  <component name="SvnConfiguration">
+    <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -198,63 +173,85 @@
       <option name="presentableId" value="Default" />
       <updated>1595530504863</updated>
       <workItem from="1595530506827" duration="272000" />
+      <workItem from="1595531662608" duration="12949000" />
     </task>
     <servers />
   </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="272000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="979" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2498618" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982457" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32982457" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-    </layout>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="processedProjectFiles" value="true" />
+    <option name="version" value="2" />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
+  <component name="WindowStateProjectService">
+    <state x="743" y="317" width="497" height="503" key="#com.intellij.tools.ToolEditorDialog" timestamp="1595588108711">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state x="743" y="317" width="497" height="503" key="#com.intellij.tools.ToolEditorDialog/65.24.1855.951@65.24.1855.951" timestamp="1595588108711" />
+    <state x="536" y="34" key="CommitChangelistDialog2" timestamp="1595791016302">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state x="536" y="34" key="CommitChangelistDialog2/65.24.1855.951@65.24.1855.951" timestamp="1595791016302" />
+    <state width="1809" height="261" key="GridCell.Tab.0.bottom" timestamp="1595791150375">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state width="1809" height="261" key="GridCell.Tab.0.bottom/65.24.1855.951@65.24.1855.951" timestamp="1595791150374" />
+    <state width="1809" height="261" key="GridCell.Tab.0.center" timestamp="1595791150372">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state width="1809" height="261" key="GridCell.Tab.0.center/65.24.1855.951@65.24.1855.951" timestamp="1595791150372" />
+    <state width="1809" height="261" key="GridCell.Tab.0.left" timestamp="1595791150371">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state width="1809" height="261" key="GridCell.Tab.0.left/65.24.1855.951@65.24.1855.951" timestamp="1595791150371" />
+    <state width="1809" height="261" key="GridCell.Tab.0.right" timestamp="1595791150373">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state width="1809" height="261" key="GridCell.Tab.0.right/65.24.1855.951@65.24.1855.951" timestamp="1595791150373" />
+    <state width="1809" height="323" key="GridCell.Tab.1.bottom" timestamp="1595790761231">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state width="1809" height="323" key="GridCell.Tab.1.bottom/65.24.1855.951@65.24.1855.951" timestamp="1595790761231" />
+    <state width="1809" height="323" key="GridCell.Tab.1.center" timestamp="1595790761229">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state width="1809" height="323" key="GridCell.Tab.1.center/65.24.1855.951@65.24.1855.951" timestamp="1595790761229" />
+    <state width="1809" height="323" key="GridCell.Tab.1.left" timestamp="1595790761229">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state width="1809" height="323" key="GridCell.Tab.1.left/65.24.1855.951@65.24.1855.951" timestamp="1595790761229" />
+    <state width="1809" height="323" key="GridCell.Tab.1.right" timestamp="1595790761230">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state width="1809" height="323" key="GridCell.Tab.1.right/65.24.1855.951@65.24.1855.951" timestamp="1595790761230" />
+    <state x="486" y="121" key="SettingsEditor" timestamp="1595588128503">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state x="486" y="121" key="SettingsEditor/65.24.1855.951@65.24.1855.951" timestamp="1595588128503" />
+    <state x="683" y="224" width="618" height="522" key="find.popup" timestamp="1595589908066">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state x="683" y="224" width="618" height="522" key="find.popup/65.24.1855.951@65.24.1855.951" timestamp="1595589908066" />
+    <state x="711" y="272" key="refactoring.ChangeSignatureDialog" timestamp="1595589997918">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state x="711" y="272" key="refactoring.ChangeSignatureDialog/65.24.1855.951@65.24.1855.951" timestamp="1595589997918" />
+    <state x="655" y="209" width="672" height="678" key="search.everywhere.popup" timestamp="1595590138853">
+      <screen x="65" y="24" width="1855" height="951" />
+    </state>
+    <state x="655" y="209" width="672" height="678" key="search.everywhere.popup/65.24.1855.951@65.24.1855.951" timestamp="1595590138853" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
-    <watches-manager />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-720">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/drawing.c</url>
+          <line>176</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/drawing.c</url>
+          <line>608</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

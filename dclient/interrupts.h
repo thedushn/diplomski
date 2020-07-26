@@ -9,7 +9,7 @@
 #include <gtk/gtk.h>
 
 
-void upis(GArray *array, GArray *array2);
+void input_interrupts(GArray *array, GArray *array2);
 
 
 #endif //DIPLOMSKI_INTERRUPTS_H

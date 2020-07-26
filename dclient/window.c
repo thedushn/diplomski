@@ -3,7 +3,6 @@
 //
 
 #include "window.h"
-#include "window.h"
 #include "testing_tree.h"
 #include "buttons.h"
 

@@ -9,14 +9,14 @@
 
 #include"sys/socket.h"
 
-#include "functions.h"
+
 
 
 ssize_t test_recv(int socket) {
 
 
     char buffer[64];
-    ssize_t ret = 0;
+    ssize_t ret ;
     memset(buffer, 0, 64);
     strcpy(buffer, "stiglo sve");
     ret = send(socket, buffer, 64, 0);
@@ -36,10 +36,10 @@ ssize_t test_recv(int socket) {
 
     return 64;
 
-};
+}
 
-void primanje3(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage, GArray *array_devices,
-               GArray *array_int, GArray *array_tasks
+void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage, GArray *array_devices,
+                GArray *array_int, GArray *array_tasks
 ) {
 
 
@@ -273,5 +273,5 @@ void primanje3(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage
     ///intterupts end
 
 
-};
+}
 
