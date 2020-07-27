@@ -3,7 +3,7 @@
 #include "drawing.h"
 #include "testing_tree.h"
 #include "main_header.h"
-#include "buttons_s.h"
+
 
 static gboolean device_devices = TRUE;
 static gboolean device_type = TRUE;

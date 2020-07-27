@@ -7,7 +7,7 @@
 #include"sys/socket.h"
 #include <netdb.h>
 #include <fontconfig/fontconfig.h>
-#include "buttons_s.h"
+
 
 
 #include "functions.h"
@@ -63,7 +63,7 @@ void inc_refresh() {
     timeout_refresh();
 
 
-};
+}
 
 void dec_refresh() {
 
@@ -78,7 +78,7 @@ void dec_refresh() {
 
     timeout_refresh();
 
-};
+}
 
 
 void graph_refresh(GtkWidget *widget, gboolean CPU) {
@@ -109,7 +109,7 @@ void graph_refresh(GtkWidget *widget, gboolean CPU) {
     timeout_refresh();
 
 
-};
+}
 
 
 void timeout_refresh() {
@@ -135,7 +135,7 @@ int conection(char *argv1, char *argv2) {
     hints.ai_socktype = SOCK_STREAM;
 
     if ((rv = getaddrinfo(argv2, argv1, &hints, &servinfo)) != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+        fprintf(stderr, "get_addr_info: %s\n", gai_strerror(rv));
         return -2;
     }
 
@@ -173,12 +173,12 @@ int conection(char *argv1, char *argv2) {
 
     free(servinfo);
     return socketfd;
-};
+}
 
 
 void init_timeout() {
 
-    guint i = 0, j = 0;
+    guint i , j ;
 
 
     GArray *new_task_list = g_array_new(FALSE, FALSE, sizeof(Task));
@@ -194,8 +194,8 @@ void init_timeout() {
     cpu_usage1 = calloc(1, sizeof(Cpu_usage));
 
 
-    primanje3(newsockfd, cpu_usage1, network, memory_usage, new_device_list, new_interrupt_list, new_task_list);
-    upis(new_interrupt_list, interrupt_array_d);
+    connection(newsockfd, cpu_usage1, network, memory_usage, new_device_list, new_interrupt_list, new_task_list);
+    input_interrupts(new_interrupt_list, interrupt_array_d);
 
 
 
@@ -284,14 +284,18 @@ void init_timeout() {
 
         for (j = 0; j < new_task_list->len; j++) {
             Task *new_tmp = &g_array_index(new_task_list, Task, j);
-            float cpu_user_tmp = 0;
-            float cpu_system_tmp = 0;
-            float cpu_user_tmp_new = 0;
-            float cpu_system_tmp_new = 0;
-            cpu_system_tmp = (float) atof(tmp->cpu_system);
-            cpu_system_tmp_new = (float) atof(new_tmp->cpu_system);
-            cpu_user_tmp = (float) atof(tmp->cpu_user);
-            cpu_user_tmp_new = (float) atof(new_tmp->cpu_system);
+            float cpu_user_tmp ;
+            float cpu_system_tmp ;
+            float cpu_user_tmp_new ;
+            float cpu_system_tmp_new ;
+            cpu_system_tmp = (float) strtod(tmp->cpu_system,NULL);
+            cpu_system_tmp_new = (float) strtod(new_tmp->cpu_system,NULL);
+            cpu_user_tmp = (float) strtod(tmp->cpu_user,NULL);
+            cpu_user_tmp_new = (float) strtod(new_tmp->cpu_system,NULL);
+//            cpu_system_tmp = (float) atof(tmp->cpu_system);
+//            cpu_system_tmp_new = (float) atof(new_tmp->cpu_system);
+//            cpu_user_tmp = (float) atof(tmp->cpu_user);
+//            cpu_user_tmp_new = (float) atof(new_tmp->cpu_system);
 
             if (new_tmp->pid == tmp->pid) {
 
@@ -400,7 +404,7 @@ void init_timeout() {
         refresh = g_timeout_add(t, (GSourceFunc) init_timeout, NULL);
     }
 
-};
+}
 
 static void
 destroy_window(void) {
@@ -444,9 +448,9 @@ int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
 
 
-    dev_swindow = gtk_scrolled_window_new(NULL,
-                                          NULL);
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(dev_swindow), GTK_POLICY_AUTOMATIC,
+    device_swindow = gtk_scrolled_window_new(NULL,
+                                             NULL);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(device_swindow), GTK_POLICY_AUTOMATIC,
                                    GTK_POLICY_ALWAYS);
     process_swindow = gtk_scrolled_window_new(NULL,
                                               NULL);
@@ -473,7 +477,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    window = main_window(dev_swindow, process_swindow);
+    window = main_window(device_swindow, process_swindow);
     g_signal_connect(button_inc, "clicked", G_CALLBACK(inc_refresh), NULL);
     g_signal_connect(button_dec, "clicked", G_CALLBACK(dec_refresh), NULL);
     g_signal_connect(button_proc, "toggled", G_CALLBACK(button_clicked_view_process), NULL);
@@ -489,21 +493,26 @@ int main(int argc, char *argv[]) {
     g_signal_connect_swapped ((gpointer) treeview, "button-press-event", G_CALLBACK(on_treeview1_button_press_event),
                               NULL);
 
-
-    g_signal_connect(G_OBJECT(graph1), "draw",
-                     G_CALLBACK(on_draw_event), NULL);
-    g_signal_connect(G_OBJECT(graph2), "draw",
-                     G_CALLBACK(on_draw_event), NULL);
-    g_signal_connect(G_OBJECT(graph3), "draw",
-                     G_CALLBACK(on_draw_event), NULL);
-    g_signal_connect(G_OBJECT(graph4), "draw",
-                     G_CALLBACK(on_draw_event), NULL);
+//
+//    g_signal_connect(G_OBJECT(graph1), "draw",
+//                     G_CALLBACK(on_draw_event), NULL);
+    g_signal_connect_data((GObject *) (graph1),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
+    g_signal_connect_data((GObject *) (graph2),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
+    g_signal_connect_data((GObject *) (graph3),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
+    g_signal_connect_data((GObject *) (graph4),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
+//
+//    g_signal_connect(G_OBJECT(graph2), "draw",
+//                     G_CALLBACK(on_draw_event), NULL);
+//    g_signal_connect(G_OBJECT(graph3), "draw",
+//                     G_CALLBACK(on_draw_event), NULL);
+//    g_signal_connect(G_OBJECT(graph4), "draw",
+//                     G_CALLBACK(on_draw_event), NULL);
 
 
     g_signal_connect (window, "destroy", G_CALLBACK(destroy_window), NULL);
-    g_signal_connect (G_OBJECT(process_swindow), "destroy",
+    g_signal_connect ((GObject *)(process_swindow), "destroy",
                       G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect (G_OBJECT(dev_swindow), "destroy",
+    g_signal_connect ((GObject *)(device_swindow), "destroy",
                       G_CALLBACK(gtk_main_quit), NULL);
 
 

@@ -122,9 +122,6 @@
 		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/buttons.h">
 			<Option target="client"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/buttons_s.h">
-			<Option target="client"/>
-		</Unit>
 		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/common.h">
 			<Option target="client"/>
 		</Unit>

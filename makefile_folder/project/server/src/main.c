@@ -199,7 +199,7 @@ int main(int argc, char *argv[]) {
 
 
 
-    ret2 = pthread_create(&t2, NULL, slanje, &new_fd);
+    ret2 = pthread_create(&t2, NULL, sending, &new_fd);
     if (ret2 != 0) {
 
         printf("ERROR: Return Code from pthread_create() is %d\n", ret2);
@@ -222,7 +222,7 @@ int main(int argc, char *argv[]) {
 
 
     close(sockfd);
-    uradi(true);
+    do_check(true);
     clean();
 
 

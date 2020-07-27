@@ -11,6 +11,6 @@ void testing_files2(Devices *devices);
 
 int device2(Devices **array, bool show, __int32_t *niz2);
 
-int mountlist3(Devices **array, bool mount, __int32_t *number);
+int mount_list3(Devices **array, bool mount, __int32_t *number);
 
 #endif //DIPLOMSKI_DEVICES_H

@@ -1,4 +1,4 @@
-#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
@@ -130,8 +130,6 @@ signal.h
 errno.h
 -
 wait.h
--
-unistd.h
 -
 
 /home/dushn/Diplomski/diplomski/dserver/memory_usage.c

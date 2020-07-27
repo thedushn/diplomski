@@ -37,7 +37,7 @@ int device2(Devices **array, bool show, __int32_t *niz2) {
 
     __int32_t niz = 0;
 
-    int ret = mountlist3(&devices, show, &niz);
+    int ret = mount_list3(&devices, show, &niz);
 
     if (ret == -1) {
         return ret;
@@ -49,7 +49,7 @@ int device2(Devices **array, bool show, __int32_t *niz2) {
 
 }
 
-int mountlist3(Devices **array, bool mount, __int32_t *number) {
+int mount_list3(Devices **array, bool mount, __int32_t *number) {
 
 
     Devices *devices2 = NULL;

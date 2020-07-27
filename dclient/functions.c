@@ -3,7 +3,6 @@
 //
 
 #include "functions.h"
-#include"stdio.h"
 
 #include <memory.h>
 
@@ -51,7 +50,7 @@ void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usag
     __int32_t num = 0;
 
 
-    ///memorija
+    ///memory
     ret = recv(socket, memory_usage, sizeof(Memory_usage), flag);
     if (ret < 0) {
 
@@ -78,7 +77,7 @@ void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usag
         printf("socket closed\n");
         gtk_main_quit();
     }
-    ///kraj memorije
+    ///end of memory
 
     ///cpu_usage
     ret = recv(socket, cpu_usage1, sizeof(Cpu_usage), flag);
@@ -109,7 +108,7 @@ void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usag
 
 
 
-    ///kraj cpu_usage
+    ///end cpu_usage
 
     ///network
     ret = recv(socket, network, sizeof(Network), flag);
@@ -141,7 +140,7 @@ void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usag
 
 
 
-    /// kraj networka
+    /// end network
 
 
     ///devices
@@ -259,7 +258,7 @@ void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usag
     ret = test_recv(socket);
     if (ret < 0) {
 
-        printf("error receing data\n %d", (int) ret);
+        printf("error receiving data\n %d", (int) ret);
         gtk_main_quit();
     }
     if (ret == 0) {
@@ -270,7 +269,7 @@ void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usag
     }
 
 
-    ///intterupts end
+    ///interrupts end
 
 
 }

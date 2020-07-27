@@ -5,6 +5,15 @@
 #include "main_header.h"
 #include "buttons_s.h"
 
+static gboolean device_devices = TRUE;
+static gboolean device_type = TRUE;
+static gboolean device_directory = TRUE;
+static gboolean device_used = TRUE;
+static gboolean device_free = TRUE;
+static gboolean device_total = TRUE;
+static gboolean device_avail = TRUE;
+static bool device_all = FALSE;
+
 static gboolean process_task = TRUE;
 static gboolean process_user = TRUE;
 static gboolean process_prio = TRUE;
@@ -187,7 +196,7 @@ void button_clicked_view_process(GtkWidget *widget) {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
-        //  pokazi_ili_hide(widget, process_swindow);
+        //  show_hide(widget, process_swindow);
 
 
         gtk_widget_show_all(process_swindow);
@@ -196,7 +205,7 @@ void button_clicked_view_process(GtkWidget *widget) {
     } else {
 
 
-        pokazi_ili_hide(widget, process_swindow);
+        show_hide(widget, process_swindow);
 
     }
 }
@@ -207,13 +216,13 @@ void dev_button_clicked2(GtkWidget *widget) {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
 
-        pokazi_ili_hide(widget, dev_swindow);
+        show_hide(widget, device_swindow);
 
 
-        gtk_widget_show_all(dev_swindow);
+        gtk_widget_show_all(device_swindow);
 
     } else {
-        pokazi_ili_hide(widget, dev_swindow);
+        show_hide(widget, device_swindow);
 
     }
 
@@ -586,7 +595,7 @@ void graph_clicked(GtkWidget *widget) {
 
 
 
-void pokazi_ili_hide(GtkWidget *button, GtkWidget *window) {
+void show_hide(GtkWidget *button, GtkWidget *window) {
 
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (button)) != FALSE) {//ako je button toggled
@@ -726,9 +735,9 @@ gboolean on_treeview1_button_press_event(GtkButton *button, GdkEventButton *even
 
         GdkEventButton *mouseevent = event;
 
-        if (taskpopup == NULL)
-            taskpopup = create_taskpopup();
-        gtk_menu_popup(GTK_MENU(taskpopup), NULL, NULL, NULL, NULL, mouseevent->button, mouseevent->time);
+        if (task_popup == NULL)
+            task_popup = create_taskpopup();
+        gtk_menu_popup(GTK_MENU(task_popup), NULL, NULL, NULL, NULL, mouseevent->button, mouseevent->time);
 
     }
     return FALSE;

@@ -6,7 +6,6 @@
 #define DIPLOMSKI_COMMON_H
 
 
-
 #include <stdbool.h>
 #include <time.h>
 
@@ -24,6 +23,7 @@ struct __attribute__((__packed__))tm1 {
 
 };
 typedef struct _Task Task;
+
 
 struct __attribute__((__packed__)) _Task {
     bool checked;
@@ -77,8 +77,7 @@ struct __attribute__((__packed__)) _Memory_usage {
 
 };
 typedef struct _Interrupts Interrupts;
-struct __attribute__((__packed__)) _Interrupts {
-
+struct __attribute__((__packed__))_Interrupts {
 
     char name[64];
     char ime1[64];
@@ -90,10 +89,9 @@ struct __attribute__((__packed__)) _Interrupts {
     __uint64_t CPU2;
     __uint64_t CPU3;
 
-
 };
 typedef struct _Commands Commands;
-struct __attribute__((__packed__)) _Commands {
+struct __attribute__((__packed__))_Commands {
 
 
     bool show;
@@ -103,7 +101,7 @@ struct __attribute__((__packed__)) _Commands {
 };
 
 typedef struct _Devices Devices;
-struct __attribute__((__packed__))_Devices {
+struct __attribute__((__packed__)) _Devices {
 
 
     bool checked;
@@ -116,6 +114,5 @@ struct __attribute__((__packed__))_Devices {
     char type[64];
     char directory[256];
 };
-
 
 #endif //DIPLOMSKI_COMMON_H

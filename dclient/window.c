@@ -141,7 +141,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     label_cpu0 = gtk_label_new(NULL);//cpu1
 
     label_mem = gtk_label_new(NULL);//network_received
-    label_swap = gtk_label_new(NULL);//network_transimited
+    label_swap = gtk_label_new(NULL);//network_transmitted
 
 
 
@@ -316,15 +316,15 @@ void network_change_rc(Network *network) {
     gchar *rec_bytes = g_format_size_full(network->received_bytes, G_FORMAT_SIZE_IEC_UNITS);
     gchar *rec_tr_bytes = g_format_size_full(network->transmited_bytes, G_FORMAT_SIZE_IEC_UNITS);
     gchar *network_usage_received_text = g_strdup_printf("RECEIVED:  %s/s", rec_bytes);
-    gchar *network_usage_transimited_text = g_strdup_printf("TRANSMITED: %s/s", rec_tr_bytes);
+    gchar *network_usage_transmitted_text = g_strdup_printf("TRANSMITTED: %s/s", rec_tr_bytes);
     gtk_label_set_text(GTK_LABEL (label_rec), network_usage_received_text);
 
 
-    gtk_label_set_text(GTK_LABEL (label_trans), network_usage_transimited_text);
+    gtk_label_set_text(GTK_LABEL (label_trans), network_usage_transmitted_text);
     g_free(rec_bytes);
     g_free(rec_tr_bytes);
     g_free(network_usage_received_text);
-    g_free(network_usage_transimited_text);
+    g_free(network_usage_transmitted_text);
 
 }
 

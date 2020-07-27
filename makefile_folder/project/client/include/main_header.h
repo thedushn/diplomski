@@ -10,7 +10,7 @@
 
 GtkWidget *window2;
 GtkWidget *process_swindow;
-GtkWidget *dev_swindow;
+GtkWidget *device_swindow;
 
 int newsockfd;
 int newsockfd1;

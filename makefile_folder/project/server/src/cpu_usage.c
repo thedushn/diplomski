@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
-#include "cpu_usage.h"
+
 
 
 static struct DataItem *hash_cpu_user = NULL;
@@ -105,13 +105,13 @@ void cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
         jiffies_total[i] = jiffies_user[i] + jiffies_system[i] + idle[i];
 
 
-        cpu_user[i] = cpu_system[i] = 0.0;
+        cpu_user[i] = cpu_system[i] = (float)0.0;
         if (jiffies_total[i] > jiffies_total_old[i]) {
 
 
             jiffies_total_delta[i] = jiffies_total[i] - jiffies_total_old[i];
-            cpu_user[i] = (jiffies_user[i] - jiffies_user_old[i]) * 100 / (float) (jiffies_total_delta[i]);
-            cpu_system[i] = (jiffies_system[i] - jiffies_system_old[i]) * 100 / (float) (jiffies_total_delta[i]);
+            cpu_user[i] = (float)(jiffies_user[i] - jiffies_user_old[i]) * 100 / (float) (jiffies_total_delta[i]);
+            cpu_system[i] =(float) (jiffies_system[i] - jiffies_system_old[i]) * 100 / (float) (jiffies_total_delta[i]);
 
         }
 
@@ -123,22 +123,22 @@ void cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
 
     if (sprintf(cpu_usage->percentage0, "%f", percentage[0]) < 0) {
 
-        printf("nije uspelo convertovanje %s \n", cpu_usage->percentage0);
+        printf("converting didnt work %s \n", cpu_usage->percentage0);
         exit(1);
     }
     if (sprintf(cpu_usage->percentage1, "%f", percentage[1]) < 0) {
 
-        printf("nije uspelo convertovanje %s \n", cpu_usage->percentage1);
+        printf("converting didnt work %s \n", cpu_usage->percentage1);
         exit(1);
     }
     if (sprintf(cpu_usage->percentage2, "%f", percentage[2]) < 0) {
 
-        printf("nije uspelo convertovanje %s \n", cpu_usage->percentage2);
+        printf("converting didnt work %s \n", cpu_usage->percentage2);
         exit(1);
     }
     if (sprintf(cpu_usage->percentage3, "%f", percentage[3]) < 0) {
 
-        printf("nije uspelo convertovanje %s \n", cpu_usage->percentage3);
+        printf("converting didnt work %s \n", cpu_usage->percentage3);
         exit(1);
     }
 
@@ -231,9 +231,9 @@ get_cpu_percent(unsigned int pid, __uint64_t jiffies_user, float *cpu_user, __ui
 
     if (jiffies_total_delta[4] > 0) {
 
-        *cpu_user = (float) (((((float) jiffies_user) - ((float) jiffies_user_old)) * 100.) /
-                             ((float) (jiffies_total_delta[4])));
-        *cpu_system = ((jiffies_system - jiffies_system_old) * 100) / (float) jiffies_total_delta[4];
+        *cpu_user = (float) (( jiffies_user) - (jiffies_user_old))* 100 /
+                             (float) (jiffies_total_delta[4]);
+        *cpu_system =(float) ((jiffies_system - jiffies_system_old) * 100) / (float) jiffies_total_delta[4];
 
     } else {
 
@@ -243,7 +243,7 @@ get_cpu_percent(unsigned int pid, __uint64_t jiffies_user, float *cpu_user, __ui
     return 0;
 }
 
-void uradi(bool clean) {
+void do_check(bool clean) {
 
     if (clean == true) {
 

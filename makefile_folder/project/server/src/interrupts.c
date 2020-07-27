@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "interrupts.h"
+
 
 
 int interrupt_usage2(Interrupts **array2, __int32_t *j) {
@@ -35,7 +35,7 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
 
 
     while (fgets(buffer, 1024, file) != NULL) {
-        int i = 0;
+        int i ;
 
 
         memset(&array[g], 0, sizeof(array[g]));
@@ -66,7 +66,7 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
         } else {
             free(array);
             fclose(file);
-            printf("relloc error %d", errno);
+            printf("reallocate error %d", errno);
             return 1;
 
         }
@@ -90,8 +90,8 @@ static int myCompare(const void *a, const void *b) {
     Interrupts interrupts2 = *(Interrupts *) b;
 
 
-    int CPUa = 0;
-    int CPUb = 0;
+    int CPUa ;
+    int CPUb ;
 
 
     CPUa = (int) (interrupts1.CPU0 + interrupts1.CPU1 + interrupts1.CPU2 + interrupts1.CPU3);

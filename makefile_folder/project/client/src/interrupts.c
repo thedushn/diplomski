@@ -7,7 +7,7 @@
 #include "common.h"
 
 
-void upis(GArray *array, GArray *array2) {
+void input_interrupts(GArray *array, GArray *array2) {
 
 
     while (array2->len > 0) {
@@ -32,6 +32,6 @@ void upis(GArray *array, GArray *array2) {
     }
 
 
-};
+}
 
-#include "interrupts.h"
+

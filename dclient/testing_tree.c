@@ -696,11 +696,11 @@ gint compare_int_list_item_time(GtkTreeModel *model, GtkTreeIter *iter1, GtkTree
     gint i2 = 0;
 
 
-    i1 = atoi(s1); //koliko je sati
+    i1 = atoi(s1); //how much time is it
 
 
 
-    i2 = atoi(s2); //koliko je sati
+    i2 = atoi(s2); //how much time is it
 
 
     ret = i1 - i2;
@@ -727,9 +727,9 @@ gint compare_int_list_item_time(GtkTreeModel *model, GtkTreeIter *iter1, GtkTree
     if (ret == 0) { //ako je u isto minuta
 
 
-        dt = strrchr(s1, ':');//sekunde
-        dt1 = strrchr(s2, ':');//sekunde postavi pointer na :
-        dt = dt + 1;//preskacemo :
+        dt = strrchr(s1, ':');//seconds
+        dt1 = strrchr(s2, ':');//seconds move pointer at :
+        dt = dt + 1;//jump over :
         dt1 = dt1 + 1;
 
         i1 = atoi(dt);

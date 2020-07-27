@@ -310,7 +310,8 @@ void draw_graph(cairo_t *cr, GArray *history_p, int r, int y, int i, double heig
                 float max_num) {
 
 
-    double prev = height - font_size; //nula
+    double prev = height - font_size; //zero
+
 
 
     if (r == 0 || r == 5) {
@@ -520,7 +521,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
     gchar *mb = "MB/s";
     gchar *b = "bytes/s";
     gfloat max_num=0 ;
-    gfloat max_num2  ;
+    gfloat max_num2=0  ;
     static gfloat max_num3 ;
 
     gfloat *peak ;

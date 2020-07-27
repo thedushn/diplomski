@@ -7,10 +7,10 @@
 #include"sys/socket.h"
 #include <netdb.h>
 #include <fontconfig/fontconfig.h>
-
-
-
 #include "functions.h"
+
+
+
 
 GtkWidget *window;
 
@@ -215,7 +215,7 @@ void init_timeout() {
                 && strcmp(new_tmp->type, tmp->type) == 0
                 && new_tmp->fid == tmp->fid
                 && new_tmp->total == tmp->total
-                    )  //poredimo elemente nizova
+                    )  //comparing elements of the array
             {
 
 
@@ -249,7 +249,7 @@ void init_timeout() {
 
         Devices *tmp = &g_array_index(names_array, Devices, i);
 
-        if (!tmp->checked)//element niza koji se ne nalazi vise u novom nizu
+        if (!tmp->checked)//element of the array that does not exist in the new array anymore
         {
             remove_list_item_device(tmp->directory, tmp->name);
             g_array_remove_index(names_array, i);
