@@ -5,9 +5,11 @@
 #include "functions.h"
 
 #include <memory.h>
+#include <stdlib.h>
+#include <errno.h>
 
 #include"sys/socket.h"
-
+#include "main_header.h"
 
 
 
@@ -37,15 +39,15 @@ ssize_t test_recv(int socket) {
 
 }
 
-void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage, GArray *array_devices,
-                GArray *array_int, GArray *array_tasks
+void data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage,
+                   GArray *array_devices,
+                    GArray *array_tasks
 ) {
 
 
     int flag = MSG_WAITALL;
     Task task;
-    Devices devices;
-    Interrupts interrupts;
+
     ssize_t ret;
     __int32_t num = 0;
 
@@ -164,9 +166,16 @@ void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usag
     }
 
     for (int i = 0; i < num; i++) {
+        D_Collection *temp_d=calloc(1,sizeof(D_Collection));
+        if(temp_d==NULL){
+
+            printf("calloc error %d \n", errno);
+            free(temp_d);
+            gtk_main_quit();
+        }
 
 
-        ret = (int) recv(socket, &devices, sizeof(Devices), flag);
+        ret = (int) recv(socket, &temp_d->devices, sizeof(Devices), flag);
 
         if (ret < 0) {
             printf("Error sending num_packets!\n\t");
@@ -180,11 +189,15 @@ void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usag
             printf("socket closed\n");
             gtk_main_quit();
         }
+        temp_d->next=devices;
+        devices=temp_d;
 
 
         g_array_append_val(array_devices, devices);
 
     }
+
+    dev_num=num;
     ///end of devices
 
     /// tasks
@@ -233,9 +246,10 @@ void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usag
 
 
     /// interrupts
-
+    Interrupts *temp=interrupts;
     for (int i = 0; i < 10; i++) {
-        ret = recv(socket, &interrupts, sizeof(Interrupts), flag);
+      //  ret = recv(socket, &interrupts2, sizeof(Interrupts), flag);
+        ret = recv(socket, interrupts, sizeof(Interrupts), flag);
 
         if (ret < 0) {
             printf("Error receving data!\n");
@@ -250,11 +264,12 @@ void connection(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usag
             gtk_main_quit();
         }
 
+      //  *interrupts=interrupts2;
 
-        g_array_append_val(array_int, interrupts);
-
+        interrupts++;
 
     }
+    interrupts=temp;
     ret = test_recv(socket);
     if (ret < 0) {
 

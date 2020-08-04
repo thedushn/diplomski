@@ -118,4 +118,45 @@ struct __attribute__((__packed__))_Devices {
 };
 
 
+
+typedef struct _Cpu_Stats Cpu_Stats;
+
+typedef union _Data Data_t;
+typedef struct _Unification Unification;
+union _Data{
+
+
+    Cpu_Stats * cpu;
+
+};
+struct _Unification{
+
+    Data_t data_t;
+
+
+
+    int num_type;
+};
+typedef struct _Collection Collection;
+struct _Collection{
+
+    float data[8];
+    Collection * next;
+};
+typedef struct _DCollection DCollection;
+struct _DCollection{
+
+    Devices devices;
+    DCollection * next;
+};
+
+typedef struct _Device_Collection D_Collection;
+struct _Device_Collection{
+
+    Devices devices;
+    D_Collection * next;
+};
+
+
+
 #endif //DIPLOMSKI_COMMON_H

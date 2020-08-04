@@ -8,7 +8,7 @@
 #include "buttons.h"
 
 #include "main_header.h"
-#include "common.h"
+
 
 
 void create_list_store(void) {
@@ -303,14 +303,19 @@ void fill_list_item_device(gint i, GtkTreeIter *iter) {
     gchar *total, *avail, *used, *free, *directory, *type;
 
     if (iter != NULL) {
-        Devices *devices = &g_array_index(names_array, Devices, i);
-        gchar *name = g_strdup_printf("%s", devices->name);
-        used = g_format_size_full((guint64) devices->used, G_FORMAT_SIZE_IEC_UNITS);
-        total = g_format_size_full((guint64) devices->total, G_FORMAT_SIZE_IEC_UNITS);
-        avail = g_format_size_full((guint64) devices->avail, G_FORMAT_SIZE_IEC_UNITS);
-        free = g_format_size_full((guint64) devices->free, G_FORMAT_SIZE_IEC_UNITS);
-        directory = g_strdup_printf("%s", devices->directory);
-        type = g_strdup_printf("%s", devices->type);
+        D_Collection *temp=devices_old;
+        for(int j=0;j<i;j++){
+            temp=temp->next;
+        }
+      //  Devices *device_temp = &g_array_index(names_array, Devices, i);
+        Devices *device_temp =&temp->devices;
+        gchar *name = g_strdup_printf("%s", device_temp->name);
+        used = g_format_size_full((guint64) device_temp->used, G_FORMAT_SIZE_IEC_UNITS);
+        total = g_format_size_full((guint64) device_temp->total, G_FORMAT_SIZE_IEC_UNITS);
+        avail = g_format_size_full((guint64) device_temp->avail, G_FORMAT_SIZE_IEC_UNITS);
+        free = g_format_size_full((guint64) device_temp->free, G_FORMAT_SIZE_IEC_UNITS);
+        directory = g_strdup_printf("%s", device_temp->directory);
+        type = g_strdup_printf("%s", device_temp->type);
 
 
         gtk_tree_store_set(GTK_TREE_STORE(list_store1), iter, COL_DEV, name, -1);
@@ -338,7 +343,11 @@ void refresh_list_item_device(gint i) {
     GtkTreeIter iter;
     static gint g = 0;
     gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(list_store1), &iter);
-    Devices *device = &g_array_index(names_array, Devices, i);
+    D_Collection *temp=devices_old;
+    for(int j=0;j<i;j++){
+        temp=temp->next;
+    }
+    Devices *device = &temp->devices;
     while (valid) {
         gchar *str_data = "";
         gchar *str_data1 = "";

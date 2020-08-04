@@ -53,6 +53,8 @@ void writing_interrupts(cairo_t *cr, double font_size, double length, int i, con
 void draw_graph(cairo_t *cr, GArray *history_p, int r, int y, int i, double height, double font_size, double step,
                 float max_num
 );
+void draw_graph3(cairo_t *cr, int r, int i,double width, double height, double font_size, double time_step,
+                 float max_num);
 
 #endif //DIPLOMSKI_DRAWING_H
 

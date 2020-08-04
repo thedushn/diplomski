@@ -1,5 +1,5 @@
 
-#include "interrupts.h"
+
 #include "drawing.h"
 #include "testing_tree.h"
 #include "window.h"
@@ -7,24 +7,25 @@
 #include"sys/socket.h"
 #include <netdb.h>
 #include <fontconfig/fontconfig.h>
+#include <errno.h>
 #include "functions.h"
-
 
 
 
 GtkWidget *window;
 
+
 static guint refresh = 0;
 static guint t = 2000;
-static int bjorg = 1;//prvi ispis
-
-
-gint tasks_num;
-gint dev_num;
-
-
 
 static guint time_step = 0;
+
+gint tasks_num;
+
+
+
+
+
 
 
 gboolean on_draw_event(GtkWidget *widget, cairo_t *cr) {
@@ -123,7 +124,7 @@ void timeout_refresh() {
 
 }
 
-int conection(char *argv1, char *argv2) {
+int connection(char *argv1, char *argv2) {
 
 
     struct addrinfo hints, *servinfo, *p;
@@ -179,36 +180,40 @@ int conection(char *argv1, char *argv2) {
 void init_timeout() {
 
     guint i , j ;
-
+    Collection *temp;
+    dev_num=0;//in the begging its zero
 
     GArray *new_task_list = g_array_new(FALSE, FALSE, sizeof(Task));
     GArray *new_device_list = g_array_new(FALSE, FALSE, sizeof(Devices));
-    GArray *new_interrupt_list = g_array_new(FALSE, FALSE, sizeof(Interrupts));
+
 
     Cpu_usage *cpu_usage1;
     Network *network;
     Memory_usage *memory_usage;
+
 
     network = calloc(1, sizeof(Network));
     memory_usage = calloc(1, sizeof(Memory_usage));
     cpu_usage1 = calloc(1, sizeof(Cpu_usage));
 
 
-    connection(newsockfd, cpu_usage1, network, memory_usage, new_device_list, new_interrupt_list, new_task_list);
-    input_interrupts(new_interrupt_list, interrupt_array_d);
+    data_transfer(newsockfd, cpu_usage1, network, memory_usage, new_device_list, new_task_list);
+
 
 
 
 
 
     /*devices */
-    for (i = 0; i < names_array->len; i++) //uzimamo element niza
+    D_Collection *rem_old=devices_old;
+    D_Collection *rem_new=devices;
+    for (i = 0; i < dev_num_old; i++) //uzimamo element niza
     {
-        Devices *tmp = &g_array_index(names_array, Devices, i);
+        Devices *tmp = &devices_old->devices;
         tmp->checked = FALSE;
 
-        for (j = 0; j < new_device_list->len; j++) {
-            Devices *new_tmp = &g_array_index(new_device_list, Devices, j);
+        for (j = 0; j < dev_num; j++) {
+            Devices *new_tmp =&devices->devices;
 
             if (strcmp(new_tmp->directory, tmp->directory) == 0
                 && strcmp(new_tmp->name, tmp->name) == 0
@@ -241,19 +246,29 @@ void init_timeout() {
 
             } else
                 tmp->checked = FALSE;
+
+            devices=devices->next;
         }
+        devices_old=devices_old->next;
     }
+    devices_old=rem_old;
+    devices=rem_new;
     //  check for unchecked old-devices for deleting
     i = 0;
-    while (i < names_array->len) {
+    while (i <dev_num_old) {
 
-        Devices *tmp = &g_array_index(names_array, Devices, i);
+        Devices *tmp = &devices_old->devices;
 
         if (!tmp->checked)//element of the array that does not exist in the new array anymore
         {
             remove_list_item_device(tmp->directory, tmp->name);
-            g_array_remove_index(names_array, i);
-            dev_num--;
+            if(i==0){
+                D_Collection *dtemp=devices_old;
+                devices_old=devices_old->next;
+                free(dtemp);
+            }
+
+            dev_num_old--;
         } else
             i++;
 
@@ -261,19 +276,21 @@ void init_timeout() {
 
 
     //  check for unchecked new devices for inserting
-    for (i = 0; i < new_device_list->len; i++) {
-        Devices *new_tmp = &g_array_index(new_device_list, Devices, i);
 
-        if (!new_tmp->checked) {
-            Devices *new_device = new_tmp;
-
-            g_array_append_val(names_array, *new_device);
-
-            add_new_list_item_dev(dev_num);
-
-            dev_num++;
+    D_Collection *rem_tmp=devices;
+    for (i = 0; i < dev_num; i++) {
+        D_Collection *new_tmp=calloc(1,sizeof(D_Collection));
+        new_tmp->devices=devices->devices;
+        if (!new_tmp->devices.checked) {
+            new_tmp->next=devices_old;
+            devices_old=new_tmp;
+            add_new_list_item_dev(0);
+            dev_num_old++;
         }
+        devices=devices->next;
     }
+    devices=rem_tmp;
+
     /*devices */
 
 
@@ -367,21 +384,70 @@ void init_timeout() {
     }
 
 
+    temp=(Collection *)calloc(1, sizeof(Collection));
+    if(temp==NULL){
+
+        printf("calloc error %d \n", errno);
+        free(temp);
+        g_array_free(new_task_list, TRUE);
+
+
+
+
+
+        g_array_free(new_device_list, TRUE);
+
+
+        free(cpu_usage1);
+
+        free(network);
+
+        free(memory_usage);
+        exit(1);
+    }
+
+
+    //point it to old first node
+    temp->next = collection;
+    //point first to new first node
+    collection=temp;
+
+    if(bjorg<LIST_SIZE){
+        bjorg++;
+    }
+
+
+
     cpu_change(cpu_usage1);
     network_change_rc(network);
     memory_change(memory_usage);
     swap_change(memory_usage);
+    if(bjorg>=LIST_SIZE){
+           temp=collection;
+
+       for(int g=0;g<LIST_SIZE;g++){
+           collection=collection->next;
+
+           }
+
+           free(collection);
+        collection=NULL;
+        collection=temp;
+
+
+       }
+
 
 
     gtk_widget_queue_draw(window);
     g_array_free(new_task_list, TRUE);
 
 
-    g_array_free(new_interrupt_list, TRUE);
+
 
 
     g_array_free(new_device_list, TRUE);
-    bjorg++;
+
 
     free(cpu_usage1);
 
@@ -392,11 +458,7 @@ void init_timeout() {
 
     time_step = 60000 / t;
 
-    if (bjorg >= time_step) {
 
-
-        bjorg = time_step;
-    }
 
 
     if (refresh == 0) {
@@ -413,9 +475,13 @@ destroy_window(void) {
 }
 
 
+
+
+
+
 int main(int argc, char *argv[]) {
 
-
+        bjorg=0;
     if (argc < 3) {
 
         printf("port not provided \n");
@@ -433,12 +499,12 @@ int main(int argc, char *argv[]) {
         exit(1);
 
     }
-    newsockfd = conection(argv[1], argv[2]);
+    newsockfd = connection(argv[1], argv[2]);
     if (newsockfd < 0) {
         close(newsockfd);
         exit(1);
     }
-    newsockfd1 = conection(argv[1], argv[2]);
+    newsockfd1 = connection(argv[1], argv[2]);
     if (newsockfd1 < 0) {
         close(newsockfd);
         close(newsockfd1);
@@ -446,6 +512,53 @@ int main(int argc, char *argv[]) {
     }
 
     gtk_init(&argc, &argv);
+
+    interrupts=calloc(10,sizeof(Interrupts));
+
+    Collection *  temp;
+
+
+
+//linked list
+//    temp=(Cpu_Stats *)calloc(1, sizeof(Cpu_Stats));
+//
+//
+//    //point it to old first node
+//    temp->next = cpu_stats;
+//    //point first to new first node
+//    cpu_stats=temp;
+
+//linked list
+
+    //circular list
+//    Cpu_Stats *  temp=(Cpu_Stats *)calloc(1, sizeof(Cpu_Stats));
+//
+//    cpu_stats = temp;
+//    //end of the link
+//    stats0_tail=temp;
+//    // Create the link.
+//    cpu_stats->next = cpu_stats;
+//
+//
+//
+//    for(int i=0;i<list_size;i++){
+//      temp=(Cpu_Stats *)calloc(1, sizeof(Cpu_Stats));
+//
+//
+//
+//
+//      //  temp->cpu_0=i;
+//        temp->next = cpu_stats->next;
+//
+//
+//        cpu_stats->next = temp;
+//
+//
+//    }
+////circular list
+
+
+
 
 
     device_swindow = gtk_scrolled_window_new(NULL,
@@ -461,20 +574,16 @@ int main(int argc, char *argv[]) {
     task_array = g_array_new(FALSE, TRUE, sizeof(Task));
 
 
-    interrupt_array_d = g_array_new(FALSE, TRUE, sizeof(Interrupts));
 
 
-    g_array_set_size(interrupt_array_d, 10);
+
+
 
 
     names_array = g_array_new(FALSE, FALSE, sizeof(Devices));
 
 
-    for (int i = 0; i < 8; i++) {
 
-        history[i] = g_array_new(FALSE, TRUE, sizeof(gfloat));
-        g_array_set_size(history[i], 240);
-    }
 
 
     window = main_window(device_swindow, process_swindow);
@@ -530,19 +639,35 @@ int main(int argc, char *argv[]) {
 
     g_array_free(task_array, TRUE);
     g_array_free(names_array, TRUE);
-    g_array_free(interrupt_array_d, TRUE);
 
-    for (int i = 0; i < 8; i++) {
-        g_array_free(history[i], TRUE);
 
+
+
+    for(int i=0;i<bjorg;i++){
+       // save reference to first link
+      temp = collection;
+
+      //mark next to first link as first
+        collection = collection->next;
+
+      //return the deleted link
+      free(temp);
+      temp=NULL;
     }
+    free(interrupts);
+    free(devices);
+
+
+
 
 
     close(newsockfd);
     close(newsockfd1);
+    //save reference to first link
 
-    cairo_debug_reset_static_data();
-       FcFini();
+
+   // cairo_debug_reset_static_data();
+    //   FcFini();
 
 
     return 0;

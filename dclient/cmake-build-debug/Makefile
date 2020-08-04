@@ -204,33 +204,6 @@ functions.c.s:
 	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/functions.c.s
 .PHONY : functions.c.s
 
-interrupts.o: interrupts.c.o
-
-.PHONY : interrupts.o
-
-# target to build an object file
-interrupts.c.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/interrupts.c.o
-.PHONY : interrupts.c.o
-
-interrupts.i: interrupts.c.i
-
-.PHONY : interrupts.i
-
-# target to preprocess a source file
-interrupts.c.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/interrupts.c.i
-.PHONY : interrupts.c.i
-
-interrupts.s: interrupts.c.s
-
-.PHONY : interrupts.s
-
-# target to generate assembly for a file
-interrupts.c.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/interrupts.c.s
-.PHONY : interrupts.c.s
-
 main.o: main.c.o
 
 .PHONY : main.o
@@ -330,9 +303,6 @@ help:
 	@echo "... functions.o"
 	@echo "... functions.i"
 	@echo "... functions.s"
-	@echo "... interrupts.o"
-	@echo "... interrupts.i"
-	@echo "... interrupts.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

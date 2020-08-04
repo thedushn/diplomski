@@ -137,12 +137,6 @@
 		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/functions.h">
 			<Option target="client"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/interrupts.c">
-			<Option target="client"/>
-		</Unit>
-		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/interrupts.h">
-			<Option target="client"/>
-		</Unit>
 		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/main.c">
 			<Option target="client"/>
 		</Unit>

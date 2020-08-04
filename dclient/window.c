@@ -7,11 +7,14 @@
 #include "buttons.h"
 
 
+
 GtkWidget *label_rec;
 GtkWidget *label_trans;
 GtkWidget *label_cpu0;
 GtkWidget *label_mem;
 GtkWidget *label_swap;
+
+
 
 
 GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
@@ -211,12 +214,12 @@ void swap_change(Memory_usage *memory_usage) {
     float f;
     f = (float) atof(memory_usage->swap_percentage);
 
+    collection->data[7]=f;
+
     swap_used = g_format_size_full((guint64) memory_usage->swap_used, G_FORMAT_SIZE_IEC_UNITS);
     swap_total = g_format_size_full((guint64) memory_usage->swap_total, G_FORMAT_SIZE_IEC_UNITS);
 
-    g_array_prepend_val(history[7], f);
-    if (history[7]->len > 1)
-        g_array_remove_index(history[7], history[7]->len - 1);
+
 
 
     gchar *swap_usage_text = g_strdup_printf(("SWAP: %0.2f%% (%s) %s"), f, swap_used, swap_total);
@@ -235,6 +238,7 @@ void memory_change(Memory_usage *memory_usage) {
 
     float f = 0;
     f = (float) atof(memory_usage->memory_percentage);
+    collection->data[6]=f;
 
 
     used = g_format_size_full((guint64) memory_usage->memory_used, G_FORMAT_SIZE_IEC_UNITS);
@@ -242,10 +246,7 @@ void memory_change(Memory_usage *memory_usage) {
     total = g_format_size_full((guint64) memory_usage->memory_total, G_FORMAT_SIZE_IEC_UNITS);
 
 
-    g_array_prepend_val(history[6], f);
 
-    if (history[6]->len > 1)
-        g_array_remove_index(history[6], history[6]->len - 1);
 
 
     memory_usage_text1 = g_strdup_printf(("Memory: %0.2f%%(%s)%s"), f, used, total);
@@ -260,30 +261,51 @@ void memory_change(Memory_usage *memory_usage) {
 void cpu_change(Cpu_usage *cpu_usage) {
 
 
-    float j = 0;
-    j = (float) atof(cpu_usage->percentage0);
+    float j[4] = {0,0,0,0};
 
-    g_array_prepend_val(history[0], j);
-    if (history[0]->len > 1)
-        g_array_remove_index(history[0], history[0]->len - 1);
+    j[0] = (float) atof(cpu_usage->percentage0);
+    j[1] = (float) atof(cpu_usage->percentage1);
+    j[2] = (float) atof(cpu_usage->percentage2);
+    j[3] = (float) atof(cpu_usage->percentage3);
+
+    for(int i=0;i<4;i++){
+           collection->data[i]=j[i];
+       }
+
+    //   Cpu_Stats *temp=(Cpu_Stats*)calloc(1,sizeof(Cpu_Stats));
+//       for(int i=0;i<4;i++){
+//           temp->cpu[i]=j[i];
+//       }
+//
+//       temp->next=cpu_stats;
+//       cpu_stats=temp;
+//
+//
+//
+//       if(bjorg>=LIST_SIZE){
+//           temp=cpu_stats;
+//         //  for(int i=0;i<list_size-1;i++){
+//       for(int i=0;i<LIST_SIZE;i++){
+//               cpu_stats=cpu_stats->next;
+//
+//           }
+//           cpu_stats->next=NULL;
+//           free(cpu_stats);
+//           cpu_stats=NULL;
+//           cpu_stats=temp;
+//
+//
+//       }
+
+// linked list
 
 
-    j = (float) atof(cpu_usage->percentage1);
-    g_array_prepend_val(history[1], j);
-    if (history[1]->len > 1)
-        g_array_remove_index(history[1], history[1]->len - 1);
 
 
-    j = (float) atof(cpu_usage->percentage2);
-    g_array_prepend_val(history[2], j);
-    if (history[2]->len > 1)
-        g_array_remove_index(history[2], history[2]->len - 1);
 
-    j = (float) atof(cpu_usage->percentage3);
 
-    g_array_prepend_val(history[3], j);
-    if (history[3]->len > 1)
-        g_array_remove_index(history[3], history[3]->len - 1);
+
+
 
 
     gchar *cpu0_usage_text = g_strdup_printf(("CPU%s: %.4s%% CPU%s: %.4s%%CPU%s: %.4s%%CPU%s: %.4s%%"),
@@ -303,15 +325,31 @@ void cpu_change(Cpu_usage *cpu_usage) {
 void network_change_rc(Network *network) {
 
 
-    float net_kb = (float) network->received_bytes / 1024;
+    float net_kb_rc = (float) network->received_bytes / 1024;
     float net_kb_tr = (float) network->transmited_bytes / 1024;
 
-    g_array_prepend_val(history[5], net_kb_tr);
-    if (history[5]->len > 1)
-        g_array_remove_index(history[5], history[5]->len - 1);
-    g_array_prepend_val(history[4], net_kb);
-    if (history[4]->len > 1)
-        g_array_remove_index(history[4], history[4]->len - 1);
+        collection->data[4]=net_kb_tr;
+        collection->data[5]=net_kb_rc;
+
+
+//    Network_Stats *temp=calloc(1,sizeof(Network_Stats));
+//    temp->net_kb_tr=net_kb_tr;
+//    temp->net_kb_rc=net_kb_rc;
+//    temp->next=net_stats;
+//    net_stats=temp;
+//    if(bjorg>=LIST_SIZE){
+//        temp=net_stats;
+//        for(int i=0;i<LIST_SIZE;i++){ //moving the pointer to the last position
+//            net_stats=net_stats->next;
+//
+//        }
+//        free(net_stats); //removing the last position
+//        net_stats=NULL;
+//        net_stats=temp;
+//
+//    }
+
+
 
     gchar *rec_bytes = g_format_size_full(network->received_bytes, G_FORMAT_SIZE_IEC_UNITS);
     gchar *rec_tr_bytes = g_format_size_full(network->transmited_bytes, G_FORMAT_SIZE_IEC_UNITS);
