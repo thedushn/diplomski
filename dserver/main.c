@@ -30,7 +30,7 @@
 #define BUF_SIZE 1024
 
 
-void sigchld_handler(int s) {
+void sigchld_handler() {
 
     int saved_errno = errno;
 
@@ -48,6 +48,11 @@ void *get_in_addr(struct sockaddr *sa) {
 }
 
 int main(int argc, char *argv[]) {
+
+    hash_size=0;
+    task_details=NULL;
+    hash_network=NULL;
+    net_hash_size=0;
 
 
     pthread_t t2, t3;
@@ -221,9 +226,34 @@ int main(int argc, char *argv[]) {
     pthread_join(t3, NULL);
 
 
+
+        struct DataItem *temp;
+    for(int k=0;k<hash_size;k++){
+        // save reference to first link
+        temp = task_details;
+
+        //mark next to first link as first
+        task_details = task_details->next;
+
+        //return the deleted link
+        free(temp);
+
+    }
+    struct DataItem_net *temp_net;
+    for(int k=0;k<net_hash_size;k++){
+        // save reference to first link
+        temp_net = hash_network;
+
+        //mark next to first link as first
+        hash_network = hash_network->next;
+
+        //return the deleted link
+        free(temp_net);
+
+    }
     close(sockfd);
-    do_check(true);
-    clean();
+
+
 
 
     return 0;

@@ -70,7 +70,7 @@ void get_memory_usage(Memory_usage *memory_usage) {
 
     if (sprintf(memory_usage->swap_percentage, "%f", swap_percentage) < 0) {
 
-        printf("conversion didnt work %s \n", memory_usage->swap_percentage);
+        printf("conversion did not work %s \n", memory_usage->swap_percentage);
         strcpy(memory_usage->swap_percentage, "0");
     }
     memory_usage->swap_used = swap_used;
@@ -82,7 +82,7 @@ void get_memory_usage(Memory_usage *memory_usage) {
 
     if (sprintf(memory_usage->memory_percentage, "%f", percentage) < 0) {
 
-        printf("conversion didnt work %s \n", memory_usage->memory_percentage);
+        printf("conversion did not work %s \n", memory_usage->memory_percentage);
         strcpy(memory_usage->swap_percentage, "0");
     }
 

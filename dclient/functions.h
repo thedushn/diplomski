@@ -12,10 +12,9 @@
 ssize_t test_recv(int socket);
 
 
-void data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage,
-                   GArray *array_devices,
-                    GArray *array_tasks
-);
+int
+data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage, Task **array_tasks,
+              Devices **array_devices);
 
 
 #endif //DIPLOMSKI_FUNCTIONS_H

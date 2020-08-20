@@ -307,7 +307,7 @@ void draw_interrupts(cairo_t *cr, int i, Interrupts *peak, double height, double
 
 
 }
-void draw_graph3(cairo_t *cr, int r, int i,double width, double height, double font_size, double time_step,
+void draw_graph(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step,
                 float max_num) {
 
     Collection *temp=collection;
@@ -392,67 +392,10 @@ void draw_graph3(cairo_t *cr, int r, int i,double width, double height, double f
 
 }
 
-void draw_graph(cairo_t *cr, GArray *history_p, int r, int y, int i, double height, double font_size, double step,
-                float max_num) {
-
-
-    double prev = height - font_size; //zero
 
 
 
-    if (r == 0 || r == 5) {
-        cairo_set_source_rgb(cr, 1, 0, 0);//rgb
-    } else if (r == 1) {
-        cairo_set_source_rgb(cr, 0, 1, 0);
-    } else if (r == 2 || r == 4) {
-        cairo_set_source_rgb(cr, 0, 0, 1);
-    } else {
-        cairo_set_source_rgb(cr, 1, .5, 0);
-
-    }
-
-
-    for (int j = 0; j < y; j++) {
-
-        gfloat *peak;
-        double percentage;
-
-        peak = &g_array_index(history_p, gfloat, j);
-       // printf("Peak : %f\n",*peak);
-
-        cairo_move_to(cr, i * font_size, prev);
-
-
-        if (r == 4 || r == 5) {
-            percentage = ((height - font_size) / max_num) * *peak;
-        } else {
-            percentage = ((height - font_size) / 100) * *peak;
-        }
-
-        prev = height - font_size - percentage;
-
-        if (percentage == height) {
-            percentage = height - 1;
-        }
-
-        cairo_line_to(cr, step + i * font_size, height - font_size - percentage);
-
-        cairo_translate(cr, step, 0);
-
-
-    }
-
-
-    cairo_stroke(cr);
-
-
-    cairo_translate(cr, -step * y, 0);
-
-
-}
-
-
-void do_drawing_mem(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) {
+void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step) {
     double width, height;
     height = (double) gtk_widget_get_allocated_height(widget);
     width = (double) gtk_widget_get_allocated_width(widget);
@@ -485,10 +428,9 @@ void do_drawing_mem(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
     //seconds
     writing_seconds(cr, width, height, font_size, 3, 6);
 
-        draw_graph3(cr,6,3,width,height,font_size,time_step,0);
-        draw_graph3(cr,7,3,width,height,font_size,time_step,0);
-//    draw_graph(cr, history[6], 0, num_w, 3, height, font_size, step, 0);
-//    draw_graph(cr, history[7], 2, num_w, 3, height, font_size, step, 0);
+    draw_graph(cr, 6, 3, width, height, font_size, time_step, 0);
+    draw_graph(cr, 7, 3, width, height, font_size, time_step, 0);
+
 
 
     if (graph_surface != NULL) {
@@ -720,8 +662,8 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
     cairo_show_text(cr, "0");
     cairo_show_text(cr, track);
 
-    draw_graph3(cr, 4, 5,width, height, font_size, time_step, max_num);
-    draw_graph3(cr, 5, 5,width, height, font_size, time_step, max_num);
+    draw_graph(cr, 4, 5, width, height, font_size, time_step, max_num);
+    draw_graph(cr, 5, 5, width, height, font_size, time_step, max_num);
   //  draw_graph(cr, history[4], 4, num_w, 5, height, font_size, step, max_num3);
    // draw_graph(cr, history[5], 5, num_w, 5, height, font_size, step, max_num3);
 
@@ -766,22 +708,22 @@ void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, int bjorg, guint time_step, 
     writing_seconds(cr, width, height, font_size, 3, 6);
 
     if (CPU0_line == TRUE) {
-        draw_graph3(cr,0, 3,width, height, font_size, time_step,0);
+        draw_graph(cr, 0, 3, width, height, font_size, time_step, 0);
   //  draw_graph2(cr,0,bjorg, 3,width, height, font_size, time_step);
       //  draw_graph(cr, history[0], 0, bjorg, 3, height, font_size, step, 0);
     }
     if (CPU1_line == TRUE) {
-        draw_graph3(cr,1, 3,width, height, font_size, time_step,0);
+        draw_graph(cr, 1, 3, width, height, font_size, time_step, 0);
        // draw_graph2(cr,1,bjorg, 3,width, height, font_size, time_step);
       //  draw_graph(cr, history[1], 1, bjorg, 3, height, font_size, step, 0);
     }
     if (CPU2_line == TRUE) {
-        draw_graph3(cr,2, 3,width, height, font_size, time_step,0);
+        draw_graph(cr, 2, 3, width, height, font_size, time_step, 0);
       //  draw_graph2(cr,2,bjorg, 3,width, height, font_size, time_step);
        // draw_graph(cr, history[2], 2, bjorg, 3, height, font_size, step, 0);
     }
     if (CPU3_line == TRUE) {
-        draw_graph3(cr,3, 3,width, height, font_size, time_step,0);
+        draw_graph(cr, 3, 3, width, height, font_size, time_step, 0);
       //  draw_graph2(cr,3,bjorg, 3,width, height, font_size, time_step);
       //  draw_graph(cr, history[3], 3, bjorg, 3, height, font_size, step, 0);
     }

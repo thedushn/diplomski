@@ -18,15 +18,26 @@ int bjorg ;
 
 gint dev_num_old;
 gint dev_num;
-GArray *task_array;
-GArray *names_array;
+int task_num;
+int task_num_old;
+
+
 
 
 Collection * collection;
-D_Collection *devices;
 D_Collection *devices_old;
+T_Collection *tasks_old;
 Interrupts * interrupts;
+
 #define LIST_SIZE 240
+#define COLLETION 1
+#define DEV_COLLETION 2
+#define TASK_COLLETION 3
+#define TASK 4
+#define CPU_S 5
+#define MEMORY 6
+#define  NETWORK 7;
+#define  INTERRUPTS 8;
 
 void init_timeout();
 
@@ -38,7 +49,7 @@ void inc_refresh();
 
 void timeout_refresh();
 
-void freeing_memory(Unification array);
+void freeing_memory(Unification *array);
 
 
 

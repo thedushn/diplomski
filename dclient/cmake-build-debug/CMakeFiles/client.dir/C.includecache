@@ -97,6 +97,10 @@ fontconfig/fontconfig.h
 -
 errno.h
 -
+inttypes.h
+-
+assert.h
+-
 functions.h
 /home/dushn/Diplomski/diplomski/dclient/functions.h
 
@@ -111,10 +115,10 @@ testing_tree.h
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
 errno.h
 -
+inttypes.h
+-
 buttons.h
 /home/dushn/Diplomski/diplomski/dclient/buttons.h
-main_header.h
-/home/dushn/Diplomski/diplomski/dclient/main_header.h
 
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
 string.h
@@ -123,6 +127,8 @@ gtk/gtk.h
 -
 stdlib.h
 -
+common.h
+/home/dushn/Diplomski/diplomski/dclient/common.h
 
 /home/dushn/Diplomski/diplomski/dclient/window.c
 window.h

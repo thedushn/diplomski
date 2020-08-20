@@ -7,13 +7,12 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #include <sys/stat.h>
 #include <sys/statvfs.h>
-
+#
 #define  BUFFER_SIZE 1024
 
-void testing_files2(Devices *devices) {
+void testing_files(Devices *devices) {
 
     struct statvfs info;
 
@@ -30,32 +29,14 @@ void testing_files2(Devices *devices) {
 }
 
 
-int device2(Devices **array, bool show, __int32_t *niz2) {
 
-    Devices *devices = NULL;
+int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
-
-    __int32_t niz = 0;
-
-    int ret = mount_list3(&devices, show, &niz);
-
-    if (ret == -1) {
-        return ret;
-    }
-
-    *niz2 = niz;
-    *array = devices;
-    return ret;
-
-}
-
-int mount_list3(Devices **array, bool mount, __int32_t *number) {
+    D_Collection *temp_dev;
 
 
-    Devices *devices2 = NULL;
-    Devices *temp;
-    devices2 = calloc(1, sizeof(Devices));
-    __int32_t niz = 0;
+
+
     char *filename = "/proc/mounts";
 
     char buffer[BUFFER_SIZE];
@@ -65,6 +46,7 @@ int mount_list3(Devices **array, bool mount, __int32_t *number) {
     file = fopen(filename, "r");
     if (file == NULL) {
         printf("open failed, errno = %d\n", errno);
+        printf("open failed,  %s\n", filename);
         return -1;
     }
     fseek(file, 0, SEEK_SET);
@@ -72,59 +54,75 @@ int mount_list3(Devices **array, bool mount, __int32_t *number) {
     if (mount == true) {
         while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
 
+          temp_dev=  calloc(1, sizeof(D_Collection));
+            if(temp_dev==NULL){
+                free(temp_dev);
 
-            sscanf(buffer, "%63s %255s %63s", devices2[niz].name, devices2[niz].directory, devices2[niz].type);
+                printf("calloc error %d \n", errno);
+                return 1;
 
-            testing_files2(&devices2[niz]);
-            niz++;
-            temp = realloc(devices2, (niz + 1) * sizeof(Devices));
 
-            if (temp != NULL) {
-                devices2 = temp;
-            } else {
-                free(devices2);
-                return -1;
             }
+
+            sscanf(buffer, "%63s %255s %63s", temp_dev->devices.name,temp_dev->devices.directory,temp_dev->devices.type);
+
+            testing_files(&temp_dev->devices);
+            (*dev_num)++;
+            temp_dev->next=*array;
+            *array=temp_dev;
+
 
         }
     } else {
         while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
+            Devices proxy={0};
 
-            sscanf(buffer, "%s %s %s", devices2[niz].name, devices2[niz].directory, devices2[niz].type);
 
 
-            struct stat filestat;
+            sscanf(buffer, "%s %s %s", proxy.name,proxy.directory,proxy.type);
 
-            memset(&filestat, 0, sizeof(filestat));
-            lstat(devices2[niz].name, &filestat);
+
+
+            struct stat filestat={0};
+
+
+
+
+
+            lstat(proxy.name, &filestat);
 
             switch (filestat.st_mode & S_IFMT) {
 
                 case S_IFBLK: {
 
 
-                    testing_files2(&devices2[niz]);
-                    niz++;
-                    temp = realloc(devices2, (niz + 1) * sizeof(Devices));
+                    testing_files(&proxy);
+                    temp_dev=  (D_Collection *)calloc(1, sizeof(D_Collection));
+                    if(temp_dev==NULL){
+                        free(temp_dev);
 
-                    if (temp != NULL) {
-                        devices2 = temp;
-                    } else {
-                        free(devices2);
-                        return -1;
+                        printf("calloc error %d \n", errno);
+                        return 1;
+
 
                     }
+
+                    (*dev_num)++;
+                    temp_dev->devices=proxy;
+                    temp_dev->next=*array;
+                    *array=temp_dev;
+
 
 
                     break;
 
                 }
                 default:
-                    memset(devices2[niz].name, 0, sizeof(devices2[niz].name));
-                    memset(devices2[niz].directory, 0, sizeof(devices2[niz].directory));
-                    memset(devices2[niz].type, 0, sizeof(devices2[niz].type));
+
                     break;
             }
+
+
 
 
         }
@@ -132,8 +130,7 @@ int mount_list3(Devices **array, bool mount, __int32_t *number) {
 
     fclose(file);
 
-    *array = devices2;
-    *number = niz;
+
 
 
     return 0;

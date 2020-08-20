@@ -102,51 +102,54 @@ static int myCompare(const void *a, const void *b) {
 
 }
 
-void sort2(Interrupts *array, Interrupts *array2, Interrupts **array3, int n) {
+void sort2(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts **send_interrupts, int n) {
 
-    Interrupts *interrupts_send = NULL;
-    interrupts_send = calloc((size_t) n, sizeof(Interrupts));
+
+    (*send_interrupts) = calloc((size_t) n, sizeof(Interrupts));
+    Interrupts *temp_send=(*send_interrupts);
+    Interrupts *temp_old=old_interrupts;
+    Interrupts *temp_new=new_interrupts;
     for (int i = 0; i < n; i++) {
 
-        Interrupts interrupts3;
-        memset(&interrupts3, 0, sizeof(Interrupts));
-        strcpy(interrupts3.name, array[i].name);
 
-        __int64_t temp = array[i].CPU0 - array2[i].CPU0;
+        strcpy(temp_send->name, temp_new->name);
+
+        __int64_t temp = temp_new->CPU0 - temp_old->CPU0;
         if (temp < 0) {
             temp = 0;
         }
-        interrupts3.CPU0 = (__uint64_t) temp;
+        temp_send->CPU0 = (__uint64_t) temp;
 
-        temp = array[i].CPU1 - array2[i].CPU1;
+        temp = temp_new->CPU1 - temp_old->CPU1;
         if (temp < 0) {
             temp = 0;
         }
-        interrupts3.CPU1 = (__uint64_t) temp;
+        (*send_interrupts)->CPU1 = (__uint64_t) temp;
 
 
-        temp = array[i].CPU2 - array2[i].CPU2;
+        temp = temp_new->CPU2 - temp_old->CPU2;
         if (temp < 0) {
             temp = 0;
         }
-        interrupts3.CPU2 = (__uint64_t) temp;
+        temp_send->CPU2 = (__uint64_t) temp;
 
-        temp = array[i].CPU3 - array2[i].CPU3;
+        temp =temp_new->CPU3 - temp_old->CPU3;
         if (temp < 0) {
             temp = 0;
         }
-        interrupts3.CPU3 = (__uint64_t) temp;
+        temp_send->CPU3 = (__uint64_t) temp;
 
 
-        strcpy(interrupts3.ime1, array[i].ime1);
-        strcpy(interrupts3.ime2, array[i].ime2);
-        strcpy(interrupts3.ime3, array[i].ime3);
-        strcpy(interrupts3.ime4, array[i].ime4);
-        interrupts_send[i] = interrupts3;
-
+        strcpy(temp_send->ime1, temp_new->ime1);
+        strcpy(temp_send->ime2, temp_new->ime2);
+        strcpy(temp_send->ime3, temp_new->ime3);
+        strcpy(temp_send->ime4, temp_new->ime4);
+            *temp_old=*temp_new;
+        temp_send++;
+        temp_new++;
+        temp_old++;
     }
 
-    *array3 = interrupts_send;
 
 
 }

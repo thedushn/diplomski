@@ -13,136 +13,120 @@
 
 #define BUFFER_SIZE 1024
 #define BUFFER_SIZE2 64
-static struct DataItem_net *hash_network_rec = NULL;
-static struct DataItem_net *hash_network_trans = NULL;
+
 static int number_bandwidth;
 
 
-__uint64_t search_net(char *key, struct DataItem_net *hashArray, int hash_size, bool *ima, __uint64_t data
-) {
+struct Net_data search_net(char *key, bool *ima, struct Net_data new_data) {
 
+    struct Net_data temp_data={0};
+    struct DataItem_net *temp_item=hash_network;
+    for (int i = 0; i < net_hash_size; i++) {
 
-    for (int hashIndex = 0; hashIndex < hash_size; hashIndex++) {
-
-        if ((strcmp(hashArray[hashIndex].key, key)) == 0) {
-
+        if ((strcmp(temp_item->name, key)) == 0) {
+            temp_item->check=true;
             *ima = true;
 
-            __uint64_t temp = hashArray[hashIndex].data;
-
-            if (temp > data) {
 
 
-                hashArray[hashIndex].data = data;
-                return 0;
+            if ( new_data.received_data < temp_item->net_data.received_data
+                    ||new_data.received_data < temp_item->net_data.transfered_data) {
+
+                temp_item->net_data.received_data=new_data.received_data;
+                temp_item->net_data.transfered_data=new_data.transfered_data;
+                temp_item->check=true;
+
+                return temp_data;
             }
-            hashArray[hashIndex].data = data;
 
-            return temp;
+            temp_data.transfered_data= temp_item->net_data.transfered_data;
+            temp_data.received_data= temp_item->net_data.received_data;
+
+            temp_item->net_data.received_data=new_data.received_data;
+            temp_item->net_data.transfered_data=new_data.transfered_data;
+            temp_item->check=true;
+
+
+            return temp_data;
 
         }
+
+        temp_item=temp_item->next;
 
 
     }
 
 
-    return 0;
+    return temp_data;
 }
 
 
 void get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct, __uint64_t transmitted,
                    __uint64_t *transmitted_struct) {
-    __uint64_t received_bytes_old = 0, transmit_bytes_old = 0;
-    static int hash_size = 0;
+    struct Net_data net_data_new;
+    struct Net_data net_data_old;
+
     bool ima = false;
     struct DataItem_net *temp = NULL;
-    struct DataItem_net *temp1 = NULL;
 
-    if (hash_network_rec == NULL) {
+    net_data_new.transfered_data=transmitted;
+    net_data_new.received_data=received;
 
-        hash_network_rec = (struct DataItem_net *) calloc(1, sizeof(struct DataItem_net));
-        hash_network_trans = (struct DataItem_net *) calloc(1, sizeof(struct DataItem_net));
 
-        memset(hash_network_trans, 0, sizeof(struct DataItem_net));
-        memset(hash_network_rec, 0, sizeof(struct DataItem_net));
-        hash_size++;
 
-    }
+    net_data_old=search_net(name, &ima, net_data_new);
 
-    received_bytes_old = search_net(name, hash_network_rec, hash_size, &ima, received);
-    transmit_bytes_old = search_net(name, hash_network_trans, hash_size, &ima, transmitted);
 
     if (ima == false) {
-
-
-        temp = realloc(hash_network_rec, (hash_size + 1) * sizeof(struct DataItem_net));
-        temp1 = realloc(hash_network_trans, (hash_size + 1) * sizeof(struct DataItem_net));
-
-        hash_size++;
-
-        if (temp != NULL) {
-
-            hash_network_rec = temp;
-
-
-        } else {
-
-            free(hash_network_rec);
+        temp=(struct DataItem_net *) calloc(1, sizeof(struct DataItem_net));
+        if (temp == NULL) {
             free(temp);
-            printf("relloc error %d", errno);
-
-
+            printf("calloc error %d \n", errno);
+            exit(1);
         }
 
-        if (temp1 != NULL) {
-            hash_network_trans = temp1;
+        temp->net_data.received_data=received;
+        temp->net_data.transfered_data=transmitted;
+        strcpy(temp->name,name);
+        temp->check=true;
+
+        net_hash_size++;
+
+        temp->next=hash_network;
+        hash_network=temp;
 
 
-        } else {
-            free(hash_network_trans);
-            free(temp1);
-            printf("relloc error %d", errno);
-        }
 
 
-        memset(&hash_network_rec[hash_size - 1], 0, sizeof(struct DataItem_net));
-        memset(&hash_network_trans[hash_size - 1], 0, sizeof(struct DataItem_net));
-
-        hash_network_rec[hash_size - 1].data = received;
-        hash_network_trans[hash_size - 1].data = transmitted;
-
-        for (int i = 0; i < sizeof(hash_network_rec->key); i++) {
-
-            hash_network_rec[hash_size - 1].key[i] = name[i];
-            hash_network_trans[hash_size - 1].key[i] = name[i];
 
 
-        }
+
+
 
 
     }
 
 
-    if (received_bytes_old == 0) {
+    if (net_data_old.received_data == 0) {
 
         *received_struct = 0;
 
     }
-    if (transmit_bytes_old == 0) {
+    if (net_data_old.transfered_data == 0) {
 
 
         *transmitted_struct = 0;
 
     } else {
 
-        if (received < received_bytes_old || transmitted < transmit_bytes_old) {
+        if (received < net_data_old.received_data || transmitted < net_data_old.transfered_data) {
 
             *received_struct = 0;
             *transmitted_struct = 0;
         } else {
 
-            *received_struct = (received - received_bytes_old);
-            *transmitted_struct = (transmitted - transmit_bytes_old);
+            *received_struct = (received - net_data_old.received_data);
+            *transmitted_struct = (transmitted - net_data_old.transfered_data);
         }
 
 
@@ -291,21 +275,33 @@ int interface_name(Network *network1) {
     network1->received_bytes = network_rc;
     network1->transmited_bytes = network_ts;
 
+    printf("%d %d \n", (int)network1->received_bytes,(int)network1->transmited_bytes);
+
     number_bandwidth = 0;
     closedir(pDir);
+
+    check_for_old_net();
+
 
     return 0;
 
 }
 
-void clean() {
+void check_for_old_net(){
+    struct DataItem_net *temp=hash_network;
+    for(int i=0;i<net_hash_size;i++){
 
-    if (hash_network_trans != NULL) {
-        free(hash_network_trans);
+           if(! temp->check){
+               struct DataItem_net *proxy=hash_network;
+               for(int j=0;j<i-1;j++){
+                   proxy=proxy->next;
+               }
+               proxy->next=proxy->next->next;
+               free(temp);
+               temp= proxy;
+               net_hash_size--;
+           }
+        temp->check=false;
+        temp=temp->next;
     }
-
-    if (hash_network_rec != NULL) {
-        free(hash_network_rec);
-    }
-
 }

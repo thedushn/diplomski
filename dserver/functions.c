@@ -6,6 +6,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <errno.h>
 #include"sys/socket.h"
 #include"pthread.h"
 
@@ -133,13 +135,13 @@ void *accept_c(void *socket) {
 
         ssize_t ret = recv(sockfd, &commands, sizeof(Commands), 0);
         if (ret < 0) {
-            printf("error condition didnt get received\n");
+            printf("error condition didn't get received\n");
 
 
             pthread_exit(&ret);
         }
         if (ret == 0) {
-            printf("error condition didnt get received\n");
+            printf("error condition did not get received\n");
             printf("ret %d\n", (int) ret);
 
             pthread_exit(&ret);
@@ -174,16 +176,24 @@ void *sending(void *socket) {
 
     time_t time1;
 
-    Task *task_array = NULL;
+    D_Collection *devices_c;
+    T_Collection *tasks;
+
+
+    T_Collection *temp_task;
+    D_Collection *temp_dev;
+
     Interrupts *interrupts = NULL;
     Interrupts *interrupts_main = NULL;
     Interrupts *interrupts_send = NULL;
+    __int32_t task_num;
+    __int32_t device_num;
 
-    Devices *devices = NULL;
     int sockfd = *(int *) socket;
     int result = 0;
 
     while (1) {
+
 
         Memory_usage memory_usage = {0};
         Cpu_usage cpu_usage = {{0}};
@@ -277,7 +287,7 @@ void *sending(void *socket) {
         ret = test_send(sockfd);
         if (ret < 0) {
 
-            printf("error receing data\n %d", (int) ret);
+            printf("error receiving data\n %d", (int) ret);
             break;
         }
         if (ret == 0) {
@@ -290,16 +300,16 @@ void *sending(void *socket) {
 
 
         ///devices
-        __int32_t niz = 0;
+       device_num = 0;
 
-        result = device2(&devices, devices_show, &niz);
+        result = mount_list(&devices_c, &device_num, devices_show);
         if (result != 0) {
-
+            printf("error in mount_list\n");
             break;
         }
 
 
-        ret = send(sockfd, &niz, sizeof(__int32_t), 0);
+        ret = send(sockfd, &device_num, sizeof(__int32_t), 0);
         if (ret < 0) {
             printf("Error sending num_packets!\n\t");
 
@@ -321,10 +331,11 @@ void *sending(void *socket) {
             printf("socket closed\n");
             break;
         }
+            temp_dev=devices_c;
+        for (int i = 0; i < device_num; i++) {
+            temp_dev->devices.checked=false;
 
-        for (int i = 0; i < niz; i++) {
-            devices[i].checked = false;
-            ret = (int) send(sockfd, &devices[i], sizeof(Devices), 0);
+            ret = (int) send(sockfd, &temp_dev->devices , sizeof(Devices), 0);
 
             if (ret < 0) {
                 printf("Error sending data!\n\t");
@@ -336,21 +347,24 @@ void *sending(void *socket) {
                 printf("socket closed\n");
                 break;
             }
+            temp_dev=temp_dev->next;
 
 
         }
 
-        /// tasks
-        int niz_task = 0;
 
-        result = get_task_list(&task_array, &niz_task);
+
+        /// tasks
+         task_num=0;
+
+        result = get_task_list(&tasks, &task_num);
         if (result != 0) {
 
             printf("error in get_task_list\n");
             break;
         }
-        __int32_t niz_temp = (__int32_t) niz_task;
-        ret = send(sockfd, &niz_temp, sizeof(__int32_t), 0);
+
+        ret = send(sockfd, &task_num, sizeof(__int32_t), 0);
         if (ret < 0) {
             printf("Error sending num_packets!\n\t");
 
@@ -365,7 +379,7 @@ void *sending(void *socket) {
         ret = test_send(sockfd);
         if (ret < 0) {
 
-            printf("error receing data\n %d", (int) ret);
+            printf("error receiving data\n %d", (int) ret);
             break;
         }
         if (ret == 0) {
@@ -373,11 +387,11 @@ void *sending(void *socket) {
             printf("socket closed\n");
             break;
         }
+        temp_task=tasks;
+        for (int i = 0; i < task_num; i++) {
 
-        for (int i = 0; i < niz_task; i++) {
 
-
-            ret = send(sockfd, &task_array[i], sizeof(Task), 0);
+            ret = send(sockfd, &temp_task->task, sizeof(Task), 0);
 
             if (ret < 0) {
                 printf("Error sending data!\n\t");
@@ -389,9 +403,13 @@ void *sending(void *socket) {
                 printf("socket closed\n");
                 break;
             }
+            temp_task=temp_task->next;
 
 
         }
+
+
+
 
 
 
@@ -408,6 +426,13 @@ void *sending(void *socket) {
         if (interrupts_main == NULL) {
 
             interrupts_main = calloc((size_t) h, sizeof(Interrupts));
+            if(interrupts_main==NULL){
+
+                printf("calloc error %d \n", errno);
+                free(interrupts_main);
+
+
+            }
             for (int r = 0; r < h; r++) {
 
                 interrupts_main[r] = interrupts[r];
@@ -456,34 +481,52 @@ void *sending(void *socket) {
         }
 
 
-        for (int r = 0; r < h; r++) {
-
-            interrupts_main[r] = interrupts[r];
-        }
 
 
-        free(task_array);
-        free(devices);
+
+
+
         free(interrupts);
         free(interrupts_send);
 
-        task_array = NULL;
-        devices = NULL;
+
+
         interrupts = NULL;
         interrupts_send = NULL;
 
 
+        for(int k=0;k<device_num;k++){
+            // save reference to first link
+            temp_dev = devices_c;
+
+            //mark next to first link as first
+            devices_c = devices_c->next;
+
+            //return the deleted link
+            free(temp_dev);
+
+        }
+
+        for(int k=0;k<task_num;k++){
+            // save reference to first link
+            temp_task = tasks;
+
+            //mark next to first link as first
+            tasks = tasks->next;
+
+            //return the deleted link
+            free(temp_task);
+
+
+        }
+        task_num=0;
     }
 
 
-    if (task_array != NULL) {
 
-        free(task_array);
-    }
-    if (devices != NULL) {
 
-        free(devices);
-    }
+
+
 
     if (interrupts != NULL) {
 

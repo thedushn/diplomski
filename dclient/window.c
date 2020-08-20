@@ -272,32 +272,6 @@ void cpu_change(Cpu_usage *cpu_usage) {
            collection->data[i]=j[i];
        }
 
-    //   Cpu_Stats *temp=(Cpu_Stats*)calloc(1,sizeof(Cpu_Stats));
-//       for(int i=0;i<4;i++){
-//           temp->cpu[i]=j[i];
-//       }
-//
-//       temp->next=cpu_stats;
-//       cpu_stats=temp;
-//
-//
-//
-//       if(bjorg>=LIST_SIZE){
-//           temp=cpu_stats;
-//         //  for(int i=0;i<list_size-1;i++){
-//       for(int i=0;i<LIST_SIZE;i++){
-//               cpu_stats=cpu_stats->next;
-//
-//           }
-//           cpu_stats->next=NULL;
-//           free(cpu_stats);
-//           cpu_stats=NULL;
-//           cpu_stats=temp;
-//
-//
-//       }
-
-// linked list
 
 
 
@@ -332,22 +306,7 @@ void network_change_rc(Network *network) {
         collection->data[5]=net_kb_rc;
 
 
-//    Network_Stats *temp=calloc(1,sizeof(Network_Stats));
-//    temp->net_kb_tr=net_kb_tr;
-//    temp->net_kb_rc=net_kb_rc;
-//    temp->next=net_stats;
-//    net_stats=temp;
-//    if(bjorg>=LIST_SIZE){
-//        temp=net_stats;
-//        for(int i=0;i<LIST_SIZE;i++){ //moving the pointer to the last position
-//            net_stats=net_stats->next;
-//
-//        }
-//        free(net_stats); //removing the last position
-//        net_stats=NULL;
-//        net_stats=temp;
-//
-//    }
+
 
 
 

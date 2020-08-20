@@ -10,7 +10,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-
+typedef union _Data Data_t;
 struct __attribute__((__packed__))tm1 {
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
     __uint32_t tm_min;            /* Minutes.	[0-59] */
@@ -119,30 +119,15 @@ struct __attribute__((__packed__))_Devices {
 
 
 
-typedef struct _Cpu_Stats Cpu_Stats;
-
-typedef union _Data Data_t;
-typedef struct _Unification Unification;
-union _Data{
 
 
-    Cpu_Stats * cpu;
-
-};
-struct _Unification{
-
-    Data_t data_t;
-
-
-
-    int num_type;
-};
 typedef struct _Collection Collection;
 struct _Collection{
 
     float data[8];
     Collection * next;
 };
+
 typedef struct _DCollection DCollection;
 struct _DCollection{
 
@@ -157,6 +142,32 @@ struct _Device_Collection{
     D_Collection * next;
 };
 
+typedef struct _Task_Collection T_Collection;
+struct _Task_Collection{
 
+    Task task;
+    T_Collection * next;
+};
+
+union _Data{
+
+
+    Collection col;
+    D_Collection dev;
+    T_Collection tasks;
+    Task task;
+    Cpu_usage cpu_usage;
+    Memory_usage memory_usage;
+    Interrupts interrupts;
+    Network network;
+
+};
+
+typedef  struct _Unification Unification;
+struct _Unification{
+
+    int type_in_union;
+    Data_t data;
+};
 
 #endif //DIPLOMSKI_COMMON_H

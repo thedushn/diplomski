@@ -7,11 +7,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
+#include <errno.h>
 
-
-
-static struct DataItem *hash_cpu_user = NULL;
-static struct DataItem *hash_cpu_system = NULL;
 
 static __uint64_t jiffies_total_delta[5] = {0, 0, 0, 0, 0};
 
@@ -123,22 +120,22 @@ void cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
 
     if (sprintf(cpu_usage->percentage0, "%f", percentage[0]) < 0) {
 
-        printf("converting didnt work %s \n", cpu_usage->percentage0);
+        printf("converting didn't work %s \n", cpu_usage->percentage0);
         exit(1);
     }
     if (sprintf(cpu_usage->percentage1, "%f", percentage[1]) < 0) {
 
-        printf("converting didnt work %s \n", cpu_usage->percentage1);
+        printf("converting didn't work %s \n", cpu_usage->percentage1);
         exit(1);
     }
     if (sprintf(cpu_usage->percentage2, "%f", percentage[2]) < 0) {
 
-        printf("converting didnt work %s \n", cpu_usage->percentage2);
+        printf("converting didn't work %s \n", cpu_usage->percentage2);
         exit(1);
     }
     if (sprintf(cpu_usage->percentage3, "%f", percentage[3]) < 0) {
 
-        printf("converting didnt work %s \n", cpu_usage->percentage3);
+        printf("converting didn't work %s \n", cpu_usage->percentage3);
         exit(1);
     }
 
@@ -150,111 +147,110 @@ void cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
 }
 
 
-__uint64_t search(unsigned int key, struct DataItem *hashArray, int hash_size, bool *ima, __uint64_t data) {
+struct Cpu_data search(bool *ima, struct Cpu_data new, Task *task) {
 
 
-    for (int hashIndex = 0; hashIndex < hash_size; hashIndex++) {
+        struct DataItem *temp=task_details;
+        for(int i=0;i<hash_size;i++){
 
-        if (hashArray[hashIndex].key == key) {
-            *ima = true;
+               if(temp->pid==task->pid) {
+                   *ima =true;
 
-            __uint64_t temp = hashArray[hashIndex].data;
-            hashArray[hashIndex].data = data;
-            return temp;
+                      if( strcmp(task->name,temp->name)!=0){//if the pid was already taken
+                          strcpy(temp->name,task->name);
+                          temp->cpu_user=new.cpu_user;
+                          temp->cpu_system=new.cpu_system;
+                          return new;
+                      }
+                   struct Cpu_data old;
+                   old.cpu_system=temp->cpu_system;
+                   old.cpu_user=temp->cpu_user;
 
+                   temp->cpu_user=new.cpu_user;
+                   temp->cpu_system=new.cpu_system;
+                   return old;
+               }
+            temp=temp->next;
         }
 
 
-    }
-
-    return 0;
+    return new;
 }
 
 
-int get_cpu_percent(unsigned int pid, __uint64_t jiffies_user, float *cpu_user, __uint64_t jiffies_system,
-                float *cpu_system) {
 
-    __uint64_t jiffies_user_old = 0;
-    __uint64_t jiffies_system_old = 0;
-    static int hash_size = 0;
+int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *task) {
+
+    struct Cpu_data old;
+    struct Cpu_data new;
+   struct DataItem *temp;
+    float cpu_user=0;
+    float cpu_system=0;
+
+
 
     bool ima = false;
-    if (hash_cpu_user == NULL) {
-        hash_cpu_user = (struct DataItem *) calloc(1, sizeof(struct DataItem));
-        hash_cpu_system = (struct DataItem *) calloc(1, sizeof(struct DataItem));
-        hash_size++;
-    }
+    new.cpu_system=jiffies_system;
+    new.cpu_user=jiffies_user;
 
-    jiffies_user_old = search(pid, hash_cpu_user, hash_size, &ima, jiffies_user);
-    jiffies_system_old = search(pid, hash_cpu_system, hash_size, &ima, jiffies_system);
+
+
+    old= search(&ima, new, task);
+
 
 
     if (ima == false) {
+        temp=(struct DataItem *) calloc(1, sizeof(struct DataItem));
+        if (temp == NULL) {
+            free(temp);
+            printf("calloc error %d \n", errno);
+            return -1;
+        }
+        temp->cpu_user=jiffies_user;
+        temp->cpu_system=jiffies_system;
+        temp->pid=task->pid;
+        strcpy(temp->name,task->name);
+        temp->next=task_details;
+        task_details=temp;
 
 
-        struct DataItem *temp = realloc(hash_cpu_user, (hash_size + 1) * sizeof(struct DataItem));
-        struct DataItem *temp1 = realloc(hash_cpu_system, (hash_size + 1) * sizeof(struct DataItem));
 
         hash_size++;
-        if (temp != NULL) {
-            hash_cpu_user = temp;
-        } else {
-            free(hash_cpu_user);
-            return -1;
-
-        }
-        if (temp1 != NULL) {
-            hash_cpu_system = temp1;
 
 
-        } else {
-            free(hash_cpu_system);
-            return -1;
-        }
-
-        memset(&hash_cpu_user[hash_size - 1], 0, sizeof(struct DataItem));
-        memset(&hash_cpu_system[hash_size - 1], 0, sizeof(struct DataItem));
-
-        hash_cpu_user[hash_size - 1].data = jiffies_user;
-        hash_cpu_system[hash_size - 1].data = jiffies_system;
-        hash_cpu_user[hash_size - 1].key = pid;
-        hash_cpu_system[hash_size - 1].key = pid;
 
     }
 
 
-    if (jiffies_user < jiffies_user_old || jiffies_system < jiffies_system_old) {
+    if (jiffies_user < old.cpu_user || jiffies_system < old.cpu_system) {
 
-        return 0;
+        return 1;
     }
 
     if (jiffies_total_delta[4] > 0) {
 
-        *cpu_user = (float) (( jiffies_user) - (jiffies_user_old))* 100 /
-                             (float) (jiffies_total_delta[4]);
-        *cpu_system =(float) ((jiffies_system - jiffies_system_old) * 100) / (float) jiffies_total_delta[4];
+        cpu_user = (float) (( jiffies_user) - (old.cpu_user))* 100 /
+                    (float) (jiffies_total_delta[4]);
+        cpu_system =(float) ((jiffies_system - old.cpu_system) * 100) / (float) jiffies_total_delta[4];
 
     } else {
 
-        *cpu_user = *cpu_system = 0;
+        cpu_user = cpu_system = 0;
 
     }
+
+    if (sprintf(task->cpu_user, "%f", cpu_user) < 0) {
+
+        printf("conversion didn't work %s \n", task->cpu_user);
+        return -1;
+    }
+    if (sprintf(task->cpu_system, "%f", cpu_system) < 0) {
+
+        printf("conversion didn't work %s \n", task->cpu_system);
+        return -1;
+    }
+
     return 0;
 }
 
-void do_check(bool clean) {
 
-    if (clean == true) {
-
-        if (hash_cpu_user != NULL) {
-            free(hash_cpu_user);
-
-        }
-        if (hash_cpu_system != NULL) {
-            free(hash_cpu_system);
-
-        }
-
-    }
-
-}

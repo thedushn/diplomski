@@ -8,6 +8,8 @@
 #include <netdb.h>
 #include <fontconfig/fontconfig.h>
 #include <errno.h>
+#include <inttypes.h>
+#include <assert.h>
 #include "functions.h"
 
 
@@ -20,7 +22,7 @@ static guint t = 2000;
 
 static guint time_step = 0;
 
-gint tasks_num;
+
 
 
 
@@ -39,7 +41,7 @@ gboolean on_draw_event(GtkWidget *widget, cairo_t *cr) {
         do_drawing_net(widget, cr, bjorg, time_step);
     } else if (widget == graph3) {
 
-        do_drawing_mem(widget, cr, bjorg, time_step);
+        do_drawing_mem(widget, cr, time_step);
     } else {
 
         do_drawing_int(widget, cr);
@@ -175,45 +177,106 @@ int connection(char *argv1, char *argv2) {
     free(servinfo);
     return socketfd;
 }
+void freeing_memory(Unification *array){
 
+    Unification test=*array;
+    assert(array);
+    switch(array->type_in_union){
+
+        case CPU_S :
+            free(array);
+            break;
+        case COLLETION :
+
+            break;
+        default:
+            printf("something went wrong\n");
+            break;
+    }
+
+
+    free(array);
+}
 
 void init_timeout() {
 
-    guint i , j ;
-    Collection *temp;
+    int i , j,ret ;
+    Collection *temp_collection;
     dev_num=0;//in the begging its zero
-
-    GArray *new_task_list = g_array_new(FALSE, FALSE, sizeof(Task));
-    GArray *new_device_list = g_array_new(FALSE, FALSE, sizeof(Devices));
+    task_num=0;
 
 
-    Cpu_usage *cpu_usage1;
-    Network *network;
-    Memory_usage *memory_usage;
 
 
+    Cpu_usage *cpu_usage1=NULL;
+    Network *network=NULL;
+    Memory_usage *memory_usage=NULL;
+    Task *tasks_new=NULL;
+    Devices *devices_new=NULL;
     network = calloc(1, sizeof(Network));
+    if(network==NULL){
+
+        printf("calloc error %d \n", errno);
+        free(network);
+        exit(1);
+    }
     memory_usage = calloc(1, sizeof(Memory_usage));
+    if(memory_usage==NULL){
+
+        printf("calloc error %d \n", errno);
+        free(memory_usage);
+        free(network);
+
+        exit(1);
+    }
     cpu_usage1 = calloc(1, sizeof(Cpu_usage));
+    if(cpu_usage1==NULL){
+
+        printf("calloc error %d \n", errno);
+        free(memory_usage);
+        free(cpu_usage1);
+        free(network);
+        exit(1);
+    }
 
 
-    data_transfer(newsockfd, cpu_usage1, network, memory_usage, new_device_list, new_task_list);
+   ret= data_transfer(newsockfd, cpu_usage1, network, memory_usage, &tasks_new, &devices_new);
+
+    if(ret!=0){
+
+    printf("freeing memory\n");
+
+        free(cpu_usage1);
+
+        free(network);
+
+        free(memory_usage);
+        if(tasks_new!=NULL){
+            free(tasks_new);
+        }
+        if(devices_new!=NULL){
+            free(devices_new);
+        }
+
+
+         exit(1);
+    }
 
 
 
 
-
-
-    /*devices */
+//    /*devices */
     D_Collection *rem_old=devices_old;
-    D_Collection *rem_new=devices;
+    Devices *rem_new=devices_new;
+    //refreshing data
     for (i = 0; i < dev_num_old; i++) //uzimamo element niza
     {
         Devices *tmp = &devices_old->devices;
+
         tmp->checked = FALSE;
 
         for (j = 0; j < dev_num; j++) {
-            Devices *new_tmp =&devices->devices;
+            Devices *new_tmp =devices_new;
 
             if (strcmp(new_tmp->directory, tmp->directory) == 0
                 && strcmp(new_tmp->name, tmp->name) == 0
@@ -236,83 +299,147 @@ void init_timeout() {
                     tmp->total = new_tmp->total;
                     tmp->free = new_tmp->free;
 
-                    refresh_list_item_device(i);
+                    refresh_list_item_device(tmp);
 
                 }
                 tmp->checked = TRUE; //
                 new_tmp->checked = TRUE;
+                devices_new=rem_new;
                 break;
 
 
             } else
                 tmp->checked = FALSE;
 
-            devices=devices->next;
+            devices_new++;
         }
+        devices_new=rem_new;
         devices_old=devices_old->next;
+
     }
+
     devices_old=rem_old;
-    devices=rem_new;
+
+    devices_new=rem_new;
     //  check for unchecked old-devices for deleting
     i = 0;
+    rem_old=devices_old;
     while (i <dev_num_old) {
-
+        if(devices_old==NULL){
+            break;
+        }
         Devices *tmp = &devices_old->devices;
+        D_Collection *dtemp;
 
         if (!tmp->checked)//element of the array that does not exist in the new array anymore
         {
             remove_list_item_device(tmp->directory, tmp->name);
             if(i==0){
-                D_Collection *dtemp=devices_old;
-                devices_old=devices_old->next;
+                dtemp=devices_old;
+                if(devices_old->next!=NULL){
+                    devices_old=devices_old->next;
+                }
+
+
+
                 free(dtemp);
+                rem_old=devices_old; //setting the first node
+            }else{
+
+                devices_old=rem_old;
+                for(int k=0;k<i-1;k++){
+
+                    devices_old=devices_old->next;
+
+
+                }
+                dtemp=devices_old->next;
+                devices_old->next=dtemp->next;
+                free(dtemp);
+
+                devices_old=rem_old;
+
+
             }
 
+
+
             dev_num_old--;
-        } else
+        } else{
             i++;
 
+
+            devices_old=devices_old->next;
+
+
+        }
+
     }
+    devices_old=rem_old;
 
 
     //  check for unchecked new devices for inserting
 
-    D_Collection *rem_tmp=devices;
+    Devices *rem_tmp=devices_new;
+
     for (i = 0; i < dev_num; i++) {
-        D_Collection *new_tmp=calloc(1,sizeof(D_Collection));
-        new_tmp->devices=devices->devices;
-        if (!new_tmp->devices.checked) {
+        D_Collection *new_tmp;
+
+        if (!devices_new->checked) {
+            new_tmp=calloc(1,sizeof(D_Collection));
+            if(new_tmp==NULL){
+
+                printf("calloc error %d \n", errno);
+                free(new_tmp);
+                free(cpu_usage1);
+                free(network);
+                free(memory_usage);
+                free(tasks_new);
+                free(devices_new);
+                exit(1);
+            }
+            new_tmp->devices=*devices_new;
             new_tmp->next=devices_old;
+
             devices_old=new_tmp;
-            add_new_list_item_dev(0);
+
+            add_new_list_item_dev(&devices_old->devices);
             dev_num_old++;
         }
-        devices=devices->next;
+
+        devices_new++;
     }
-    devices=rem_tmp;
+    devices_new=rem_tmp;
 
     /*devices */
 
+    /*tasks */
+    T_Collection *rem_task_old=tasks_old;
+    Task *rem_task_new=tasks_new;
 
+    for (i = 0; i <task_num_old; i++) {
 
-    for (i = 0; i < task_array->len; i++) {
-        Task *tmp = &g_array_index(task_array, Task, i);
+        Task *tmp = &tasks_old->task;
+        assert(tmp);
         tmp->checked = FALSE;
 
-        for (j = 0; j < new_task_list->len; j++) {
-            Task *new_tmp = &g_array_index(new_task_list, Task, j);
+        for (j = 0; j < task_num; j++) {
+            Task *new_tmp = tasks_new;
+
+            assert(new_tmp);
             float cpu_user_tmp ;
             float cpu_system_tmp ;
             float cpu_user_tmp_new ;
             float cpu_system_tmp_new ;
+
             cpu_system_tmp = (float) strtod(tmp->cpu_system,NULL);
+
             cpu_system_tmp_new = (float) strtod(new_tmp->cpu_system,NULL);
+
             cpu_user_tmp = (float) strtod(tmp->cpu_user,NULL);
+
             cpu_user_tmp_new = (float) strtod(new_tmp->cpu_system,NULL);
-//            cpu_system_tmp = (float) atof(tmp->cpu_system);
-//            cpu_system_tmp_new = (float) atof(new_tmp->cpu_system);
-//            cpu_user_tmp = (float) atof(tmp->cpu_user);
-//            cpu_user_tmp_new = (float) atof(new_tmp->cpu_system);
+
 
             if (new_tmp->pid == tmp->pid) {
 
@@ -345,72 +472,143 @@ void init_timeout() {
                     tmp->duration.tm_min = new_tmp->duration.tm_min;
                     tmp->duration.tm_sec = new_tmp->duration.tm_sec;
 
-                    refresh_list_item(i);
+                    refresh_list_item(tmp);
                 }
+
                 tmp->checked = TRUE;
+
                 new_tmp->checked = TRUE;
+                tasks_new=rem_task_new;
+
                 break;
+
             } else
                 tmp->checked = FALSE;
+
+            tasks_new++;
+
         }
+        tasks_new=rem_task_new;
+        tasks_old=tasks_old->next;
+
     }
 
+    tasks_old=rem_task_old;
 
+    tasks_new=rem_task_new;
+    //  check for unchecked old-tasks for deleting
     i = 0;
-    while (i < task_array->len) {
+    rem_task_old=tasks_old;
+    while (i < task_num_old) {
 
-        Task *tmp = &g_array_index(task_array, Task, i);
-
+        Task *tmp = &tasks_old->task;
+        T_Collection *t_temp;
         if (!tmp->checked) {
+
             remove_list_item((gint) tmp->pid);
-            g_array_remove_index(task_array, i);
-            tasks_num--;
-        } else
+            if(i==0){
+                t_temp=tasks_old;
+
+                tasks_old=tasks_old->next;
+
+                free(t_temp);
+                rem_task_old=tasks_old;
+            }else{
+
+                tasks_old=rem_task_old;
+
+                for(int k=0;k<i-1;k++){
+                    tasks_old=tasks_old->next;
+
+                }
+
+                t_temp=tasks_old->next;
+
+                tasks_old->next=t_temp->next;
+                free(t_temp);
+
+                tasks_old=rem_task_old;
+
+            }
+
+
+            task_num_old--;
+        } else{
             i++;
 
-    }
+            tasks_old=tasks_old->next;
 
-
-    for (i = 0; i < new_task_list->len; i++) {
-        Task *new_tmp = &g_array_index(new_task_list, Task, i);
-
-        if (!new_tmp->checked) {
-            Task *new_task = new_tmp;
-
-            g_array_append_val(task_array, *new_task);
-            add_new_list_item(tasks_num);
-            tasks_num++;
         }
+
     }
 
+    tasks_old=rem_task_old;
 
-    temp=(Collection *)calloc(1, sizeof(Collection));
-    if(temp==NULL){
+    //  check for unchecked new tasks for inserting
+
+    rem_task_new=tasks_new;
+
+    for (i = 0; i < task_num; i++) {
+        T_Collection *new_tmp;
+
+
+        if (!tasks_new->checked) {
+            new_tmp=calloc(1,sizeof(T_Collection));
+            if(new_tmp==NULL){
+
+                printf("calloc error %d \n", errno);
+                free(new_tmp);
+                free(cpu_usage1);
+                free(network);
+                free(memory_usage);
+                free(tasks_new);
+                free(devices_new);
+                exit(1);
+            }
+
+            new_tmp->task=*tasks_new;
+            //point it to old first node
+            new_tmp->next=tasks_old;
+            //point first to new first node
+            tasks_old=new_tmp;
+
+            add_new_list_item(&tasks_old->task);
+            task_num_old++;
+        }
+
+        tasks_new++;
+
+    }
+
+    tasks_new=rem_task_new;
+
+    //Cpu network memory_usage
+
+    temp_collection=(Collection *)calloc(1, sizeof(Collection));
+    if(temp_collection==NULL){
 
         printf("calloc error %d \n", errno);
-        free(temp);
-        g_array_free(new_task_list, TRUE);
+        free(temp_collection);
 
 
-
-
-
-        g_array_free(new_device_list, TRUE);
-
-
+        free(tasks_new);
         free(cpu_usage1);
 
         free(network);
 
         free(memory_usage);
+        free(tasks_new);
+        free(devices_new);
         exit(1);
     }
 
 
+
+
     //point it to old first node
-    temp->next = collection;
+    temp_collection->next = collection;
     //point first to new first node
-    collection=temp;
+    collection=temp_collection;
 
     if(bjorg<LIST_SIZE){
         bjorg++;
@@ -423,7 +621,7 @@ void init_timeout() {
     memory_change(memory_usage);
     swap_change(memory_usage);
     if(bjorg>=LIST_SIZE){
-           temp=collection;
+           temp_collection=collection;
 
        for(int g=0;g<LIST_SIZE;g++){
            collection=collection->next;
@@ -432,7 +630,7 @@ void init_timeout() {
 
            free(collection);
         collection=NULL;
-        collection=temp;
+        collection=temp_collection;
 
 
        }
@@ -440,13 +638,13 @@ void init_timeout() {
 
 
     gtk_widget_queue_draw(window);
-    g_array_free(new_task_list, TRUE);
 
 
 
 
 
-    g_array_free(new_device_list, TRUE);
+
+
 
 
     free(cpu_usage1);
@@ -454,6 +652,8 @@ void init_timeout() {
     free(network);
 
     free(memory_usage);
+    free(devices_new);
+    free(tasks_new);
 
 
     time_step = 60000 / t;
@@ -461,10 +661,11 @@ void init_timeout() {
 
 
 
-    if (refresh == 0) {
+    //if (refresh == 0) {
 
         refresh = g_timeout_add(t, (GSourceFunc) init_timeout, NULL);
-    }
+
+  //  }
 
 }
 
@@ -510,6 +711,10 @@ int main(int argc, char *argv[]) {
         close(newsockfd1);
         exit(1);
     }
+    CPU0_line=TRUE;
+    CPU1_line=TRUE;
+    CPU2_line=TRUE;
+    CPU3_line=TRUE;
 
     gtk_init(&argc, &argv);
 
@@ -519,16 +724,7 @@ int main(int argc, char *argv[]) {
 
 
 
-//linked list
-//    temp=(Cpu_Stats *)calloc(1, sizeof(Cpu_Stats));
-//
-//
-//    //point it to old first node
-//    temp->next = cpu_stats;
-//    //point first to new first node
-//    cpu_stats=temp;
 
-//linked list
 
     //circular list
 //    Cpu_Stats *  temp=(Cpu_Stats *)calloc(1, sizeof(Cpu_Stats));
@@ -571,7 +767,6 @@ int main(int argc, char *argv[]) {
                                    GTK_POLICY_ALWAYS);
 
 
-    task_array = g_array_new(FALSE, TRUE, sizeof(Task));
 
 
 
@@ -580,7 +775,8 @@ int main(int argc, char *argv[]) {
 
 
 
-    names_array = g_array_new(FALSE, FALSE, sizeof(Devices));
+
+
 
 
 
@@ -602,20 +798,12 @@ int main(int argc, char *argv[]) {
     g_signal_connect_swapped ((gpointer) treeview, "button-press-event", G_CALLBACK(on_treeview1_button_press_event),
                               NULL);
 
-//
-//    g_signal_connect(G_OBJECT(graph1), "draw",
-//                     G_CALLBACK(on_draw_event), NULL);
+
     g_signal_connect_data((GObject *) (graph1),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
     g_signal_connect_data((GObject *) (graph2),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
     g_signal_connect_data((GObject *) (graph3),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
     g_signal_connect_data((GObject *) (graph4),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
-//
-//    g_signal_connect(G_OBJECT(graph2), "draw",
-//                     G_CALLBACK(on_draw_event), NULL);
-//    g_signal_connect(G_OBJECT(graph3), "draw",
-//                     G_CALLBACK(on_draw_event), NULL);
-//    g_signal_connect(G_OBJECT(graph4), "draw",
-//                     G_CALLBACK(on_draw_event), NULL);
+
 
 
     g_signal_connect (window, "destroy", G_CALLBACK(destroy_window), NULL);
@@ -629,7 +817,8 @@ int main(int argc, char *argv[]) {
     init_timeout();
 
     gtk_main();
-
+    gtk_tree_store_clear(list_store);
+    gtk_tree_store_clear(list_store1);
 
     if (refresh > 0) {
         g_source_remove(refresh);
@@ -637,8 +826,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    g_array_free(task_array, TRUE);
-    g_array_free(names_array, TRUE);
+
 
 
 
@@ -652,10 +840,37 @@ int main(int argc, char *argv[]) {
 
       //return the deleted link
       free(temp);
-      temp=NULL;
+
     }
+
     free(interrupts);
-    free(devices);
+
+    D_Collection *rem_tmp;
+    for(int k=0;k<dev_num_old;k++){
+        // save reference to first link
+        rem_tmp = devices_old;
+
+        //mark next to first link as first
+        devices_old = devices_old->next;
+
+        //return the deleted link
+        free(rem_tmp);
+
+    }
+
+    T_Collection *rem_tmp_task;
+    for(int k=0;k<task_num_old;k++){
+        // save reference to first link
+        rem_tmp_task = tasks_old;
+
+        //mark next to first link as first
+        tasks_old = tasks_old->next;
+
+        //return the deleted link
+        free(rem_tmp_task);
+
+    }
+
 
 
 

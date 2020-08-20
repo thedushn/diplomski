@@ -114,5 +114,19 @@ struct __attribute__((__packed__)) _Devices {
     char type[64];
     char directory[256];
 };
+typedef struct _Device_Collection D_Collection;
+struct _Device_Collection{
+
+    Devices devices;
+    D_Collection * next;
+};
+
+
+typedef struct _Task_Collection T_Collection;
+struct _Task_Collection{
+
+    Task task;
+    T_Collection * next;
+};
 
 #endif //DIPLOMSKI_COMMON_H

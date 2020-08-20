@@ -4,10 +4,11 @@
 
 #include "testing_tree.h"
 #include <errno.h>
+#include <inttypes.h>
 
 #include "buttons.h"
 
-#include "main_header.h"
+
 
 
 
@@ -157,20 +158,20 @@ void create_list_store_dev(void) {
 
 }
 
-void add_new_list_item(gint i) {
+void add_new_list_item(Task *task_t) {
     GtkTreeIter iter;
 
     gtk_tree_store_append(GTK_TREE_STORE(list_store), &iter, NULL);
 
-    fill_list_item(i, &iter);
+    fill_list_item(task_t, &iter);
 }
 
-void add_new_list_item_dev(gint i) {
+void add_new_list_item_dev(Devices *d_temp) {
     GtkTreeIter iter;
 
     gtk_tree_store_append(GTK_TREE_STORE(list_store1), &iter, NULL);
 
-    fill_list_item_device(i, &iter);
+    fill_list_item_device(d_temp, &iter);
 }
 
 void change_list_store_view_devices(GtkWidget *widget, gboolean visible) {
@@ -239,10 +240,10 @@ void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
 }
 
 
-void fill_list_item(gint i, GtkTreeIter *iter) {
+void fill_list_item(Task *task_item, GtkTreeIter *iter) {
 
     if (iter != NULL) {
-        Task *task = &g_array_index(task_array, Task, i);
+        Task *task = task_item;
         gchar cpu[16], value[16];
         char *rss, *vsz;
         char *prio;
@@ -297,18 +298,15 @@ void fill_list_item(gint i, GtkTreeIter *iter) {
 }
 
 
-void fill_list_item_device(gint i, GtkTreeIter *iter) {
+void fill_list_item_device(Devices *f_temp, GtkTreeIter *iter) {
 
 
     gchar *total, *avail, *used, *free, *directory, *type;
 
     if (iter != NULL) {
-        D_Collection *temp=devices_old;
-        for(int j=0;j<i;j++){
-            temp=temp->next;
-        }
+
       //  Devices *device_temp = &g_array_index(names_array, Devices, i);
-        Devices *device_temp =&temp->devices;
+        Devices *device_temp =f_temp;
         gchar *name = g_strdup_printf("%s", device_temp->name);
         used = g_format_size_full((guint64) device_temp->used, G_FORMAT_SIZE_IEC_UNITS);
         total = g_format_size_full((guint64) device_temp->total, G_FORMAT_SIZE_IEC_UNITS);
@@ -339,15 +337,13 @@ void fill_list_item_device(gint i, GtkTreeIter *iter) {
 }
 
 
-void refresh_list_item_device(gint i) {
+void refresh_list_item_device(Devices *ref_temp) {
     GtkTreeIter iter;
     static gint g = 0;
     gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(list_store1), &iter);
-    D_Collection *temp=devices_old;
-    for(int j=0;j<i;j++){
-        temp=temp->next;
-    }
-    Devices *device = &temp->devices;
+
+
+    Devices *device =ref_temp ;
     while (valid) {
         gchar *str_data = "";
         gchar *str_data1 = "";
@@ -363,7 +359,7 @@ void refresh_list_item_device(gint i) {
             g_free(str_data1);
             g_free(str_data2);
 
-            fill_list_item_device(i, &iter);
+            fill_list_item_device(ref_temp, &iter);
             g++;
             break;
         }
@@ -375,17 +371,18 @@ void refresh_list_item_device(gint i) {
     }
 }
 
-void refresh_list_item(gint i) {
+void refresh_list_item(Task *task_item) {
     GtkTreeIter iter;
     gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(list_store), &iter);
-    Task *task = &g_array_index(task_array, Task, i);
+    Task *task = task_item;
     while (valid) {
+
         gchar *str_data = "";
         gtk_tree_model_get(GTK_TREE_MODEL(list_store), &iter, 1, &str_data, -1);
 
         if (task->pid == atoi(str_data)) {
             g_free(str_data);
-            fill_list_item(i, &iter);
+            fill_list_item(task_item, &iter);
             break;
         }
 
@@ -399,6 +396,7 @@ void remove_list_item(gint pid) {
     gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(list_store), &iter);
 
     while (valid) {
+
         gchar *str_data = "";
         gtk_tree_model_get(GTK_TREE_MODEL(list_store), &iter, 1, &str_data, -1);
 
@@ -451,14 +449,14 @@ gint compare_string_list_item(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIt
     gtk_tree_model_get(model, iter1, GPOINTER_TO_INT(column), &s1, -1);
     if (s1 == NULL) {
 
-        return 1;//ako prvog nema drugi je prvi
+        return 1;//if there is no first, second is first
     }
     gtk_tree_model_get(model, iter2, GPOINTER_TO_INT(column), &s2, -1);
 
     if (s2 == NULL) {
         free(s1);
 
-        return -1;//ako drugog nema prvi je prvi
+        return -1;//if there is no second, first is first
     }
 
 

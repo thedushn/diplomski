@@ -9,6 +9,8 @@
 #include <unistd.h>
 #include "common.h"
 
+
+
 void *sending(void *socket);
 
 void *accept_c(void *socket);

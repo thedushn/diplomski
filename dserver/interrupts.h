@@ -11,7 +11,7 @@
 int interrupt_usage2(Interrupts **array, __int32_t *j);
 
 
-void sort2(Interrupts *array, Interrupts *array2, Interrupts **array3, int n);
+void sort2(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts **send_interrupts, int n);
 
 void sort(Interrupts *array, int n);
 

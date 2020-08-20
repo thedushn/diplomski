@@ -32,7 +32,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step);
 void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, int bjorg, guint time_step, gboolean CPU0_line, gboolean CPU1_line,
                     gboolean CPU2_line, gboolean CPU3_line);
 
-void do_drawing_mem(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step);
+void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step);
 
 void do_drawing_int(GtkWidget *widget, cairo_t *cr);
 
@@ -50,11 +50,9 @@ void writing_interrupts2(cairo_t *cr, double font_size, double length, int i, co
 void writing_interrupts(cairo_t *cr, double font_size, double length, int i, const char *ime1, const char *ime2,
                         const char *name3, const char *name4);
 
-void draw_graph(cairo_t *cr, GArray *history_p, int r, int y, int i, double height, double font_size, double step,
-                float max_num
-);
-void draw_graph3(cairo_t *cr, int r, int i,double width, double height, double font_size, double time_step,
-                 float max_num);
+
+void draw_graph(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step,
+                float max_num);
 
 #endif //DIPLOMSKI_DRAWING_H
 

@@ -39,14 +39,14 @@ ssize_t test_recv(int socket) {
 
 }
 
-void data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage,
-                   GArray *array_devices,
-                    GArray *array_tasks
-) {
+int
+data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage, Task **array_tasks,
+              Devices **array_devices) {
 
 
     int flag = MSG_WAITALL;
-    Task task;
+    Task *task_a;
+    Devices *dev_a;
 
     ssize_t ret;
     __int32_t num = 0;
@@ -57,13 +57,13 @@ void data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_u
     if (ret < 0) {
 
         printf("error receiving data\n %d", (int) ret);
-        gtk_main_quit();
+        return (int)ret;
     }
     if (ret == 0) {
 
         printf("error receiving data\n %d", (int) ret);
         printf("socket closed\n");
-        gtk_main_quit();
+        return 1;
     }
 
 
@@ -71,13 +71,13 @@ void data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_u
     if (ret < 0) {
 
         printf("error sending data\n %d", (int) ret);
-        gtk_main_quit();
+        return (int)ret;
     }
     if (ret == 0) {
 
         printf("error sending data\n %d", (int) ret);
         printf("socket closed\n");
-        gtk_main_quit();
+        return 1;
     }
     ///end of memory
 
@@ -85,27 +85,27 @@ void data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_u
     ret = recv(socket, cpu_usage1, sizeof(Cpu_usage), flag);
     if (ret < 0) {
         printf("Error receiving data!\n");
-        gtk_main_quit();
+        return (int)ret;
 
     }
     if (ret == 0) {
 
         printf("error sending data\n %d", (int) ret);
         printf("socket closed\n");
-        gtk_main_quit();
+        return 1;
     }
 
     ret = test_recv(socket);
     if (ret < 0) {
 
         printf("error receiving data\n %d", (int) ret);
-        gtk_main_quit();
+        return (int)ret;
     }
     if (ret == 0) {
 
         printf("error sending data\n %d", (int) ret);
         printf("socket closed\n");
-        gtk_main_quit();
+        return 1;
     }
 
 
@@ -117,27 +117,27 @@ void data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_u
     if (ret < 0) {
         printf("Error receiving num_packets!\n\t");
 
-        gtk_main_quit();
+        return (int)ret;
 
     }
     if (ret == 0) {
 
         printf("error sending data\n %d", (int) ret);
         printf("socket closed\n");
-        gtk_main_quit();
+        return 1;
     }
 
     ret = test_recv(socket);
     if (ret < 0) {
 
         printf("error receiving data\n %d", (int) ret);
-        gtk_main_quit();
+        return (int)ret;
     }
     if (ret == 0) {
 
         printf("error sending data\n %d", (int) ret);
         printf("socket closed\n");
-        gtk_main_quit();
+        return 1;
     }
 
 
@@ -149,55 +149,59 @@ void data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_u
     ret = (int) recv(socket, &num, sizeof(__int32_t), flag);
     if (ret < 0) {
         printf("Error sending num_packets!\n\t");
-        gtk_main_quit();
+        return (int)ret;
 
     }
     ret = test_recv(socket);
     if (ret < 0) {
 
         printf("error receiving data\n %d", (int) ret);
-        gtk_main_quit();
+        return (int)ret;
     }
     if (ret == 0) {
 
         printf("error sending data\n %d", (int) ret);
         printf("socket closed\n");
-        gtk_main_quit();
+        return 1;
     }
 
+    dev_a=calloc((size_t)num, sizeof(Devices));
+    if(dev_a==NULL){
+        free(dev_a);
+
+        printf("calloc error %d \n", errno);
+        return 1;
+
+
+    }
+
+
+    Devices *temp_dev=dev_a;
     for (int i = 0; i < num; i++) {
-        D_Collection *temp_d=calloc(1,sizeof(D_Collection));
-        if(temp_d==NULL){
 
-            printf("calloc error %d \n", errno);
-            free(temp_d);
-            gtk_main_quit();
-        }
-
-
-        ret = (int) recv(socket, &temp_d->devices, sizeof(Devices), flag);
+        ret = (int) recv(socket, temp_dev, sizeof(Devices), flag);
 
         if (ret < 0) {
             printf("Error sending num_packets!\n\t");
 
-            gtk_main_quit();
+            return (int) ret;
 
         }
         if (ret == 0) {
 
             printf("error sending data\n %d", (int) ret);
             printf("socket closed\n");
-            gtk_main_quit();
+            return 1;
         }
-        temp_d->next=devices;
-        devices=temp_d;
+        temp_dev++;
 
-
-        g_array_append_val(array_devices, devices);
 
     }
-
+    *array_devices=dev_a;
     dev_num=num;
+
+
+
     ///end of devices
 
     /// tasks
@@ -205,63 +209,81 @@ void data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_u
     if (ret < 0) {
         printf("Error sending num_packets!\n\t");
 
-        gtk_main_quit();
+        return (int)ret;
 
+    }
+    if (ret == 0) {
+
+        printf("error sending data\n %d", (int) ret);
+        printf("socket closed\n");
+        return 1;
     }
 
     ret = test_recv(socket);
     if (ret < 0) {
 
         printf("error receiving data\n %d", (int) ret);
-        gtk_main_quit();
+        return (int)ret;
     }
     if (ret == 0) {
 
         printf("error sending data\n %d", (int) ret);
         printf("socket closed\n");
-        gtk_main_quit();
+        return 1;
     }
+    task_a=calloc((size_t)num, sizeof(Task));
+    if(task_a==NULL){
+        free(task_a);
 
+        printf("calloc error %d \n", errno);
+        return 1;
+
+
+    }
+    Task *temp_task=task_a;
     for (int i = 0; i < num; i++) {
 
 
-        ret = recv(socket, &task, sizeof(Task), flag);
+        ret = recv(socket, task_a, sizeof(Task), flag);
         if (ret < 0) {
             printf("Error sending num_packets!\n\t");
 
-            gtk_main_quit();
+            return (int)ret;
 
         }
         if (ret == 0) {
 
             printf("error sending data\n %d", (int) ret);
             printf("socket closed\n");
-            gtk_main_quit();
+            return 1;
         }
 
+        task_a++;
 
-        g_array_append_val(array_tasks, task);
 
     }
+    task_a=temp_task;
+    *array_tasks=task_a;
+    task_num=num;
 
 
     /// interrupts
     Interrupts *temp=interrupts;
     for (int i = 0; i < 10; i++) {
-      //  ret = recv(socket, &interrupts2, sizeof(Interrupts), flag);
+
         ret = recv(socket, interrupts, sizeof(Interrupts), flag);
 
         if (ret < 0) {
             printf("Error receving data!\n");
 
-            gtk_main_quit();
+            return (int)ret;
 
         }
         if (ret == 0) {
 
             printf("error sending data\n %d", (int) ret);
             printf("socket closed\n");
-            gtk_main_quit();
+            return 1;
         }
 
       //  *interrupts=interrupts2;
@@ -274,18 +296,18 @@ void data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_u
     if (ret < 0) {
 
         printf("error receiving data\n %d", (int) ret);
-        gtk_main_quit();
+        return (int)ret;
     }
     if (ret == 0) {
 
         printf("error sending data\n %d", (int) ret);
         printf("socket closed\n");
-        gtk_main_quit();
+        return 1;
     }
 
 
     ///interrupts end
 
-
+    return 0;
 }
 

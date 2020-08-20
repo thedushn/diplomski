@@ -30,7 +30,13 @@ static gboolean show_before = FALSE;
 
 void process_window() {
     GtkWidget *box2;
-    GtkWidget *proc_window;
+    if(proc_window!=NULL){
+        if(gtk_widget_get_visible(proc_window)){
+            gtk_widget_destroy(proc_window);
+        }
+    }
+
+
     proc_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(proc_window), 200, 200);
     button_process_cpu = gtk_check_button_new_with_label("CPU");
@@ -109,7 +115,7 @@ void process_window() {
     gtk_window_set_position(GTK_WINDOW(proc_window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(proc_window), "destroy",
-                     G_CALLBACK(close_window), NULL);
+                     G_CALLBACK(close_window2), proc_window);
 
     gtk_widget_show_all(proc_window);
 
@@ -117,8 +123,11 @@ void process_window() {
 
 void device_window() {
 
+
+
     GtkWidget *box2;
-    GtkWidget *dev_window;
+
+
     dev_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(dev_window), 200, 200);
     button_device_devices = gtk_check_button_new_with_label("Devices");
@@ -182,7 +191,7 @@ void device_window() {
     gtk_window_set_position(GTK_WINDOW(dev_window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(dev_window), "destroy",
-                     G_CALLBACK(close_window), NULL);
+                     G_CALLBACK(close_window2), dev_window);
 
     gtk_widget_show_all(dev_window);
 
@@ -237,6 +246,14 @@ void close_window() {
 
 
 };
+void close_window2(GtkWidget *widget) {
+
+
+    gtk_widget_hide(widget);
+    gtk_widget_destroyed(widget,&widget);
+
+
+};
 
 void start_stop(int show, char *signal, char *task_id) {
     int ret;
@@ -265,14 +282,14 @@ void start_stop(int show, char *signal, char *task_id) {
     ret = (int) send(newsockfd1, &commands, sizeof(Commands), 0);
     if (ret < 0) {
 
-        printf("nije uspelo slanje cond \n");
+        printf("command did not get sent \n");
         gtk_main_quit();
 
 
     }
     if (ret == 0) {
 
-        printf("nije uspelo slanje cond \n");
+        printf("command did not get sent \n");
         printf("socket closed\n");
         gtk_main_quit();
 

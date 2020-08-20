@@ -8,7 +8,7 @@
 #include "common.h"
 
 
-int get_task_list(Task **array, __int32_t *niz);
+int get_task_list(T_Collection **array, __int32_t *task_num);
 
 int get_task_details(int pid, Task *task);
 

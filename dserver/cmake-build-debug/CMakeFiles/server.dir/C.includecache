@@ -23,6 +23,8 @@ string.h
 -
 inttypes.h
 -
+errno.h
+-
 
 /home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
 common.h
@@ -56,6 +58,10 @@ string.h
 stdio.h
 -
 stdlib.h
+-
+bits/errno.h
+-
+errno.h
 -
 sys/socket.h
 /home/dushn/Diplomski/diplomski/dserver/sys/socket.h
@@ -189,8 +195,6 @@ errno.h
 /home/dushn/Diplomski/diplomski/dserver/errno.h
 functions.h
 /home/dushn/Diplomski/diplomski/dserver/functions.h
-task_manager.h
-/home/dushn/Diplomski/diplomski/dserver/task_manager.h
 cpu_usage.h
 /home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
 
