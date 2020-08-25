@@ -17,54 +17,66 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
 
     FILE *file;
     char *filename = "/proc/interrupts";
-    char buffer[1024];
+    char buffer[BUFFER_SIZE];
 
 
-    Interrupts *temp;
-    Interrupts *array;
-    array = malloc(sizeof(Interrupts));
+    Interrupts *temp=NULL;
 
-    static int g = 0;
-    if (array == NULL) {
+
+
+    *array2=malloc(sizeof(Interrupts));
+
+    if (*array2 == NULL) {
+
         fprintf(stderr, "malloc failed\n");
         return 1;
 
     }
-    if ((file = fopen(filename, "r")) == NULL || fgets(buffer, 1024, file) == NULL)
+    if ((file = fopen(filename, "r")) == NULL || fgets(buffer, BUFFER_SIZE, file) == NULL)
         return 1;
 
 
-    while (fgets(buffer, 1024, file) != NULL) {
-        int i ;
+    while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
 
 
-        memset(&array[g], 0, sizeof(array[g]));
+        memset(*array2, 0, sizeof(Interrupts));
 
 
-        sscanf(buffer, "%s %" SCNu64 " %" SCNu64 " %" SCNu64 " %" SCNu64 " %s %s %s %s", array[g].name, &array[g].CPU0,
-               &array[g].CPU1, &array[g].CPU2,
-               &array[g].CPU3,
-               array[g].ime1,
-               array[g].ime2,
-               array[g].ime3,
-               array[g].ime4);
+
+        sscanf(buffer, "%s %" SCNu64 " %" SCNu64 " %" SCNu64 " %" SCNu64 " %s %s %s %s",
+              (*array2)->irq,
+              &(*array2)->CPU0,
+               &(*array2)->CPU1,
+               &(*array2)->CPU2,
+               &(*array2)->CPU3,
+               (*array2)->ime1,
+               (*array2)->ime2,
+               (*array2)->ime3,
+               (*array2)->ime4);
+
+        char  *p;
+       if( (p=strchr((*array2)->irq,':'))){
+           *p= '\0';
+       }
 
 
-        i = 0;
-        while (array[g].name[i] != ':') {
 
+        (*j)++;
+            if(temp!=NULL){
+                *array2=temp;
+            }
+        temp = realloc(*array2, (*j + 1) * sizeof(Interrupts));
 
-            i++;
-
-        }
-        array[g].name[i] = '\0';
-
-        g++;
-        temp = realloc(array, (g + 1) * sizeof(Interrupts));
         if (temp != NULL) {
-            array = temp;
+
+            (*array2)= temp;
+
+                (*array2)=(*array2)+(*j);
+
+
         } else {
-            free(array);
+
+            free(*array2);
             fclose(file);
             printf("reallocate error %d", errno);
             return 1;
@@ -76,13 +88,12 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
 
 
     fclose(file);
-    *array2 = array;
-    *j = g;
-    g = 0;
+    *array2 = temp;
 
 
     return 0;
 }
+
 
 static int myCompare(const void *a, const void *b) {
 
@@ -112,7 +123,7 @@ void sort2(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts **
     for (int i = 0; i < n; i++) {
 
 
-        strcpy(temp_send->name, temp_new->name);
+        strcpy(temp_send->irq, temp_new->irq);
 
         __int64_t temp = temp_new->CPU0 - temp_old->CPU0;
         if (temp < 0) {

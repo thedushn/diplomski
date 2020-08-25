@@ -21,6 +21,8 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
 
     GtkWidget *menubar;
+
+
     GtkWidget *filemenu;
     GtkWidget *speed;
     GtkWidget *devices_menu;
@@ -41,6 +43,13 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     GtkWidget *frame2;
     GtkWidget *frame3;
     GtkWidget *frame4;
+
+    entry = gtk_entry_new();
+    gtk_entry_set_text(GTK_ENTRY(entry), "insert command here...");
+
+
+
+
 
     GtkWidget *window1 = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_position(GTK_WINDOW(window1), GTK_WIN_POS_CENTER);
@@ -64,6 +73,8 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     filemenu = gtk_menu_new();
     filemenu2 = gtk_menu_new();
     GtkWidget *filemenu3 = gtk_menu_new();
+
+
     speed = gtk_menu_item_new_with_label("speed");
     devices_menu = gtk_menu_item_new_with_label("devices");
     GtkWidget *process_menu = gtk_menu_item_new_with_label("Process Manager");
@@ -75,11 +86,13 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
     quit = gtk_menu_item_new_with_label("Quit");
 
+
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(speed), filemenu);
 
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), increase_refresh);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), decrease_refresh);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), quit);
+
     gtk_menu_shell_append(GTK_MENU_SHELL(menubar), speed);
     gtk_menu_shell_append(GTK_MENU_SHELL(menubar), process_menu);
 
@@ -151,6 +164,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
     gtk_box_pack_start(GTK_BOX(vbox), hbox, 0, FALSE, 0);
 
+
     gtk_box_pack_start(GTK_BOX(hbox), button_inc, FALSE, FALSE, FALSE);//expand,fill,padding
     gtk_box_pack_start(GTK_BOX(hbox), button_dec, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(hbox), button_proc, 0, 0, 0);
@@ -190,7 +204,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
     gtk_box_pack_start(GTK_BOX(vbox), dev_swindow, TRUE, TRUE, 1);
     gtk_box_pack_start(GTK_BOX(vbox), process_swindow, TRUE, TRUE, 1);
-
+    gtk_box_pack_start(GTK_BOX(vbox), entry, FALSE, FALSE, 1);
 
     gtk_container_add(GTK_CONTAINER(window1), vbox);
 

@@ -36,11 +36,11 @@ int cpu_number() {
     return c;
 }
 
-void cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
+int cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
 
 
-    float cpu_user[4];
-    float cpu_system[4];
+    float cpu_user[4] = {0, 0, 0, 0};
+    float cpu_system[4] = {0, 0, 0, 0};
     __uint64_t user[4] = {0, 0, 0, 0};
     __uint64_t user_nice[4] = {0, 0, 0, 0};
     __uint64_t idle[4] = {0, 0, 0, 0};
@@ -48,7 +48,7 @@ void cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
     float percentage[4] = {0, 0, 0, 0};
 
 
-    int cpu_number1[4] = {0, 0, 0, 0};
+
     static __uint64_t jiffies_system[4] = {0, 0, 0, 0};
     static __uint64_t jiffies_total[4] = {0, 0, 0, 0};
     static __uint64_t jiffies_user[4] = {0, 0, 0, 0};
@@ -58,33 +58,26 @@ void cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
 
     FILE *file;
     char *filename = "/proc/stat";
-    char *name_test = "cpu";
-    char buffer[1024];
-    if ((file = fopen(filename, "r")) == NULL || fgets(buffer, 1024, file) == NULL)
+    char buffer[BUFFER_SIZE];
+    char dummy[4];
 
-        exit(1);
+    if ((file = fopen(filename, "r")) == NULL || fgets(buffer, BUFFER_SIZE, file) == NULL){
+
+        printf("error opening file\n");
+        return -1;
+    }
 
 
-    static int j = 0;
 
-    while (fgets(buffer, 1024, file) != NULL) {
+    for(int j=0;j<cpu_count;j++){
+        if(fgets(buffer, BUFFER_SIZE, file) != NULL){
 
-        if (strncmp(buffer, name_test, strlen(name_test)) != 0) {
-
-            break;
-
+            sscanf(buffer, "%s %" SCNu64 " %" SCNu64 " %" SCNu64 " %" SCNu64 "", dummy, &user[j],
+                   &user_nice[j], &system[j], &idle[j]
+            );
         }
 
 
-        sscanf(buffer, "cpu%4d %" SCNu64 " %" SCNu64 " %" SCNu64 " %" SCNu64 "", &cpu_number1[j], &user[j],
-               &user_nice[j], &system[j], &idle[j]
-        );
-
-        j++;
-        if (j == cpu_count) {
-            j = 0;
-            break;
-        }
 
     }
     fclose(file);
@@ -102,17 +95,18 @@ void cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
         jiffies_total[i] = jiffies_user[i] + jiffies_system[i] + idle[i];
 
 
-        cpu_user[i] = cpu_system[i] = (float)0.0;
+
         if (jiffies_total[i] > jiffies_total_old[i]) {
 
 
             jiffies_total_delta[i] = jiffies_total[i] - jiffies_total_old[i];
-            cpu_user[i] = (float)(jiffies_user[i] - jiffies_user_old[i]) * 100 / (float) (jiffies_total_delta[i]);
-            cpu_system[i] =(float) (jiffies_system[i] - jiffies_system_old[i]) * 100 / (float) (jiffies_total_delta[i]);
+
+            cpu_user[i] = (float)(jiffies_user[i] - jiffies_user_old[i])  / (float) (jiffies_total_delta[i]);
+            cpu_system[i] =(float) (jiffies_system[i] - jiffies_system_old[i]) / (float) (jiffies_total_delta[i]);
 
         }
 
-        percentage[i] = cpu_user[i] + cpu_system[i];
+        percentage[i] = (cpu_user[i] + cpu_system[i]) * 100;
 
 
     }
@@ -121,29 +115,29 @@ void cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
     if (sprintf(cpu_usage->percentage0, "%f", percentage[0]) < 0) {
 
         printf("converting didn't work %s \n", cpu_usage->percentage0);
-        exit(1);
+        return -1;
     }
     if (sprintf(cpu_usage->percentage1, "%f", percentage[1]) < 0) {
 
         printf("converting didn't work %s \n", cpu_usage->percentage1);
-        exit(1);
+        return -1;
     }
     if (sprintf(cpu_usage->percentage2, "%f", percentage[2]) < 0) {
 
         printf("converting didn't work %s \n", cpu_usage->percentage2);
-        exit(1);
+        return -1;
     }
     if (sprintf(cpu_usage->percentage3, "%f", percentage[3]) < 0) {
 
         printf("converting didn't work %s \n", cpu_usage->percentage3);
-        exit(1);
+        return -1;
     }
 
 
     jiffies_total_delta[4] =
             jiffies_total_delta[0] + jiffies_total_delta[1] + jiffies_total_delta[2] + jiffies_total_delta[3];
 
-
+    return 0;
 }
 
 

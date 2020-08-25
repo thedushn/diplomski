@@ -10,7 +10,7 @@
 #include <stdbool.h>
 #include <time.h>
 
-typedef union _Data Data_t;
+
 struct __attribute__((__packed__))tm1 {
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
     __uint32_t tm_min;            /* Minutes.	[0-59] */
@@ -121,19 +121,9 @@ struct __attribute__((__packed__))_Devices {
 
 
 
-typedef struct _Collection Collection;
-struct _Collection{
 
-    float data[8];
-    Collection * next;
-};
 
-typedef struct _DCollection DCollection;
-struct _DCollection{
 
-    Devices devices;
-    DCollection * next;
-};
 
 typedef struct _Device_Collection D_Collection;
 struct _Device_Collection{
@@ -149,10 +139,11 @@ struct _Task_Collection{
     T_Collection * next;
 };
 
+
+typedef union _Data Data_t;
 union _Data{
 
 
-    Collection col;
     D_Collection dev;
     T_Collection tasks;
     Task task;
@@ -162,7 +153,6 @@ union _Data{
     Network network;
 
 };
-
 typedef  struct _Unification Unification;
 struct _Unification{
 

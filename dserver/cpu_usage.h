@@ -26,7 +26,7 @@ struct DataItem *task_details;
 int hash_size;
 int cpu_number();
 
-void cpu_percentage(int ncpu, Cpu_usage *cpu_usage);
+int cpu_percentage(int ncpu, Cpu_usage *cpu_usage);
 
 
 

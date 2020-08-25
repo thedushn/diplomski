@@ -19,7 +19,7 @@
 #include "devices.h"
 #include "network_bandwith.h"
 
-#define BUF_SIZE 1024
+
 
 
 bool devices_show = false;
@@ -129,11 +129,13 @@ void *accept_c(void *socket) {
 
     int sockfd = *(int *) socket;
 
-    Commands commands;
-
+    Commands commands={0};
+    char buffer[1600];
+    char text[256];
+    char *text1;
     while (1) {
-
-        ssize_t ret = recv(sockfd, &commands, sizeof(Commands), 0);
+        memset(buffer,0,sizeof(buffer));
+        ssize_t ret = recv(sockfd, &buffer, sizeof(buffer), 0);
         if (ret < 0) {
             printf("error condition didn't get received\n");
 
@@ -146,22 +148,44 @@ void *accept_c(void *socket) {
 
             pthread_exit(&ret);
         }
+        printf("%d\n",(int)ret);
+        printf("%s\n",buffer);
+        strncpy(text,buffer,7);
 
-        devices_show = commands.show;
+        if(strcmp(text,"COMMAND")!=0){
+            int g=0;
+           g=atoi(text);
+           if(g==1){
+               devices_show=true;
+           }else{
+               devices_show=false;
+           }
+            if (strcmp(commands.task_id, "") != 0 && strcmp(commands.command, "") != 0) {
+                if (strcmp(commands.command, "STOP") == 0 ||
+                    strcmp(commands.command, "CONT") == 0 ||
+                    strcmp(commands.command, "KILL") == 0 ||
+                    strcmp(commands.command, "TERM") == 0) {
+                    send_signal_to_task(commands.task_id, commands.command);
+                } else {
 
+                    send_prio_to_task(commands.task_id, commands.command);
+                }
 
-        if (strcmp(commands.task_id, "") != 0 && strcmp(commands.command, "") != 0) {
-            if (strcmp(commands.command, "STOP") == 0 ||
-                strcmp(commands.command, "CONT") == 0 ||
-                strcmp(commands.command, "KILL") == 0 ||
-                strcmp(commands.command, "TERM") == 0) {
-                send_signal_to_task(commands.task_id, commands.command);
-            } else {
-
-                send_prio_to_task(commands.task_id, commands.command);
             }
-
         }
+
+        else {
+            text1=strchr(buffer,' ');
+
+            printf("text1 %s\n",text1);
+            if (system(text1) != 0)
+                printf("command failed\n");
+        }
+
+
+
+
+
 
 
     }
@@ -203,7 +227,7 @@ void *sending(void *socket) {
 
         time1 = time(NULL);
 
-        lokalno = *localtime(&time1);
+        local_time = *localtime(&time1);
         ///memory
         get_memory_usage(&memory_usage);
 
@@ -238,9 +262,14 @@ void *sending(void *socket) {
         ///memory_end
         ///cpu
         __int32_t cpu_num = cpu_number();
-        cpu_percentage(cpu_num, &cpu_usage);
+      ret=  cpu_percentage(cpu_num, &cpu_usage);
+        if (ret < 0) {
+            printf("Error getting cpu data!\n\t");
+            break;
 
+        }
         ret = send(sockfd, &cpu_usage, sizeof(Cpu_usage), 0);
+
         if (ret < 0) {
             printf("Error sending data!\n\t");
             break;

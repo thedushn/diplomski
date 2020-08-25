@@ -126,6 +126,11 @@ void device_window() {
 
 
     GtkWidget *box2;
+    if (dev_window != NULL) {
+        if (gtk_widget_get_visible(dev_window)) {
+            gtk_widget_destroy(dev_window);
+        }
+    }
 
 
     dev_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -257,29 +262,24 @@ void close_window2(GtkWidget *widget) {
 
 void start_stop(int show, char *signal, char *task_id) {
     int ret;
+    char buffer[1600];
 
-    Commands commands = {0};
-
+    memset(buffer, 0, sizeof(buffer));
 
     if (show == 1) {
 
         show_before = !show_before;
     }
 
-    commands.mem = 0;
-    commands.show = device_all;
+
     if (signal != NULL && task_id != NULL) {
-        for (int i = 0; i < sizeof(signal); i++) {
+        sprintf(buffer, "%d %s %s", device_all, signal, task_id);
 
-            commands.command[i] = signal[i];
-        }
-        for (int i = 0; i < sizeof(task_id); i++) {
-
-            commands.task_id[i] = task_id[i];
-        }
+    } else {
+        sprintf(buffer, "%d", device_all);
     }
-
-    ret = (int) send(newsockfd1, &commands, sizeof(Commands), 0);
+    printf("%s \n", buffer);
+    ret = (int) send(newsockfd1, &buffer, sizeof(buffer), 0);
     if (ret < 0) {
 
         printf("command did not get sent \n");
@@ -352,14 +352,16 @@ void graph_button_clicked(GtkWidget *widget) {
 
 void show_all(GtkWidget *widget) {
 
+    char *proxy = NULL;
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
         device_all = TRUE;
-        start_stop(1, "", "");
+
+        start_stop(1, proxy, proxy);
 
     } else {
         device_all = FALSE;
-        start_stop(1, "", "");
+        start_stop(1, proxy, proxy);
     }
 
 

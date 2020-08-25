@@ -39,8 +39,6 @@ stdlib.h
 -
 stdio.h
 -
-string.h
--
 sys/stat.h
 -
 sys/statvfs.h
@@ -58,8 +56,6 @@ string.h
 stdio.h
 -
 stdlib.h
--
-bits/errno.h
 -
 errno.h
 -

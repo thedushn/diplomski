@@ -1204,6 +1204,7 @@ CMakeFiles/client.dir/drawing.c.o: /usr/include/pango-1.0/pango/pangocairo.h
 CMakeFiles/client.dir/drawing.c.o: /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h
 
 CMakeFiles/client.dir/functions.c.o: ../common.h
+CMakeFiles/client.dir/functions.c.o: ../drawing.h
 CMakeFiles/client.dir/functions.c.o: ../functions.c
 CMakeFiles/client.dir/functions.c.o: ../functions.h
 CMakeFiles/client.dir/functions.c.o: ../main_header.h
@@ -3009,6 +3010,7 @@ CMakeFiles/client.dir/testing_tree.c.o: /usr/lib/x86_64-linux-gnu/glib-2.0/inclu
 
 CMakeFiles/client.dir/window.c.o: ../buttons.h
 CMakeFiles/client.dir/window.c.o: ../common.h
+CMakeFiles/client.dir/window.c.o: ../drawing.h
 CMakeFiles/client.dir/window.c.o: ../main_header.h
 CMakeFiles/client.dir/window.c.o: ../testing_tree.h
 CMakeFiles/client.dir/window.c.o: ../window.c

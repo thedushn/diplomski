@@ -8,7 +8,7 @@
 
 #include <stdbool.h>
 #include <time.h>
-
+#define BUFFER_SIZE 1024
 
 struct __attribute__((__packed__))tm1 {
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
@@ -79,7 +79,7 @@ struct __attribute__((__packed__)) _Memory_usage {
 typedef struct _Interrupts Interrupts;
 struct __attribute__((__packed__))_Interrupts {
 
-    char name[64];
+    char irq[64];
     char ime1[64];
     char ime2[64];
     char ime3[64];

@@ -26,11 +26,17 @@
 
 #include "common.h"
 
+typedef struct _Collection Collection;
+struct _Collection {
 
-void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step);
+    float data[8];
+    Collection *next;
+};
 
-void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, int bjorg, guint time_step, gboolean CPU0_line, gboolean CPU1_line,
-                    gboolean CPU2_line, gboolean CPU3_line);
+void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step);
+
+void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, const gboolean CPU0_line, const gboolean CPU1_line,
+                    const gboolean CPU2_line, const gboolean CPU3_line);
 
 void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step);
 

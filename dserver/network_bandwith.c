@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 
-#define BUFFER_SIZE 1024
+
 #define BUFFER_SIZE2 64
 
 static int number_bandwidth;
@@ -235,7 +235,7 @@ int interface_name(Network *network1) {
             char *network_data = NULL;
             network_data = strchr(buffer, ':');
 
-            network_data = network_data + 1;
+            network_data++;
 
             sscanf(network_data, " %" SCNu64 " %lu  %lu %lu %lu %lu %lu %lu %" SCNu64 " %lu %lu %lu %lu %lu %lu %lu",
                    &received_bytes,
@@ -275,7 +275,7 @@ int interface_name(Network *network1) {
     network1->received_bytes = network_rc;
     network1->transmited_bytes = network_ts;
 
-    printf("%d %d \n", (int)network1->received_bytes,(int)network1->transmited_bytes);
+
 
     number_bandwidth = 0;
     closedir(pDir);

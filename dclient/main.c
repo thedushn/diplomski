@@ -6,9 +6,7 @@
 #include "buttons.h"
 #include"sys/socket.h"
 #include <netdb.h>
-#include <fontconfig/fontconfig.h>
 #include <errno.h>
-#include <inttypes.h>
 #include <assert.h>
 #include "functions.h"
 
@@ -35,10 +33,10 @@ gboolean on_draw_event(GtkWidget *widget, cairo_t *cr) {
 
     if (widget == graph1) {
 
-        do_drawing_cpu(widget, cr, bjorg, time_step, CPU0_line, CPU1_line, CPU2_line, CPU3_line);
+        do_drawing_cpu(widget, cr, time_step, CPU0_line, CPU1_line, CPU2_line, CPU3_line);
     } else if (widget == graph2) {
 
-        do_drawing_net(widget, cr, bjorg, time_step);
+        do_drawing_net(widget, cr, time_step);
     } else if (widget == graph3) {
 
         do_drawing_mem(widget, cr, time_step);
@@ -661,11 +659,11 @@ void init_timeout() {
 
 
 
-    //if (refresh == 0) {
+    //  if (refresh == 0) {
 
         refresh = g_timeout_add(t, (GSourceFunc) init_timeout, NULL);
 
-  //  }
+    // }
 
 }
 
@@ -779,9 +777,6 @@ int main(int argc, char *argv[]) {
 
 
 
-
-
-
     window = main_window(device_swindow, process_swindow);
     g_signal_connect(button_inc, "clicked", G_CALLBACK(inc_refresh), NULL);
     g_signal_connect(button_dec, "clicked", G_CALLBACK(dec_refresh), NULL);
@@ -811,6 +806,7 @@ int main(int argc, char *argv[]) {
                       G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect ((GObject *)(device_swindow), "destroy",
                       G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(entry, "activate", G_CALLBACK(printerino), NULL);
 
 
 

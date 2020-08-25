@@ -9,8 +9,6 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <sys/statvfs.h>
-#
-#define  BUFFER_SIZE 1024
 
 void testing_files(Devices *devices) {
 

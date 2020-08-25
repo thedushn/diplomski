@@ -7,10 +7,11 @@
 
 #include <gtk/gtk.h>
 #include "common.h"
-
+#include "drawing.h"
 GtkWidget *window2;
 GtkWidget *process_swindow;
 GtkWidget *device_swindow;
+GtkWidget *entry;
 
 int newsockfd;
 int newsockfd1;

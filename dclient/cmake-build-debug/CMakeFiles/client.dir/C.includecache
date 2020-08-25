@@ -93,11 +93,7 @@ sys/socket.h
 /home/dushn/Diplomski/diplomski/dclient/sys/socket.h
 netdb.h
 -
-fontconfig/fontconfig.h
--
 errno.h
--
-inttypes.h
 -
 assert.h
 -
@@ -109,6 +105,8 @@ gtk/gtk.h
 -
 common.h
 /home/dushn/Diplomski/diplomski/dclient/common.h
+drawing.h
+/home/dushn/Diplomski/diplomski/dclient/drawing.h
 
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.c
 testing_tree.h

@@ -540,7 +540,7 @@ void do_drawing_int(GtkWidget *widget, cairo_t *cr) {
 
 }
 
-void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) {
+void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step) {
     double width, height;
 
     char num[5];
@@ -585,10 +585,13 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
     writing_seconds(cr, width, height, font_size, 5, 10);
     cairo_stroke(cr);
 
-
+    int g = (int) time_step;
+    if (bjorg < time_step) {
+        g = bjorg;
+    }
     for (int j = 4; j <= 5; j++) {
         temp=collection;
-        for (int i = 0; i < bjorg; i++) {
+        for (int i = 0; i < g; i++) {
 
             peak = temp->data[j];// kb
             if (max_num <= peak) {
@@ -599,11 +602,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
 
         }
     }
-//    if (max_num <= max_num2) {
-//
-//        max_num = max_num2;
-//
-//    }
+
 
 
     cairo_set_source_rgb(cr, 0, 0, 0);
@@ -677,8 +676,8 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
 
 }
 
-void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, int bjorg, guint time_step, const gboolean CPU0_line,
-                    const gboolean CPU1_line, const gboolean CPU2_line, const gboolean CPU3_line) {
+void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, const gboolean CPU0_line, const gboolean CPU1_line,
+                    const gboolean CPU2_line, const gboolean CPU3_line) {
 
     double width, height;
     double font_size = 10;

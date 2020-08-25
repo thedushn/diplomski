@@ -11,7 +11,39 @@
 #include"sys/socket.h"
 #include "main_header.h"
 
+void printerino() {
 
+    printf("we are in you pressed enter\n");
+    const gchar *text = gtk_entry_get_text(GTK_ENTRY(entry));
+    g_print("Command %s  \n", text);
+    command_sender((char *) text);
+
+};
+
+int command_sender(char *text) {
+    int ret;
+    char buffer[1600];
+    strcpy(buffer, "COMMAND");
+    strncat(buffer, " ", sizeof(buffer));
+    strncat(buffer, text, sizeof(buffer));
+    ret = (int) send(newsockfd1, &buffer, sizeof(buffer), 0);
+    if (ret < 0) {
+
+        printf("command did not get sent \n");
+        gtk_main_quit();
+
+
+    }
+    if (ret == 0) {
+
+        printf("command did not get sent \n");
+        printf("socket closed\n");
+        gtk_main_quit();
+
+
+    }
+    return ret;
+}
 
 ssize_t test_recv(int socket) {
 

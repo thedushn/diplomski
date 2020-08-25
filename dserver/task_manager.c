@@ -168,17 +168,17 @@ get_task_details(int pid, Task *task) {
 
     h = 0;
     m = 0;
-    s = sec + pocetno.tm_sec;
+    s = sec + begin_time.tm_sec;
     if (s > 60) {
         m = s / 60;
         s = s % 60;
     }
-    m = m + min + pocetno.tm_min;
+    m = m + min + begin_time.tm_min;
     if (m > 60) {
         h = m / 60;
         m = m % 60;
     }
-    h = h + pocetno.tm_hour + hr;
+    h = h + begin_time.tm_hour + hr;
 
 
     task->stime.tm_hour = 0;
@@ -189,7 +189,7 @@ get_task_details(int pid, Task *task) {
     task->stime.tm_sec = (__uint32_t) s;
 
 
-    differenceBetweenTimePeriod(lokalno, task->stime, &diff);
+    differenceBetweenTimePeriod(local_time, task->stime, &diff);
     task->duration.tm_hour = diff.tm_hour;
     task->duration.tm_min = diff.tm_min;
     task->duration.tm_sec = diff.tm_sec;
@@ -226,7 +226,7 @@ get_task_list(T_Collection **array, __int32_t *task_num) {
            if(task_temp==NULL) {
                free(task_temp);
                 closedir(dir);
-                printf("relloc error %d \n", errno);
+                printf("calloc error %d \n", errno);
                 return 1;
            }
 

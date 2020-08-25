@@ -19,8 +19,8 @@ ssize_t test_send(int socket);
 
 void send_signal_to_task(char *task_id, char *signal);
 
-struct tm lokalno;
+struct tm local_time;
 
-struct tm1 pocetno;
+struct tm1 begin_time;
 
 #endif //DIPLOMSKI_FUNCTIONS_H

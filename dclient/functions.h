@@ -16,5 +16,8 @@ int
 data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage, Task **array_tasks,
               Devices **array_devices);
 
+int command_sender(char *text);
+
+void printerino();
 
 #endif //DIPLOMSKI_FUNCTIONS_H

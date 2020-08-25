@@ -19,7 +19,7 @@ void get_memory_usage(Memory_usage *memory_usage) {
     __uint64_t swap_free = 0;
 
     FILE *file;
-    char buffer[1024];
+    char buffer[BUFFER_SIZE];
     char *filename = "/proc/meminfo";
     short found = 0;
     __uint64_t swap_used = 0;
@@ -30,7 +30,7 @@ void get_memory_usage(Memory_usage *memory_usage) {
     file = fopen(filename, "r ");
 
 
-    while (found < 6 && fgets(buffer, 1024, file) != NULL) {
+    while (found < 6 && fgets(buffer, BUFFER_SIZE, file) != NULL) {
 
 
         found += sscanf(buffer, "MemTotal:\t %" SCNu64 " kB", &memory_total);
