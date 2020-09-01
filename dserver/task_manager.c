@@ -11,11 +11,94 @@
 #include <pwd.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <sys/socket.h>
 #include "errno.h"
 
 #include "functions.h"
 #include "cpu_usage.h"
 
+void send_task(void *socket){
+
+    int sockfd=(*(int*)socket);
+    int result;
+    ssize_t ret;
+    Data data={0};
+
+    T_Collection *tasks;
+    T_Collection *temp_task;
+
+   __int32_t task_num=0;
+
+    result = get_task_list(&tasks, &task_num);
+    if (result != 0) {
+
+        printf("error in get_task_list\n");
+        for(int k=0;k<task_num;k++){
+            // save reference to first link
+            temp_task = tasks;
+
+            //mark next to first link as first
+            tasks = tasks->next;
+
+            //return the deleted link
+            free(temp_task);
+
+
+        }
+       exit(1);
+    }
+
+    temp_task=tasks;
+    for (int i = 0; i < task_num; i++) {
+        memset(&data,0,sizeof(Data));
+
+        data.size=TASK;
+        data.unification.task=temp_task->task;
+        ret = send(sockfd, &data, sizeof(Data), 0);
+
+
+
+        if (ret < 0) {
+            printf("Error sending data!\n\t");
+
+            for(int k=0;k<task_num;k++){
+                // save reference to first link
+                temp_task = tasks;
+
+                //mark next to first link as first
+                tasks = tasks->next;
+
+                //return the deleted link
+                free(temp_task);
+
+
+            }
+            break;
+
+        }
+        if (ret == 0) {
+
+            printf("socket closed\n");
+            for(int k=0;k<task_num;k++){
+                // save reference to first link
+                temp_task = tasks;
+
+                //mark next to first link as first
+                tasks = tasks->next;
+
+                //return the deleted link
+                free(temp_task);
+
+
+            }
+            break;
+        }
+        temp_task=temp_task->next;
+
+
+    }
+
+}
 
 void differenceBetweenTimePeriod(struct tm start, struct tm1 stop, struct tm1 *diff) {
 

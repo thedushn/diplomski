@@ -9,9 +9,100 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/socket.h>
+
+Interrupts *interrupts = NULL;
+Interrupts *interrupts_main = NULL;
+Interrupts *interrupts_send = NULL;
+
+void clean_interrupts(){
+
+    if (interrupts != NULL) {
+
+        free(interrupts);
+    }
+    if (interrupts_main != NULL) {
+
+        free(interrupts_main);
+    }
+    if (interrupts_send != NULL) {
+
+        free(interrupts_send);
+    }
+
+};
+void send_interrupts(void *socket){
+
+    int sockfd=(*(int*)socket);
+
+    ssize_t ret;
+    __int32_t h = 0;
+    int result;
+    Data data={0};
+    result = interrupt_usage2(&interrupts, &h);
+    if (result != 0) {
+
+        clean_interrupts();
+        exit(1);
+    }
+
+    if (interrupts_main == NULL) {
+
+        interrupts_main = calloc((size_t) h, sizeof(Interrupts));
+        if(interrupts_main==NULL){
+
+            printf("calloc error %d \n", errno);
+            free(interrupts_main);
+
+
+        }
+        for (int r = 0; r < h; r++) {
+
+            interrupts_main[r] = interrupts[r];
+        }
+
+
+    }
 
 
 
+    sort2(interrupts, interrupts_main, &interrupts_send, h);
+
+
+    sort(interrupts_send, h);
+
+
+    for (int r = h - 10; r < h; r++) {
+
+        memset(&data,0,sizeof(Data));
+
+        data.size=INTERRUTPS;
+        data.unification.interrupts=interrupts_send[r];
+        ret = send(sockfd, &data, sizeof(Data), 0);
+        if (ret < 0) {
+            printf("Error sending data!\n\t");
+            break;
+
+        }
+        if (ret == 0) {
+
+            printf("socket closed\n");
+            break;
+        }
+
+
+    }
+
+    free(interrupts);
+    free(interrupts_send);
+
+
+
+    interrupts = NULL;
+    interrupts_send = NULL;
+
+
+}
 int interrupt_usage2(Interrupts **array2, __int32_t *j) {
 
 

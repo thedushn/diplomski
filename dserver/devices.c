@@ -9,6 +9,78 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <sys/statvfs.h>
+#include <memory.h>
+#include <sys/socket.h>
+
+void send_devices(void *socket){
+
+    int sockfd=(*(int*)socket);
+    int result;
+    ssize_t ret;
+
+    D_Collection *devices_c;
+    D_Collection *temp_dev;
+    __int32_t device_num = 0;
+
+    Data data={0};
+
+    result = mount_list(&devices_c, &device_num, devices_show);
+    if (result != 0) {
+        printf("error in mount_list\n");
+       exit(1);
+    }
+
+
+    temp_dev=devices_c;
+    for (int i = 0; i < device_num; i++) {
+        temp_dev->devices.checked=false;
+        memset(&data,0,sizeof(Data));
+        data.size=DEVICES;
+        data.unification.devices=(Devices)temp_dev->devices;
+        ret = send(sockfd, &data, sizeof(Data), 0);
+
+
+
+        if (ret < 0) {
+            printf("Error sending data!\n\t");
+            for(int k=0;k<device_num;k++){
+                // save reference to first link
+                temp_dev = devices_c;
+
+                //mark next to first link as first
+                devices_c = devices_c->next;
+
+                //return the deleted link
+                free(temp_dev);
+
+            }
+            break;
+
+        }
+        if (ret == 0) {
+
+            printf("socket closed\n");
+            for(int k=0;k<device_num;k++){
+                // save reference to first link
+                temp_dev = devices_c;
+
+                //mark next to first link as first
+                devices_c = devices_c->next;
+
+                //return the deleted link
+                free(temp_dev);
+
+            }
+            break;
+        }
+        temp_dev=temp_dev->next;
+
+
+    }
+
+
+
+}
 
 void testing_files(Devices *devices) {
 

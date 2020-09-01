@@ -7,7 +7,7 @@
 
 #include "common.h"
 
-
+void send_task(void *socket);
 int get_task_list(T_Collection **array, __int32_t *task_num);
 
 int get_task_details(int pid, Task *task);

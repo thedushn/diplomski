@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <errno.h>
 #include"sys/socket.h"
 #include"pthread.h"
 
@@ -22,7 +21,7 @@
 
 
 
-bool devices_show = false;
+
 
 ssize_t test_send(int socket) {
 
@@ -232,336 +231,58 @@ void *accept_c(void *socket) {
 void *sending(void *socket) {
 
     ssize_t ret = 0;
-
-
     time_t time1;
 
-    D_Collection *devices_c;
-    T_Collection *tasks;
 
-
-    T_Collection *temp_task;
-    D_Collection *temp_dev;
-
-    Interrupts *interrupts = NULL;
-    Interrupts *interrupts_main = NULL;
-    Interrupts *interrupts_send = NULL;
-    __int32_t task_num;
-    __int32_t device_num;
+    devices_show=false;
 
     int sockfd = *(int *) socket;
-    int result = 0;
+
 
     while (1) {
 
 
-        Memory_usage memory_usage = {0};
-        Cpu_usage cpu_usage = {0};
-        Network network = {0};
-        Data data={0};
 
+
+
+      //  pthread_t  threads[6];
 
         time1 = time(NULL);
 
         local_time = *localtime(&time1);
         ///memory
-        get_memory_usage(&memory_usage);
-
-        data.size=MEMORY;
-        data.unification.memory_usage=memory_usage;
-        ret = send(sockfd, &data, sizeof(Data), 0);
-   //     ret = send(sockfd, &memory_usage, sizeof(Memory_usage), 0);
-
-        if (ret < 0) {
-            printf("Error sending data!\n\t");
-            break;
-
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-
-//        ret = test_send(sockfd);
-//        if (ret < 0) {
-//            printf("Error receiving  num_packets!\n\t");
-//            break;
-//
-//        }
-//        if (ret == 0) {
-//
-//            printf("socket closed\n");
-//            break;
-//        }
+        send_memory(socket);
 
 
-
-        ///memory_end
         ///cpu
-        __int32_t cpu_num = cpu_number();
-      ret=  cpu_percentage(cpu_num, &cpu_usage);
-        if (ret < 0) {
-            printf("Error getting cpu data!\n\t");
-            break;
+        send_cpu(socket);
 
-        }
-        memset(&data,0,sizeof(Data));
-        data.size=CPU_USAGE;
 
-        data.unification.cpu_usage=(Cpu_usage)cpu_usage;
-
-        ret = send(sockfd, &data, sizeof(Data), 0);
-      //  ret = send(sockfd, &cpu_usage, sizeof(Cpu_usage), 0);
-
-        if (ret < 0) {
-            printf("Error sending data!\n\t");
-            break;
-
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-//        ret = test_send(sockfd);
-//        if (ret < 0) {
-//
-//            printf("error receiving data\n %d", (int) ret);
-//            break;
-//        }
-//        if (ret == 0) {
-//
-//            printf("socket closed\n");
-//            break;
-//        }
-
-        ///cpu end
 
         ///network
-        result = interface_name(&network);
-        if (result != 0) {
-
-            break;
-        }
-        memset(&data,0,sizeof(Data));
-        data.size=NETWORK;
-        data.unification.network=network;
-        ret = send(sockfd, &data, sizeof(Data), 0);
-      //  ret = send(sockfd, &network, sizeof(Network), 0);
-
-        if (ret < 0) {
-            printf("Error sending data!\n\t");
-            break;
-
-        }
-        if (ret == 0) {
-            printf("Error sending data!\n\t");
-            printf("socket closed\n");
-            break;
-
-        }
-//        ret = test_send(sockfd);
-//        if (ret < 0) {
-//
-//            printf("error receiving data\n %d", (int) ret);
-//            break;
-//        }
-//        if (ret == 0) {
-//
-//            printf("socket closed\n");
-//            break;
-//        }
-
-
+         send_network(socket);
 
 
         ///devices
-       device_num = 0;
+        send_devices(socket);
 
-        result = mount_list(&devices_c, &device_num, devices_show);
-        if (result != 0) {
-            printf("error in mount_list\n");
-            break;
-        }
-
-
-//        ret = send(sockfd, &device_num, sizeof(__int32_t), 0);
-//        if (ret < 0) {
-//            printf("Error sending num_packets!\n\t");
-//
-//            break;
-//        }
-//        if (ret == 0) {
-//
-//            printf("socket closed\n");
-//            break;
-//        }
-//        ret = test_send(sockfd);
-//        if (ret < 0) {
-//
-//            printf("error receiving data\n %d", (int) ret);
-//            break;
-//        }
-//        if (ret == 0) {
-//
-//            printf("socket closed\n");
-//            break;
-//        }
-            temp_dev=devices_c;
-        for (int i = 0; i < device_num; i++) {
-            temp_dev->devices.checked=false;
-            memset(&data,0,sizeof(Data));
-            data.size=DEVICES;
-            data.unification.devices=(Devices)temp_dev->devices;
-            ret = send(sockfd, &data, sizeof(Data), 0);
-
-           // ret = (int) send(sockfd, &temp_dev->devices , sizeof(Devices), 0);
-
-            if (ret < 0) {
-                printf("Error sending data!\n\t");
-                break;
-
-            }
-            if (ret == 0) {
-
-                printf("socket closed\n");
-                break;
-            }
-            temp_dev=temp_dev->next;
-
-
-        }
 
 
 
         /// tasks
-         task_num=0;
-
-        result = get_task_list(&tasks, &task_num);
-        if (result != 0) {
-
-            printf("error in get_task_list\n");
-            break;
-        }
-//
-//        ret = send(sockfd, &task_num, sizeof(__int32_t), 0);
-//        if (ret < 0) {
-//            printf("Error sending num_packets!\n\t");
-//
-//            break;
-//
-//        }
-//        if (ret == 0) {
-//
-//            printf("socket closed\n");
-//            break;
-//        }
-//        ret = test_send(sockfd);
-//        if (ret < 0) {
-//
-//            printf("error receiving data\n %d", (int) ret);
-//            break;
-//        }
-//        if (ret == 0) {
-//
-//            printf("socket closed\n");
-//            break;
-//        }
-        temp_task=tasks;
-        for (int i = 0; i < task_num; i++) {
-            memset(&data,0,sizeof(Data));
-
-            data.size=TASK;
-            data.unification.task=temp_task->task;
-            ret = send(sockfd, &data, sizeof(Data), 0);
-
-          //  ret = send(sockfd, &temp_task->task, sizeof(Task), 0);
-
-            if (ret < 0) {
-                printf("Error sending data!\n\t");
-                break;
-
-            }
-            if (ret == 0) {
-
-                printf("socket closed\n");
-                break;
-            }
-            temp_task=temp_task->next;
-
-
-        }
-
-
+        send_task(socket);
 
 
 
 
 
         ///interrupts
-        __int32_t h = 0;
-
-        result = interrupt_usage2(&interrupts, &h);
-        if (result != 0) {
-
-            break;
-        }
-
-        if (interrupts_main == NULL) {
-
-            interrupts_main = calloc((size_t) h, sizeof(Interrupts));
-            if(interrupts_main==NULL){
-
-                printf("calloc error %d \n", errno);
-                free(interrupts_main);
-
-
-            }
-            for (int r = 0; r < h; r++) {
-
-                interrupts_main[r] = interrupts[r];
-            }
-
-
-        }
+        send_interrupts(socket);
 
 
 
-        sort2(interrupts, interrupts_main, &interrupts_send, h);
 
 
-        sort(interrupts_send, h);
-
-
-        for (int r = h - 10; r < h; r++) {
-
-            memset(&data,0,sizeof(Data));
-
-            data.size=INTERRUTPS;
-            data.unification.interrupts=interrupts_send[r];
-            ret = send(sockfd, &data, sizeof(Data), 0);
-
-          //  ret = send(sockfd, &interrupts_send[r], sizeof(Interrupts), 0);
-
-
-            if (ret < 0) {
-                printf("Error sending data!\n\t");
-                break;
-
-            }
-            if (ret == 0) {
-
-                printf("socket closed\n");
-                break;
-            }
-
-
-        }
-
-
-
-     //   ret = test_send(sockfd);
         ret = test_recv(sockfd);
         if (ret < 0) {
 
@@ -586,66 +307,15 @@ void *sending(void *socket) {
         }
 
 
-
-
-
-
-
-
-        free(interrupts);
-        free(interrupts_send);
-
-
-
-        interrupts = NULL;
-        interrupts_send = NULL;
-
-
-        for(int k=0;k<device_num;k++){
-            // save reference to first link
-            temp_dev = devices_c;
-
-            //mark next to first link as first
-            devices_c = devices_c->next;
-
-            //return the deleted link
-            free(temp_dev);
-
-        }
-
-        for(int k=0;k<task_num;k++){
-            // save reference to first link
-            temp_task = tasks;
-
-            //mark next to first link as first
-            tasks = tasks->next;
-
-            //return the deleted link
-            free(temp_task);
-
-
-        }
-        task_num=0;
     }
 
 
 
 
 
+   clean_interrupts();
 
 
-    if (interrupts != NULL) {
-
-        free(interrupts);
-    }
-    if (interrupts_main != NULL) {
-
-        free(interrupts_main);
-    }
-    if (interrupts_send != NULL) {
-
-        free(interrupts_send);
-    }
 
 
     return 0;

@@ -8,10 +8,47 @@
 #include <string.h>
 #include <inttypes.h>
 #include <errno.h>
+#include <sys/socket.h>
 
 
 static __uint64_t jiffies_total_delta[5] = {0, 0, 0, 0, 0};
 
+void send_cpu(void *socket){
+
+    int sockfd=(*(int*)socket);
+    Cpu_usage cpu_usage={0};
+    Data data={0};
+    __int32_t cpu_num;
+
+    cpu_num = cpu_number();
+
+   ssize_t ret=  cpu_percentage(cpu_num, &cpu_usage);
+    if (ret < 0) {
+        printf("Error getting cpu data!\n\t");
+       exit(1);
+
+    }
+    memset(&data,0,sizeof(Data));
+    data.size=CPU_USAGE;
+
+    data.unification.cpu_usage=(Cpu_usage)cpu_usage;
+
+    ret = send(sockfd, &data, sizeof(Data), 0);
+
+
+    if (ret < 0) {
+        printf("Error sending data!\n\t");
+       exit(1);
+
+    }
+    if (ret == 0) {
+
+        printf("socket closed\n");
+        exit(1);
+    }
+
+
+}
 int cpu_number() {
 
     int c = 1; //cpu number must be at least 1

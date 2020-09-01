@@ -9,13 +9,43 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <stdio.h>
-
+#include <sys/socket.h>
 
 
 #define BUFFER_SIZE2 64
 
 static int number_bandwidth;
 
+void send_network(void *socket){
+    int sockfd=(*(int*)socket);
+    int result;
+    Data data={0};
+    Network network={0};
+    ssize_t ret;
+
+    result = interface_name(&network);
+    if (result != 0) {
+
+       exit(1);
+    }
+    memset(&data,0,sizeof(Data));
+    data.size=NETWORK;
+    data.unification.network=network;
+    ret = send(sockfd, &data, sizeof(Data), 0);
+
+
+    if (ret < 0) {
+        printf("Error sending data!\n\t");
+        exit(1);
+
+    }
+    if (ret == 0) {
+        printf("Error sending data!\n\t");
+        printf("socket closed\n");
+        exit(1);
+
+    }
+}
 
 struct Net_data search_net(char *key, bool *ima, struct Net_data new_data) {
 

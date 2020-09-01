@@ -6,10 +6,40 @@
 #include <inttypes.h>
 #include <memory.h>
 #include <stdio.h>
+#include <sys/socket.h>
+#include <stdlib.h>
+
+void send_memory(void *socket){
+
+    int sockfd=*((int*)socket);
+
+    Memory_usage  memory_usage={0};
+
+    get_memory_usage(&memory_usage);
+
+    Data data={0};
+    data.size=MEMORY;
+    data.unification.memory_usage=memory_usage;
+   ssize_t ret = send(sockfd, &data, sizeof(Data), 0);
 
 
+    if (ret < 0) {
+        printf("Error sending data!\n\t");
+       exit(1);
+
+    }
+    if (ret == 0) {
+
+        printf("socket closed\n");
+        exit(1);
+    }
+
+}
 
 void get_memory_usage(Memory_usage *memory_usage) {
+
+
+
 
     __uint64_t memory_total = 0;
     __uint64_t memory_free = 0;
