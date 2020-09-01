@@ -107,7 +107,7 @@ int cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
         }
 
         percentage[i] = (cpu_user[i] + cpu_system[i]) * 100;
-        printf("CPU%d %f\n",i,percentage[i]);
+
 
 
     }

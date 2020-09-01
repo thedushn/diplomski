@@ -15,38 +15,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2f364259-615a-4cdb-a45f-2c6364e54462" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/buttons.c.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/buttons.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/drawing.c.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/drawing.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/functions.c.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/functions.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/main.c.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/main.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/testing_tree.c.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/testing_tree.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/window.c.o" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/window.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/client" afterPath="$PROJECT_DIR$/cmake-build-debug/client" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/cpu_usage.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/cpu_usage.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/devices.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/devices.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/functions.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/functions.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/interrupts.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/interrupts.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/main.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/main.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/memory_usage.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/memory_usage.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/network_bandwith.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/network_bandwith.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/task_manager.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/task_manager.c.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/server" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/server" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/C.includecache" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/client.dir/C.includecache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/common.h" afterPath="$PROJECT_DIR$/common.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/drawing.c" afterPath="$PROJECT_DIR$/drawing.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/drawing.h" afterPath="$PROJECT_DIR$/drawing.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions.c" afterPath="$PROJECT_DIR$/functions.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/functions.h" afterPath="$PROJECT_DIR$/functions.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.c" afterPath="$PROJECT_DIR$/main.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main_header.h" afterPath="$PROJECT_DIR$/main_header.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testing_tree.c" afterPath="$PROJECT_DIR$/testing_tree.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/window.c" afterPath="$PROJECT_DIR$/window.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/common.h" afterPath="$PROJECT_DIR$/../dserver/common.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cpu_usage.c" afterPath="$PROJECT_DIR$/../dserver/cpu_usage.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/functions.c" afterPath="$PROJECT_DIR$/../dserver/functions.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/functions.h" afterPath="$PROJECT_DIR$/../dserver/functions.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/task_manager.c" afterPath="$PROJECT_DIR$/../dserver/task_manager.c" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
