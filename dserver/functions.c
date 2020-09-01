@@ -27,9 +27,9 @@ bool devices_show = false;
 ssize_t test_send(int socket) {
 
     ssize_t ret = 0;
-    char buffer[64];
-    memset(buffer, 0, sizeof(buffer));
-    ret = recv(socket, buffer, sizeof(buffer), 0);
+    Data data;
+   memset(&data,0,sizeof(Data));
+    ret = recv(socket, &data, sizeof(Data), 0);
 
     if (ret < 0) {
 
@@ -41,13 +41,13 @@ ssize_t test_send(int socket) {
         printf("socket closed\n");
         return ret;
     }
-    if (ret < 64) {
-        size_t velicina = 64;
+    if (ret < sizeof(Data)) {
+        size_t velicina = sizeof(Data);
         velicina -= ret;
         while (velicina > 0 || velicina < 0) {
 
 
-            ret = (int) recv(socket, buffer, velicina, 0);
+            ret = (int) recv(socket, &data, velicina, 0);
             velicina -= ret;
 
             if (ret < 0) {
@@ -63,15 +63,46 @@ ssize_t test_send(int socket) {
 
         }
     }
-    if (strcmp(buffer, "stiglo sve") != 0) {
+    if (strcmp(data.unification.conformation, "everything came") != 0) {
 
-        printf("conformation didnt get received  \n");
+        printf("conformation didn't get received  \n");
 
         return -1;
     }
 
-    return 64;
+    return sizeof(Data);
 };
+
+ssize_t test_recv(int socket) {
+
+
+    char buffer[64];
+    ssize_t ret ;
+    memset(buffer, 0, 64);
+    strcpy(buffer, "everything came");
+    Data data;
+    data.size=TEXT;
+    memset(data.unification.conformation,0,sizeof(data.unification.conformation));
+    strcpy(data.unification.conformation,"everything came");
+    ret = send(socket, &data, sizeof(Data), 0);
+  //  ret = send(socket, buffer, 64, 0);
+
+    if (ret < 0) {
+
+        printf("error sending data\n %d", (int) ret);
+        return ret;
+    }
+    if (ret == 0) {
+
+        printf("error sending data\n %d", (int) ret);
+        printf("socket closed\n");
+        return ret;
+    }
+
+
+    return ret;
+
+}
 
 void send_prio_to_task(char *task_id, char *signal) {
     int prio = 0;
@@ -129,12 +160,17 @@ void *accept_c(void *socket) {
 
     int sockfd = *(int *) socket;
 
-    Commands commands={0};
+    Commands commands;
     char buffer[1600];
     char text[256];
     char *text1;
+
+
     while (1) {
         memset(buffer,0,sizeof(buffer));
+        memset(&commands,0,sizeof(commands));
+        memset(&text,0,sizeof(text));
+        memset(&text1,0,sizeof(text1));
         ssize_t ret = recv(sockfd, &buffer, sizeof(buffer), 0);
         if (ret < 0) {
             printf("error condition didn't get received\n");
@@ -150,8 +186,8 @@ void *accept_c(void *socket) {
         }
         printf("%d\n",(int)ret);
         printf("%s\n",buffer);
-        strncpy(text,buffer,7);
-
+     //   strncpy(text,buffer,7);
+        sscanf(buffer, "%s %s %s",text,commands.command,commands.task_id);
         if(strcmp(text,"COMMAND")!=0){
             int g=0;
            g=atoi(text);
@@ -176,7 +212,7 @@ void *accept_c(void *socket) {
 
         else {
             text1=strchr(buffer,' ');
-
+                strcat(text1, " &");
             printf("text1 %s\n",text1);
             if (system(text1) != 0)
                 printf("command failed\n");
@@ -220,9 +256,9 @@ void *sending(void *socket) {
 
 
         Memory_usage memory_usage = {0};
-        Cpu_usage cpu_usage = {{0}};
+        Cpu_usage cpu_usage = {0};
         Network network = {0};
-        memset(&network, 0, sizeof(Network));
+        Data data={0};
 
 
         time1 = time(NULL);
@@ -231,8 +267,10 @@ void *sending(void *socket) {
         ///memory
         get_memory_usage(&memory_usage);
 
-
-        ret = send(sockfd, &memory_usage, sizeof(Memory_usage), 0);
+        data.size=MEMORY;
+        data.unification.memory_usage=memory_usage;
+        ret = send(sockfd, &data, sizeof(Data), 0);
+   //     ret = send(sockfd, &memory_usage, sizeof(Memory_usage), 0);
 
         if (ret < 0) {
             printf("Error sending data!\n\t");
@@ -245,17 +283,17 @@ void *sending(void *socket) {
             break;
         }
 
-        ret = test_send(sockfd);
-        if (ret < 0) {
-            printf("Error receiving  num_packets!\n\t");
-            break;
-
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
+//        ret = test_send(sockfd);
+//        if (ret < 0) {
+//            printf("Error receiving  num_packets!\n\t");
+//            break;
+//
+//        }
+//        if (ret == 0) {
+//
+//            printf("socket closed\n");
+//            break;
+//        }
 
 
 
@@ -268,7 +306,13 @@ void *sending(void *socket) {
             break;
 
         }
-        ret = send(sockfd, &cpu_usage, sizeof(Cpu_usage), 0);
+        memset(&data,0,sizeof(Data));
+        data.size=CPU_USAGE;
+
+        data.unification.cpu_usage=(Cpu_usage)cpu_usage;
+
+        ret = send(sockfd, &data, sizeof(Data), 0);
+      //  ret = send(sockfd, &cpu_usage, sizeof(Cpu_usage), 0);
 
         if (ret < 0) {
             printf("Error sending data!\n\t");
@@ -280,17 +324,17 @@ void *sending(void *socket) {
             printf("socket closed\n");
             break;
         }
-        ret = test_send(sockfd);
-        if (ret < 0) {
-
-            printf("error receiving data\n %d", (int) ret);
-            break;
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
+//        ret = test_send(sockfd);
+//        if (ret < 0) {
+//
+//            printf("error receiving data\n %d", (int) ret);
+//            break;
+//        }
+//        if (ret == 0) {
+//
+//            printf("socket closed\n");
+//            break;
+//        }
 
         ///cpu end
 
@@ -300,7 +344,11 @@ void *sending(void *socket) {
 
             break;
         }
-        ret = send(sockfd, &network, sizeof(Network), 0);
+        memset(&data,0,sizeof(Data));
+        data.size=NETWORK;
+        data.unification.network=network;
+        ret = send(sockfd, &data, sizeof(Data), 0);
+      //  ret = send(sockfd, &network, sizeof(Network), 0);
 
         if (ret < 0) {
             printf("Error sending data!\n\t");
@@ -313,17 +361,17 @@ void *sending(void *socket) {
             break;
 
         }
-        ret = test_send(sockfd);
-        if (ret < 0) {
-
-            printf("error receiving data\n %d", (int) ret);
-            break;
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
+//        ret = test_send(sockfd);
+//        if (ret < 0) {
+//
+//            printf("error receiving data\n %d", (int) ret);
+//            break;
+//        }
+//        if (ret == 0) {
+//
+//            printf("socket closed\n");
+//            break;
+//        }
 
 
 
@@ -338,33 +386,37 @@ void *sending(void *socket) {
         }
 
 
-        ret = send(sockfd, &device_num, sizeof(__int32_t), 0);
-        if (ret < 0) {
-            printf("Error sending num_packets!\n\t");
-
-            break;
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-        ret = test_send(sockfd);
-        if (ret < 0) {
-
-            printf("error receiving data\n %d", (int) ret);
-            break;
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
+//        ret = send(sockfd, &device_num, sizeof(__int32_t), 0);
+//        if (ret < 0) {
+//            printf("Error sending num_packets!\n\t");
+//
+//            break;
+//        }
+//        if (ret == 0) {
+//
+//            printf("socket closed\n");
+//            break;
+//        }
+//        ret = test_send(sockfd);
+//        if (ret < 0) {
+//
+//            printf("error receiving data\n %d", (int) ret);
+//            break;
+//        }
+//        if (ret == 0) {
+//
+//            printf("socket closed\n");
+//            break;
+//        }
             temp_dev=devices_c;
         for (int i = 0; i < device_num; i++) {
             temp_dev->devices.checked=false;
+            memset(&data,0,sizeof(Data));
+            data.size=DEVICES;
+            data.unification.devices=(Devices)temp_dev->devices;
+            ret = send(sockfd, &data, sizeof(Data), 0);
 
-            ret = (int) send(sockfd, &temp_dev->devices , sizeof(Devices), 0);
+           // ret = (int) send(sockfd, &temp_dev->devices , sizeof(Devices), 0);
 
             if (ret < 0) {
                 printf("Error sending data!\n\t");
@@ -392,35 +444,39 @@ void *sending(void *socket) {
             printf("error in get_task_list\n");
             break;
         }
-
-        ret = send(sockfd, &task_num, sizeof(__int32_t), 0);
-        if (ret < 0) {
-            printf("Error sending num_packets!\n\t");
-
-            break;
-
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-        ret = test_send(sockfd);
-        if (ret < 0) {
-
-            printf("error receiving data\n %d", (int) ret);
-            break;
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
+//
+//        ret = send(sockfd, &task_num, sizeof(__int32_t), 0);
+//        if (ret < 0) {
+//            printf("Error sending num_packets!\n\t");
+//
+//            break;
+//
+//        }
+//        if (ret == 0) {
+//
+//            printf("socket closed\n");
+//            break;
+//        }
+//        ret = test_send(sockfd);
+//        if (ret < 0) {
+//
+//            printf("error receiving data\n %d", (int) ret);
+//            break;
+//        }
+//        if (ret == 0) {
+//
+//            printf("socket closed\n");
+//            break;
+//        }
         temp_task=tasks;
         for (int i = 0; i < task_num; i++) {
+            memset(&data,0,sizeof(Data));
 
+            data.size=TASK;
+            data.unification.task=temp_task->task;
+            ret = send(sockfd, &data, sizeof(Data), 0);
 
-            ret = send(sockfd, &temp_task->task, sizeof(Task), 0);
+          //  ret = send(sockfd, &temp_task->task, sizeof(Task), 0);
 
             if (ret < 0) {
                 printf("Error sending data!\n\t");
@@ -480,8 +536,13 @@ void *sending(void *socket) {
 
         for (int r = h - 10; r < h; r++) {
 
+            memset(&data,0,sizeof(Data));
 
-            ret = send(sockfd, &interrupts_send[r], sizeof(Interrupts), 0);
+            data.size=INTERRUTPS;
+            data.unification.interrupts=interrupts_send[r];
+            ret = send(sockfd, &data, sizeof(Data), 0);
+
+          //  ret = send(sockfd, &interrupts_send[r], sizeof(Interrupts), 0);
 
 
             if (ret < 0) {
@@ -497,6 +558,21 @@ void *sending(void *socket) {
 
 
         }
+
+
+
+     //   ret = test_send(sockfd);
+        ret = test_recv(sockfd);
+        if (ret < 0) {
+
+            printf("error receiving data\n %d", (int) ret);
+            break;
+        }
+        if (ret == 0) {
+
+            printf("socket closed\n");
+            break;
+        }
         ret = test_send(sockfd);
         if (ret < 0) {
 
@@ -508,6 +584,7 @@ void *sending(void *socket) {
             printf("socket closed\n");
             break;
         }
+
 
 
 

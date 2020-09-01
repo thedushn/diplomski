@@ -210,13 +210,10 @@ get_task_list(T_Collection **array, __int32_t *task_num) {
     char *directory = "/proc";
     int pid = 0;
 
-
-
     if ((dir = opendir(directory)) == NULL) {
         printf("error task dir %d\n", errno);
         return 1;
     }
-
 
     while ((d_file = readdir(dir)) != NULL) {
 
@@ -231,14 +228,6 @@ get_task_list(T_Collection **array, __int32_t *task_num) {
            }
 
             (*task_num)++;
-
-
-
-
-
-
-
-
 
             int result = get_task_details(pid, &task_temp->task);
             if (result == -1) {

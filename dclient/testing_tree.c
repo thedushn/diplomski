@@ -4,7 +4,7 @@
 
 #include "testing_tree.h"
 #include <errno.h>
-#include <inttypes.h>
+
 
 #include "buttons.h"
 
@@ -305,7 +305,7 @@ void fill_list_item_device(Devices *f_temp, GtkTreeIter *iter) {
 
     if (iter != NULL) {
 
-      //  Devices *device_temp = &g_array_index(names_array, Devices, i);
+
         Devices *device_temp =f_temp;
         gchar *name = g_strdup_printf("%s", device_temp->name);
         used = g_format_size_full((guint64) device_temp->used, G_FORMAT_SIZE_IEC_UNITS);
@@ -488,12 +488,12 @@ gint compare_int_list_item(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter 
     gtk_tree_model_get(model, iter1, column, &s1, -1);
     if (s1 == NULL) {
 
-        return ret;//ako prvog nema drugi je prvi
+        return ret; //if there is no first, second is first
     }
     gtk_tree_model_get(model, iter2, column, &s2, -1);
     if (s2 == NULL) {
         g_free(s1);
-        return ret;//ako drugog nema prvi je prvi
+        return ret;//if there is no second, first is first
     }
 
 
@@ -531,8 +531,8 @@ void test_strtol(int val) {
 };
 
 gint compare_int_list_item_size(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter *iter2, gpointer column) {
-    gchar *s1 = "";
-    gchar *s2 = "";
+    gchar *s1 = NULL;
+    gchar *s2 = NULL;
     gchar *z;
     gchar *z1;
     gchar *size;
@@ -548,22 +548,22 @@ gint compare_int_list_item_size(GtkTreeModel *model, GtkTreeIter *iter1, GtkTree
     gtk_tree_model_get(model, iter1, column, &s1, -1);
     if (s1 == NULL) {
 
-        return ret;//ako prvog nema drugi je prvi
+        return ret;//if there is no first, second is first
     }
     gtk_tree_model_get(model, iter2, column, &s2, -1);
 
 
     if (s2 == NULL) {
         g_free(s1);
-        return ret;//ako drugog nema prvi je prvi
+        return ret;//if there is no second, first is first
     }
 
     z = g_strrstr(s1, ",");
     z1 = g_strrstr(s2, ",");
-    size = g_strstr_len(s1, strlen(s1), " "); //prvi razmak
+    size = g_strstr_len(s1, strlen(s1), " "); //first comma
     size1 = g_strstr_len(s2, strlen(s2), " ");
-    size = size + 1;//pomerimo za jedan
-    size1 = size1 + 1;
+    size++;
+    size1++;
     gint i1 = 0;
     gint i2 = 0;
     gint i3 = 0;
@@ -574,8 +574,8 @@ gint compare_int_list_item_size(GtkTreeModel *model, GtkTreeIter *iter1, GtkTree
     errno = 0;
 
 
-    ret2 = strcmp(size, size1);// velicine
-    if (ret2 != 0) {    //ako su razlicite velicine
+    ret2 = strcmp(size, size1);
+    if (ret2 != 0) {
         if (strcmp(size, "MiB") == 0) {
 
             isize = 3;
@@ -688,14 +688,14 @@ gint compare_int_list_item_time(GtkTreeModel *model, GtkTreeIter *iter1, GtkTree
     gtk_tree_model_get(model, iter1, column, &s1, -1);
     if (s1 == NULL) {
 
-        return ret;//ako prvog nema drugi je prvi
+        return ret;//if there is no first ,second is first
     }
     gtk_tree_model_get(model, iter2, column, &s2, -1);
 
 
     if (s2 == NULL) {
         g_free(s1);
-        return ret;//ako drugog nema prvi je prvi
+        return ret;//if there is no second, first is first
     }
 
 
@@ -711,14 +711,14 @@ gint compare_int_list_item_time(GtkTreeModel *model, GtkTreeIter *iter1, GtkTree
 
 
     ret = i1 - i2;
-    if (ret == 0) { //ako je u isto sati
+    if (ret == 0)  { //if the hours are   the same
 
-        //minuti postavi pointer na prve : na koje naidje u broju karatktera koje mu postavimo
+
         dt = g_strstr_len(s1, strlen(s1), ":");
         dt1 = g_strstr_len(s2, strlen(s2), ":");
 
-        dt = dt + 1;//preskacemo 2 tacke
-        dt1 = dt1 + 1;
+        dt++;
+        dt1++;
 
         i1 = atoi(dt);
 
@@ -731,13 +731,13 @@ gint compare_int_list_item_time(GtkTreeModel *model, GtkTreeIter *iter1, GtkTree
         return ret;
     }
 
-    if (ret == 0) { //ako je u isto minuta
+    if (ret == 0) { //if the minutes are the same
 
 
         dt = strrchr(s1, ':');//seconds
         dt1 = strrchr(s2, ':');//seconds move pointer at :
-        dt = dt + 1;//jump over :
-        dt1 = dt1 + 1;
+        dt++;
+        dt1++;
 
         i1 = atoi(dt);
         i2 = atoi(dt1);

@@ -10,6 +10,16 @@
 #include <time.h>
 #define BUFFER_SIZE 1024
 
+
+#define CPU_USAGE 1
+#define NETWORK 2
+#define MEMORY 3
+#define TASK 4
+#define DEVICES 5
+#define INTERRUTPS 6
+#define TEXT 7
+
+
 struct __attribute__((__packed__))tm1 {
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
     __uint32_t tm_min;            /* Minutes.	[0-59] */
@@ -127,6 +137,29 @@ struct _Task_Collection{
 
     Task task;
     T_Collection * next;
+};
+
+typedef union _Unification Unification ;
+
+union _Unification {
+
+    Task task;
+    Network network;
+    Memory_usage memory_usage;
+    Cpu_usage cpu_usage;
+    Interrupts interrupts;
+    Devices devices;
+    char conformation[64];
+
+
+};
+
+typedef struct _Data Data;
+struct __attribute__((__packed__)) _Data{
+
+    int size;
+    Unification unification;
+
 };
 
 #endif //DIPLOMSKI_COMMON_H

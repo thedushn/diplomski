@@ -31,16 +31,15 @@ T_Collection *tasks_old;
 Interrupts * interrupts;
 
 #define LIST_SIZE 240
-#define COLLETION 1
-#define DEV_COLLETION 2
-#define TASK_COLLETION 3
+#define CPU_USAGE 1
+#define NETWORK 2
+#define MEMORY 3
 #define TASK 4
-#define CPU_S 5
-#define MEMORY 6
-#define  NETWORK 7;
-#define  INTERRUPTS 8;
+#define DEVICES 5
+#define INTERRUTPS 6
+#define TEXT 7
 
-void init_timeout();
+ gboolean init_timeout();
 
 void graph_refresh(GtkWidget *widget, gboolean);
 
@@ -50,7 +49,7 @@ void inc_refresh();
 
 void timeout_refresh();
 
-void freeing_memory(Unification *array);
+
 
 
 

@@ -210,7 +210,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
 
     gtk_widget_show_all(window1);
-    gtk_window_set_title(GTK_WINDOW(window1), "College lines");
+    gtk_window_set_title(GTK_WINDOW(window1), "System resource monitor");
 
     return window1;
 };
