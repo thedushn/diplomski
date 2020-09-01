@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/../dserver/devices.c" description="temp = realloc(devices2, (niz+1 ) * sizeof(Devices..." line="148" />
+    <bookmark url="file://$PROJECT_DIR$/../dserver/devices.c" description="temp = realloc(devices2, (niz+1 ) * sizeof(Devices..." line="174" />
   </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
     <generated>
@@ -19,12 +19,13 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/devices.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/devices.c.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/functions.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/functions.c.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/interrupts.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/interrupts.c.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/main.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/main.c.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/memory_usage.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/memory_usage.c.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/network_bandwith.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/network_bandwith.c.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/task_manager.c.o" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/task_manager.c.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/server" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/server" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/C.includecache" afterPath="$PROJECT_DIR$/../dserver/cmake-build-debug/CMakeFiles/server.dir/C.includecache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/common.h" afterPath="$PROJECT_DIR$/../dserver/common.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cpu_usage.c" afterPath="$PROJECT_DIR$/../dserver/cpu_usage.c" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/cpu_usage.h" afterPath="$PROJECT_DIR$/../dserver/cpu_usage.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dserver/devices.c" afterPath="$PROJECT_DIR$/../dserver/devices.c" />
@@ -59,7 +60,7 @@
             <entry file="file://$PROJECT_DIR$/main.c">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="3126">
-                  <caret line="632" column="0" lean-forward="true" selection-start-line="632" selection-start-column="0" selection-end-line="632" selection-end-column="0" />
+                  <caret line="632" column="0" lean-forward="false" selection-start-line="632" selection-start-column="0" selection-end-line="632" selection-end-column="0" />
                   <folding>
                     <element signature="e#2#22#0" expanded="true" />
                   </folding>
@@ -123,7 +124,7 @@
             <entry file="file://$PROJECT_DIR$/functions.c">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="4400">
-                  <caret line="240" column="1" lean-forward="true" selection-start-line="240" selection-start-column="1" selection-end-line="240" selection-end-column="1" />
+                  <caret line="240" column="1" lean-forward="false" selection-start-line="240" selection-start-column="1" selection-end-line="240" selection-end-column="1" />
                   <folding />
                 </state>
               </provider>
@@ -159,7 +160,7 @@
             <entry file="file://$PROJECT_DIR$/main.c">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="246">
-                  <caret line="850" column="5" lean-forward="true" selection-start-line="840" selection-start-column="4" selection-end-line="850" selection-end-column="5" />
+                  <caret line="850" column="5" lean-forward="false" selection-start-line="840" selection-start-column="4" selection-end-line="850" selection-end-column="5" />
                   <folding>
                     <element signature="e#2#22#0" expanded="true" />
                   </folding>
@@ -1099,7 +1100,7 @@
     <entry file="file://$PROJECT_DIR$/functions.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4400">
-          <caret line="240" column="1" lean-forward="true" selection-start-line="240" selection-start-column="1" selection-end-line="240" selection-end-column="1" />
+          <caret line="240" column="1" lean-forward="false" selection-start-line="240" selection-start-column="1" selection-end-line="240" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -1107,7 +1108,7 @@
     <entry file="file://$PROJECT_DIR$/main.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3126">
-          <caret line="632" column="0" lean-forward="true" selection-start-line="632" selection-start-column="0" selection-end-line="632" selection-end-column="0" />
+          <caret line="632" column="0" lean-forward="false" selection-start-line="632" selection-start-column="0" selection-end-line="632" selection-end-column="0" />
           <folding>
             <element signature="e#2#22#0" expanded="true" />
           </folding>

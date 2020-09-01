@@ -31,7 +31,7 @@ void clean_interrupts(){
     }
 
 };
-void send_interrupts(void *socket){
+void * send_interrupts(void *socket){
 
     int sockfd=(*(int*)socket);
 
@@ -78,7 +78,9 @@ void send_interrupts(void *socket){
 
         data.size=INTERRUTPS;
         data.unification.interrupts=interrupts_send[r];
+        pthread_mutex_lock(&mutex_send);
         ret = send(sockfd, &data, sizeof(Data), 0);
+        pthread_mutex_unlock(&mutex_send);
         if (ret < 0) {
             printf("Error sending data!\n\t");
             break;
@@ -100,7 +102,7 @@ void send_interrupts(void *socket){
 
     interrupts = NULL;
     interrupts_send = NULL;
-
+    pthread_exit(NULL);
 
 }
 int interrupt_usage2(Interrupts **array2, __int32_t *j) {

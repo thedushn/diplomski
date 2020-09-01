@@ -12,7 +12,7 @@
 #include <memory.h>
 #include <sys/socket.h>
 
-void send_devices(void *socket){
+void * send_devices(void *socket){
 
     int sockfd=(*(int*)socket);
     int result;
@@ -27,7 +27,18 @@ void send_devices(void *socket){
     result = mount_list(&devices_c, &device_num, devices_show);
     if (result != 0) {
         printf("error in mount_list\n");
-       exit(1);
+        for(int k=0;k<device_num;k++){
+            // save reference to first link
+            temp_dev = devices_c;
+
+            //mark next to first link as first
+            devices_c = devices_c->next;
+
+            //return the deleted link
+            free(temp_dev);
+
+        }
+        pthread_exit(NULL);
     }
 
 
@@ -37,7 +48,9 @@ void send_devices(void *socket){
         memset(&data,0,sizeof(Data));
         data.size=DEVICES;
         data.unification.devices=(Devices)temp_dev->devices;
+        pthread_mutex_lock(&mutex_send);
         ret = send(sockfd, &data, sizeof(Data), 0);
+        pthread_mutex_unlock(&mutex_send);
 
 
 
@@ -54,7 +67,7 @@ void send_devices(void *socket){
                 free(temp_dev);
 
             }
-            break;
+            pthread_exit(NULL);
 
         }
         if (ret == 0) {
@@ -71,14 +84,26 @@ void send_devices(void *socket){
                 free(temp_dev);
 
             }
-            break;
+           pthread_exit(NULL);
         }
         temp_dev=temp_dev->next;
 
 
     }
+    for(int k=0;k<device_num;k++){
+        // save reference to first link
+        temp_dev = devices_c;
+
+        //mark next to first link as first
+        devices_c = devices_c->next;
+
+        //return the deleted link
+        free(temp_dev);
+
+    }
 
 
+    pthread_exit(NULL);
 
 }
 

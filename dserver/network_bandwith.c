@@ -16,7 +16,7 @@
 
 static int number_bandwidth;
 
-void send_network(void *socket){
+void * send_network(void *socket){
     int sockfd=(*(int*)socket);
     int result;
     Data data={0};
@@ -26,25 +26,27 @@ void send_network(void *socket){
     result = interface_name(&network);
     if (result != 0) {
 
-       exit(1);
+        pthread_exit(NULL);
     }
     memset(&data,0,sizeof(Data));
     data.size=NETWORK;
     data.unification.network=network;
+    pthread_mutex_lock(&mutex_send);
     ret = send(sockfd, &data, sizeof(Data), 0);
-
+    pthread_mutex_unlock(&mutex_send);
 
     if (ret < 0) {
         printf("Error sending data!\n\t");
-        exit(1);
+        pthread_exit(NULL);
 
     }
     if (ret == 0) {
         printf("Error sending data!\n\t");
         printf("socket closed\n");
-        exit(1);
+        pthread_exit(NULL);
 
     }
+    pthread_exit(NULL);
 }
 
 struct Net_data search_net(char *key, bool *ima, struct Net_data new_data) {

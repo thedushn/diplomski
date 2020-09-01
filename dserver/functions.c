@@ -8,7 +8,6 @@
 #include <stdlib.h>
 
 #include"sys/socket.h"
-#include"pthread.h"
 
 
 #include "interrupts.h"
@@ -17,6 +16,7 @@
 #include "task_manager.h"
 #include "devices.h"
 #include "network_bandwith.h"
+
 
 
 
@@ -75,16 +75,16 @@ ssize_t test_send(int socket) {
 ssize_t test_recv(int socket) {
 
 
-    char buffer[64];
+
     ssize_t ret ;
-    memset(buffer, 0, 64);
-    strcpy(buffer, "everything came");
-    Data data;
+
+    Data data={0};
     data.size=TEXT;
     memset(data.unification.conformation,0,sizeof(data.unification.conformation));
     strcpy(data.unification.conformation,"everything came");
+
     ret = send(socket, &data, sizeof(Data), 0);
-  //  ret = send(socket, buffer, 64, 0);
+
 
     if (ret < 0) {
 
@@ -163,7 +163,8 @@ void *accept_c(void *socket) {
     char buffer[1600];
     char text[256];
     char *text1;
-
+    pthread_mutex_init(&mutex_jiff,NULL);
+    pthread_mutex_init(&mutex_send,NULL);
 
     while (1) {
         memset(buffer,0,sizeof(buffer));
@@ -238,46 +239,102 @@ void *sending(void *socket) {
 
     int sockfd = *(int *) socket;
 
-
+    int return_trhead[6];
+    pthread_t  thr[6];
+    pthread_attr_t attr;
     while (1) {
-
-
-
-
-
-      //  pthread_t  threads[6];
 
         time1 = time(NULL);
 
         local_time = *localtime(&time1);
+
+
+       pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
+
+
+        return_trhead[0]=pthread_create(&thr[0], &attr, send_memory,socket);
+
+        if (return_trhead[0] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[0]);
+          break;
+
+        }
+        return_trhead[1]=pthread_create(&thr[1], &attr, send_cpu,socket);
+
+        if (return_trhead[1] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[1]);
+            break;
+
+        }
+        return_trhead[2]=pthread_create(&thr[2], &attr, send_network,socket);
+
+        if (return_trhead[2] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[2]);
+            break;
+
+        }
+        return_trhead[3]=pthread_create(&thr[3], &attr, send_interrupts,socket);
+
+        if (return_trhead[3] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[3]);
+            break;
+
+        }
+        return_trhead[4]=pthread_create(&thr[4], &attr, send_devices,socket);
+
+        if (return_trhead[4] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[4]);
+            break;
+
+        }
+        return_trhead[5]=pthread_create(&thr[5], &attr, send_task,socket);
+
+        if (return_trhead[5] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[5]);
+            break;
+
+        }
+        pthread_attr_destroy(&attr);
+        for(int i=0;i<6;i++){
+            pthread_join(thr[i], NULL);
+        }
+
+
+
         ///memory
-        send_memory(socket);
+     //   send_memory(socket);
 
 
         ///cpu
-        send_cpu(socket);
+    //    send_cpu(socket);
 
 
 
         ///network
-         send_network(socket);
+    //     send_network(socket);
 
 
         ///devices
-        send_devices(socket);
+   //     send_devices(socket);
 
 
 
 
         /// tasks
-        send_task(socket);
+    //    send_task(socket);
 
 
 
 
 
         ///interrupts
-        send_interrupts(socket);
+     //   send_interrupts(socket);
 
 
 
@@ -310,7 +367,8 @@ void *sending(void *socket) {
     }
 
 
-
+    pthread_mutex_destroy(&mutex_send);
+    pthread_mutex_destroy(&mutex_jiff);
 
 
    clean_interrupts();

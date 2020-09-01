@@ -11,7 +11,7 @@ bool devices_show ;
 
 void testing_files(Devices *devices);
 
-void send_devices(void *socket);
+void * send_devices(void *socket);
 
 int mount_list(D_Collection **array, __int32_t *dev_num, bool mount);
 

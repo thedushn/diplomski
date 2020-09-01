@@ -9,7 +9,7 @@
 
 
 int interrupt_usage2(Interrupts **array, __int32_t *j);
-void send_interrupts(void *socket);
+void * send_interrupts(void *socket);
 
 void sort2(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts **send_interrupts, int n);
 

@@ -9,31 +9,35 @@
 #include <sys/socket.h>
 #include <stdlib.h>
 
-void send_memory(void *socket){
+void * send_memory(void *socket){
 
     int sockfd=*((int*)socket);
-
+    ssize_t ret;
     Memory_usage  memory_usage={0};
+    Data data={0};
 
     get_memory_usage(&memory_usage);
 
-    Data data={0};
+
     data.size=MEMORY;
     data.unification.memory_usage=memory_usage;
-   ssize_t ret = send(sockfd, &data, sizeof(Data), 0);
+
+    pthread_mutex_lock(&mutex_send);
+    ret = send(sockfd, &data, sizeof(Data), 0);
+    pthread_mutex_unlock(&mutex_send);
 
 
     if (ret < 0) {
         printf("Error sending data!\n\t");
-       exit(1);
+        pthread_exit(NULL);
 
     }
     if (ret == 0) {
 
         printf("socket closed\n");
-        exit(1);
+        pthread_exit(NULL);
     }
-
+    pthread_exit(socket);
 }
 
 void get_memory_usage(Memory_usage *memory_usage) {

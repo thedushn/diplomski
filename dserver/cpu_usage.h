@@ -27,7 +27,7 @@ int hash_size;
 int cpu_number();
 
 int cpu_percentage(int ncpu, Cpu_usage *cpu_usage);
-void send_cpu(void *socket);
+void * send_cpu(void *socket);
 
 
 

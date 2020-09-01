@@ -17,7 +17,7 @@
 #include "functions.h"
 #include "cpu_usage.h"
 
-void send_task(void *socket){
+void * send_task(void *socket){
 
     int sockfd=(*(int*)socket);
     int result;
@@ -45,7 +45,7 @@ void send_task(void *socket){
 
 
         }
-       exit(1);
+        pthread_exit(NULL);
     }
 
     temp_task=tasks;
@@ -54,8 +54,9 @@ void send_task(void *socket){
 
         data.size=TASK;
         data.unification.task=temp_task->task;
+        pthread_mutex_lock(&mutex_send);
         ret = send(sockfd, &data, sizeof(Data), 0);
-
+        pthread_mutex_unlock(&mutex_send);
 
 
         if (ret < 0) {
@@ -73,7 +74,7 @@ void send_task(void *socket){
 
 
             }
-            break;
+           pthread_exit(NULL);
 
         }
         if (ret == 0) {
@@ -91,13 +92,27 @@ void send_task(void *socket){
 
 
             }
-            break;
+            pthread_exit(NULL);
         }
         temp_task=temp_task->next;
 
 
     }
 
+    for(int k=0;k<task_num;k++){
+        // save reference to first link
+        temp_task = tasks;
+
+        //mark next to first link as first
+        tasks = tasks->next;
+
+        //return the deleted link
+        free(temp_task);
+
+
+    }
+
+    pthread_exit(NULL);
 }
 
 void differenceBetweenTimePeriod(struct tm start, struct tm1 stop, struct tm1 *diff) {
