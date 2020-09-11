@@ -1,0 +1,3 @@
+/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/CMakeFiles/server.dir
