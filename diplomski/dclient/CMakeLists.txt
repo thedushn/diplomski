@@ -8,7 +8,14 @@ set(CMAKE_C_STANDARD 11)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
 
-add_executable(client main.c drawing.c drawing.h buttons.c buttons.h common.h functions.c functions.h window.c window.h testing_tree.c testing_tree.h main_header.h interrupts.c interrupts.h buttons_s.h )
+add_executable(client main.c drawing.c
+        drawing.h buttons.c
+        buttons.h common.h
+        functions.c functions.h
+        window.c window.h
+        testing_tree.c testing_tree.h
+        main_header.h
+        writting.c writting.h)
 
 include_directories(${GTK3_INCLUDE_DIRS})
 

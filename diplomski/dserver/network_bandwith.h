@@ -6,24 +6,33 @@
 #define DIPLOMSKI_NETWORK_BANDWITH_H
 
 #include "common.h"
+struct Net_data{
 
+    __uint64_t received_data;
+    __uint64_t transfered_data;
+};
 struct DataItem_net {
 
-    __uint64_t data;
-    char key[64];
-
+    struct Net_data net_data;
+    char name[64];
+    bool check;
+    struct DataItem_net *next;
 
 };
 
+ struct DataItem_net *hash_network ;
+
+int net_hash_size;
 int interface_name(Network *network);
 
 void get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct, __uint64_t transmitted,
-                   __uint64_t *transmited_struct
+                   __uint64_t *transmitted_struct
 );
 
-void clean();
-
-__uint64_t search_net(char *key, struct DataItem_net *hashArray, int hash_size, bool *ima, __uint64_t data);
 
 
+struct Net_data search_net(char *key, bool *ima, struct Net_data new_data);
+
+void check_for_old_net();
+void * send_network(void *socket);
 #endif //DIPLOMSKI_NETWORK_BANDWITH_H

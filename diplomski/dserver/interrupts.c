@@ -9,9 +9,102 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "interrupts.h"
+#include <sys/socket.h>
+
+Interrupts *interrupts = NULL;
+Interrupts *interrupts_main = NULL;
+Interrupts *interrupts_send = NULL;
+
+void clean_interrupts(){
+
+    if (interrupts != NULL) {
+
+        free(interrupts);
+    }
+    if (interrupts_main != NULL) {
+
+        free(interrupts_main);
+    }
+    if (interrupts_send != NULL) {
+
+        free(interrupts_send);
+    }
+
+};
+void * send_interrupts(void *socket){
+
+    int sockfd=(*(int*)socket);
+
+    ssize_t ret;
+    __int32_t h = 0;
+    int result;
+    Data data={0};
+    result = interrupt_usage2(&interrupts, &h);
+    if (result != 0) {
+
+        clean_interrupts();
+        exit(1);
+    }
+
+    if (interrupts_main == NULL) {
+
+        interrupts_main = calloc((size_t) h, sizeof(Interrupts));
+        if(interrupts_main==NULL){
+
+            printf("calloc error %d \n", errno);
+            free(interrupts_main);
 
 
+        }
+        for (int r = 0; r < h; r++) {
+
+            interrupts_main[r] = interrupts[r];
+        }
+
+
+    }
+
+
+
+    sort2(interrupts, interrupts_main, &interrupts_send, h);
+
+
+    sort(interrupts_send, h);
+
+
+    for (int r = h - 10; r < h; r++) {
+
+        memset(&data,0,sizeof(Data));
+
+        data.size=INTERRUTPS;
+        data.unification.interrupts=interrupts_send[r];
+        pthread_mutex_lock(&mutex_send);
+        ret = send(sockfd, &data, sizeof(Data), 0);
+        pthread_mutex_unlock(&mutex_send);
+        if (ret < 0) {
+            printf("Error sending data!\n\t");
+            break;
+
+        }
+        if (ret == 0) {
+
+            printf("socket closed\n");
+            break;
+        }
+
+
+    }
+
+    free(interrupts);
+    free(interrupts_send);
+
+
+
+    interrupts = NULL;
+    interrupts_send = NULL;
+    pthread_exit(NULL);
+
+}
 int interrupt_usage2(Interrupts **array2, __int32_t *j) {
 
 
@@ -20,12 +113,14 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
     char buffer[1024];
 
 
-    Interrupts *temp;
-    Interrupts *array;
-    array = malloc(sizeof(Interrupts));
+    Interrupts *temp=NULL;
 
-    static int g = 0;
-    if (array == NULL) {
+
+
+    *array2=malloc(sizeof(Interrupts));
+
+    if (*array2 == NULL) {
+
         fprintf(stderr, "malloc failed\n");
         return 1;
 
@@ -35,38 +130,48 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
 
 
     while (fgets(buffer, 1024, file) != NULL) {
-        int i = 0;
 
 
-        memset(&array[g], 0, sizeof(array[g]));
+        memset(*array2, 0, sizeof(Interrupts));
 
 
-        sscanf(buffer, "%s %" SCNu64 " %" SCNu64 " %" SCNu64 " %" SCNu64 " %s %s %s %s", array[g].name, &array[g].CPU0,
-               &array[g].CPU1, &array[g].CPU2,
-               &array[g].CPU3,
-               array[g].ime1,
-               array[g].ime2,
-               array[g].ime3,
-               array[g].ime4);
+
+        sscanf(buffer, "%s %" SCNu64 " %" SCNu64 " %" SCNu64 " %" SCNu64 " %s %s %s %s",
+              (*array2)->irq,
+              &(*array2)->CPU0,
+               &(*array2)->CPU1,
+               &(*array2)->CPU2,
+               &(*array2)->CPU3,
+               (*array2)->ime1,
+               (*array2)->ime2,
+               (*array2)->ime3,
+               (*array2)->ime4);
+
+        char  *p;
+       if( (p=strchr((*array2)->irq,':'))){
+           *p= '\0';
+       }
 
 
-        i = 0;
-        while (array[g].name[i] != ':') {
 
+        (*j)++;
+            if(temp!=NULL){
+                *array2=temp;
+            }
+        temp = realloc(*array2, (*j + 1) * sizeof(Interrupts));
 
-            i++;
-
-        }
-        array[g].name[i] = '\0';
-
-        g++;
-        temp = realloc(array, (g + 1) * sizeof(Interrupts));
         if (temp != NULL) {
-            array = temp;
+
+            (*array2)= temp;
+
+                (*array2)=(*array2)+(*j);
+
+
         } else {
-            free(array);
+
+            free(*array2);
             fclose(file);
-            printf("relloc error %d", errno);
+            printf("reallocate error %d", errno);
             return 1;
 
         }
@@ -76,13 +181,12 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
 
 
     fclose(file);
-    *array2 = array;
-    *j = g;
-    g = 0;
+    *array2 = temp;
 
 
     return 0;
 }
+
 
 static int myCompare(const void *a, const void *b) {
 
@@ -90,8 +194,8 @@ static int myCompare(const void *a, const void *b) {
     Interrupts interrupts2 = *(Interrupts *) b;
 
 
-    int CPUa = 0;
-    int CPUb = 0;
+    int CPUa ;
+    int CPUb ;
 
 
     CPUa = (int) (interrupts1.CPU0 + interrupts1.CPU1 + interrupts1.CPU2 + interrupts1.CPU3);
@@ -102,51 +206,54 @@ static int myCompare(const void *a, const void *b) {
 
 }
 
-void sort2(Interrupts *array, Interrupts *array2, Interrupts **array3, int n) {
+void sort2(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts **send_interrupts, int n) {
 
-    Interrupts *interrupts_send = NULL;
-    interrupts_send = calloc((size_t) n, sizeof(Interrupts));
+
+    (*send_interrupts) = calloc((size_t) n, sizeof(Interrupts));
+    Interrupts *temp_send=(*send_interrupts);
+    Interrupts *temp_old=old_interrupts;
+    Interrupts *temp_new=new_interrupts;
     for (int i = 0; i < n; i++) {
 
-        Interrupts interrupts3;
-        memset(&interrupts3, 0, sizeof(Interrupts));
-        strcpy(interrupts3.name, array[i].name);
 
-        __int64_t temp = array[i].CPU0 - array2[i].CPU0;
+        strcpy(temp_send->irq, temp_new->irq);
+
+        __int64_t temp = temp_new->CPU0 - temp_old->CPU0;
         if (temp < 0) {
             temp = 0;
         }
-        interrupts3.CPU0 = (__uint64_t) temp;
+        temp_send->CPU0 = (__uint64_t) temp;
 
-        temp = array[i].CPU1 - array2[i].CPU1;
+        temp = temp_new->CPU1 - temp_old->CPU1;
         if (temp < 0) {
             temp = 0;
         }
-        interrupts3.CPU1 = (__uint64_t) temp;
+        (*send_interrupts)->CPU1 = (__uint64_t) temp;
 
 
-        temp = array[i].CPU2 - array2[i].CPU2;
+        temp = temp_new->CPU2 - temp_old->CPU2;
         if (temp < 0) {
             temp = 0;
         }
-        interrupts3.CPU2 = (__uint64_t) temp;
+        temp_send->CPU2 = (__uint64_t) temp;
 
-        temp = array[i].CPU3 - array2[i].CPU3;
+        temp =temp_new->CPU3 - temp_old->CPU3;
         if (temp < 0) {
             temp = 0;
         }
-        interrupts3.CPU3 = (__uint64_t) temp;
+        temp_send->CPU3 = (__uint64_t) temp;
 
 
-        strcpy(interrupts3.ime1, array[i].ime1);
-        strcpy(interrupts3.ime2, array[i].ime2);
-        strcpy(interrupts3.ime3, array[i].ime3);
-        strcpy(interrupts3.ime4, array[i].ime4);
-        interrupts_send[i] = interrupts3;
-
+        strcpy(temp_send->ime1, temp_new->ime1);
+        strcpy(temp_send->ime2, temp_new->ime2);
+        strcpy(temp_send->ime3, temp_new->ime3);
+        strcpy(temp_send->ime4, temp_new->ime4);
+            *temp_old=*temp_new;
+        temp_send++;
+        temp_new++;
+        temp_old++;
     }
 
-    *array3 = interrupts_send;
 
 
 }

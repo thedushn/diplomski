@@ -8,38 +8,38 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/dushn/Diplomski/dserver/cmake-build-debug"/>
+				<Option working_dir="/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/dushn/Diplomski/dserver/cmake-build-debug"/>
+				<Option working_dir="/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/home/dushn/Diplomski/dserver/cmake-build-debug"/>
+				<Option working_dir="/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="server">
-				<Option output="/home/dushn/Diplomski/dserver/cmake-build-debug/server" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/dushn/Diplomski/dserver/cmake-build-debug"/>
+				<Option output="/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/server" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -70,15 +70,15 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 server"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 server"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="server/fast">
-				<Option output="/home/dushn/Diplomski/dserver/cmake-build-debug/server" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/dushn/Diplomski/dserver/cmake-build-debug"/>
+				<Option output="/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/server" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
@@ -109,59 +109,59 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 server/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 server/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/dushn/Diplomski/dserver/cpu_usage.c">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/cpu_usage.c">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/cpu_usage.h">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/cpu_usage.h">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/devices.c">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/devices.c">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/devices.h">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/devices.h">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/functions.c">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/functions.c">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/functions.h">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/functions.h">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/interrupts.c">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/interrupts.c">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/interrupts.h">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/interrupts.h">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/main.c">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/main.c">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/memory_usage.c">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/memory_usage.c">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/memory_usage.h">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/memory_usage.h">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/network_bandwith.c">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/network_bandwith.c">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/network_bandwith.h">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/network_bandwith.h">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/task_manager.c">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/task_manager.c">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/task_manager.h">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/task_manager.h">
 			<Option target="server"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/dserver/CMakeLists.txt">
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

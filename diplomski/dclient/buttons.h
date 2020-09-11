@@ -7,14 +7,22 @@
 
 
 #include <gtk/gtk.h>
+#include <stdbool.h>
 
 
-GtkWidget *taskpopup;
+GtkWidget *dev_window;
+GtkWidget *proc_window;
+GtkWidget *static_window;
+
+
+GtkWidget *task_popup;
 
 
 GtkWidget *button_inc;
 GtkWidget *button_dec;
 GtkWidget *button_proc;
+GtkWidget *button_static_stats;
+
 
 GtkWidget *button_dev;
 GtkWidget *button_graph;
@@ -41,6 +49,10 @@ GtkWidget *button_process_cpu;
 GtkWidget *button_process_prio;
 GtkWidget *button_process_duration;
 
+ gboolean CPU0_line ;
+ gboolean CPU1_line ;
+ gboolean CPU2_line ;
+gboolean CPU3_line ;
 
 gboolean on_treeview1_button_press_event(GtkButton *button, GdkEventButton *event);
 
@@ -55,12 +67,13 @@ void button_clicked_view_process(GtkWidget *widget);
 void graph_button_clicked(GtkWidget *widget);
 
 void close_window();
+void close_window2(GtkWidget *widget);
 
-void pokazi_ili_hide(GtkWidget *button, GtkWidget *window);
+void show_hide(GtkWidget *button, GtkWidget *window);
 
 void dev_button_clicked2(GtkWidget *widget);
 
-void button_clicked_view_process(GtkWidget *widget);
+
 
 void device_window();
 
@@ -75,6 +88,10 @@ void graph_clicked(GtkWidget *widget);
 void start_stop(int show, char *signal, char *task_id);
 
 void show_all(GtkWidget *widget);
+
+void button_static_pressed(GtkWidget *widget);
+
+
 
 
 #endif //DIPLOMSKI_BUTTONS_H
