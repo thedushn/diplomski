@@ -13,6 +13,7 @@
 
 
 #define BUFFER_SIZE2 64
+#define BUFFER_SIZE 1024
 
 static int number_bandwidth;
 
@@ -218,7 +219,7 @@ int interface_name(Network *network1) {
             __uint64_t network_ts1 = 0;
 
             FILE *file;
-            char buffer[BUFFER_SIZE];
+            char buffer[1024];
             char buffer3[BUFFER_SIZE2];
 
 
@@ -239,7 +240,7 @@ int interface_name(Network *network1) {
             char *filename = "/proc/net/dev";
 
 
-            if ((file = fopen(filename, "r")) == NULL || fgets(buffer, 1024, file) == NULL) {
+            if ((file = fopen(filename, "r")) == NULL || fgets(buffer, BUFFER_SIZE, file) == NULL) {
                 closedir(pDir);
                 return 1;
             }

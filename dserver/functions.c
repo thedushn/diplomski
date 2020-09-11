@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <curses.h>
 
 #include"sys/socket.h"
 
@@ -160,11 +161,9 @@ void *accept_c(void *socket) {
     int sockfd = *(int *) socket;
 
     Commands commands;
-    char buffer[1600];
+    char buffer[1500];
     char text[256];
     char *text1;
-    pthread_mutex_init(&mutex_jiff,NULL);
-    pthread_mutex_init(&mutex_send,NULL);
 
     while (1) {
         memset(buffer,0,sizeof(buffer));
@@ -184,9 +183,8 @@ void *accept_c(void *socket) {
 
             pthread_exit(&ret);
         }
-        printf("%d\n",(int)ret);
-        printf("%s\n",buffer);
-     //   strncpy(text,buffer,7);
+
+
         sscanf(buffer, "%s %s %s",text,commands.command,commands.task_id);
         if(strcmp(text,"COMMAND")!=0){
             int g=0;
@@ -213,7 +211,7 @@ void *accept_c(void *socket) {
         else {
             text1=strchr(buffer,' ');
                 strcat(text1, " &");
-            printf("text1 %s\n",text1);
+
             if (system(text1) != 0)
                 printf("command failed\n");
         }
@@ -239,9 +237,19 @@ void *sending(void *socket) {
 
     int sockfd = *(int *) socket;
 
-    int return_trhead[6];
+
     pthread_t  thr[6];
     pthread_attr_t attr;
+    pthread_mutex_init(&mutex_jiff,NULL);
+    pthread_mutex_init(&mutex_send,NULL);
+
+
+    int return_value;
+    char buffer[128];
+
+
+
+
     while (1) {
 
         time1 = time(NULL);
@@ -252,89 +260,82 @@ void *sending(void *socket) {
        pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
 
 
-        return_trhead[0]=pthread_create(&thr[0], &attr, send_memory,socket);
+        return_value=pthread_create(&thr[0], &attr, send_memory,socket);
 
-        if (return_trhead[0] != 0) {
+        if (return_value != 0) {
 
-            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[0]);
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
+
+            fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
           break;
 
         }
-        return_trhead[1]=pthread_create(&thr[1], &attr, send_cpu,socket);
+        return_value=pthread_create(&thr[1], &attr, send_cpu,socket);
 
-        if (return_trhead[1] != 0) {
+        if (return_value != 0) {
 
-            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[1]);
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
+            fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
             break;
 
         }
-        return_trhead[2]=pthread_create(&thr[2], &attr, send_network,socket);
+        return_value=pthread_create(&thr[2], &attr, send_network,socket);
 
-        if (return_trhead[2] != 0) {
+        if (return_value != 0) {
 
-            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[2]);
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
+            fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
             break;
 
         }
-        return_trhead[3]=pthread_create(&thr[3], &attr, send_interrupts,socket);
+        return_value=pthread_create(&thr[3], &attr, send_interrupts,socket);
 
-        if (return_trhead[3] != 0) {
+        if (return_value != 0) {
 
-            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[3]);
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
+            fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
             break;
 
         }
-        return_trhead[4]=pthread_create(&thr[4], &attr, send_devices,socket);
+        return_value=pthread_create(&thr[4], &attr, send_devices,socket);
 
-        if (return_trhead[4] != 0) {
+        if (return_value != 0) {
 
-            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[4]);
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
+            fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
             break;
 
         }
-        return_trhead[5]=pthread_create(&thr[5], &attr, send_task,socket);
+        return_value=pthread_create(&thr[5], &attr, send_task,socket);
 
-        if (return_trhead[5] != 0) {
+        if (return_value != 0) {
 
-            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[5]);
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
+            fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
             break;
 
         }
         pthread_attr_destroy(&attr);
         for(int i=0;i<6;i++){
-            pthread_join(thr[i], NULL);
+           if((return_value= pthread_join(thr[i], NULL))){
+
+               strerror_r(return_value,buffer,sizeof(buffer));
+               fprintf(stderr,"error = %d (%s)\n",return_value,buffer);
+               pthread_mutex_destroy(&mutex_send);
+               pthread_mutex_destroy(&mutex_jiff);
+
+
+
+               clean_interrupts();
+               return 0;
+
+           }
+
         }
 
 
 
-        ///memory
-     //   send_memory(socket);
 
-
-        ///cpu
-    //    send_cpu(socket);
-
-
-
-        ///network
-    //     send_network(socket);
-
-
-        ///devices
-   //     send_devices(socket);
-
-
-
-
-        /// tasks
-    //    send_task(socket);
-
-
-
-
-
-        ///interrupts
-     //   send_interrupts(socket);
 
 
 
@@ -369,6 +370,7 @@ void *sending(void *socket) {
 
     pthread_mutex_destroy(&mutex_send);
     pthread_mutex_destroy(&mutex_jiff);
+
 
 
    clean_interrupts();

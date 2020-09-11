@@ -134,7 +134,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
     char *filename = "/proc/mounts";
 
-    char buffer[BUFFER_SIZE];
+    char buffer[1024];
     FILE *file;
 
 
@@ -147,7 +147,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
     fseek(file, 0, SEEK_SET);
 
     if (mount == true) {
-        while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
+        while (fgets(buffer, 1024, file) != NULL) {
 
           temp_dev=  calloc(1, sizeof(D_Collection));
             if(temp_dev==NULL){
@@ -169,7 +169,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
         }
     } else {
-        while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
+        while (fgets(buffer, 1024, file) != NULL) {
             Devices proxy={0};
 
 

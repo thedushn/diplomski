@@ -17,6 +17,8 @@ testing_tree.h
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
 main_header.h
 /home/dushn/Diplomski/diplomski/dclient/main_header.h
+window.h
+/home/dushn/Diplomski/diplomski/dclient/window.h
 
 /home/dushn/Diplomski/diplomski/dclient/buttons.h
 gtk/gtk.h
@@ -37,6 +39,8 @@ drawing.h
 /home/dushn/Diplomski/diplomski/dclient/drawing.h
 main_header.h
 /home/dushn/Diplomski/diplomski/dclient/main_header.h
+stdio.h
+/home/dushn/Diplomski/diplomski/dclient/stdio.h
 
 /home/dushn/Diplomski/diplomski/dclient/drawing.h
 math.h
@@ -59,6 +63,8 @@ cairo.h
 -
 common.h
 /home/dushn/Diplomski/diplomski/dclient/common.h
+main_header.h
+/home/dushn/Diplomski/diplomski/dclient/main_header.h
 
 /home/dushn/Diplomski/diplomski/dclient/functions.c
 functions.h
@@ -97,16 +103,18 @@ errno.h
 -
 assert.h
 -
+inttypes.h
+-
 functions.h
 /home/dushn/Diplomski/diplomski/dclient/functions.h
+writting.h
+/home/dushn/Diplomski/diplomski/dclient/writting.h
 
 /home/dushn/Diplomski/diplomski/dclient/main_header.h
 gtk/gtk.h
 -
 common.h
 /home/dushn/Diplomski/diplomski/dclient/common.h
-drawing.h
-/home/dushn/Diplomski/diplomski/dclient/drawing.h
 
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.c
 testing_tree.h
@@ -139,6 +147,24 @@ main_header.h
 /home/dushn/Diplomski/diplomski/dclient/main_header.h
 common.h
 /home/dushn/Diplomski/diplomski/dclient/common.h
+
+/home/dushn/Diplomski/diplomski/dclient/writting.c
+inttypes.h
+-
+memory.h
+-
+stdlib.h
+-
+writting.h
+/home/dushn/Diplomski/diplomski/dclient/writting.h
+main_header.h
+/home/dushn/Diplomski/diplomski/dclient/main_header.h
+
+/home/dushn/Diplomski/diplomski/dclient/writting.h
+common.h
+/home/dushn/Diplomski/diplomski/dclient/common.h
+main_header.h
+/home/dushn/Diplomski/diplomski/dclient/main_header.h
 
 /usr/include/atk-1.0/atk/atk-enum-types.h
 atk/atkversion.h

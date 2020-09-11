@@ -285,6 +285,33 @@ window.c.s:
 	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/window.c.s
 .PHONY : window.c.s
 
+writting.o: writting.c.o
+
+.PHONY : writting.o
+
+# target to build an object file
+writting.c.o:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/writting.c.o
+.PHONY : writting.c.o
+
+writting.i: writting.c.i
+
+.PHONY : writting.i
+
+# target to preprocess a source file
+writting.c.i:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/writting.c.i
+.PHONY : writting.c.i
+
+writting.s: writting.c.s
+
+.PHONY : writting.s
+
+# target to generate assembly for a file
+writting.c.s:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/writting.c.s
+.PHONY : writting.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -312,6 +339,9 @@ help:
 	@echo "... window.o"
 	@echo "... window.i"
 	@echo "... window.s"
+	@echo "... writting.o"
+	@echo "... writting.i"
+	@echo "... writting.s"
 .PHONY : help
 
 

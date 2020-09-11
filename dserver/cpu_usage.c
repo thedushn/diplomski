@@ -11,7 +11,7 @@
 #include <sys/socket.h>
 
 
-
+#define BUFFER_SIZE 1024
 static __uint64_t jiffies_total_delta[5] = {0, 0, 0, 0, 0};
 
 void * send_cpu(void *socket){
@@ -155,6 +155,9 @@ int cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
     jiffies_total_delta[4] =
             jiffies_total_delta[0] + jiffies_total_delta[1] + jiffies_total_delta[2] + jiffies_total_delta[3];
 
+
+
+
     pthread_mutex_unlock(&mutex_jiff);
 
     if (sprintf(cpu_usage->percentage0, "%f", percentage[0]) < 0) {
@@ -231,6 +234,7 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
     new.cpu_user=jiffies_user;
 
 
+    pthread_mutex_lock(&mutex_jiff);
 
     old= search(&ima, new, task);
 
@@ -261,9 +265,14 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
 
     if (jiffies_user < old.cpu_user || jiffies_system < old.cpu_system) {
 
+
         return 1;
     }
-    pthread_mutex_lock(&mutex_jiff);
+
+
+
+
+
     if (jiffies_total_delta[4] > 0) {
 
         cpu_user = (float) (( jiffies_user) - (old.cpu_user))* 100 /

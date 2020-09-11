@@ -2,7 +2,7 @@
 #include "buttons.h"
 #include "drawing.h"
 #include "testing_tree.h"
-#include "main_header.h"
+#include "window.h"
 
 
 static gboolean device_devices = TRUE;
@@ -222,6 +222,17 @@ void button_clicked_view_process(GtkWidget *widget) {
         show_hide(widget, process_swindow);
 
     }
+}
+
+void button_static_pressed(GtkWidget *widget) {
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
+
+        static_window = create_static_window();
+        gtk_widget_show_all(static_window);
+
+
+    }
+
 }
 
 void dev_button_clicked2(GtkWidget *widget) {

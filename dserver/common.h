@@ -9,7 +9,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include "pthread.h"
-#define BUFFER_SIZE 1024
+
 
 
 #define CPU_USAGE 1
@@ -19,8 +19,9 @@
 #define DEVICES 5
 #define INTERRUTPS 6
 #define TEXT 7
-pthread_mutex_t mutex_jiff;
+
 pthread_mutex_t mutex_send;
+
 
 struct __attribute__((__packed__))tm1 {
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */

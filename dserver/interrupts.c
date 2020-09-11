@@ -110,7 +110,7 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
 
     FILE *file;
     char *filename = "/proc/interrupts";
-    char buffer[BUFFER_SIZE];
+    char buffer[1024];
 
 
     Interrupts *temp=NULL;
@@ -125,11 +125,11 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
         return 1;
 
     }
-    if ((file = fopen(filename, "r")) == NULL || fgets(buffer, BUFFER_SIZE, file) == NULL)
+    if ((file = fopen(filename, "r")) == NULL || fgets(buffer, 1024, file) == NULL)
         return 1;
 
 
-    while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
+    while (fgets(buffer, 1024, file) != NULL) {
 
 
         memset(*array2, 0, sizeof(Interrupts));

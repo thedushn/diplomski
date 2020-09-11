@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/dushn/Diplomski/diplomski/dclient/main.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/main.c.o"
   "/home/dushn/Diplomski/diplomski/dclient/testing_tree.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/testing_tree.c.o"
   "/home/dushn/Diplomski/diplomski/dclient/window.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/window.c.o"
+  "/home/dushn/Diplomski/diplomski/dclient/writting.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/writting.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

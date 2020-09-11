@@ -25,13 +25,8 @@
 
 
 #include "common.h"
+#include "main_header.h"
 
-typedef struct _Collection Collection;
-struct _Collection {
-
-    float data[8];
-    Collection *next;
-};
 
 void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, Collection *net_work);
 
@@ -42,7 +37,7 @@ void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, Collection 
 
 void do_drawing_int(GtkWidget *widget, cairo_t *cr, Interrupts *interrupts1);
 
-void writing_seconds(cairo_t *cr, double width, double height, double font_size, int i, int j);
+void writing_seconds(cairo_t *cr, double width, double height, double font_size, int i);
 
 void draw_frame(cairo_t *cr, double width, double height, double font_size, int i);
 
@@ -60,5 +55,6 @@ void writing_interrupts(cairo_t *cr, double font_size, double length, int i, con
 void draw_graph(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step, float max_num,
                 Collection *array);
 
+int cpu_read(Collection **array, Time_Managment **time_managment, int *number, int *step_counter);
 #endif //DIPLOMSKI_DRAWING_H
 

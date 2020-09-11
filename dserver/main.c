@@ -27,7 +27,7 @@
 
 
 
-
+#define BUFFER_SIZE 1024
 
 
 static void sigchld_handler() {
@@ -199,11 +199,11 @@ int main(int argc, char *argv[]) {
     t0 = uptime1 % 3600;
     min0 = t0 / 60;
     sec0 = t0 % 60;
-    stop_time.tm_hour = (__uint32_t) hr0; //pre koliko sati se upalio komp
+    stop_time.tm_hour = (__uint32_t) hr0; //when did the computer start running
     stop_time.tm_min = (__uint32_t) min0;
     stop_time.tm_sec = (__uint32_t) sec0;
 
-    differenceBetweenTimePeriod(tm2, stop_time, &begin_time);// vreme kada je poceo da radi linux
+    differenceBetweenTimePeriod(tm2, stop_time, &begin_time);// time when linux started
 
 
 
@@ -211,6 +211,7 @@ int main(int argc, char *argv[]) {
     if (ret2 != 0) {
 
         printf("ERROR: Return Code from pthread_create() is %d\n", ret2);
+        close(sockfd);
         return -1;
 
     }
@@ -220,6 +221,7 @@ int main(int argc, char *argv[]) {
     if (ret != 0) {
 
         printf("ERROR: Return Code from pthread_create() is %d\n", ret);
+        close(sockfd);
         return -1;
 
     }

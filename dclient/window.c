@@ -15,7 +15,36 @@ GtkWidget *label_mem;
 GtkWidget *label_swap;
 
 
+GtkWidget *create_static_window() {
 
+    GtkWidget *window1 = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_position(GTK_WINDOW(window1), GTK_WIN_POS_CENTER);
+    gtk_window_set_default_size(GTK_WINDOW(window1), 800, 400);
+
+
+    GtkWidget *hbox;
+    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);
+
+    GtkWidget *frame = gtk_frame_new(NULL);
+    graph_static = gtk_drawing_area_new();
+
+    gtk_container_add(GTK_CONTAINER(frame), graph_static);
+    gtk_box_pack_start(GTK_BOX(hbox), frame, 1, TRUE, 0);
+    gtk_container_add(GTK_CONTAINER(window1), hbox);
+
+    //   gtk_widget_show_all(window1);
+    gtk_window_set_title(GTK_WINDOW(window1), "A slice in time");
+
+
+    return window1;
+
+}
+
+void destroy_static_window(GtkWidget *widget) {
+
+    printf("bye bye\n");
+
+}
 
 GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
@@ -66,6 +95,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     button_dec = gtk_button_new_with_label("refresh rate-");
     button_proc = gtk_toggle_button_new_with_label("Process");
     button_dev = gtk_toggle_button_new_with_label("Dev");
+    button_static_stats = gtk_toggle_button_new_with_label("Static");
     button_graph = gtk_toggle_button_new_with_label("graphs");
 
 
@@ -169,7 +199,9 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     gtk_box_pack_start(GTK_BOX(hbox), button_dec, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(hbox), button_proc, 0, 0, 0);
 
+
     gtk_box_pack_start(GTK_BOX(hbox), button_dev, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), button_static_stats, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(hbox), button_graph, 0, 0, 0);
 
     gtk_box_pack_start(GTK_BOX(hbox), label_cpu0, 0, 0, 0);
@@ -275,15 +307,16 @@ void memory_change(Memory_usage *memory_usage) {
 void cpu_change(Cpu_usage *cpu_usage) {
 
 
-    float j[4] = {0,0,0,0};
+    float g[4] = {0, 0, 0, 0};
 
-    j[0] = (float) atof(cpu_usage->percentage0);
-    j[1] = (float) atof(cpu_usage->percentage1);
-    j[2] = (float) atof(cpu_usage->percentage2);
-    j[3] = (float) atof(cpu_usage->percentage3);
+    g[0] = (float) atof(cpu_usage->percentage0);
+    g[1] = (float) atof(cpu_usage->percentage1);
+    g[2] = (float) atof(cpu_usage->percentage2);
+    g[3] = (float) atof(cpu_usage->percentage3);
+
 
     for(int i=0;i<4;i++){
-           collection->data[i]=j[i];
+        collection->data[i] = g[i];
        }
 
 
@@ -316,7 +349,8 @@ void network_change_rc(Network *network) {
     float net_kb_rc = (float) network->received_bytes / 1024;
     float net_kb_tr = (float) network->transmited_bytes / 1024;
 
-        collection->data[4]=net_kb_tr;
+
+    collection->data[4] = net_kb_tr;
         collection->data[5]=net_kb_rc;
 
 

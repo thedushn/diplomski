@@ -8,7 +8,7 @@
 #include "common.h"
 
 
-
+pthread_mutex_t mutex_jiff;
 struct DataItem {
     __uint64_t cpu_user;
     __uint64_t cpu_system;

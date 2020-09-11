@@ -29,8 +29,6 @@ errno.h
 -
 sys/socket.h
 -
-pthread.h
--
 
 /home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
 common.h
@@ -53,8 +51,6 @@ memory.h
 -
 sys/socket.h
 -
-pthread.h
--
 
 /home/dushn/Diplomski/diplomski/dserver/devices.h
 common.h
@@ -69,10 +65,10 @@ stdio.h
 -
 stdlib.h
 -
+curses.h
+-
 sys/socket.h
 /home/dushn/Diplomski/diplomski/dserver/sys/socket.h
-pthread.h
-/home/dushn/Diplomski/diplomski/dserver/pthread.h
 interrupts.h
 /home/dushn/Diplomski/diplomski/dserver/interrupts.h
 cpu_usage.h
@@ -108,8 +104,6 @@ stdlib.h
 string.h
 -
 sys/socket.h
--
-pthread.h
 -
 
 /home/dushn/Diplomski/diplomski/dserver/interrupts.h
@@ -161,8 +155,6 @@ sys/socket.h
 -
 stdlib.h
 -
-pthread.h
--
 
 /home/dushn/Diplomski/diplomski/dserver/memory_usage.h
 common.h
@@ -184,8 +176,6 @@ dirent.h
 stdio.h
 -
 sys/socket.h
--
-pthread.h
 -
 
 /home/dushn/Diplomski/diplomski/dserver/network_bandwith.h
@@ -212,8 +202,6 @@ stdlib.h
 dirent.h
 -
 sys/socket.h
--
-pthread.h
 -
 errno.h
 /home/dushn/Diplomski/diplomski/dserver/errno.h
