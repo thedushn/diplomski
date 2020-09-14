@@ -13,7 +13,7 @@ GtkWidget *graph1;
 GtkWidget *graph2;
 GtkWidget *graph3;
 GtkWidget *graph4;
-GtkWidget *graph_static;
+
 
 
 
@@ -29,8 +29,8 @@ void network_change_rc(Network *network);
 
 GtkWidget *main_window(GtkWidget *des_swindow, GtkWidget *proc_swindow);
 
-GtkWidget *create_static_window();
 
-void destroy_static_window(GtkWidget *widget);
+
+
 
 #endif //DIPLOMSKI_WINDOW_H

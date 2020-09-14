@@ -3,6 +3,7 @@
 //
 
 #include "network_bandwith.h"
+#include "functions.h"
 #include <errno.h>
 #include <inttypes.h>
 #include <memory.h>
@@ -38,15 +39,23 @@ void * send_network(void *socket){
 
     if (ret < 0) {
         printf("Error sending data!\n\t");
+        pthread_mutex_unlock(&mutex_send);
         pthread_exit(NULL);
 
     }
     if (ret == 0) {
-        printf("Error sending data!\n\t");
-        printf("socket closed\n");
-        pthread_exit(NULL);
 
+        printf("socket closed\n");
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(NULL);
     }
+//    pthread_mutex_lock(&mutex_send);
+//    if( test_send(sockfd)<=0){
+//
+//        pthread_mutex_unlock(&mutex_send);
+//        pthread_exit(NULL);
+//    }
+//    pthread_mutex_unlock(&mutex_send);
     pthread_exit(NULL);
 }
 

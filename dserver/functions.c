@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <curses.h>
+
 
 #include"sys/socket.h"
 
@@ -42,13 +42,13 @@ ssize_t test_send(int socket) {
         return ret;
     }
     if (ret < sizeof(Data)) {
-        size_t velicina = sizeof(Data);
-        velicina -= ret;
-        while (velicina > 0 || velicina < 0) {
+        size_t length = sizeof(Data);
+        length -= ret;
+        while (length > 0 || length < 0) {
 
 
-            ret = (int) recv(socket, &data, velicina, 0);
-            velicina -= ret;
+            ret = (int) recv(socket, &data, length, 0);
+            length -= ret;
 
             if (ret < 0) {
 
@@ -243,7 +243,7 @@ void *sending(void *socket) {
     pthread_mutex_init(&mutex_jiff,NULL);
     pthread_mutex_init(&mutex_send,NULL);
 
-
+    pthread_cond_init(&cpu_cond,NULL);
     int return_value;
     char buffer[128];
 
@@ -255,7 +255,7 @@ void *sending(void *socket) {
         time1 = time(NULL);
 
         local_time = *localtime(&time1);
-
+        test=false;
 
        pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
 
@@ -327,7 +327,7 @@ void *sending(void *socket) {
 
 
                clean_interrupts();
-               return 0;
+               pthread_exit(NULL);
 
            }
 
@@ -373,10 +373,11 @@ void *sending(void *socket) {
 
 
 
+
    clean_interrupts();
 
 
 
 
-    return 0;
+    pthread_exit(NULL);
 }

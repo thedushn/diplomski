@@ -3,6 +3,7 @@
 //
 
 #include "cpu_usage.h"
+#include "functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,7 +27,7 @@ void * send_cpu(void *socket){
    ssize_t ret=  cpu_percentage(cpu_num, &cpu_usage);
     if (ret < 0) {
         printf("Error getting cpu data!\n\t");
-       exit(1);
+        pthread_exit(NULL);
 
     }
     memset(&data,0,sizeof(Data));
@@ -40,15 +41,23 @@ void * send_cpu(void *socket){
 
     if (ret < 0) {
         printf("Error sending data!\n\t");
+        pthread_mutex_unlock(&mutex_send);
         pthread_exit(NULL);
 
     }
     if (ret == 0) {
 
         printf("socket closed\n");
+        pthread_mutex_unlock(&mutex_send);
         pthread_exit(NULL);
     }
-
+//    pthread_mutex_lock(&mutex_send);
+//   if( test_send(sockfd)<=0){
+//
+//       pthread_mutex_unlock(&mutex_send);
+//       pthread_exit(NULL);
+//   }
+//    pthread_mutex_unlock(&mutex_send);
     pthread_exit(NULL);
 }
 int cpu_number() {
@@ -156,9 +165,10 @@ int cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
             jiffies_total_delta[0] + jiffies_total_delta[1] + jiffies_total_delta[2] + jiffies_total_delta[3];
 
 
-
+        test=true;
 
     pthread_mutex_unlock(&mutex_jiff);
+
 
     if (sprintf(cpu_usage->percentage0, "%f", percentage[0]) < 0) {
 
@@ -240,13 +250,17 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
 
 
 
+
     if (ima == false) {
+
         temp=(struct DataItem *) calloc(1, sizeof(struct DataItem));
+
         if (temp == NULL) {
             free(temp);
             printf("calloc error %d \n", errno);
             return -1;
         }
+
         temp->cpu_user=jiffies_user;
         temp->cpu_system=jiffies_system;
         temp->pid=task->pid;
@@ -262,7 +276,6 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
 
     }
 
-
     if (jiffies_user < old.cpu_user || jiffies_system < old.cpu_system) {
 
 
@@ -272,11 +285,9 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
 
 
 
-
     if (jiffies_total_delta[4] > 0) {
 
-        cpu_user = (float) (( jiffies_user) - (old.cpu_user))* 100 /
-                    (float) (jiffies_total_delta[4]);
+        cpu_user = (float) (( jiffies_user) - (old.cpu_user))* 100 / (float) (jiffies_total_delta[4]);
         cpu_system =(float) ((jiffies_system - old.cpu_system) * 100) / (float) jiffies_total_delta[4];
 
     } else {
@@ -284,7 +295,9 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
         cpu_user = cpu_system = 0;
 
     }
+
     pthread_mutex_unlock(&mutex_jiff);
+
 
     if (sprintf(task->cpu_user, "%f", cpu_user) < 0) {
 

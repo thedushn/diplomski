@@ -19,17 +19,9 @@ int bjorg ;
 guint t;
 
 gint dev_num_old;
-gint dev_num;
-int task_num;
 int task_num_old;
 
-typedef struct _Time_Managment Time_Managment;
 
-struct _Time_Managment {
-
-    double time;
-    Time_Managment *next;
-};
 
 
 typedef struct _Collection Collection;
@@ -45,7 +37,7 @@ D_Collection *devices_old;
 T_Collection *tasks_old;
 Interrupts * interrupts;
 Collection *collection;
-Time_Managment *my_time;
+
 
 #define LIST_SIZE 240
 #define CPU_USAGE 1
@@ -66,9 +58,9 @@ void inc_refresh();
 
 void timeout_refresh();
 
-void device_check(D_Collection *devices_new);
+void device_check(D_Collection *devices_new, int dev_num);
 
-void task_check(T_Collection *tasks_new);
+void task_check(T_Collection *tasks_new, int task_num);
 
 
 

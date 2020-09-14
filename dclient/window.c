@@ -15,36 +15,7 @@ GtkWidget *label_mem;
 GtkWidget *label_swap;
 
 
-GtkWidget *create_static_window() {
 
-    GtkWidget *window1 = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_position(GTK_WINDOW(window1), GTK_WIN_POS_CENTER);
-    gtk_window_set_default_size(GTK_WINDOW(window1), 800, 400);
-
-
-    GtkWidget *hbox;
-    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);
-
-    GtkWidget *frame = gtk_frame_new(NULL);
-    graph_static = gtk_drawing_area_new();
-
-    gtk_container_add(GTK_CONTAINER(frame), graph_static);
-    gtk_box_pack_start(GTK_BOX(hbox), frame, 1, TRUE, 0);
-    gtk_container_add(GTK_CONTAINER(window1), hbox);
-
-    //   gtk_widget_show_all(window1);
-    gtk_window_set_title(GTK_WINDOW(window1), "A slice in time");
-
-
-    return window1;
-
-}
-
-void destroy_static_window(GtkWidget *widget) {
-
-    printf("bye bye\n");
-
-}
 
 GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
@@ -88,14 +59,13 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//cpu labels
     hbox1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph1 graph2 frame1 frame2
-    hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//izmedju graphova
+    hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//in between graphs
     hbox3 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph3 graph4 frame3 frame4
 
     button_inc = gtk_button_new_with_label("refresh rate +");
     button_dec = gtk_button_new_with_label("refresh rate-");
     button_proc = gtk_toggle_button_new_with_label("Process");
     button_dev = gtk_toggle_button_new_with_label("Dev");
-    button_static_stats = gtk_toggle_button_new_with_label("Static");
     button_graph = gtk_toggle_button_new_with_label("graphs");
 
 
@@ -182,12 +152,12 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     frame4 = gtk_frame_new(NULL);
 
 
-    label_rec = gtk_label_new(NULL);//memory
-    label_trans = gtk_label_new(NULL);//swap
+    label_rec = gtk_label_new(NULL);//network_received
+    label_trans = gtk_label_new(NULL);//network_transmitted
     label_cpu0 = gtk_label_new(NULL);//cpu1
 
-    label_mem = gtk_label_new(NULL);//network_received
-    label_swap = gtk_label_new(NULL);//network_transmitted
+    label_mem = gtk_label_new(NULL);//memory
+    label_swap = gtk_label_new(NULL);//swap
 
 
 
@@ -201,7 +171,6 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
 
     gtk_box_pack_start(GTK_BOX(hbox), button_dev, 0, 0, 0);
-    gtk_box_pack_start(GTK_BOX(hbox), button_static_stats, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(hbox), button_graph, 0, 0, 0);
 
     gtk_box_pack_start(GTK_BOX(hbox), label_cpu0, 0, 0, 0);
@@ -318,16 +287,6 @@ void cpu_change(Cpu_usage *cpu_usage) {
     for(int i=0;i<4;i++){
         collection->data[i] = g[i];
        }
-
-
-
-
-
-
-
-
-
-
 
     gchar *cpu0_usage_text = g_strdup_printf(("CPU%s: %.4s%% CPU%s: %.4s%%CPU%s: %.4s%%CPU%s: %.4s%%"),
                                              "0", cpu_usage->percentage0,

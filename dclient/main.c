@@ -10,7 +10,7 @@
 #include <assert.h>
 #include <inttypes.h>
 #include "functions.h"
-#include "writting.h"
+
 
 
 GtkWidget *window;
@@ -29,21 +29,21 @@ static guint time_step = 0;
 
 
 
-gboolean on_draw_event(GtkWidget *widget, cairo_t *cr,void *p) {
+gboolean on_draw_event(GtkWidget *widget, cairo_t *cr) {
 
 
     if (widget == graph1) {
 
-        do_drawing_cpu(widget, cr, time_step, CPU0_line, CPU1_line, CPU2_line, CPU3_line, (Collection*)p);
+        do_drawing_cpu(widget, cr, time_step, CPU0_line, CPU1_line, CPU2_line, CPU3_line, collection);
     } else if (widget == graph2) {
 
-        do_drawing_net(widget, cr, time_step, (Collection*)p);
+        do_drawing_net(widget, cr, time_step, collection);
     } else if (widget == graph3) {
 
-        do_drawing_mem(widget, cr, time_step, (Collection*)p);
+        do_drawing_mem(widget, cr, time_step, collection);
     } else {
 
-        do_drawing_int(widget, cr, (Interrupts*)p);
+        do_drawing_int(widget, cr, interrupts);
 
     }
 
@@ -177,7 +177,7 @@ int connection(char *argv1, char *argv2) {
     return socketfd;
 }
 
-void task_check(T_Collection *tasks_new) {
+void task_check(T_Collection *tasks_new, int task_num) {
     int i, j;
     /*tasks */
     T_Collection *rem_task_old = tasks_old;
@@ -347,13 +347,13 @@ void task_check(T_Collection *tasks_new) {
 
 }
 
-void device_check(D_Collection *devices_new) {
+void device_check(D_Collection *devices_new, int dev_num) {
     int i, j;
-    //    /*devices */
+
     D_Collection *rem_old = devices_old;
     D_Collection *rem_new = devices_new;
     //refreshing data
-    for (i = 0; i < dev_num_old; i++) //uzimamo element niza
+    for (i = 0; i < dev_num_old; i++)
     {
         Devices *tmp = &devices_old->devices;
         assert(tmp);
@@ -500,8 +500,8 @@ gboolean init_timeout() {
 
     int ret;
 
-    dev_num = 0;//in the begging its zero
-    task_num = 0;
+  int  dev_num = 0;//in the begging its zero
+  int  task_num = 0;
 
 
     Cpu_usage cpu_usage1 = {0};
@@ -511,6 +511,7 @@ gboolean init_timeout() {
     D_Collection *devices_new = NULL;
     D_Collection *rem_new;
     T_Collection *rem_task_new;
+    Collection *temp_collection;
 
 
     ret = data_transfer(newsockfd, &cpu_usage1, &network, &memory_usage, &tasks_new, &devices_new, &task_num, &dev_num);
@@ -548,77 +549,88 @@ gboolean init_timeout() {
 
         }
 
+        if(refresh>0)
+            g_source_remove(refresh);
 
+        gtk_main_quit();
         return FALSE;
     }
-    interrupts_write(interrupts);
-    cpu_write(cpu_usage1);
-
-    device_check(devices_new);
-
-    task_check(tasks_new);
 
 
+    device_check(devices_new, dev_num);
+
+    task_check(tasks_new, task_num);
+
+    temp_collection = (Collection *) calloc(1, sizeof(Collection));
+
+    if (temp_collection == NULL) {
+
+        printf("calloc error %d \n", errno);
+        free(temp_collection);
+
+        for(int g=0;g<dev_num;g++){
+
+            // save reference to first link
+            rem_new = devices_new;
+
+            //mark next to first link as first
+            devices_new = devices_new->next;
+
+            //return the deleted link
+            free(rem_new);
+
+        }
 
 
+        for(int g=0;g<task_num;g++){
+
+            // save reference to first link
+            rem_task_new = tasks_new;
+
+            //mark next to first link as first
+            tasks_new = tasks_new->next;
+
+            //return the deleted link
+            free(rem_task_new);
+
+        }
+        if(refresh>0)
+        g_source_remove(refresh);
+
+        gtk_main_quit();
+       return FALSE;
+    }
 
 
+    //point it to old first node
+    temp_collection->next = collection;
+    //point first to new first node
+    collection = temp_collection;
 
 
 
     if (bjorg < LIST_SIZE) {
         bjorg++;
     }
-    time_step = 60000 / t;
-
-    Time_Managment *temp_time = calloc(1, sizeof(Time_Managment));
-    if (temp_time == NULL) {
 
 
-        return FALSE;
-    }
 
-    temp_time->time = t;
-    temp_time->next = my_time;
-    my_time = temp_time;
     if (bjorg >= LIST_SIZE) {
-        temp_time = my_time;
 
-        for (int i = 0; i < LIST_SIZE; i++) {
+        temp_collection = collection;
 
-            temp_time = temp_time->next;
+        for (int g = 0; g < LIST_SIZE; g++) {
+            collection = collection->next;
 
         }
-        free(temp_time);
-        temp_time = NULL;
+
+        free(collection);
+        collection = NULL;
+        collection = temp_collection;
 
     }
 
-    Collection *temp1;
-    temp1 = collection;
-    Collection prev;
-    Collection current;
-    for (int g = 0; g < 8; g++) {
-        prev.data[g] = temp1->data[g];
-    }
-    temp1 = temp1->next;
 
-    for (int g = 0; g < 8; g++) {
-        current.data[g] = temp1->data[g];
-        temp1->data[g] = prev.data[g];
-    }
-    for (int g = 1; g < LIST_SIZE; g++) {
-
-        for (int x = 0; x < 8; x++) {
-            prev.data[x] = current.data[x];
-        }
-        temp1 = temp1->next;
-        for (int x = 0; x < 8; x++) {
-            current.data[x] = temp1->data[x];
-            temp1->data[x] = prev.data[x];
-        }
-
-    }
 
 
     cpu_change(&cpu_usage1);
@@ -654,7 +666,7 @@ gboolean init_timeout() {
      }
 
 
-
+    time_step = 60000 / t;
 
     gtk_widget_queue_draw(window);
 
@@ -686,44 +698,17 @@ destroy_window(void) {
 
 
 
-
 int main(int argc, char *argv[]) {
 
         bjorg=0;
-    t = 2000;
+        t = 2000;
+
+    T_Collection *rem_tmp_task;
+    D_Collection *rem_tmp;
     Collection *temp;
-    Time_Managment *rem_tmp_time;
-    int number = 0;
-    int step_counter = 0;
-    cpu_read(&temp, &rem_tmp_time, &number, &step_counter);
-
-    char *string = "24.889627 26.100063 25.005514 25.736818";
-
-    float f[4];
-    sscanf(string, "%f %f %f %f ", &f[0], &f[1], &f[2], &f[3]);
-
-
-    long ms; // Milliseconds
-    time_t s;  // Seconds
-    struct timespec spec;
-
-    clock_gettime(CLOCK_REALTIME, &spec);
-
-    s = spec.tv_sec;
-    ms = round(spec.tv_nsec / 1.0e6); // Convert nanoseconds to milliseconds
-    if (ms > 999) {
-        s++;
-        ms = 0;
-    }
-
-    printf("Current time: %"PRIdMAX".%03ld seconds since the Epoch\n",
-           (intmax_t) s, ms);
 
 
 
-
-
-////circular list
     if (argc < 3) {
 
         printf("port not provided \n");
@@ -763,27 +748,7 @@ int main(int argc, char *argv[]) {
 
 
 
-    //circular list
 
-    temp = (Collection *) calloc(1, sizeof(Collection));
-
-    collection = temp;
-
-    // Create the link.
-    collection->next = collection;
-
-
-    for (int i = 1; i < LIST_SIZE; i++) {
-        temp = (Collection *) calloc(1, sizeof(Collection));
-
-
-        temp->next = collection->next;
-
-
-        collection->next = temp;
-
-
-    }
 
 
 
@@ -809,10 +774,7 @@ int main(int argc, char *argv[]) {
     g_signal_connect(button_inc, "clicked", G_CALLBACK(inc_refresh), NULL);
     g_signal_connect(button_dec, "clicked", G_CALLBACK(dec_refresh), NULL);
     g_signal_connect(button_proc, "toggled", G_CALLBACK(button_clicked_view_process), NULL);
-    g_signal_connect(button_static_stats, "toggled", G_CALLBACK(button_static_pressed), NULL);
 
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_static_stats),
-                                 FALSE);
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_proc),
                                  TRUE);
@@ -827,10 +789,13 @@ int main(int argc, char *argv[]) {
                               NULL);
 
 
-    g_signal_connect_data((GObject *) (graph1),"draw",G_CALLBACK(on_draw_event),collection,NULL,0);
-    g_signal_connect_data((GObject *) (graph2),"draw",G_CALLBACK(on_draw_event),collection,NULL,0);
-    g_signal_connect_data((GObject *) (graph3),"draw",G_CALLBACK(on_draw_event),collection,NULL,0);
-    g_signal_connect_data((GObject *) (graph4),"draw",G_CALLBACK(on_draw_event),interrupts,NULL,0);
+
+    g_signal_connect_data((GObject *) (graph1),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
+    g_signal_connect_data((GObject *) (graph2),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
+    g_signal_connect_data((GObject *) (graph3),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
+    g_signal_connect_data((GObject *) (graph4),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
+
+
 
 
     g_signal_connect (window, "destroy", G_CALLBACK(destroy_window), NULL);
@@ -838,23 +803,23 @@ int main(int argc, char *argv[]) {
                       G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect ((GObject *)(device_swindow), "destroy",
                       G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(entry, "activate", G_CALLBACK(printerino), NULL);
+    g_signal_connect(entry, "activate", G_CALLBACK(input_command), NULL);
 
 
     init_timeout();
 
 
     gtk_main();
+
     gtk_tree_store_clear(list_store);
     gtk_tree_store_clear(list_store1);
 
-    if (refresh > 0) {
-        g_source_remove(refresh);
-
-    }
 
 
-    for (int i = 0; i < LIST_SIZE; i++) {
+
+    free(interrupts);
+
+    for (int i = 0; i < bjorg; i++) {
         // save reference to first link
         temp = collection;
 
@@ -867,9 +832,9 @@ int main(int argc, char *argv[]) {
     }
 
 
-    free(interrupts);
 
-    D_Collection *rem_tmp;
+
+
     for(int k=0;k<dev_num_old;k++){
         // save reference to first link
         rem_tmp = devices_old;
@@ -882,7 +847,7 @@ int main(int argc, char *argv[]) {
 
     }
 
-    T_Collection *rem_tmp_task;
+
     for(int k=0;k<task_num_old;k++){
         // save reference to first link
         rem_tmp_task = tasks_old;
@@ -896,17 +861,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    for (int k = 0; k < bjorg; k++) {
-        // save reference to first link
-        rem_tmp_time = my_time;
 
-        //mark next to first link as first
-        my_time = my_time->next;
-
-        //return the deleted link
-        free(rem_tmp_time);
-
-    }
 
 
 

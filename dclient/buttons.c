@@ -210,30 +210,18 @@ void button_clicked_view_process(GtkWidget *widget) {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
-        //  show_hide(widget, process_swindow);
-
 
         gtk_widget_show_all(process_swindow);
 
 
     } else {
 
-
         show_hide(widget, process_swindow);
 
     }
 }
 
-void button_static_pressed(GtkWidget *widget) {
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
-        static_window = create_static_window();
-        gtk_widget_show_all(static_window);
-
-
-    }
-
-}
 
 void dev_button_clicked2(GtkWidget *widget) {
 
@@ -273,7 +261,7 @@ void close_window2(GtkWidget *widget) {
 
 void start_stop(int show, char *signal, char *task_id) {
     int ret;
-    char buffer[1600];
+    char buffer[1500];
 
     memset(buffer, 0, sizeof(buffer));
 
@@ -628,20 +616,11 @@ void graph_clicked(GtkWidget *widget) {
 void show_hide(GtkWidget *button, GtkWidget *window) {
 
 
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (button)) != FALSE) {//ako je button toggled
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (button)) != FALSE) {
 
 
 
         gtk_widget_show(window);
-//        if (window == dev_swindow) {
-//
-//            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_proc), FALSE); //postavljamo butto_proc na not toggled
-//            gtk_widget_hide(process_swindow);
-//        } else {
-//
-//            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_dev), FALSE); //postavljamo butto_proc na not toggled
-//            gtk_widget_hide(dev_swindow);
-//        }
 
     } else {
 
@@ -686,7 +665,7 @@ void handle_task_prio(GtkWidget *widget, char *signal) {
             if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
                 gtk_tree_model_get(model, &iter, 1, &task_id, -1);
                 start_stop(0, signal, task_id);
-                init_timeout();
+
             }
         }
     }

@@ -55,6 +55,6 @@ void writing_interrupts(cairo_t *cr, double font_size, double length, int i, con
 void draw_graph(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step, float max_num,
                 Collection *array);
 
-int cpu_read(Collection **array, Time_Managment **time_managment, int *number, int *step_counter);
+
 #endif //DIPLOMSKI_DRAWING_H
 

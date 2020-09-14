@@ -3,6 +3,7 @@
 //
 
 #include "devices.h"
+#include "functions.h"
 
 #include <errno.h>
 #include <stdlib.h>
@@ -11,6 +12,7 @@
 #include <sys/statvfs.h>
 #include <memory.h>
 #include <sys/socket.h>
+
 
 void * send_devices(void *socket){
 
@@ -86,6 +88,29 @@ void * send_devices(void *socket){
             }
            pthread_exit(NULL);
         }
+
+
+
+//        pthread_mutex_lock(&mutex_send);
+//        if( test_send(sockfd)<=0){
+//
+//            pthread_mutex_unlock(&mutex_send);
+//            for(int k=0;k<device_num;k++){
+//                // save reference to first link
+//                temp_dev = devices_c;
+//
+//                //mark next to first link as first
+//                devices_c = devices_c->next;
+//
+//                //return the deleted link
+//                free(temp_dev);
+//
+//            }
+//
+//            pthread_exit(NULL);
+//        }
+//        pthread_mutex_unlock(&mutex_send);
+
         temp_dev=temp_dev->next;
 
 

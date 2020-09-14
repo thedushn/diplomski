@@ -11,9 +11,9 @@
 #include"sys/socket.h"
 #include "main_header.h"
 
-void printerino() {
+void input_command() {
 
-    printf("we are in you pressed enter\n");
+
     const gchar *text = gtk_entry_get_text(GTK_ENTRY(entry));
     g_print("Command %s  \n", text);
     command_sender((char *) text);
@@ -62,13 +62,13 @@ ssize_t test_send(int socket) {
         return ret;
     }
     if (ret < sizeof(Data)) {
-        size_t velicina = sizeof(Data);
-        velicina -= ret;
-        while (velicina > 0 || velicina < 0) {
+        size_t length = sizeof(Data);
+        length -= ret;
+        while (length > 0 || length < 0) {
 
 
-            ret = (int) recv(socket, &data, velicina, 0);
-            velicina -= ret;
+            ret = (int) recv(socket, &data, length, 0);
+            length -= ret;
 
             if (ret < 0) {
 
@@ -105,7 +105,7 @@ ssize_t test_recv(int socket) {
     memset(data.unification.conformation,0,sizeof(data.unification.conformation));
     strcpy(data.unification.conformation,"everything came");
     ret = send(socket, &data, sizeof(Data), 0);
-    //  ret = send(socket, buffer, 64, 0);
+
 
     if (ret < 0) {
 
@@ -138,7 +138,9 @@ data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage 
     while (1){
         Data data;
         memset(&data,0,sizeof(Data));
+
         ret = recv(socket, &data, sizeof(Data), flag);
+
         if (ret < 0) {
 
             printf("error receiving data\n %d", (int) ret);
@@ -229,7 +231,9 @@ data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage 
                     return 0;
 
             default:
-                break;
+                return -1;
+
+
         }
 
     }

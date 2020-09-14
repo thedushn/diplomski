@@ -155,12 +155,6 @@
 		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/window.h">
 			<Option target="client"/>
 		</Unit>
-		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/writting.c">
-			<Option target="client"/>
-		</Unit>
-		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/writting.h">
-			<Option target="client"/>
-		</Unit>
 		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

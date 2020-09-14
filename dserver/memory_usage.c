@@ -3,6 +3,7 @@
 //
 
 #include "memory_usage.h"
+#include "functions.h"
 #include <inttypes.h>
 #include <memory.h>
 #include <stdio.h>
@@ -11,7 +12,7 @@
 
 void * send_memory(void *socket){
 
-    int sockfd=*((int*)socket);
+    int sockfd=(*(int*)socket);
     ssize_t ret;
     Memory_usage  memory_usage={0};
     Data data={0};
@@ -24,20 +25,29 @@ void * send_memory(void *socket){
 
     pthread_mutex_lock(&mutex_send);
     ret = send(sockfd, &data, sizeof(Data), 0);
-    pthread_mutex_unlock(&mutex_send);
-
-
     if (ret < 0) {
         printf("Error sending data!\n\t");
+        pthread_mutex_unlock(&mutex_send);
         pthread_exit(NULL);
 
     }
     if (ret == 0) {
 
         printf("socket closed\n");
+        pthread_mutex_unlock(&mutex_send);
         pthread_exit(NULL);
     }
-    pthread_exit(socket);
+//   if((ret=test_send(sockfd))<=0){
+//
+//       pthread_mutex_unlock(&mutex_send);
+//       pthread_exit(NULL);
+//   }
+//
+    pthread_mutex_unlock(&mutex_send);
+
+
+
+    pthread_exit(NULL);
 }
 
 void get_memory_usage(Memory_usage *memory_usage) {

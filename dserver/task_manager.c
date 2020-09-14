@@ -94,6 +94,26 @@ void * send_task(void *socket){
             }
             pthread_exit(NULL);
         }
+//
+//        pthread_mutex_lock(&mutex_send);
+//        if( test_send(sockfd)<=0){
+//
+//            pthread_mutex_unlock(&mutex_send);
+//            for(int k=0;k<task_num;k++){
+//                // save reference to first link
+//                temp_task = tasks;
+//
+//                //mark next to first link as first
+//                tasks = tasks->next;
+//
+//                //return the deleted link
+//                free(temp_task);
+//
+//
+//            }
+//            pthread_exit(NULL);
+//        }
+//        pthread_mutex_unlock(&mutex_send);
         temp_task=temp_task->next;
 
 
@@ -311,7 +331,8 @@ void * get_task_details2(void *ptr) {
         result=1;
         thread_task->result=result;
 
-       pthread_exit(&thread_task->result);
+
+        pthread_exit(NULL);
     }
 
     fclose(file);
@@ -397,7 +418,8 @@ void * get_task_details2(void *ptr) {
     result= get_cpu_percent(jiffies_user, jiffies_system, thread_task->task);
     if (result == -1  ) {
         thread_task->result=result;
-        pthread_exit(&thread_task->result);
+
+        pthread_exit(NULL);
     }
 
 
@@ -447,7 +469,9 @@ void * get_task_details2(void *ptr) {
     thread_task->task->checked = false;
 
     thread_task->result=result;
-    pthread_exit(&thread_task->result);
+
+    pthread_exit(NULL);
+
 }
 int get_task_list2(T_Collection **array, __int32_t *task_num) {
 
@@ -490,7 +514,7 @@ int get_task_list2(T_Collection **array, __int32_t *task_num) {
 
             if((result=pthread_create(&tp->pthread,NULL,get_task_details2,tp))!=0){
                 strerror_r(result,buffer,sizeof(buffer));
-                fprintf(stderr,"error = %d (%s)\n",result,buffer);
+                fprintf(stderr,"pthread_create: error = %d (%s)\n",result,buffer);
                 closedir(dir);
                 (*task_num)--;
                 free(task_temp);
@@ -537,12 +561,19 @@ int get_task_list2(T_Collection **array, __int32_t *task_num) {
 
        }
 
+        if(tp->result!=0){
+            printf("%d \n",tp->result);
+        }
         tp=tp->next;
 
     }
 
     for(int j=0;j<thread_num;j++){
         tp=thread_task_main;
+        if(tp->result!=0){
+            printf("%d \n",tp->result);
+        }
+
         free(tp);
         thread_task_main=thread_task_main->next;
 

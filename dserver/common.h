@@ -21,6 +21,9 @@
 #define TEXT 7
 
 pthread_mutex_t mutex_send;
+pthread_cond_t cpu_cond;
+
+bool test;
 
 
 struct __attribute__((__packed__))tm1 {

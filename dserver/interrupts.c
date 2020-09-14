@@ -3,6 +3,7 @@
 //
 
 #include "interrupts.h"
+#include "functions.h"
 
 #include <errno.h>
 #include <inttypes.h>
@@ -91,6 +92,14 @@ void * send_interrupts(void *socket){
             printf("socket closed\n");
             break;
         }
+
+//        pthread_mutex_lock(&mutex_send);
+//        if( test_send(sockfd)<=0){
+//
+//            break;
+//        }
+//        pthread_mutex_unlock(&mutex_send);
+
 
 
     }
