@@ -43,10 +43,10 @@ RM = /home/dushn/clion/clion-2017.1.3/bin/cmake/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/dushn/Diplomski/dclient
+CMAKE_SOURCE_DIR = /home/dushn/Diplomski/diplomski/dclient
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/dushn/Diplomski/dclient/cmake-build-debug
+CMAKE_BINARY_DIR = /home/dushn/Diplomski/diplomski/dclient/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/client.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/client.dir/flags.make
 
 CMakeFiles/client.dir/main.c.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/main.c.o: ../main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/client.dir/main.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/main.c.o   -c /home/dushn/Diplomski/dclient/main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/client.dir/main.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/main.c.o   -c /home/dushn/Diplomski/diplomski/dclient/main.c
 
 CMakeFiles/client.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/client.dir/main.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/dclient/main.c > CMakeFiles/client.dir/main.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/diplomski/dclient/main.c > CMakeFiles/client.dir/main.c.i
 
 CMakeFiles/client.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/client.dir/main.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/dclient/main.c -o CMakeFiles/client.dir/main.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/diplomski/dclient/main.c -o CMakeFiles/client.dir/main.c.s
 
 CMakeFiles/client.dir/main.c.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/client.dir/main.c.o.provides.build: CMakeFiles/client.dir/main.c.o
 
 CMakeFiles/client.dir/drawing.c.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/drawing.c.o: ../drawing.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/client.dir/drawing.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/drawing.c.o   -c /home/dushn/Diplomski/dclient/drawing.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/client.dir/drawing.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/drawing.c.o   -c /home/dushn/Diplomski/diplomski/dclient/drawing.c
 
 CMakeFiles/client.dir/drawing.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/client.dir/drawing.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/dclient/drawing.c > CMakeFiles/client.dir/drawing.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/diplomski/dclient/drawing.c > CMakeFiles/client.dir/drawing.c.i
 
 CMakeFiles/client.dir/drawing.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/client.dir/drawing.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/dclient/drawing.c -o CMakeFiles/client.dir/drawing.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/diplomski/dclient/drawing.c -o CMakeFiles/client.dir/drawing.c.s
 
 CMakeFiles/client.dir/drawing.c.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/client.dir/drawing.c.o.provides.build: CMakeFiles/client.dir/drawing.
 
 CMakeFiles/client.dir/buttons.c.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/buttons.c.o: ../buttons.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/client.dir/buttons.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/buttons.c.o   -c /home/dushn/Diplomski/dclient/buttons.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/client.dir/buttons.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/buttons.c.o   -c /home/dushn/Diplomski/diplomski/dclient/buttons.c
 
 CMakeFiles/client.dir/buttons.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/client.dir/buttons.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/dclient/buttons.c > CMakeFiles/client.dir/buttons.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/diplomski/dclient/buttons.c > CMakeFiles/client.dir/buttons.c.i
 
 CMakeFiles/client.dir/buttons.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/client.dir/buttons.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/dclient/buttons.c -o CMakeFiles/client.dir/buttons.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/diplomski/dclient/buttons.c -o CMakeFiles/client.dir/buttons.c.s
 
 CMakeFiles/client.dir/buttons.c.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/client.dir/buttons.c.o.provides.build: CMakeFiles/client.dir/buttons.
 
 CMakeFiles/client.dir/functions.c.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/functions.c.o: ../functions.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/client.dir/functions.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/functions.c.o   -c /home/dushn/Diplomski/dclient/functions.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/client.dir/functions.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/functions.c.o   -c /home/dushn/Diplomski/diplomski/dclient/functions.c
 
 CMakeFiles/client.dir/functions.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/client.dir/functions.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/dclient/functions.c > CMakeFiles/client.dir/functions.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/diplomski/dclient/functions.c > CMakeFiles/client.dir/functions.c.i
 
 CMakeFiles/client.dir/functions.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/client.dir/functions.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/dclient/functions.c -o CMakeFiles/client.dir/functions.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/diplomski/dclient/functions.c -o CMakeFiles/client.dir/functions.c.s
 
 CMakeFiles/client.dir/functions.c.o.requires:
 
@@ -155,16 +155,16 @@ CMakeFiles/client.dir/functions.c.o.provides.build: CMakeFiles/client.dir/functi
 
 CMakeFiles/client.dir/window.c.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/window.c.o: ../window.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/client.dir/window.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/window.c.o   -c /home/dushn/Diplomski/dclient/window.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/client.dir/window.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/window.c.o   -c /home/dushn/Diplomski/diplomski/dclient/window.c
 
 CMakeFiles/client.dir/window.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/client.dir/window.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/dclient/window.c > CMakeFiles/client.dir/window.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/diplomski/dclient/window.c > CMakeFiles/client.dir/window.c.i
 
 CMakeFiles/client.dir/window.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/client.dir/window.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/dclient/window.c -o CMakeFiles/client.dir/window.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/diplomski/dclient/window.c -o CMakeFiles/client.dir/window.c.s
 
 CMakeFiles/client.dir/window.c.o.requires:
 
@@ -179,16 +179,16 @@ CMakeFiles/client.dir/window.c.o.provides.build: CMakeFiles/client.dir/window.c.
 
 CMakeFiles/client.dir/testing_tree.c.o: CMakeFiles/client.dir/flags.make
 CMakeFiles/client.dir/testing_tree.c.o: ../testing_tree.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/client.dir/testing_tree.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/testing_tree.c.o   -c /home/dushn/Diplomski/dclient/testing_tree.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/client.dir/testing_tree.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/testing_tree.c.o   -c /home/dushn/Diplomski/diplomski/dclient/testing_tree.c
 
 CMakeFiles/client.dir/testing_tree.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/client.dir/testing_tree.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/dclient/testing_tree.c > CMakeFiles/client.dir/testing_tree.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/diplomski/dclient/testing_tree.c > CMakeFiles/client.dir/testing_tree.c.i
 
 CMakeFiles/client.dir/testing_tree.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/client.dir/testing_tree.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/dclient/testing_tree.c -o CMakeFiles/client.dir/testing_tree.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/diplomski/dclient/testing_tree.c -o CMakeFiles/client.dir/testing_tree.c.s
 
 CMakeFiles/client.dir/testing_tree.c.o.requires:
 
@@ -201,30 +201,6 @@ CMakeFiles/client.dir/testing_tree.c.o.provides: CMakeFiles/client.dir/testing_t
 CMakeFiles/client.dir/testing_tree.c.o.provides.build: CMakeFiles/client.dir/testing_tree.c.o
 
 
-CMakeFiles/client.dir/interrupts.c.o: CMakeFiles/client.dir/flags.make
-CMakeFiles/client.dir/interrupts.c.o: ../interrupts.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/client.dir/interrupts.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/client.dir/interrupts.c.o   -c /home/dushn/Diplomski/dclient/interrupts.c
-
-CMakeFiles/client.dir/interrupts.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/client.dir/interrupts.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/dushn/Diplomski/dclient/interrupts.c > CMakeFiles/client.dir/interrupts.c.i
-
-CMakeFiles/client.dir/interrupts.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/client.dir/interrupts.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/dushn/Diplomski/dclient/interrupts.c -o CMakeFiles/client.dir/interrupts.c.s
-
-CMakeFiles/client.dir/interrupts.c.o.requires:
-
-.PHONY : CMakeFiles/client.dir/interrupts.c.o.requires
-
-CMakeFiles/client.dir/interrupts.c.o.provides: CMakeFiles/client.dir/interrupts.c.o.requires
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/interrupts.c.o.provides.build
-.PHONY : CMakeFiles/client.dir/interrupts.c.o.provides
-
-CMakeFiles/client.dir/interrupts.c.o.provides.build: CMakeFiles/client.dir/interrupts.c.o
-
-
 # Object files for target client
 client_OBJECTS = \
 "CMakeFiles/client.dir/main.c.o" \
@@ -232,8 +208,7 @@ client_OBJECTS = \
 "CMakeFiles/client.dir/buttons.c.o" \
 "CMakeFiles/client.dir/functions.c.o" \
 "CMakeFiles/client.dir/window.c.o" \
-"CMakeFiles/client.dir/testing_tree.c.o" \
-"CMakeFiles/client.dir/interrupts.c.o"
+"CMakeFiles/client.dir/testing_tree.c.o"
 
 # External object files for target client
 client_EXTERNAL_OBJECTS =
@@ -244,10 +219,9 @@ client: CMakeFiles/client.dir/buttons.c.o
 client: CMakeFiles/client.dir/functions.c.o
 client: CMakeFiles/client.dir/window.c.o
 client: CMakeFiles/client.dir/testing_tree.c.o
-client: CMakeFiles/client.dir/interrupts.c.o
 client: CMakeFiles/client.dir/build.make
 client: CMakeFiles/client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -261,7 +235,6 @@ CMakeFiles/client.dir/requires: CMakeFiles/client.dir/buttons.c.o.requires
 CMakeFiles/client.dir/requires: CMakeFiles/client.dir/functions.c.o.requires
 CMakeFiles/client.dir/requires: CMakeFiles/client.dir/window.c.o.requires
 CMakeFiles/client.dir/requires: CMakeFiles/client.dir/testing_tree.c.o.requires
-CMakeFiles/client.dir/requires: CMakeFiles/client.dir/interrupts.c.o.requires
 
 .PHONY : CMakeFiles/client.dir/requires
 
@@ -270,6 +243,6 @@ CMakeFiles/client.dir/clean:
 .PHONY : CMakeFiles/client.dir/clean
 
 CMakeFiles/client.dir/depend:
-	cd /home/dushn/Diplomski/dclient/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/dushn/Diplomski/dclient /home/dushn/Diplomski/dclient /home/dushn/Diplomski/dclient/cmake-build-debug /home/dushn/Diplomski/dclient/cmake-build-debug /home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/dushn/Diplomski/diplomski/dclient/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/dushn/Diplomski/diplomski/dclient /home/dushn/Diplomski/diplomski/dclient /home/dushn/Diplomski/diplomski/dclient/cmake-build-debug /home/dushn/Diplomski/diplomski/dclient/cmake-build-debug /home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/client.dir/depend
 

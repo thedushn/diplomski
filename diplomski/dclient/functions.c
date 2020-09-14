@@ -3,23 +3,109 @@
 //
 
 #include "functions.h"
-#include"stdio.h"
 
 #include <memory.h>
+#include <stdlib.h>
+#include <errno.h>
 
 #include"sys/socket.h"
+#include "main_header.h"
 
-#include "functions.h"
+void input_command() {
 
+
+    const gchar *text = gtk_entry_get_text(GTK_ENTRY(entry));
+    g_print("Command %s  \n", text);
+    command_sender((char *) text);
+
+};
+
+int command_sender(char *text) {
+    int ret;
+    char buffer[1500];
+    strcpy(buffer, "COMMAND");
+    strncat(buffer, " ", sizeof(buffer));
+    strncat(buffer, text, sizeof(buffer));
+    ret = (int) send(newsockfd1, &buffer, sizeof(buffer), 0);
+    if (ret < 0) {
+
+        printf("command did not get sent \n");
+        gtk_main_quit();
+
+
+    }
+    if (ret == 0) {
+
+        printf("command did not get sent \n");
+        printf("socket closed\n");
+        gtk_main_quit();
+
+
+    }
+    return ret;
+}
+ssize_t test_send(int socket) {
+
+    ssize_t ret = 0;
+    Data data;
+    memset(&data,0,sizeof(Data));
+    ret = recv(socket, &data, sizeof(Data), 0);
+
+    if (ret < 0) {
+
+        printf("error receiving data\n %d", (int) ret);
+        return ret;
+    }
+    if (ret == 0) {
+
+        printf("socket closed\n");
+        return ret;
+    }
+    if (ret < sizeof(Data)) {
+        size_t length = sizeof(Data);
+        length -= ret;
+        while (length > 0 || length < 0) {
+
+
+            ret = (int) recv(socket, &data, length, 0);
+            length -= ret;
+
+            if (ret < 0) {
+
+                printf("error receiving data\n %d", (int) ret);
+                return ret;
+            }
+            if (ret == 0) {
+
+                printf("socket closed\n");
+                return ret;
+            }
+
+        }
+    }
+    if (strcmp(data.unification.conformation, "everything came") != 0) {
+
+        printf("conformation didn't get received  \n");
+
+        return -1;
+    }
+
+    return sizeof(Data);
+};
 
 ssize_t test_recv(int socket) {
 
 
     char buffer[64];
-    ssize_t ret = 0;
+    ssize_t ret ;
     memset(buffer, 0, 64);
-    strcpy(buffer, "stiglo sve");
-    ret = send(socket, buffer, 64, 0);
+    strcpy(buffer, "everything came");
+    Data data;
+    data.size=TEXT;
+    memset(data.unification.conformation,0,sizeof(data.unification.conformation));
+    strcpy(data.unification.conformation,"everything came");
+    ret = send(socket, &data, sizeof(Data), 0);
+
 
     if (ret < 0) {
 
@@ -34,244 +120,126 @@ ssize_t test_recv(int socket) {
     }
 
 
-    return 64;
+    return ret;
 
-};
+}
 
-void primanje3(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage, GArray *array_devices,
-               GArray *array_int, GArray *array_tasks
-) {
+int
+data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage,
+              T_Collection **task_array, D_Collection **devices_array, int *task_num, int *dev_num) {
 
 
     int flag = MSG_WAITALL;
-    Task task;
-    Devices devices;
-    Interrupts interrupts;
     ssize_t ret;
-    __int32_t num = 0;
 
+    T_Collection *temp_task_array;
+    D_Collection *temp_device_array;
+    Interrupts *temp=interrupts;
+    while (1){
+        Data data;
+        memset(&data,0,sizeof(Data));
 
-    ///memorija
-    ret = recv(socket, memory_usage, sizeof(Memory_usage), flag);
-    if (ret < 0) {
-
-        printf("error receiving data\n %d", (int) ret);
-        gtk_main_quit();
-    }
-    if (ret == 0) {
-
-        printf("error receiving data\n %d", (int) ret);
-        printf("socket closed\n");
-        gtk_main_quit();
-    }
-
-
-    ret = test_recv(socket);
-    if (ret < 0) {
-
-        printf("error sending data\n %d", (int) ret);
-        gtk_main_quit();
-    }
-    if (ret == 0) {
-
-        printf("error sending data\n %d", (int) ret);
-        printf("socket closed\n");
-        gtk_main_quit();
-    }
-    ///kraj memorije
-
-    ///cpu_usage
-    ret = recv(socket, cpu_usage1, sizeof(Cpu_usage), flag);
-    if (ret < 0) {
-        printf("Error receiving data!\n");
-        gtk_main_quit();
-
-    }
-    if (ret == 0) {
-
-        printf("error sending data\n %d", (int) ret);
-        printf("socket closed\n");
-        gtk_main_quit();
-    }
-
-    ret = test_recv(socket);
-    if (ret < 0) {
-
-        printf("error receiving data\n %d", (int) ret);
-        gtk_main_quit();
-    }
-    if (ret == 0) {
-
-        printf("error sending data\n %d", (int) ret);
-        printf("socket closed\n");
-        gtk_main_quit();
-    }
-
-
-
-    ///kraj cpu_usage
-
-    ///network
-    ret = recv(socket, network, sizeof(Network), flag);
-    if (ret < 0) {
-        printf("Error receiving num_packets!\n\t");
-
-        gtk_main_quit();
-
-    }
-    if (ret == 0) {
-
-        printf("error sending data\n %d", (int) ret);
-        printf("socket closed\n");
-        gtk_main_quit();
-    }
-
-    ret = test_recv(socket);
-    if (ret < 0) {
-
-        printf("error receiving data\n %d", (int) ret);
-        gtk_main_quit();
-    }
-    if (ret == 0) {
-
-        printf("error sending data\n %d", (int) ret);
-        printf("socket closed\n");
-        gtk_main_quit();
-    }
-
-
-
-    /// kraj networka
-
-
-    ///devices
-    ret = (int) recv(socket, &num, sizeof(__int32_t), flag);
-    if (ret < 0) {
-        printf("Error sending num_packets!\n\t");
-        gtk_main_quit();
-
-    }
-    ret = test_recv(socket);
-    if (ret < 0) {
-
-        printf("error receiving data\n %d", (int) ret);
-        gtk_main_quit();
-    }
-    if (ret == 0) {
-
-        printf("error sending data\n %d", (int) ret);
-        printf("socket closed\n");
-        gtk_main_quit();
-    }
-
-    for (int i = 0; i < num; i++) {
-
-
-        ret = (int) recv(socket, &devices, sizeof(Devices), flag);
+        ret = recv(socket, &data, sizeof(Data), flag);
 
         if (ret < 0) {
-            printf("Error sending num_packets!\n\t");
 
-            gtk_main_quit();
-
+            printf("error receiving data\n %d", (int) ret);
+            return (int)ret;
         }
         if (ret == 0) {
 
-            printf("error sending data\n %d", (int) ret);
+            printf("error receiving data\n %d", (int) ret);
             printf("socket closed\n");
-            gtk_main_quit();
+            return 1;
         }
 
+        switch (data.size){
 
-        g_array_append_val(array_devices, devices);
+            case CPU_USAGE:
+                *cpu_usage1=(Cpu_usage)data.unification.cpu_usage;
+                break;
 
-    }
-    ///end of devices
+            case NETWORK:
 
-    /// tasks
-    ret = (int) recv(socket, &num, sizeof(__int32_t), flag);
-    if (ret < 0) {
-        printf("Error sending num_packets!\n\t");
+                *network=(Network)data.unification.network;
+                break;
 
-        gtk_main_quit();
+            case MEMORY:
 
-    }
+                *memory_usage=(Memory_usage)data.unification.memory_usage;
+                break;
 
-    ret = test_recv(socket);
-    if (ret < 0) {
+            case TASK:
+                temp_task_array =calloc(1,sizeof(T_Collection));
+                if(temp_task_array==NULL){
+                    free(temp_task_array);
 
-        printf("error receiving data\n %d", (int) ret);
-        gtk_main_quit();
-    }
-    if (ret == 0) {
+                    printf("calloc error %d \n", errno);
+                    return 1;
+                }
+                temp_task_array->task=(Task)(data.unification.task);
+                temp_task_array->next=*task_array;
+                *task_array=temp_task_array;
 
-        printf("error sending data\n %d", (int) ret);
-        printf("socket closed\n");
-        gtk_main_quit();
-    }
+                (*task_num)++;
+                break;
 
-    for (int i = 0; i < num; i++) {
+            case DEVICES:
+                temp_device_array =calloc(1,sizeof(D_Collection));
+                if(temp_device_array==NULL){
+                    free(temp_device_array);
+
+                    printf("calloc error %d \n", errno);
+                    return 1;
+                }
+                temp_device_array->devices=(Devices)(data.unification.devices);
+                temp_device_array->next=*devices_array;
+                *devices_array=temp_device_array;
+
+                (*dev_num)++;
 
 
-        ret = recv(socket, &task, sizeof(Task), flag);
-        if (ret < 0) {
-            printf("Error sending num_packets!\n\t");
+                break;
 
-            gtk_main_quit();
+            case INTERRUPTS:
+
+                *temp=(Interrupts)(data.unification.interrupts);
+                temp++;
+                break;
+
+            case TEXT:
+
+                if (strcmp(data.unification.conformation, "everything came") != 0) {
+
+                    printf("conformation didn't get received  \n");
+
+                    return -1;
+                }
+
+                ret = test_recv(socket);
+                if (ret < 0) {
+
+                    printf("error receiving data\n %d", (int) ret);
+                    return (int)ret;
+                }
+                if (ret == 0) {
+
+                    printf("error sending data\n %d", (int) ret);
+                    printf("socket closed\n");
+                    return 1;
+                }
+                    return 0;
+
+            default:
+                return -1;
+
 
         }
-        if (ret == 0) {
-
-            printf("error sending data\n %d", (int) ret);
-            printf("socket closed\n");
-            gtk_main_quit();
-        }
-
-
-        g_array_append_val(array_tasks, task);
 
     }
 
 
-    /// interrupts
-
-    for (int i = 0; i < 10; i++) {
-        ret = recv(socket, &interrupts, sizeof(Interrupts), flag);
-
-        if (ret < 0) {
-            printf("Error receving data!\n");
-
-            gtk_main_quit();
-
-        }
-        if (ret == 0) {
-
-            printf("error sending data\n %d", (int) ret);
-            printf("socket closed\n");
-            gtk_main_quit();
-        }
 
 
-        g_array_append_val(array_int, interrupts);
 
-
-    }
-    ret = test_recv(socket);
-    if (ret < 0) {
-
-        printf("error receing data\n %d", (int) ret);
-        gtk_main_quit();
-    }
-    if (ret == 0) {
-
-        printf("error sending data\n %d", (int) ret);
-        printf("socket closed\n");
-        gtk_main_quit();
-    }
-
-
-    ///intterupts end
-
-
-};
-
+}

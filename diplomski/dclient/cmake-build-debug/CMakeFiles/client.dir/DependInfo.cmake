@@ -4,13 +4,12 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/dushn/Diplomski/dclient/buttons.c" "/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/buttons.c.o"
-  "/home/dushn/Diplomski/dclient/drawing.c" "/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/drawing.c.o"
-  "/home/dushn/Diplomski/dclient/functions.c" "/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/functions.c.o"
-  "/home/dushn/Diplomski/dclient/interrupts.c" "/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/interrupts.c.o"
-  "/home/dushn/Diplomski/dclient/main.c" "/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/main.c.o"
-  "/home/dushn/Diplomski/dclient/testing_tree.c" "/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/testing_tree.c.o"
-  "/home/dushn/Diplomski/dclient/window.c" "/home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/window.c.o"
+  "/home/dushn/Diplomski/diplomski/dclient/buttons.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/buttons.c.o"
+  "/home/dushn/Diplomski/diplomski/dclient/drawing.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/drawing.c.o"
+  "/home/dushn/Diplomski/diplomski/dclient/functions.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/functions.c.o"
+  "/home/dushn/Diplomski/diplomski/dclient/main.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/main.c.o"
+  "/home/dushn/Diplomski/diplomski/dclient/testing_tree.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/testing_tree.c.o"
+  "/home/dushn/Diplomski/diplomski/dclient/window.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/window.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

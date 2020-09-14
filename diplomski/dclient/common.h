@@ -11,6 +11,7 @@
 #include <time.h>
 
 
+
 struct __attribute__((__packed__))tm1 {
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
     __uint32_t tm_min;            /* Minutes.	[0-59] */
@@ -75,6 +76,7 @@ struct __attribute__((__packed__)) _Memory_usage {
     __uint64_t swap_used;
     char memory_percentage[16];
 
+
 };
 typedef struct _Interrupts Interrupts;
 struct __attribute__((__packed__)) _Interrupts {
@@ -92,15 +94,7 @@ struct __attribute__((__packed__)) _Interrupts {
 
 
 };
-typedef struct _Commands Commands;
-struct __attribute__((__packed__)) _Commands {
 
-
-    bool show;
-    __uint32_t mem;
-    char command[16];
-    char task_id[256];
-};
 
 typedef struct _Devices Devices;
 struct __attribute__((__packed__))_Devices {
@@ -116,6 +110,48 @@ struct __attribute__((__packed__))_Devices {
     char type[64];
     char directory[256];
 };
+
+
+
+typedef struct _Device_Collection D_Collection;
+struct _Device_Collection{
+
+    Devices devices;
+    D_Collection * next;
+};
+
+typedef struct _Task_Collection T_Collection;
+struct _Task_Collection{
+
+    Task task;
+    T_Collection * next;
+};
+
+typedef union _Unification Unification ;
+
+union _Unification {
+
+    Task task;
+    Network network;
+    Memory_usage memory_usage;
+    Cpu_usage cpu_usage;
+    Interrupts interrupts;
+    Devices devices;
+    char conformation[64];
+
+
+
+};
+
+typedef struct _Data Data;
+struct __attribute__((__packed__)) _Data{
+
+    int size;
+    Unification unification;
+
+};
+
+
 
 
 #endif //DIPLOMSKI_COMMON_H

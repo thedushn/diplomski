@@ -24,13 +24,13 @@
 #include <signal.h>
 #include <errno.h>
 #include <wait.h>
-#include <unistd.h>
 
 
-#define BUF_SIZE 1024
+
+#define BUFFER_SIZE 1024
 
 
-void sigchld_handler(int s) {
+static void sigchld_handler() {
 
     int saved_errno = errno;
 
@@ -49,6 +49,11 @@ void *get_in_addr(struct sockaddr *sa) {
 
 int main(int argc, char *argv[]) {
 
+    hash_size=0;
+    task_details=NULL;
+    hash_network=NULL;
+    net_hash_size=0;
+
 
     pthread_t t2, t3;
     int sockfd = 0;
@@ -61,7 +66,7 @@ int main(int argc, char *argv[]) {
     int yes = 1;
     char s[INET6_ADDRSTRLEN];
     int rv, ret, ret2;
-    char buffer[BUF_SIZE];
+    char buffer[BUFFER_SIZE];
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
@@ -70,12 +75,13 @@ int main(int argc, char *argv[]) {
     if (argc < 2) {
 
         printf("no port provided");
-        exit(1);
+        return -1;
     }
 
 
     if ((rv = getaddrinfo(NULL, argv[1], &hints, &servinfo)) != 0) {
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+        freeaddrinfo(servinfo);
         return 1;
     }
 
@@ -90,7 +96,8 @@ int main(int argc, char *argv[]) {
         if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes,
                        sizeof(int)) == -1) {
             perror("setsockopt");
-            exit(1);
+            freeaddrinfo(servinfo);
+           return -1;
         }
 
         if (bind(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
@@ -106,20 +113,21 @@ int main(int argc, char *argv[]) {
 
     if (p == NULL) {
         fprintf(stderr, "server: failed to bind\n");
-        exit(1);
+
+        return -1;
     }
 
     if (listen(sockfd, 10) == -1) {
         perror("listen");
-        exit(1);
+       return -1;
     }
 
-    sa.sa_handler = sigchld_handler; // reap all dead processes
+    sa.sa_handler =sigchld_handler; // reap all dead processes
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_RESTART;
     if (sigaction(SIGCHLD, &sa, NULL) == -1) {
         perror("sigaction");
-        exit(1);
+        return -1;
     }
 
 
@@ -128,7 +136,7 @@ int main(int argc, char *argv[]) {
         new_fd = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size);
         if (sockfd == -1) {
             perror("accept");
-
+            return -1;
         }
     }
 
@@ -143,7 +151,7 @@ int main(int argc, char *argv[]) {
         new_fd1 = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size);
         if (new_fd1 == -1) {
             perror("accept");
-
+            return -1;
         }
     }
 
@@ -159,7 +167,7 @@ int main(int argc, char *argv[]) {
     fp = fopen("/proc/uptime", "r");
     if (fp != NULL) {
 
-        while (fgets(buffer, 1024, fp) != NULL) {
+        while (fgets(buffer, BUFFER_SIZE, fp) != NULL) {
 
 
             sscanf(buffer, "%d", &uptime1);
@@ -173,7 +181,7 @@ int main(int argc, char *argv[]) {
         close(sockfd);
         close(new_fd1);
         close(new_fd);
-        exit(1);
+        return -1;
     }
 
     fclose(fp);
@@ -191,19 +199,20 @@ int main(int argc, char *argv[]) {
     t0 = uptime1 % 3600;
     min0 = t0 / 60;
     sec0 = t0 % 60;
-    stop_time.tm_hour = (__uint32_t) hr0; //pre koliko sati se upalio komp
+    stop_time.tm_hour = (__uint32_t) hr0; //when did the computer start running
     stop_time.tm_min = (__uint32_t) min0;
     stop_time.tm_sec = (__uint32_t) sec0;
 
-    differenceBetweenTimePeriod(tm2, stop_time, &pocetno);// vreme kada je poceo da radi linux
+    differenceBetweenTimePeriod(tm2, stop_time, &begin_time);// time when linux started
 
 
 
-    ret2 = pthread_create(&t2, NULL, slanje, &new_fd);
+    ret2 = pthread_create(&t2, NULL, sending, &new_fd);
     if (ret2 != 0) {
 
         printf("ERROR: Return Code from pthread_create() is %d\n", ret2);
-        exit(1);
+        close(sockfd);
+        return -1;
 
     }
 
@@ -212,7 +221,8 @@ int main(int argc, char *argv[]) {
     if (ret != 0) {
 
         printf("ERROR: Return Code from pthread_create() is %d\n", ret);
-        exit(1);
+        close(sockfd);
+        return -1;
 
     }
 
@@ -221,9 +231,34 @@ int main(int argc, char *argv[]) {
     pthread_join(t3, NULL);
 
 
+
+        struct DataItem *temp;
+    for(int k=0;k<hash_size;k++){
+        // save reference to first link
+        temp = task_details;
+
+        //mark next to first link as first
+        task_details = task_details->next;
+
+        //return the deleted link
+        free(temp);
+
+    }
+    struct DataItem_net *temp_net;
+    for(int k=0;k<net_hash_size;k++){
+        // save reference to first link
+        temp_net = hash_network;
+
+        //mark next to first link as first
+        hash_network = hash_network->next;
+
+        //return the deleted link
+        free(temp_net);
+
+    }
     close(sockfd);
-    uradi(true);
-    clean();
+
+
 
 
     return 0;

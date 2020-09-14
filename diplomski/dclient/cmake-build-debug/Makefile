@@ -48,10 +48,10 @@ RM = /home/dushn/clion/clion-2017.1.3/bin/cmake/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/dushn/Diplomski/dclient
+CMAKE_SOURCE_DIR = /home/dushn/Diplomski/diplomski/dclient
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/dushn/Diplomski/dclient/cmake-build-debug
+CMAKE_BINARY_DIR = /home/dushn/Diplomski/diplomski/dclient/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles /home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles /home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/dushn/Diplomski/dclient/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -204,33 +204,6 @@ functions.c.s:
 	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/functions.c.s
 .PHONY : functions.c.s
 
-interrupts.o: interrupts.c.o
-
-.PHONY : interrupts.o
-
-# target to build an object file
-interrupts.c.o:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/interrupts.c.o
-.PHONY : interrupts.c.o
-
-interrupts.i: interrupts.c.i
-
-.PHONY : interrupts.i
-
-# target to preprocess a source file
-interrupts.c.i:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/interrupts.c.i
-.PHONY : interrupts.c.i
-
-interrupts.s: interrupts.c.s
-
-.PHONY : interrupts.s
-
-# target to generate assembly for a file
-interrupts.c.s:
-	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/interrupts.c.s
-.PHONY : interrupts.c.s
-
 main.o: main.c.o
 
 .PHONY : main.o
@@ -330,9 +303,6 @@ help:
 	@echo "... functions.o"
 	@echo "... functions.i"
 	@echo "... functions.s"
-	@echo "... interrupts.o"
-	@echo "... interrupts.i"
-	@echo "... interrupts.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

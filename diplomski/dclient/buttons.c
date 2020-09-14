@@ -2,8 +2,17 @@
 #include "buttons.h"
 #include "drawing.h"
 #include "testing_tree.h"
-#include "main_header.h"
-#include "buttons_s.h"
+#include "window.h"
+
+
+static gboolean device_devices = TRUE;
+static gboolean device_type = TRUE;
+static gboolean device_directory = TRUE;
+static gboolean device_used = TRUE;
+static gboolean device_free = TRUE;
+static gboolean device_total = TRUE;
+static gboolean device_avail = TRUE;
+static bool device_all = FALSE;
 
 static gboolean process_task = TRUE;
 static gboolean process_user = TRUE;
@@ -21,7 +30,13 @@ static gboolean show_before = FALSE;
 
 void process_window() {
     GtkWidget *box2;
-    GtkWidget *proc_window;
+    if(proc_window!=NULL){
+        if(gtk_widget_get_visible(proc_window)){
+            gtk_widget_destroy(proc_window);
+        }
+    }
+
+
     proc_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(proc_window), 200, 200);
     button_process_cpu = gtk_check_button_new_with_label("CPU");
@@ -100,7 +115,7 @@ void process_window() {
     gtk_window_set_position(GTK_WINDOW(proc_window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(proc_window), "destroy",
-                     G_CALLBACK(close_window), NULL);
+                     G_CALLBACK(close_window2), proc_window);
 
     gtk_widget_show_all(proc_window);
 
@@ -108,8 +123,16 @@ void process_window() {
 
 void device_window() {
 
+
+
     GtkWidget *box2;
-    GtkWidget *dev_window;
+    if (dev_window != NULL) {
+        if (gtk_widget_get_visible(dev_window)) {
+            gtk_widget_destroy(dev_window);
+        }
+    }
+
+
     dev_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(dev_window), 200, 200);
     button_device_devices = gtk_check_button_new_with_label("Devices");
@@ -173,7 +196,7 @@ void device_window() {
     gtk_window_set_position(GTK_WINDOW(dev_window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(dev_window), "destroy",
-                     G_CALLBACK(close_window), NULL);
+                     G_CALLBACK(close_window2), dev_window);
 
     gtk_widget_show_all(dev_window);
 
@@ -187,19 +210,18 @@ void button_clicked_view_process(GtkWidget *widget) {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
-        //  pokazi_ili_hide(widget, process_swindow);
-
 
         gtk_widget_show_all(process_swindow);
 
 
     } else {
 
-
-        pokazi_ili_hide(widget, process_swindow);
+        show_hide(widget, process_swindow);
 
     }
 }
+
+
 
 void dev_button_clicked2(GtkWidget *widget) {
 
@@ -207,13 +229,13 @@ void dev_button_clicked2(GtkWidget *widget) {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
 
-        pokazi_ili_hide(widget, dev_swindow);
+        show_hide(widget, device_swindow);
 
 
-        gtk_widget_show_all(dev_swindow);
+        gtk_widget_show_all(device_swindow);
 
     } else {
-        pokazi_ili_hide(widget, dev_swindow);
+        show_hide(widget, device_swindow);
 
     }
 
@@ -228,42 +250,45 @@ void close_window() {
 
 
 };
+void close_window2(GtkWidget *widget) {
+
+
+    gtk_widget_hide(widget);
+    gtk_widget_destroyed(widget,&widget);
+
+
+};
 
 void start_stop(int show, char *signal, char *task_id) {
     int ret;
+    char buffer[1500];
 
-    Commands commands = {0};
-
+    memset(buffer, 0, sizeof(buffer));
 
     if (show == 1) {
 
         show_before = !show_before;
     }
 
-    commands.mem = 0;
-    commands.show = device_all;
+
     if (signal != NULL && task_id != NULL) {
-        for (int i = 0; i < sizeof(signal); i++) {
+        sprintf(buffer, "%d %s %s", device_all, signal, task_id);
 
-            commands.command[i] = signal[i];
-        }
-        for (int i = 0; i < sizeof(task_id); i++) {
-
-            commands.task_id[i] = task_id[i];
-        }
+    } else {
+        sprintf(buffer, "%d", device_all);
     }
-
-    ret = (int) send(newsockfd1, &commands, sizeof(Commands), 0);
+    printf("%s \n", buffer);
+    ret = (int) send(newsockfd1, &buffer, sizeof(buffer), 0);
     if (ret < 0) {
 
-        printf("nije uspelo slanje cond \n");
+        printf("command did not get sent \n");
         gtk_main_quit();
 
 
     }
     if (ret == 0) {
 
-        printf("nije uspelo slanje cond \n");
+        printf("command did not get sent \n");
         printf("socket closed\n");
         gtk_main_quit();
 
@@ -326,14 +351,16 @@ void graph_button_clicked(GtkWidget *widget) {
 
 void show_all(GtkWidget *widget) {
 
+    char *proxy = NULL;
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
         device_all = TRUE;
-        start_stop(1, "", "");
+
+        start_stop(1, proxy, proxy);
 
     } else {
         device_all = FALSE;
-        start_stop(1, "", "");
+        start_stop(1, proxy, proxy);
     }
 
 
@@ -586,23 +613,14 @@ void graph_clicked(GtkWidget *widget) {
 
 
 
-void pokazi_ili_hide(GtkWidget *button, GtkWidget *window) {
+void show_hide(GtkWidget *button, GtkWidget *window) {
 
 
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (button)) != FALSE) {//ako je button toggled
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (button)) != FALSE) {
 
 
 
         gtk_widget_show(window);
-//        if (window == dev_swindow) {
-//
-//            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_proc), FALSE); //postavljamo butto_proc na not toggled
-//            gtk_widget_hide(process_swindow);
-//        } else {
-//
-//            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_dev), FALSE); //postavljamo butto_proc na not toggled
-//            gtk_widget_hide(dev_swindow);
-//        }
 
     } else {
 
@@ -647,7 +665,7 @@ void handle_task_prio(GtkWidget *widget, char *signal) {
             if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
                 gtk_tree_model_get(model, &iter, 1, &task_id, -1);
                 start_stop(0, signal, task_id);
-                init_timeout();
+
             }
         }
     }
@@ -726,9 +744,9 @@ gboolean on_treeview1_button_press_event(GtkButton *button, GdkEventButton *even
 
         GdkEventButton *mouseevent = event;
 
-        if (taskpopup == NULL)
-            taskpopup = create_taskpopup();
-        gtk_menu_popup(GTK_MENU(taskpopup), NULL, NULL, NULL, NULL, mouseevent->button, mouseevent->time);
+        if (task_popup == NULL)
+            task_popup = create_taskpopup();
+        gtk_menu_popup(GTK_MENU(task_popup), NULL, NULL, NULL, NULL, mouseevent->button, mouseevent->time);
 
     }
     return FALSE;

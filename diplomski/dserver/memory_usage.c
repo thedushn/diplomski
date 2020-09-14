@@ -3,14 +3,57 @@
 //
 
 #include "memory_usage.h"
+#include "functions.h"
 #include <inttypes.h>
 #include <memory.h>
 #include <stdio.h>
+#include <sys/socket.h>
 #include <stdlib.h>
-#include "memory_usage.h"
 
+void * send_memory(void *socket){
+
+    int sockfd=(*(int*)socket);
+    ssize_t ret;
+    Memory_usage  memory_usage={0};
+    Data data={0};
+
+    get_memory_usage(&memory_usage);
+
+
+    data.size=MEMORY;
+    data.unification.memory_usage=memory_usage;
+
+    pthread_mutex_lock(&mutex_send);
+    ret = send(sockfd, &data, sizeof(Data), 0);
+    if (ret < 0) {
+        printf("Error sending data!\n\t");
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(NULL);
+
+    }
+    if (ret == 0) {
+
+        printf("socket closed\n");
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(NULL);
+    }
+//   if((ret=test_send(sockfd))<=0){
+//
+//       pthread_mutex_unlock(&mutex_send);
+//       pthread_exit(NULL);
+//   }
+//
+    pthread_mutex_unlock(&mutex_send);
+
+
+
+    pthread_exit(NULL);
+}
 
 void get_memory_usage(Memory_usage *memory_usage) {
+
+
+
 
     __uint64_t memory_total = 0;
     __uint64_t memory_free = 0;
@@ -44,7 +87,7 @@ void get_memory_usage(Memory_usage *memory_usage) {
     }
     fclose(file);
 
-    //ispis je u kB
+    //output is in  kB
     memory_total *= 1024;
     memory_free *= 1024;
     memory_cache *= 1024;
@@ -67,23 +110,23 @@ void get_memory_usage(Memory_usage *memory_usage) {
 
     swap_used = swap_total - swap_free;
 
-    swap_percentage = (float) (swap_total != 0) ? swap_used * 100 / (float) swap_total : 0;
+    swap_percentage = (float) (swap_total != 0) ? (float)swap_used * 100 / (float) swap_total : 0;
 
     if (sprintf(memory_usage->swap_percentage, "%f", swap_percentage) < 0) {
 
-        printf("nije uspelo convertovanje %s \n", memory_usage->swap_percentage);
+        printf("conversion did not work %s \n", memory_usage->swap_percentage);
         strcpy(memory_usage->swap_percentage, "0");
     }
     memory_usage->swap_used = swap_used;
     memory_usage->memory_used = memory_used;
 
 
-    percentage = (memory_total != 0) ? memory_used * 100 / memory_total : 0;
+    percentage = (memory_total != 0) ? (float) memory_used * 100 / memory_total : 0;
 
 
     if (sprintf(memory_usage->memory_percentage, "%f", percentage) < 0) {
 
-        printf("nije uspelo convertovanje %s \n", memory_usage->memory_percentage);
+        printf("conversion did not work %s \n", memory_usage->memory_percentage);
         strcpy(memory_usage->swap_percentage, "0");
     }
 

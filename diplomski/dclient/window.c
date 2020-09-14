@@ -3,9 +3,9 @@
 //
 
 #include "window.h"
-#include "window.h"
 #include "testing_tree.h"
 #include "buttons.h"
+
 
 
 GtkWidget *label_rec;
@@ -15,10 +15,14 @@ GtkWidget *label_mem;
 GtkWidget *label_swap;
 
 
+
+
 GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
 
     GtkWidget *menubar;
+
+
     GtkWidget *filemenu;
     GtkWidget *speed;
     GtkWidget *devices_menu;
@@ -40,6 +44,13 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     GtkWidget *frame3;
     GtkWidget *frame4;
 
+    entry = gtk_entry_new();
+    gtk_entry_set_text(GTK_ENTRY(entry), "insert command here...");
+
+
+
+
+
     GtkWidget *window1 = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_position(GTK_WINDOW(window1), GTK_WIN_POS_CENTER);
     gtk_window_set_default_size(GTK_WINDOW(window1), 800, 400);
@@ -48,7 +59,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//cpu labels
     hbox1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph1 graph2 frame1 frame2
-    hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//izmedju graphova
+    hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//in between graphs
     hbox3 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph3 graph4 frame3 frame4
 
     button_inc = gtk_button_new_with_label("refresh rate +");
@@ -62,6 +73,8 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     filemenu = gtk_menu_new();
     filemenu2 = gtk_menu_new();
     GtkWidget *filemenu3 = gtk_menu_new();
+
+
     speed = gtk_menu_item_new_with_label("speed");
     devices_menu = gtk_menu_item_new_with_label("devices");
     GtkWidget *process_menu = gtk_menu_item_new_with_label("Process Manager");
@@ -73,11 +86,13 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
     quit = gtk_menu_item_new_with_label("Quit");
 
+
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(speed), filemenu);
 
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), increase_refresh);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), decrease_refresh);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), quit);
+
     gtk_menu_shell_append(GTK_MENU_SHELL(menubar), speed);
     gtk_menu_shell_append(GTK_MENU_SHELL(menubar), process_menu);
 
@@ -137,21 +152,23 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     frame4 = gtk_frame_new(NULL);
 
 
-    label_rec = gtk_label_new(NULL);//memory
-    label_trans = gtk_label_new(NULL);//swap
+    label_rec = gtk_label_new(NULL);//network_received
+    label_trans = gtk_label_new(NULL);//network_transmitted
     label_cpu0 = gtk_label_new(NULL);//cpu1
 
-    label_mem = gtk_label_new(NULL);//network_received
-    label_swap = gtk_label_new(NULL);//network_transimited
+    label_mem = gtk_label_new(NULL);//memory
+    label_swap = gtk_label_new(NULL);//swap
 
 
 
 
     gtk_box_pack_start(GTK_BOX(vbox), hbox, 0, FALSE, 0);
 
+
     gtk_box_pack_start(GTK_BOX(hbox), button_inc, FALSE, FALSE, FALSE);//expand,fill,padding
     gtk_box_pack_start(GTK_BOX(hbox), button_dec, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(hbox), button_proc, 0, 0, 0);
+
 
     gtk_box_pack_start(GTK_BOX(hbox), button_dev, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(hbox), button_graph, 0, 0, 0);
@@ -188,13 +205,13 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
     gtk_box_pack_start(GTK_BOX(vbox), dev_swindow, TRUE, TRUE, 1);
     gtk_box_pack_start(GTK_BOX(vbox), process_swindow, TRUE, TRUE, 1);
-
+    gtk_box_pack_start(GTK_BOX(vbox), entry, FALSE, FALSE, 1);
 
     gtk_container_add(GTK_CONTAINER(window1), vbox);
 
 
     gtk_widget_show_all(window1);
-    gtk_window_set_title(GTK_WINDOW(window1), "College lines");
+    gtk_window_set_title(GTK_WINDOW(window1), "System resource monitor");
 
     return window1;
 };
@@ -212,12 +229,12 @@ void swap_change(Memory_usage *memory_usage) {
     float f;
     f = (float) atof(memory_usage->swap_percentage);
 
+    collection->data[7]=f;
+
     swap_used = g_format_size_full((guint64) memory_usage->swap_used, G_FORMAT_SIZE_IEC_UNITS);
     swap_total = g_format_size_full((guint64) memory_usage->swap_total, G_FORMAT_SIZE_IEC_UNITS);
 
-    g_array_prepend_val(history[7], f);
-    if (history[7]->len > 1)
-        g_array_remove_index(history[7], history[7]->len - 1);
+
 
 
     gchar *swap_usage_text = g_strdup_printf(("SWAP: %0.2f%% (%s) %s"), f, swap_used, swap_total);
@@ -236,6 +253,7 @@ void memory_change(Memory_usage *memory_usage) {
 
     float f = 0;
     f = (float) atof(memory_usage->memory_percentage);
+    collection->data[6]=f;
 
 
     used = g_format_size_full((guint64) memory_usage->memory_used, G_FORMAT_SIZE_IEC_UNITS);
@@ -243,10 +261,7 @@ void memory_change(Memory_usage *memory_usage) {
     total = g_format_size_full((guint64) memory_usage->memory_total, G_FORMAT_SIZE_IEC_UNITS);
 
 
-    g_array_prepend_val(history[6], f);
 
-    if (history[6]->len > 1)
-        g_array_remove_index(history[6], history[6]->len - 1);
 
 
     memory_usage_text1 = g_strdup_printf(("Memory: %0.2f%%(%s)%s"), f, used, total);
@@ -261,31 +276,17 @@ void memory_change(Memory_usage *memory_usage) {
 void cpu_change(Cpu_usage *cpu_usage) {
 
 
-    float j = 0;
-    j = (float) atof(cpu_usage->percentage0);
+    float g[4] = {0, 0, 0, 0};
 
-    g_array_prepend_val(history[0], j);
-    if (history[0]->len > 1)
-        g_array_remove_index(history[0], history[0]->len - 1);
-
-
-    j = (float) atof(cpu_usage->percentage1);
-    g_array_prepend_val(history[1], j);
-    if (history[1]->len > 1)
-        g_array_remove_index(history[1], history[1]->len - 1);
+    g[0] = (float) atof(cpu_usage->percentage0);
+    g[1] = (float) atof(cpu_usage->percentage1);
+    g[2] = (float) atof(cpu_usage->percentage2);
+    g[3] = (float) atof(cpu_usage->percentage3);
 
 
-    j = (float) atof(cpu_usage->percentage2);
-    g_array_prepend_val(history[2], j);
-    if (history[2]->len > 1)
-        g_array_remove_index(history[2], history[2]->len - 1);
-
-    j = (float) atof(cpu_usage->percentage3);
-
-    g_array_prepend_val(history[3], j);
-    if (history[3]->len > 1)
-        g_array_remove_index(history[3], history[3]->len - 1);
-
+    for(int i=0;i<4;i++){
+        collection->data[i] = g[i];
+       }
 
     gchar *cpu0_usage_text = g_strdup_printf(("CPU%s: %.4s%% CPU%s: %.4s%%CPU%s: %.4s%%CPU%s: %.4s%%"),
                                              "0", cpu_usage->percentage0,
@@ -304,28 +305,30 @@ void cpu_change(Cpu_usage *cpu_usage) {
 void network_change_rc(Network *network) {
 
 
-    float net_kb = (float) network->received_bytes / 1024;
+    float net_kb_rc = (float) network->received_bytes / 1024;
     float net_kb_tr = (float) network->transmited_bytes / 1024;
 
-    g_array_prepend_val(history[5], net_kb_tr);
-    if (history[5]->len > 1)
-        g_array_remove_index(history[5], history[5]->len - 1);
-    g_array_prepend_val(history[4], net_kb);
-    if (history[4]->len > 1)
-        g_array_remove_index(history[4], history[4]->len - 1);
+
+    collection->data[4] = net_kb_tr;
+        collection->data[5]=net_kb_rc;
+
+
+
+
+
 
     gchar *rec_bytes = g_format_size_full(network->received_bytes, G_FORMAT_SIZE_IEC_UNITS);
     gchar *rec_tr_bytes = g_format_size_full(network->transmited_bytes, G_FORMAT_SIZE_IEC_UNITS);
     gchar *network_usage_received_text = g_strdup_printf("RECEIVED:  %s/s", rec_bytes);
-    gchar *network_usage_transimited_text = g_strdup_printf("TRANSMITED: %s/s", rec_tr_bytes);
+    gchar *network_usage_transmitted_text = g_strdup_printf("TRANSMITTED: %s/s", rec_tr_bytes);
     gtk_label_set_text(GTK_LABEL (label_rec), network_usage_received_text);
 
 
-    gtk_label_set_text(GTK_LABEL (label_trans), network_usage_transimited_text);
+    gtk_label_set_text(GTK_LABEL (label_trans), network_usage_transmitted_text);
     g_free(rec_bytes);
     g_free(rec_tr_bytes);
     g_free(network_usage_received_text);
-    g_free(network_usage_transimited_text);
+    g_free(network_usage_transmitted_text);
 
 }
 
