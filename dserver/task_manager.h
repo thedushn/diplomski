@@ -10,20 +10,21 @@ typedef struct _Thread_task Thread_task;
 
 struct _Thread_task{
 
-    int pid;
+    __uint32_t pid;
     int result;
     Task *task;
     pthread_t pthread;
     Thread_task *next;
+    Thread_task *prev;
 
 };
 void * send_task(void *socket);
-int get_task_list(T_Collection **array, __int32_t *task_num);
-int get_task_list2(T_Collection **array, __int32_t *task_num);
 
-int get_task_details(int pid, Task *task);
+int get_task_list(T_Collection **array, __int32_t *task_num);
+
+
 
 void differenceBetweenTimePeriod(struct tm start, struct tm1 stop, struct tm1 *diff);
-void * get_task_details2(void *ptr);
+void * get_task_details(void *ptr);
 
 #endif //DIPLOMSKI_TASK_MANAGER_H

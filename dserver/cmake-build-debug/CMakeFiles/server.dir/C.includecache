@@ -31,8 +31,6 @@ errno.h
 -
 sys/socket.h
 -
-stdbool.h
--
 
 /home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
 common.h
@@ -70,8 +68,6 @@ string.h
 stdio.h
 -
 stdlib.h
--
-stdbool.h
 -
 sys/socket.h
 /home/dushn/Diplomski/diplomski/dserver/sys/socket.h
