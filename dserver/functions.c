@@ -235,10 +235,11 @@ void *sending(void *socket) {
 
     devices_show=false;
 
-    int sockfd = *(int *) socket;
+
 
 
     pthread_t  thr[6];
+    ssize_t thread_ret[6]={0,1,2,3,4,5};
     pthread_attr_t attr;
     pthread_mutex_init(&mutex_jiff,NULL);
     pthread_mutex_init(&mutex_send,NULL);
@@ -255,7 +256,7 @@ void *sending(void *socket) {
         time1 = time(NULL);
 
         local_time = *localtime(&time1);
-        test=false;
+
 
        pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
 
@@ -317,7 +318,8 @@ void *sending(void *socket) {
         }
         pthread_attr_destroy(&attr);
         for(int i=0;i<6;i++){
-           if((return_value= pthread_join(thr[i], NULL))){
+            void *status=NULL;
+           if((return_value= pthread_join(thr[i], &status))){
 
                strerror_r(return_value,buffer,sizeof(buffer));
                fprintf(stderr,"error = %d (%s)\n",return_value,buffer);
@@ -330,6 +332,14 @@ void *sending(void *socket) {
                pthread_exit(NULL);
 
            }
+            if(status==NULL){
+                thread_ret[i]=0;
+            }
+            else
+            {
+                thread_ret[i]=(*(ssize_t *)status);
+            }
+
 
         }
 
@@ -341,7 +351,7 @@ void *sending(void *socket) {
 
 
 
-        ret = test_recv(sockfd);
+        ret = test_recv((*(int *) socket));
         if (ret < 0) {
 
             printf("error receiving data\n %d", (int) ret);
@@ -352,7 +362,7 @@ void *sending(void *socket) {
             printf("socket closed\n");
             break;
         }
-        ret = test_send(sockfd);
+        ret = test_send((*(int *) socket));
         if (ret < 0) {
 
             printf("error receiving data\n %d", (int) ret);

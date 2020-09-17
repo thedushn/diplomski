@@ -118,6 +118,7 @@ struct _Device_Collection{
 
     Devices devices;
     D_Collection * next;
+    D_Collection * prev;
 };
 
 typedef struct _Task_Collection T_Collection;
@@ -125,6 +126,7 @@ struct _Task_Collection{
 
     Task task;
     T_Collection * next;
+    T_Collection * prev;
 };
 
 typedef union _Unification Unification ;

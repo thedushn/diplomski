@@ -13,6 +13,8 @@
 
 
 #define BUFFER_SIZE 1024
+pthread_cond_t cpu_cond= PTHREAD_COND_INITIALIZER;
+bool test;
 static __uint64_t jiffies_total_delta[5] = {0, 0, 0, 0, 0};
 
 void * send_cpu(void *socket){
@@ -51,13 +53,7 @@ void * send_cpu(void *socket){
         pthread_mutex_unlock(&mutex_send);
         pthread_exit(NULL);
     }
-//    pthread_mutex_lock(&mutex_send);
-//   if( test_send(sockfd)<=0){
-//
-//       pthread_mutex_unlock(&mutex_send);
-//       pthread_exit(NULL);
-//   }
-//    pthread_mutex_unlock(&mutex_send);
+
     pthread_exit(NULL);
 }
 int cpu_number() {
@@ -131,6 +127,7 @@ int cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
     fclose(file);
 
     pthread_mutex_lock(&mutex_jiff);
+    test=false;
     for (int i = 0; i < cpu_count; i++) {
 
 
@@ -166,6 +163,7 @@ int cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
 
 
         test=true;
+   pthread_cond_signal(&cpu_cond);
 
     pthread_mutex_unlock(&mutex_jiff);
 
@@ -276,14 +274,11 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
 
     }
 
-    if (jiffies_user < old.cpu_user || jiffies_system < old.cpu_system) {
-
-
-        return 1;
-    }
 
 
 
+    while(test==false)
+    pthread_cond_wait(&cpu_cond,&mutex_jiff);
 
     if (jiffies_total_delta[4] > 0) {
 

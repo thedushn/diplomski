@@ -19,7 +19,7 @@
 
 void * send_task(void *socket){
 
-    int sockfd=(*(int*)socket);
+
     int result;
     ssize_t ret;
     Data data={0};
@@ -55,7 +55,7 @@ void * send_task(void *socket){
         data.size=TASK;
         data.unification.task=temp_task->task;
         pthread_mutex_lock(&mutex_send);
-        ret = send(sockfd, &data, sizeof(Data), 0);
+        ret = send((*(int*)socket), &data, sizeof(Data), 0);
         pthread_mutex_unlock(&mutex_send);
 
 
@@ -113,7 +113,7 @@ void * send_task(void *socket){
 
     }
 
-    pthread_exit(NULL);
+    pthread_exit(&ret);
 }
 
 void differenceBetweenTimePeriod(struct tm start, struct tm1 stop, struct tm1 *diff) {

@@ -58,9 +58,9 @@ void inc_refresh();
 
 void timeout_refresh();
 
-void device_check(D_Collection *devices_new, int dev_num);
+int device_check(D_Collection *devices_new, int dev_num);
 
-void task_check(T_Collection *tasks_new, int task_num);
+int task_check(T_Collection *tasks_new, int task_num);
 
 
 

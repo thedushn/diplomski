@@ -101,6 +101,8 @@ inttypes.h
 -
 functions.h
 /home/dushn/Diplomski/diplomski/dclient/functions.h
+semaphore.h
+-
 
 /home/dushn/Diplomski/diplomski/dclient/main_header.h
 gtk/gtk.h

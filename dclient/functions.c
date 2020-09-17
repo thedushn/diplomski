@@ -30,7 +30,8 @@ int command_sender(char *text) {
     if (ret < 0) {
 
         printf("command did not get sent \n");
-        gtk_main_quit();
+        if (gtk_main_level() > 0)
+            gtk_main_quit();
 
 
     }
@@ -38,7 +39,8 @@ int command_sender(char *text) {
 
         printf("command did not get sent \n");
         printf("socket closed\n");
-        gtk_main_quit();
+        if (gtk_main_level() > 0)
+            gtk_main_quit();
 
 
     }
