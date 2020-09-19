@@ -229,7 +229,8 @@ void swap_change(Memory_usage *memory_usage) {
     float f;
     f = (float) atof(memory_usage->swap_percentage);
 
-    collection->data[7]=f;
+  //  cpu_list->data[7]=f;
+    mem_list->data[1]=f;
 
     swap_used = g_format_size_full((guint64) memory_usage->swap_used, G_FORMAT_SIZE_IEC_UNITS);
     swap_total = g_format_size_full((guint64) memory_usage->swap_total, G_FORMAT_SIZE_IEC_UNITS);
@@ -253,7 +254,8 @@ void memory_change(Memory_usage *memory_usage) {
 
     float f = 0;
     f = (float) atof(memory_usage->memory_percentage);
-    collection->data[6]=f;
+  //  cpu_list->data[6]=f;
+    mem_list->data[0]=f;
 
 
     used = g_format_size_full((guint64) memory_usage->memory_used, G_FORMAT_SIZE_IEC_UNITS);
@@ -285,7 +287,7 @@ void cpu_change(Cpu_usage *cpu_usage) {
 
 
     for(int i=0;i<4;i++){
-        collection->data[i] = g[i];
+        cpu_list->data[i] = g[i];
        }
 
     gchar *cpu0_usage_text = g_strdup_printf(("CPU%s: %.4s%% CPU%s: %.4s%%CPU%s: %.4s%%CPU%s: %.4s%%"),
@@ -309,8 +311,11 @@ void network_change_rc(Network *network) {
     float net_kb_tr = (float) network->transmited_bytes / 1024;
 
 
-    collection->data[4] = net_kb_tr;
-        collection->data[5]=net_kb_rc;
+        net_list->data[1] = net_kb_tr;
+        net_list->data[0] = net_kb_rc;
+
+
+
 
 
 

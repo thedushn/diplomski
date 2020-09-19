@@ -143,6 +143,7 @@ struct _Task_Collection{
 
     Task task;
     T_Collection * next;
+    T_Collection *prev;
 };
 
 typedef union _Unification Unification ;

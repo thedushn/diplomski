@@ -22,13 +22,20 @@ gint dev_num_old;
 int task_num_old;
 
 
+typedef  struct  _NetMem_list NetMem_list;
 
+struct _NetMem_list{
 
-typedef struct _Collection Collection;
-struct _Collection {
+    float data[2];
+    NetMem_list *next;
 
-    float data[8];
-    Collection *next;
+};
+
+typedef struct _Cpu_List Cpu_list;
+struct _Cpu_List {
+
+    float data[4];
+    Cpu_list *next;
 };
 
 
@@ -36,7 +43,9 @@ struct _Collection {
 D_Collection *devices_old;
 T_Collection *tasks_old;
 Interrupts * interrupts;
-Collection *collection;
+Cpu_list *cpu_list;
+NetMem_list *net_list;
+NetMem_list *mem_list;
 
 
 #define LIST_SIZE 240

@@ -325,6 +325,7 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
     Thread_task *tp=NULL;
     T_Collection  *task_temp=NULL;
 
+
     if ((dir = opendir(directory)) == NULL) {
         printf("error task dir %d\n", errno);
         return 1;
@@ -368,15 +369,21 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
                 return -1;
 
             }
-            task_temp->next=*array;
-            *array=task_temp;
+
+
+            task_temp->next = *array;
+
+            if ((*array) != NULL) {
+                (*array)->prev = task_temp;
+            }
+
+            *array = task_temp;
 
 
 
                 tp->next=thread_task_main;
 
-            if(thread_task_main!=NULL)
-                thread_task_main->prev=tp;
+
 
             thread_task_main=tp;
 
@@ -418,36 +425,37 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
         if(tp->result!=0){
             printf(" Result %d task_pid %d \n",tp->result,tp->pid);
 
-            task_temp=*array;
+
             int j=0;
+            task_temp = *array;
+
             T_Collection *t_temp;
             while( j<(*task_num)){
 
+
                 if((tp->pid-task_temp->task.pid)==tp->pid){
 
+
                     if(j==0){
+                        t_temp = task_temp;
+                        if (task_temp->next != NULL) {
+                            task_temp = task_temp->next;
+                            task_temp->prev = NULL;
+                        }
 
+                        *array = task_temp;
 
-
-                            *array=(*array)->next;
-                        free(task_temp);
+                        free(t_temp);
 
                         (*task_num)--;
                         break;
                     }else{
 
 
-                        task_temp=*array;
-                        for (int k = 0; k < j - 1; k++) {
-                            task_temp = task_temp->next; //move one before
-
-                        }
-
-                        t_temp = task_temp->next;   //t_temp is the one to be removed
-
-                        task_temp->next = t_temp->next;
+                        t_temp = task_temp;
+                        task_temp->next->prev = task_temp->prev; //linking prev and next together
+                        task_temp->prev->next = task_temp->next;
                         free(t_temp);
-
 
 
                         (*task_num)--;
@@ -458,6 +466,7 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
 
                     j++;
                     task_temp=task_temp->next;
+
                 }
 
             }
@@ -468,9 +477,6 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
         thread_task_main=thread_task_main->next;
 
     }
-
-
-
 
 
 
