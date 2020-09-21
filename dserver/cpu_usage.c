@@ -24,6 +24,14 @@ __uint64_t *jiffies_user_old = NULL;
 __uint64_t *jiffies_system_old = NULL;
 __uint64_t *jiffies_total_old = NULL;
 
+float *cpu_user = NULL;
+float *cpu_system = NULL;
+__uint64_t *user = NULL;
+__uint64_t *user_nice = NULL;
+__uint64_t *idle = NULL;
+__uint64_t *msystem = NULL;
+float *percentage = NULL;
+
 void *send_cpu(void *socket) {
 
     int sockfd = (*(int *) socket);
@@ -148,6 +156,59 @@ __int32_t cpu_number() {
         return 0;
     }
 
+    cpu_user = calloc((size_t) c, sizeof(float));
+    if (cpu_user == NULL) {
+
+        free(cpu_user);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+
+    cpu_system = calloc((size_t) c, sizeof(float));
+    if (cpu_system == NULL) {
+
+        free(cpu_system);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+
+    user = calloc((size_t) c, sizeof(__uint64_t));
+    if (user == NULL) {
+
+        free(user);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+    user_nice = calloc((size_t) c, sizeof(__uint64_t));
+    if (user_nice == NULL) {
+
+        free(user_nice);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+    idle = calloc((size_t) c, sizeof(__uint64_t));
+    if (idle == NULL) {
+
+        free(idle);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+    msystem = calloc((size_t) c, sizeof(__uint64_t));
+    if (msystem == NULL) {
+
+        free(msystem);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+
+    percentage = calloc((size_t) c, sizeof(float));
+    if (percentage == NULL) {
+
+        free(percentage);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+
 
 
     return c;
@@ -156,13 +217,7 @@ __int32_t cpu_number() {
 int cpu_percentage(int cpu_count, Cpu_usage **array) {
 
 
-    float cpu_user[4] = {0, 0, 0, 0};
-    float cpu_system[4] = {0, 0, 0, 0};
-    __uint64_t user[4] = {0, 0, 0, 0};
-    __uint64_t user_nice[4] = {0, 0, 0, 0};
-    __uint64_t idle[4] = {0, 0, 0, 0};
-    __uint64_t system[4] = {0, 0, 0, 0};
-    float percentage[4] = {0, 0, 0, 0};
+
 
     Cpu_usage *temp_array;
 
@@ -182,11 +237,12 @@ int cpu_percentage(int cpu_count, Cpu_usage **array) {
 
 
 
+
     for(int j=0;j<cpu_count;j++){
         if(fgets(buffer, BUFFER_SIZE, file) != NULL){
 
             sscanf(buffer, "%s %" SCNu64 " %" SCNu64 " %" SCNu64 " %" SCNu64 "", dummy, &user[j],
-                   &user_nice[j], &system[j], &idle[j]
+                   &user_nice[j], &msystem[j], &idle[j]
             );
         }
 
@@ -205,7 +261,7 @@ int cpu_percentage(int cpu_count, Cpu_usage **array) {
         jiffies_total_old[i] = jiffies_total[i];
 
         jiffies_user[i] = user[i] + user_nice[i];
-        jiffies_system[i] = system[i];
+        jiffies_system[i] = msystem[i];
 
         jiffies_total[i] = jiffies_user[i] + jiffies_system[i] + idle[i];
 
@@ -223,12 +279,11 @@ int cpu_percentage(int cpu_count, Cpu_usage **array) {
 
         percentage[i] = (cpu_user[i] + cpu_system[i]) * 100;
 
-
+        jiffies_total_delta[cpu_num] += jiffies_total_delta[i];
 
     }
 
-    jiffies_total_delta[4] =
-            jiffies_total_delta[0] + jiffies_total_delta[1] + jiffies_total_delta[2] + jiffies_total_delta[3];
+
 
 
         test=true;
@@ -239,6 +294,7 @@ int cpu_percentage(int cpu_count, Cpu_usage **array) {
     temp_array = calloc((size_t) cpu_count, sizeof(Cpu_usage));
     if (temp_array == NULL) {
         free(temp_array);
+
         printf("calloc error %d \n", errno);
 
         return -1;
@@ -252,7 +308,8 @@ int cpu_percentage(int cpu_count, Cpu_usage **array) {
 
             printf("converting didn't work %s \n", temp_array[i].percentage);
             free(temp_array);
-        return -1;
+
+            return -1;
     }
 
 
@@ -349,10 +406,10 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
     while(test==false)
     pthread_cond_wait(&cpu_cond,&mutex_jiff);
 
-    if (jiffies_total_delta[4] > 0) {
+    if (jiffies_total_delta[cpu_num] > 0) {
 
-        cpu_user = (float) (( jiffies_user) - (old.cpu_user))* 100 / (float) (jiffies_total_delta[4]);
-        cpu_system =(float) ((jiffies_system - old.cpu_system) * 100) / (float) jiffies_total_delta[4];
+        cpu_user = (float) ((jiffies_user) - (old.cpu_user)) * 100 / (float) (jiffies_total_delta[cpu_num]);
+        cpu_system = (float) ((jiffies_system - old.cpu_system) * 100) / (float) jiffies_total_delta[cpu_num];
 
     } else {
 
@@ -412,4 +469,41 @@ void free_cpu() {
         free(jiffies_total_old);
 
     }
+    if (cpu_user != NULL) {
+
+        free(cpu_user);
+
+    }
+    if (cpu_system != NULL) {
+
+        free(cpu_system);
+
+    }
+    if (user != NULL) {
+
+        free(user);
+
+    }
+    if (user_nice != NULL) {
+
+        free(user_nice);
+
+    }
+
+    if (idle != NULL) {
+
+        free(idle);
+
+    }
+    if (msystem != NULL) {
+
+        free(msystem);
+
+    }
+    if (percentage != NULL) {
+
+        free(percentage);
+
+    }
+
 };

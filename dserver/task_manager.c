@@ -324,6 +324,7 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
     Thread_task *thread_task_main=NULL;
     Thread_task *tp=NULL;
     T_Collection  *task_temp=NULL;
+    T_Collection *task_main = NULL;
 
 
     if ((dir = opendir(directory)) == NULL) {
@@ -371,13 +372,18 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
             }
 
 
-            task_temp->next = *array;
+            task_temp->next = task_main;
+            //  task_temp->next = *array;
 
-            if ((*array) != NULL) {
-                (*array)->prev = task_temp;
+//            if ((*array) != NULL) {
+//                (*array)->prev = task_temp;
+//            }
+            if (task_main != NULL) {
+                task_main->prev = task_temp;
             }
 
-            *array = task_temp;
+            task_main = task_temp;
+            //  *array = task_temp;
 
 
 
@@ -427,7 +433,8 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
 
 
             int j=0;
-            task_temp = *array;
+            task_temp = task_main;
+            //  task_temp = *array;
 
             T_Collection *t_temp;
             while( j<(*task_num)){
@@ -443,7 +450,8 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
                             task_temp->prev = NULL;
                         }
 
-                        *array = task_temp;
+                        task_main = task_temp;
+                        //     *array = task_temp;
 
                         free(t_temp);
 
@@ -473,12 +481,14 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
 
         }
 
-        free(tp);
         thread_task_main=thread_task_main->next;
+        tp->task = NULL;
+        free(tp);
+
 
     }
 
-
+    *array = task_main;
 
     closedir(dir);
     return 0;

@@ -251,7 +251,7 @@ int main(int argc, char *argv[]) {
     pthread_join(t2, NULL);
     pthread_join(t3, NULL);
 
-
+    printf("cealn up\n");
 
         struct DataItem *temp;
     printf("%d\n", hash_size);
@@ -279,7 +279,7 @@ int main(int argc, char *argv[]) {
 
     }
     close(sockfd);
-
+    printf("cealn up\n");
     free_cpu();
 
 
