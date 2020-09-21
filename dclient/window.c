@@ -254,7 +254,7 @@ void memory_change(Memory_usage *memory_usage) {
 
     float f = 0;
     f = (float) atof(memory_usage->memory_percentage);
-  //  cpu_list->data[6]=f;
+
     mem_list->data[0]=f;
 
 
@@ -275,31 +275,43 @@ void memory_change(Memory_usage *memory_usage) {
 
 }
 
-void cpu_change(Cpu_usage *cpu_usage) {
+void cpu_change(Cpu_usage_list *cpu_usage_list) {
+
+    Cpu_usage_list *temp;
+    gchar *cpu0_usage_text=NULL;
+    gchar *temp_char=NULL;
 
 
-    float g[4] = {0, 0, 0, 0};
+    temp=cpu_usage_list;
+    for(int i=0;i<cpu_number;i++){
 
-    g[0] = (float) atof(cpu_usage->percentage0);
-    g[1] = (float) atof(cpu_usage->percentage1);
-    g[2] = (float) atof(cpu_usage->percentage2);
-    g[3] = (float) atof(cpu_usage->percentage3);
-
-
-    for(int i=0;i<4;i++){
-        cpu_list->data[i] = g[i];
+      sscanf (temp->cpu_usage.percentage,"%f",&cpu_list->data[i] ) ;
+        temp=temp->next;
        }
+//TODo add another box for cpu stats
+    //TODO add list of all the cpus and draw them in difrent coolors
+    temp=cpu_usage_list;
+    for(int i=0;i<cpu_number;i++){
+        gchar *p;
+        if(cpu0_usage_text==NULL){
+            cpu0_usage_text=g_strdup_printf("CPU%d: %.4s%% ",i,temp->cpu_usage.percentage);
 
-    gchar *cpu0_usage_text = g_strdup_printf(("CPU%s: %.4s%% CPU%s: %.4s%%CPU%s: %.4s%%CPU%s: %.4s%%"),
-                                             "0", cpu_usage->percentage0,
-                                             "1", cpu_usage->percentage1,
-                                             "2", cpu_usage->percentage2,
-                                             "3", cpu_usage->percentage3
-    );
+        }else{
+           p=cpu0_usage_text;
+            temp_char=g_strdup_printf("CPU%d: %.4s%% ",i,temp->cpu_usage.percentage);
+            cpu0_usage_text=  g_strconcat(temp_char,p,NULL);
+        }
+
+        g_free(temp_char);
+        temp=temp->next;
+    }
+
+
 
     gtk_label_set_text(GTK_LABEL (label_cpu0), cpu0_usage_text);
 
     g_free(cpu0_usage_text);
+
 
 
 };

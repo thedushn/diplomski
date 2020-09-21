@@ -15,27 +15,37 @@
 #define BUFFER_SIZE 1024
 pthread_cond_t cpu_cond= PTHREAD_COND_INITIALIZER;
 bool test;
-static __uint64_t jiffies_total_delta[5] = {0, 0, 0, 0, 0};
 
-void * send_cpu(void *socket){
+__uint64_t *jiffies_total_delta = NULL;
+__uint64_t *jiffies_system = NULL;
+__uint64_t *jiffies_total = NULL;
+__uint64_t *jiffies_user = NULL;
+__uint64_t *jiffies_user_old = NULL;
+__uint64_t *jiffies_system_old = NULL;
+__uint64_t *jiffies_total_old = NULL;
 
-    int sockfd=(*(int*)socket);
-    Cpu_usage cpu_usage={0};
-    Data data={0};
-    __int32_t cpu_num;
+void *send_cpu(void *socket) {
 
-    cpu_num = cpu_number();
+    int sockfd = (*(int *) socket);
 
-   ssize_t ret=  cpu_percentage(cpu_num, &cpu_usage);
+
+    Cpu_usage *cpu_usage_list = NULL;
+    Cpu_usage *cpu_usage_list_temp = NULL;
+    Data data;
+
+
+    ssize_t ret = cpu_percentage(cpu_num, &cpu_usage_list);
     if (ret < 0) {
         printf("Error getting cpu data!\n\t");
-        pthread_exit(NULL);
+        pthread_exit(&ret);
 
     }
-    memset(&data,0,sizeof(Data));
-    data.size=CPU_USAGE;
+    cpu_usage_list_temp = cpu_usage_list;
+    for (int i = 0; i < cpu_num; i++) {
+        memset(&data, 0, sizeof(Data));
+        data.size = CPU_USAGE;
 
-    data.unification.cpu_usage=(Cpu_usage)cpu_usage;
+        data.unification.cpu_usage = *cpu_usage_list_temp;
 
     pthread_mutex_lock(&mutex_send);
     ret = send(sockfd, &data, sizeof(Data), 0);
@@ -44,28 +54,39 @@ void * send_cpu(void *socket){
     if (ret < 0) {
         printf("Error sending data!\n\t");
         pthread_mutex_unlock(&mutex_send);
-        pthread_exit(NULL);
+        free(cpu_usage_list);
+        pthread_exit(&ret);
 
     }
     if (ret == 0) {
 
         printf("socket closed\n");
         pthread_mutex_unlock(&mutex_send);
-        pthread_exit(NULL);
+        free(cpu_usage_list);
+        ret = -1;
+        pthread_exit(&ret);
     }
+        cpu_usage_list_temp++;
+    }
+
+    free(cpu_usage_list);
 
     pthread_exit(NULL);
 }
-int cpu_number() {
 
-    int c = 1; //cpu number must be at least 1
+__int32_t cpu_number() {
+
+    __int32_t c = 1; //cpu number must be at least 1
     FILE *file;
     char *filename = "/proc/cpuinfo";
     char buffer[1024];
     char *buffer2 = "processor";
 
-    if ((file = fopen(filename, "r")) == NULL || fgets(buffer, 1024, file) == NULL)
-        exit(1);
+    if ((file = fopen(filename, "r")) == NULL || fgets(buffer, 1024, file) == NULL) {
+        printf("the file cant open %s\n", filename);
+        return 0;
+    }
+
     while (fgets(buffer, 1024, file) != NULL) {
         if (strncmp(buffer2, buffer, strlen(buffer2)) == 0) {
 
@@ -76,11 +97,63 @@ int cpu_number() {
     }
     fclose(file);
 
+    jiffies_total_delta = calloc((size_t) (c + 1), sizeof(__uint64_t));
+    if (jiffies_total_delta == NULL) {
+
+        free(jiffies_total_delta);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+
+    jiffies_system = calloc((size_t) c, sizeof(__uint64_t));
+    if (jiffies_system == NULL) {
+
+        free(jiffies_system);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+    jiffies_total = calloc((size_t) c, sizeof(__uint64_t));
+    if (jiffies_total == NULL) {
+
+        free(jiffies_total);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+    jiffies_user = calloc((size_t) c, sizeof(__uint64_t));
+    if (jiffies_user == NULL) {
+
+        free(jiffies_user);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+    jiffies_user_old = calloc((size_t) c, sizeof(__uint64_t));
+    if (jiffies_user_old == NULL) {
+
+        free(jiffies_user_old);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+    jiffies_system_old = calloc((size_t) c, sizeof(__uint64_t));
+    if (jiffies_system_old == NULL) {
+
+        free(jiffies_system_old);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+    jiffies_total_old = calloc((size_t) c, sizeof(__uint64_t));
+    if (jiffies_total_old == NULL) {
+
+        free(jiffies_total_old);
+        printf("calloc error %d \n", errno);
+        return 0;
+    }
+
+
 
     return c;
 }
 
-int cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
+int cpu_percentage(int cpu_count, Cpu_usage **array) {
 
 
     float cpu_user[4] = {0, 0, 0, 0};
@@ -91,14 +164,10 @@ int cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
     __uint64_t system[4] = {0, 0, 0, 0};
     float percentage[4] = {0, 0, 0, 0};
 
+    Cpu_usage *temp_array;
 
 
-    static __uint64_t jiffies_system[4] = {0, 0, 0, 0};
-    static __uint64_t jiffies_total[4] = {0, 0, 0, 0};
-    static __uint64_t jiffies_user[4] = {0, 0, 0, 0};
-    static __uint64_t jiffies_user_old[4] = {0, 0, 0, 0};
-    static __uint64_t jiffies_system_old[4] = {0, 0, 0, 0};
-    static __uint64_t jiffies_total_old[4] = {0, 0, 0, 0};
+
 
     FILE *file;
     char *filename = "/proc/stat";
@@ -167,28 +236,28 @@ int cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
 
     pthread_mutex_unlock(&mutex_jiff);
 
+    temp_array = calloc((size_t) cpu_count, sizeof(Cpu_usage));
+    if (temp_array == NULL) {
+        free(temp_array);
+        printf("calloc error %d \n", errno);
 
-    if (sprintf(cpu_usage->percentage0, "%f", percentage[0]) < 0) {
-
-        printf("converting didn't work %s \n", cpu_usage->percentage0);
-        return -1;
-    }
-    if (sprintf(cpu_usage->percentage1, "%f", percentage[1]) < 0) {
-
-        printf("converting didn't work %s \n", cpu_usage->percentage1);
-        return -1;
-    }
-    if (sprintf(cpu_usage->percentage2, "%f", percentage[2]) < 0) {
-
-        printf("converting didn't work %s \n", cpu_usage->percentage2);
-        return -1;
-    }
-    if (sprintf(cpu_usage->percentage3, "%f", percentage[3]) < 0) {
-
-        printf("converting didn't work %s \n", cpu_usage->percentage3);
         return -1;
     }
 
+
+    for (int i = 0; i < cpu_count; i++) {
+
+
+        if (sprintf(temp_array[i].percentage, "%f", percentage[i]) < 0) {
+
+            printf("converting didn't work %s \n", temp_array[i].percentage);
+            free(temp_array);
+        return -1;
+    }
+
+
+    }
+    *array = temp_array;
 
 
     return 0;
@@ -308,4 +377,39 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
     return 0;
 }
 
+void free_cpu() {
 
+    if (jiffies_total_delta != NULL) {
+        free(jiffies_total_delta);
+    }
+    if (jiffies_system != NULL) {
+
+        free(jiffies_system);
+
+    }
+    if (jiffies_total != NULL) {
+
+        free(jiffies_total);
+
+    }
+    if (jiffies_user != NULL) {
+
+        free(jiffies_user);
+
+    }
+    if (jiffies_user_old != NULL) {
+
+        free(jiffies_user_old);
+
+    }
+    if (jiffies_system_old != NULL) {
+
+        free(jiffies_system_old);
+
+    }
+    if (jiffies_total_old != NULL) {
+
+        free(jiffies_total_old);
+
+    }
+};

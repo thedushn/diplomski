@@ -17,6 +17,8 @@ testing_tree.h
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
 window.h
 /home/dushn/Diplomski/diplomski/dclient/window.h
+main_header.h
+/home/dushn/Diplomski/diplomski/dclient/main_header.h
 
 /home/dushn/Diplomski/diplomski/dclient/buttons.h
 gtk/gtk.h

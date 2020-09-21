@@ -30,8 +30,7 @@
 
 void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list *array);
 
-void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, const gboolean CPU0_line, const gboolean CPU1_line,
-                    const gboolean CPU2_line, const gboolean CPU3_line, Cpu_list *collection);
+void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *collection);
 
 void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list *array);
 

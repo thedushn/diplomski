@@ -57,10 +57,17 @@ typedef struct _Cpu_usage Cpu_usage;
 struct __attribute__((__packed__)) _Cpu_usage {
 
 
-    char percentage0[16];
-    char percentage1[16];
-    char percentage2[16];
-    char percentage3[16];
+    char percentage[16];
+
+
+
+};
+typedef struct _Cpu_usage_list Cpu_usage_list;
+struct __attribute__((__packed__)) _Cpu_usage_list {
+
+
+    Cpu_usage cpu_usage;
+    Cpu_usage_list *next;
 
 
 };

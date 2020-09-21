@@ -103,8 +103,8 @@ struct Net_data search_net(char *key, bool *ima, struct Net_data new_data) {
 }
 
 
-void get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct, __uint64_t transmitted,
-                   __uint64_t *transmitted_struct) {
+int get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct, __uint64_t transmitted,
+                  __uint64_t *transmitted_struct) {
     struct Net_data net_data_new;
     struct Net_data net_data_old;
 
@@ -124,7 +124,7 @@ void get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct,
         if (temp == NULL) {
             free(temp);
             printf("calloc error %d \n", errno);
-            exit(1);
+            return -1;
         }
 
         temp->net_data.received_data=received;
@@ -174,7 +174,7 @@ void get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct,
 
     }
 
-
+    return 0;
 }
 
 int interface_name(Network *network1) {
@@ -273,7 +273,7 @@ int interface_name(Network *network1) {
 
             }
 
-
+            fclose(file);
             char *network_data = NULL;
             network_data = strchr(buffer, ':');
 
@@ -298,14 +298,16 @@ int interface_name(Network *network1) {
             network_rc1 = 0;
             network_ts1 = 0;
 
-            get_rec_trans(name, received_bytes, &network_rc1, transmit_bytes, &network_ts1);
+            if (get_rec_trans(name, received_bytes, &network_rc1, transmit_bytes, &network_ts1) != 0) {
+                closedir(pDir);
+                return -1;
+            }
 
 
             network_rc += network_rc1;
             network_ts += network_ts1;
 
             number_bandwidth = 0;
-            fclose(file);
 
 
         }

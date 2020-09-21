@@ -44,7 +44,7 @@ void * send_interrupts(void *socket){
     if (result != 0) {
 
         clean_interrupts();
-        exit(1);
+        pthread_exit(&result);
     }
 
     if (interrupts_main == NULL) {
@@ -84,21 +84,15 @@ void * send_interrupts(void *socket){
         pthread_mutex_unlock(&mutex_send);
         if (ret < 0) {
             printf("Error sending data!\n\t");
-            break;
-
+            pthread_exit(&ret);
         }
         if (ret == 0) {
 
             printf("socket closed\n");
-            break;
+            ret = -1;
+            pthread_exit(&ret);
         }
 
-//        pthread_mutex_lock(&mutex_send);
-//        if( test_send(sockfd)<=0){
-//
-//            break;
-//        }
-//        pthread_mutex_unlock(&mutex_send);
 
 
 

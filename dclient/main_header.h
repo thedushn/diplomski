@@ -15,11 +15,13 @@ GtkWidget *entry;
 
 int newsockfd;
 int newsockfd1;
-int bjorg ;
+__int32_t bjorg ;
 guint t;
 
-gint dev_num_old;
-int task_num_old;
+__int32_t dev_num_old;
+__int32_t task_num_old;
+
+bool *cpu_status;
 
 
 typedef  struct  _NetMem_list NetMem_list;
@@ -34,7 +36,7 @@ struct _NetMem_list{
 typedef struct _Cpu_List Cpu_list;
 struct _Cpu_List {
 
-    float data[4];
+    float *data;
     Cpu_list *next;
 };
 
@@ -46,6 +48,7 @@ Interrupts * interrupts;
 Cpu_list *cpu_list;
 NetMem_list *net_list;
 NetMem_list *mem_list;
+__int32_t cpu_number;
 
 
 #define LIST_SIZE 240
@@ -56,6 +59,7 @@ NetMem_list *mem_list;
 #define DEVICES 5
 #define INTERRUPTS 6
 #define TEXT 7
+#define CPU_LIST 8
 
  gboolean init_timeout();
 

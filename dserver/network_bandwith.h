@@ -25,8 +25,8 @@ struct DataItem_net {
 int net_hash_size;
 int interface_name(Network *network);
 
-void get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct, __uint64_t transmitted,
-                   __uint64_t *transmitted_struct
+int get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct, __uint64_t transmitted,
+                  __uint64_t *transmitted_struct
 );
 
 

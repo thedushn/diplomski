@@ -127,15 +127,19 @@ ssize_t test_recv(int socket) {
 }
 
 int
-data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage,
-              T_Collection **task_array, D_Collection **devices_array, int *task_num, int *dev_num) {
+data_transfer(int socket, Cpu_usage_list **cpu_usage_list, Network *network, Memory_usage *memory_usage,
+              T_Collection **task_array, D_Collection **devices_array, __int32_t *task_num, __int32_t *dev_num) {
 
 
     int flag = MSG_WAITALL;
     ssize_t ret;
 
-    T_Collection *temp_task_array;
-    D_Collection *temp_device_array;
+
+    T_Collection *temp_task_array=NULL;
+    D_Collection *temp_device_array=NULL;
+    Cpu_usage_list *temp_cpu_array=NULL;
+    Cpu_usage_list *temp_cpu_p=NULL;
+
     Interrupts *temp=interrupts;
     while (1){
         Data data;
@@ -158,7 +162,34 @@ data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage 
         switch (data.size){
 
             case CPU_USAGE:
-                *cpu_usage1=(Cpu_usage)data.unification.cpu_usage;
+
+                if(*cpu_usage_list!=NULL) {
+
+
+                    temp_cpu_array = *cpu_usage_list;
+
+                    while (temp_cpu_array->next != NULL) {
+                        temp_cpu_array = temp_cpu_array->next;
+                    }
+                }
+                temp_cpu_p =calloc(1,sizeof(Cpu_usage_list));
+                if(temp_cpu_p==NULL){
+                    free(temp_cpu_p);
+
+                    printf("calloc error %d \n", errno);
+                    return 1;
+                }
+                temp_cpu_p->cpu_usage=(Cpu_usage)data.unification.cpu_usage;
+
+                if(*cpu_usage_list==NULL){
+
+                    *cpu_usage_list=temp_cpu_p;
+                }
+                else {
+                    temp_cpu_array->next=temp_cpu_p;
+                }
+
+
                 break;
 
             case NETWORK:
@@ -230,6 +261,7 @@ data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage 
                     printf("socket closed\n");
                     return 1;
                 }
+
                     return 0;
 
             default:

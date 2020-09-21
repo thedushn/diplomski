@@ -394,7 +394,7 @@ draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, doubl
 
 
 
-    int g = (int) time_step;
+    __int32_t g = (__int32_t) time_step;
     if (bjorg < time_step) {
         g = bjorg;
     }
@@ -407,7 +407,7 @@ draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, doubl
             cairo_set_source_rgb(cr, 0, 1, 0);
         }
         temp=array;
-        for (int j = 0; j < g; j++) {
+        for (__int32_t j = 0; j < g; j++) {
 
             gfloat peak;
             double percentage;
@@ -731,12 +731,11 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
 
 }
 
-void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, const gboolean CPU0_line, const gboolean CPU1_line,
-                    const gboolean CPU2_line, const gboolean CPU3_line, Cpu_list *array1) {
+void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *array1) {
 
     double width, height;
     double font_size = 10;
-
+    bool *temp_bool=cpu_status;
 
     height = (double) gtk_widget_get_allocated_height(widget);
     width = (double) gtk_widget_get_allocated_width(widget);
@@ -758,22 +757,16 @@ void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, const gbool
     draw_percentages(cr, height, font_size);
 
 
-    if (CPU0_line == TRUE) {
-        draw_graph(cr, 0, 3, width, height, font_size, time_step, 0, array1);
+    for(__int32_t i=0;i<cpu_number;i++){
+
+        if((*temp_bool)==true){
+            draw_graph(cr, i, 3, width, height, font_size, time_step, 0, array1);
+        }
+        temp_bool++;
+
 
     }
-    if (CPU1_line == TRUE) {
-        draw_graph(cr, 1, 3, width, height, font_size, time_step, 0, array1);
 
-    }
-    if (CPU2_line == TRUE) {
-        draw_graph(cr, 2, 3, width, height, font_size, time_step, 0, array1);
-
-    }
-    if (CPU3_line == TRUE) {
-        draw_graph(cr, 3, 3, width, height, font_size, time_step, 0, array1);
-
-    }
     writing_seconds(cr, width, height, font_size, 3);
 
     if (graph_surface != NULL) {

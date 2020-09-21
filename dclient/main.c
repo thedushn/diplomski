@@ -35,7 +35,7 @@ gboolean on_draw_event(GtkWidget *widget, cairo_t *cr) {
 
     if (widget == graph1) {
 
-        do_drawing_cpu(widget, cr, time_step, CPU0_line, CPU1_line, CPU2_line, CPU3_line, cpu_list);
+        do_drawing_cpu(widget, cr, time_step, cpu_list);
     } else if (widget == graph2) {
 
         do_drawing_net(widget, cr, time_step, net_list);
@@ -84,35 +84,7 @@ void dec_refresh() {
 }
 
 
-void graph_refresh(GtkWidget *widget, gboolean CPU) {
 
-    if (widget == button_graph0) {
-
-
-        CPU0_line = CPU;
-
-
-    } else if (widget == button_graph1) {
-
-
-        CPU1_line = CPU;
-
-    } else if (widget == button_graph2) {
-
-        CPU2_line = CPU;
-
-
-    } else {
-
-        CPU3_line = CPU;
-
-
-    }
-    gtk_widget_queue_draw(graph1);
-
-
-
-}
 
 
 void timeout_refresh() {
@@ -185,7 +157,7 @@ int connection(char *argv1, char *argv2) {
 }
 
 int task_check(T_Collection *tasks_new, int task_num) {
-    int i, j;
+    __int32_t i, j;
     /*tasks */
     T_Collection *rem_task_old = tasks_old;
     T_Collection *rem_task_new = tasks_new;
@@ -502,7 +474,7 @@ int device_check(D_Collection *devices_new, int dev_num) {
 
 }
 
-void freeing_memory(void *array, int *array_size, int type){
+void freeing_memory(void *array, __int32_t *array_size, int type){
 
     T_Collection *temp_task;
     T_Collection *temp_taskf;
@@ -515,15 +487,19 @@ void freeing_memory(void *array, int *array_size, int type){
     Cpu_list *temp_cpu;
     Cpu_list *temp_cpuf;
 
+    Cpu_usage_list *temp_list;
+    Cpu_usage_list *temp_listf;
+
 
     switch (type) {
 
         case CPU_USAGE:
 
             temp_cpu=(Cpu_list*)array;
-            for(int i=0;i<(*array_size);i++){
+            for(__int32_t i=0;i<(*array_size);i++){
                 temp_cpuf= temp_cpu;
                 temp_cpu=temp_cpu->next;
+                free(temp_cpuf->data);
                 free(temp_cpuf);
 
 
@@ -534,7 +510,7 @@ void freeing_memory(void *array, int *array_size, int type){
 
         case NETWORK:
             temp_netmem=(NetMem_list*)array;
-            for(int i=0;i<(*array_size);i++){
+            for(__int32_t i=0;i<(*array_size);i++){
                 temp_netmemf= temp_netmem;
                 temp_netmem=temp_netmem->next;
                 free(temp_netmemf);
@@ -548,7 +524,7 @@ void freeing_memory(void *array, int *array_size, int type){
         case MEMORY:
 
             temp_netmem=(NetMem_list*)array;
-            for(int i=0;i<(*array_size);i++){
+            for(__int32_t i=0;i<(*array_size);i++){
                 temp_netmemf= temp_netmem;
                 temp_netmem=temp_netmem->next;
                 free(temp_netmemf);
@@ -561,7 +537,7 @@ void freeing_memory(void *array, int *array_size, int type){
 
         case TASK:
             temp_task=(T_Collection*)array;
-            for(int i=0;i<(*array_size);i++){
+            for(__int32_t i=0;i<(*array_size);i++){
                 temp_taskf= temp_task;
                 temp_task=temp_task->next;
                 free(temp_taskf);
@@ -575,7 +551,7 @@ void freeing_memory(void *array, int *array_size, int type){
 
         case DEVICES:
             temp_device=(D_Collection*)array;
-            for(int i=0;i<(*array_size);i++){
+            for(__int32_t i=0;i<(*array_size);i++){
                 temp_devicef= temp_device;
                 temp_device=temp_device->next;
                 free(temp_devicef);
@@ -585,6 +561,15 @@ void freeing_memory(void *array, int *array_size, int type){
             (*array_size)=0;
 
             break;
+        case CPU_LIST:
+            temp_list=(Cpu_usage_list*)array;
+            for(__int32_t i=0;i<(*array_size);i++){
+                temp_listf= temp_list;
+                temp_list=temp_list->next;
+                free(temp_listf);
+
+
+            }
 
         default:
             return;
@@ -597,11 +582,11 @@ gboolean init_timeout() {
 
     int ret;
 
-  int  dev_num = 0;//in the begging its zero
-  int  task_num = 0;
+    __int32_t  dev_num = 0;//in the begging its zero
+    __int32_t  task_num = 0;
 
 
-    Cpu_usage cpu_usage1 = {0};
+    Cpu_usage_list *cpu_usage_list =NULL;
     Network network = {0};
     Memory_usage memory_usage = {0};
     T_Collection *tasks_new = NULL;
@@ -613,7 +598,7 @@ gboolean init_timeout() {
 
 
     sem_wait(&semt);
-    ret = data_transfer(newsockfd, &cpu_usage1, &network, &memory_usage, &tasks_new, &devices_new, &task_num, &dev_num);
+    ret = data_transfer(newsockfd, &cpu_usage_list, &network, &memory_usage, &tasks_new, &devices_new, &task_num, &dev_num);
 
 
     if (ret != 0) {
@@ -622,6 +607,7 @@ gboolean init_timeout() {
 
         freeing_memory(devices_new,&dev_num,DEVICES);
         freeing_memory(tasks_new,&task_num,TASK);
+        freeing_memory(cpu_usage_list,&cpu_number,CPU_LIST);
 
 
         if(refresh>0)
@@ -638,6 +624,7 @@ gboolean init_timeout() {
 
         freeing_memory(devices_new,&dev_num,DEVICES);
         freeing_memory(tasks_new,&task_num,TASK);
+        freeing_memory(cpu_usage_list,&cpu_number,CPU_LIST);
 
         if(refresh>0)
             g_source_remove(refresh);
@@ -655,6 +642,7 @@ gboolean init_timeout() {
 
         freeing_memory(devices_new,&dev_num,DEVICES);
         freeing_memory(tasks_new,&task_num,TASK);
+        freeing_memory(cpu_usage_list,&cpu_number,CPU_LIST);
 
         if(refresh>0)
             g_source_remove(refresh);
@@ -674,6 +662,7 @@ gboolean init_timeout() {
 
         freeing_memory(devices_new,&dev_num,DEVICES);
         freeing_memory(tasks_new,&task_num,TASK);
+        freeing_memory(cpu_usage_list,&cpu_number,CPU_LIST);
 
         if(refresh>0)
         g_source_remove(refresh);
@@ -682,6 +671,7 @@ gboolean init_timeout() {
 
        return FALSE;
     }
+    temp_collection->data=calloc((size_t)cpu_number,sizeof(float));
 
 
     //point it to old first node
@@ -700,6 +690,7 @@ gboolean init_timeout() {
 
         freeing_memory(devices_new,&dev_num,DEVICES);
         freeing_memory(tasks_new,&task_num,TASK);
+        freeing_memory(cpu_usage_list,&cpu_number,CPU_LIST);
 
         if(refresh>0)
             g_source_remove(refresh);
@@ -725,6 +716,7 @@ gboolean init_timeout() {
 
         freeing_memory(devices_new,&dev_num,DEVICES);
         freeing_memory(tasks_new,&task_num,TASK);
+        freeing_memory(cpu_usage_list,&cpu_number,CPU_LIST);
 
         if(refresh>0)
             g_source_remove(refresh);
@@ -773,23 +765,19 @@ gboolean init_timeout() {
 
 
 
-    cpu_change(&cpu_usage1);
+    cpu_change(cpu_usage_list);
     network_change_rc(&network);
     memory_change(&memory_usage);
     swap_change(&memory_usage);
 
     freeing_memory(devices_new,&dev_num,DEVICES);
     freeing_memory(tasks_new,&task_num,TASK);
+    freeing_memory(cpu_usage_list,&cpu_number,CPU_LIST);
 
 
     time_step = 60000 / t;
 
     gtk_widget_queue_draw(window);
-
-
-
-
-
 
 
 
@@ -823,8 +811,7 @@ int main(int argc, char *argv[]) {
 
         bjorg=0;
         t = 2000;
-
-
+    ssize_t ret;
 
 
     if (argc < 3) {
@@ -855,16 +842,56 @@ int main(int argc, char *argv[]) {
         close(newsockfd1);
         exit(1);
     }
-    CPU0_line=TRUE;
-    CPU1_line=TRUE;
-    CPU2_line=TRUE;
-    CPU3_line=TRUE;
 
+
+    ret = recv(newsockfd, &cpu_number, sizeof(__int32_t), MSG_WAITALL);
+
+    if (ret < 0) {
+
+        printf("error receiving data\n %d", (int) ret);
+        return (int)ret;
+    }
+    if (ret == 0) {
+
+        printf("error receiving data\n %d", (int) ret);
+        printf("socket closed\n");
+        return 1;
+    }
+
+    cpu_status=calloc((size_t)cpu_number,sizeof(bool));
+    if(cpu_status==NULL){
+        free(cpu_status);
+
+        printf("calloc error %d \n", errno);
+        return -1;
+    }
+
+    for(int i=0;i<cpu_number;i++){
+        cpu_status[i]=true;
+    }
+
+    cpu_buttons=calloc((size_t)cpu_number,sizeof(GtkWidget));
+    if(cpu_buttons==NULL){
+
+        free(cpu_buttons);
+
+        printf("calloc error %d \n", errno);
+        return -1;
+    }
+
+    gtk_disable_setlocale();
     gtk_init(&argc, &argv);
 
+
     interrupts=calloc(10,sizeof(Interrupts));
+    if(interrupts==NULL){
 
+        free(interrupts);
+        free(cpu_status);
 
+        printf("calloc error %d \n", errno);
+        return -1;
+    }
 
 
 
@@ -889,6 +916,7 @@ int main(int argc, char *argv[]) {
 
 
     window = main_window(device_swindow, process_swindow);
+
     g_signal_connect(button_inc, "clicked", G_CALLBACK(inc_refresh), NULL);
     g_signal_connect(button_dec, "clicked", G_CALLBACK(dec_refresh), NULL);
     g_signal_connect(button_proc, "toggled", G_CALLBACK(button_clicked_view_process), NULL);
@@ -899,6 +927,7 @@ int main(int argc, char *argv[]) {
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_dev),
                                  TRUE);
     g_signal_connect(button_dev, "toggled", G_CALLBACK(dev_button_clicked2), NULL);
+
 
 
     g_signal_connect(button_graph, "clicked", G_CALLBACK(graph_button_clicked), NULL);
@@ -925,6 +954,7 @@ int main(int argc, char *argv[]) {
 
 
     sem_init(&semt,0,1);
+
     init_timeout();
 
 
@@ -941,13 +971,12 @@ int main(int argc, char *argv[]) {
 
 
     freeing_memory(cpu_list,&bjorg,CPU_USAGE);
-
     freeing_memory(devices_old,&dev_num_old,DEVICES);
-
-
     freeing_memory(tasks_old,&task_num_old,TASK);
     freeing_memory(net_list,&bjorg,NETWORK);
     freeing_memory(mem_list,&bjorg,MEMORY);
+    free(cpu_status);
+    free(cpu_buttons);
 
 
 

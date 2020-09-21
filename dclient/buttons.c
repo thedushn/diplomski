@@ -3,7 +3,7 @@
 #include "drawing.h"
 #include "testing_tree.h"
 #include "window.h"
-
+#include "main_header.h"
 
 static gboolean device_devices = TRUE;
 static gboolean device_type = TRUE;
@@ -296,44 +296,41 @@ void start_stop(int show, char *signal, char *task_id) {
     }
 
 }
-
 void graph_button_clicked(GtkWidget *widget) {
 
     GtkWidget *box2;
+    GtkWidget *temp;
+
+
+    char   string[10];
+    GdkRGBA rgba;
+
+
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
+
         window2 = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-
-        button_graph0 = gtk_toggle_button_new_with_label("CPu0");
-        button_graph1 = gtk_toggle_button_new_with_label("CPu1");
-        button_graph2 = gtk_toggle_button_new_with_label("CPu2");
-        button_graph3 = gtk_toggle_button_new_with_label("CPu3");
-
-        if (CPU0_line == TRUE) {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph0), TRUE);
-        }
-        if (CPU1_line == TRUE) {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph1), TRUE);
-        }
-        if (CPU2_line == TRUE) {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph2), TRUE);
-        }
-        if (CPU3_line == TRUE) {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph3), TRUE);
-        }
-
         gtk_window_set_title(GTK_WINDOW (window2), "GRAPH buttons");
-
         box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
         gtk_container_add(GTK_CONTAINER(window2), box2);
-        gtk_box_pack_start(GTK_BOX(box2), button_graph0, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_graph1, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_graph2, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_graph3, 1, 1, 0);
-        g_signal_connect(button_graph0, "toggled", G_CALLBACK(graph_clicked), NULL);
-        g_signal_connect(button_graph1, "toggled", G_CALLBACK(graph_clicked), NULL);
-        g_signal_connect(button_graph2, "toggled", G_CALLBACK(graph_clicked), NULL);
-        g_signal_connect(button_graph3, "toggled", G_CALLBACK(graph_clicked), NULL);
 
+
+        for(int i=0;i<cpu_number;i++){
+            rgba.red=1;
+            rgba.green=0;
+            rgba.blue=0;
+           sprintf(string,"CPU%d",i);
+            temp=gtk_color_button_new_with_rgba(&rgba);
+            temp=gtk_toggle_button_new_with_label(string);
+
+
+            if(cpu_status[i]==true){
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(temp), TRUE);
+            }
+            gtk_box_pack_start(GTK_BOX(box2), temp, 1, 1, 0);
+            g_signal_connect(temp, "toggled", G_CALLBACK(graph_clicked), NULL);
+            cpu_buttons[i]=*temp;
+
+        }
 
         gtk_window_set_position(GTK_WINDOW(window2), GTK_WIN_POS_CENTER);
 
@@ -348,6 +345,7 @@ void graph_button_clicked(GtkWidget *widget) {
 
     }
 };
+
 
 void show_all(GtkWidget *widget) {
 
@@ -558,58 +556,36 @@ void process_clicked(GtkWidget *widget) {
 void graph_clicked(GtkWidget *widget) {
 
 
+bool *temp_bool=cpu_status;
+GtkWidget *temp_widget=cpu_buttons;
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
-        if (widget == button_graph0) {
 
-            CPU0_line = TRUE;
-            graph_refresh(widget, CPU0_line);
-
-
-        } else if (widget == button_graph1) {
-
-            CPU1_line = TRUE;
-            graph_refresh(widget, CPU1_line);
-
-        } else if (widget == button_graph2) {
-
-            CPU2_line = TRUE;
-            graph_refresh(widget, CPU2_line);
-
-        } else {
-
-            CPU3_line = TRUE;
-            graph_refresh(widget, CPU3_line);
+        for(int i=0;i<cpu_number;i++){
+            if(temp_widget->priv==widget->priv){
+                (*temp_bool)=true;
+                gtk_widget_queue_draw(graph1);
+            }
+            temp_bool++;
+            temp_widget++;
 
         }
-
 
     } else {
 
-        if (widget == button_graph0) {
-
-            CPU0_line = FALSE;
-            graph_refresh(widget, CPU0_line);
-
-        } else if (widget == button_graph1) {
-
-            CPU1_line = FALSE;
-            graph_refresh(widget, CPU1_line);
-
-        } else if (widget == button_graph2) {
-
-            CPU2_line = FALSE;
-            graph_refresh(widget, CPU2_line);
-
-        } else {
-
-            CPU3_line = FALSE;
-            graph_refresh(widget, CPU3_line);
-
+        for(int i=0;i<cpu_number;i++){
+            if(temp_widget->priv==widget->priv){
+                (*temp_bool)=false;
+                gtk_widget_queue_draw(graph1);
+            }
+            temp_bool++;
+            temp_widget++;
         }
+
 
     }
 
 };
+
 
 
 
