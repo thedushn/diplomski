@@ -29,6 +29,14 @@ void * send_task(void *socket){
 
    __int32_t task_num=0;
 
+    pthread_mutex_lock(&mutex_send);
+    while (thread_break == false) {
+        ret = -100;
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(&ret);
+    }
+    pthread_mutex_unlock(&mutex_send);
+
     result = get_task_list(&tasks, &task_num);
     if (result != 0) {
 
@@ -45,7 +53,9 @@ void * send_task(void *socket){
 
 
         }
-        pthread_exit(NULL);
+        ret = -100;
+
+        pthread_exit(&ret);
     }
 
     temp_task=tasks;
@@ -74,7 +84,8 @@ void * send_task(void *socket){
 
 
             }
-           pthread_exit(NULL);
+
+            pthread_exit(&ret);
 
         }
         if (ret == 0) {
@@ -92,7 +103,9 @@ void * send_task(void *socket){
 
 
             }
-            pthread_exit(NULL);
+
+            ret = -100;
+            pthread_exit(&ret);
         }
 
         temp_task=temp_task->next;
@@ -324,7 +337,7 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
     Thread_task *thread_task_main=NULL;
     Thread_task *tp=NULL;
     T_Collection  *task_temp=NULL;
-    T_Collection *task_main = NULL;
+
 
 
     if ((dir = opendir(directory)) == NULL) {
@@ -372,18 +385,14 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
             }
 
 
-            task_temp->next = task_main;
-            //  task_temp->next = *array;
+            task_temp->next = *array;
 
-//            if ((*array) != NULL) {
-//                (*array)->prev = task_temp;
-//            }
-            if (task_main != NULL) {
-                task_main->prev = task_temp;
+            if ((*array) != NULL) {
+                (*array)->prev = task_temp;
             }
 
-            task_main = task_temp;
-            //  *array = task_temp;
+
+            *array = task_temp;
 
 
 
@@ -419,9 +428,7 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
 
        }
 
-        if(tp->result!=0){
-            printf("Thread pointer %d \n",tp->result);
-        }
+
         tp=tp->next;
 
     }
@@ -429,12 +436,11 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
     for(int i=0;i<thread_num;i++){
         tp=thread_task_main;
         if(tp->result!=0){
-            printf(" Result %d task_pid %d \n",tp->result,tp->pid);
 
 
             int j=0;
-            task_temp = task_main;
-            //  task_temp = *array;
+
+            task_temp = *array;
 
             T_Collection *t_temp;
             while( j<(*task_num)){
@@ -450,8 +456,8 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
                             task_temp->prev = NULL;
                         }
 
-                        task_main = task_temp;
-                        //     *array = task_temp;
+
+                        *array = task_temp;
 
                         free(t_temp);
 
@@ -488,7 +494,6 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
 
     }
 
-    *array = task_main;
 
     closedir(dir);
     return 0;

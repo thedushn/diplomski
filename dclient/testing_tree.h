@@ -12,7 +12,7 @@
 
 #include "common.h"
 
-//GtkTreeStore *list_store1;
+
 
 GtkTreeSelection *selection;
 
@@ -23,6 +23,9 @@ GtkWidget *treeview1;
 GtkTreeStore *list_store;
 GtkTreeStore *list_store1;
 
+int task_check(T_Collection *tasks_new, int task_num);
+
+int device_check(D_Collection *devices_new, int dev_num);
 
 void remove_list_item(gint pid);
 

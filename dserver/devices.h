@@ -6,6 +6,7 @@
 #define DIPLOMSKI_DEVICES_H
 
 #include "common.h"
+
 bool devices_show ;
 
 

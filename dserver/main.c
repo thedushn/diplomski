@@ -205,28 +205,9 @@ int main(int argc, char *argv[]) {
 
     differenceBetweenTimePeriod(tm2, stop_time, &begin_time);// time when linux started
 
-    if ((cpu_num = cpu_number()) == 0) {
-        close(sockfd);
-        free_cpu();
-        return -1;
-    }
 
-    ret = (int) send(new_fd, &cpu_num, sizeof(__int32_t), 0);
-    if (ret < 0) {
-        printf("Error sending data!\n\t");
 
-        close(sockfd);
-        free_cpu();
-        return -1;
 
-    }
-    if (ret == 0) {
-
-        printf("socket closed\n");
-        close(sockfd);
-        free_cpu();
-        return -1;
-    }
 
     ret2 = pthread_create(&t2, NULL, sending, &new_fd);
     if (ret2 != 0) {
@@ -251,10 +232,9 @@ int main(int argc, char *argv[]) {
     pthread_join(t2, NULL);
     pthread_join(t3, NULL);
 
-    printf("cealn up\n");
 
-        struct DataItem *temp;
-    printf("%d\n", hash_size);
+    struct DataItem *temp;
+
     for(int k=0;k<hash_size;k++){
         // save reference to first link
         temp = task_details;
@@ -279,8 +259,6 @@ int main(int argc, char *argv[]) {
 
     }
     close(sockfd);
-    printf("cealn up\n");
-    free_cpu();
 
 
     return 0;

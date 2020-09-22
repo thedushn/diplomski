@@ -6,6 +6,7 @@ CMakeFiles/client.dir/buttons.c.o
  /home/dushn/Diplomski/diplomski/dclient/buttons.h
  /home/dushn/Diplomski/diplomski/dclient/common.h
  /home/dushn/Diplomski/diplomski/dclient/drawing.h
+ /home/dushn/Diplomski/diplomski/dclient/functions.h
  /home/dushn/Diplomski/diplomski/dclient/main_header.h
  /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
  /home/dushn/Diplomski/diplomski/dclient/window.h
@@ -609,6 +610,7 @@ CMakeFiles/client.dir/drawing.c.o
  /home/dushn/Diplomski/diplomski/dclient/drawing.c
  /home/dushn/Diplomski/diplomski/dclient/drawing.h
  /home/dushn/Diplomski/diplomski/dclient/main_header.h
+ /home/dushn/Diplomski/diplomski/dclient/window.h
  /usr/include/atk-1.0/atk/atk-enum-types.h
  /usr/include/atk-1.0/atk/atk.h
  /usr/include/atk-1.0/atk/atkaction.h
@@ -2411,6 +2413,7 @@ CMakeFiles/client.dir/main.c.o
 CMakeFiles/client.dir/testing_tree.c.o
  /home/dushn/Diplomski/diplomski/dclient/buttons.h
  /home/dushn/Diplomski/diplomski/dclient/common.h
+ /home/dushn/Diplomski/diplomski/dclient/main_header.h
  /home/dushn/Diplomski/diplomski/dclient/testing_tree.c
  /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
  /usr/include/atk-1.0/atk/atk-enum-types.h

@@ -15,33 +15,42 @@ void * send_memory(void *socket){
     int sockfd=(*(int*)socket);
     ssize_t ret;
 
+
     Memory_usage  memory_usage={0};
     Data data={0};
 
-    ret=(ssize_t)  get_memory_usage(&memory_usage);
+    pthread_mutex_lock(&mutex_send);
+    while (thread_break == false) {
+        ret = -100;
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(&ret);
+    }
+    pthread_mutex_unlock(&mutex_send);
 
+    ret=(ssize_t)  get_memory_usage(&memory_usage);
+    if (ret > 0) {
+
+        pthread_exit(&ret);
+    }
 
     data.size=MEMORY;
     data.unification.memory_usage=memory_usage;
 
     pthread_mutex_lock(&mutex_send);
     ret = send(sockfd, &data, sizeof(Data), 0);
+    pthread_mutex_unlock(&mutex_send);
+
     if (ret < 0) {
         printf("Error sending data!\n\t");
-        pthread_mutex_unlock(&mutex_send);
         pthread_exit(&ret);
 
     }
     if (ret == 0) {
 
         printf("socket closed\n");
-        pthread_mutex_unlock(&mutex_send);
         pthread_exit(&ret);
 
     }
-
-    pthread_mutex_unlock(&mutex_send);
-
 
 
     pthread_exit(&ret);

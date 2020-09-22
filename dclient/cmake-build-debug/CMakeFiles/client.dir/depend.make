@@ -5,6 +5,7 @@ CMakeFiles/client.dir/buttons.c.o: ../buttons.c
 CMakeFiles/client.dir/buttons.c.o: ../buttons.h
 CMakeFiles/client.dir/buttons.c.o: ../common.h
 CMakeFiles/client.dir/buttons.c.o: ../drawing.h
+CMakeFiles/client.dir/buttons.c.o: ../functions.h
 CMakeFiles/client.dir/buttons.c.o: ../main_header.h
 CMakeFiles/client.dir/buttons.c.o: ../testing_tree.h
 CMakeFiles/client.dir/buttons.c.o: ../window.h
@@ -608,6 +609,7 @@ CMakeFiles/client.dir/drawing.c.o: ../common.h
 CMakeFiles/client.dir/drawing.c.o: ../drawing.c
 CMakeFiles/client.dir/drawing.c.o: ../drawing.h
 CMakeFiles/client.dir/drawing.c.o: ../main_header.h
+CMakeFiles/client.dir/drawing.c.o: ../window.h
 CMakeFiles/client.dir/drawing.c.o: /usr/include/atk-1.0/atk/atk-enum-types.h
 CMakeFiles/client.dir/drawing.c.o: /usr/include/atk-1.0/atk/atk.h
 CMakeFiles/client.dir/drawing.c.o: /usr/include/atk-1.0/atk/atkaction.h
@@ -2410,6 +2412,7 @@ CMakeFiles/client.dir/main.c.o: /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibc
 
 CMakeFiles/client.dir/testing_tree.c.o: ../buttons.h
 CMakeFiles/client.dir/testing_tree.c.o: ../common.h
+CMakeFiles/client.dir/testing_tree.c.o: ../main_header.h
 CMakeFiles/client.dir/testing_tree.c.o: ../testing_tree.c
 CMakeFiles/client.dir/testing_tree.c.o: ../testing_tree.h
 CMakeFiles/client.dir/testing_tree.c.o: /usr/include/atk-1.0/atk/atk-enum-types.h

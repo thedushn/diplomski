@@ -11,8 +11,6 @@ stdbool.h
 -
 time.h
 -
-pthread.h
-/home/dushn/Diplomski/diplomski/dserver/pthread.h
 
 /home/dushn/Diplomski/diplomski/dserver/cpu_usage.c
 cpu_usage.h
@@ -35,6 +33,8 @@ sys/socket.h
 /home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
 common.h
 /home/dushn/Diplomski/diplomski/dserver/common.h
+pthread.h
+/home/dushn/Diplomski/diplomski/dserver/pthread.h
 
 /home/dushn/Diplomski/diplomski/dserver/devices.c
 devices.h
@@ -91,6 +91,8 @@ unistd.h
 -
 common.h
 /home/dushn/Diplomski/diplomski/dserver/common.h
+pthread.h
+/home/dushn/Diplomski/diplomski/dserver/pthread.h
 
 /home/dushn/Diplomski/diplomski/dserver/interrupts.c
 interrupts.h
@@ -185,6 +187,8 @@ stdio.h
 -
 sys/socket.h
 -
+pthread.h
+-
 
 /home/dushn/Diplomski/diplomski/dserver/network_bandwith.h
 common.h
@@ -221,4 +225,6 @@ cpu_usage.h
 /home/dushn/Diplomski/diplomski/dserver/task_manager.h
 common.h
 /home/dushn/Diplomski/diplomski/dserver/common.h
+pthread.h
+/home/dushn/Diplomski/diplomski/dserver/pthread.h
 

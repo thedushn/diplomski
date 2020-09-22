@@ -25,10 +25,17 @@ void * send_network(void *socket){
     Network network={0};
     ssize_t ret;
 
+    pthread_mutex_lock(&mutex_send);
+    while (thread_break == false) {
+        ret = -100;
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(&ret);
+    }
+    pthread_mutex_unlock(&mutex_send);
     result = interface_name(&network);
     if (result != 0) {
-
-        pthread_exit(NULL);
+        ret = -100;
+        pthread_exit(&ret);
     }
     memset(&data,0,sizeof(Data));
     data.size=NETWORK;
@@ -39,24 +46,18 @@ void * send_network(void *socket){
 
     if (ret < 0) {
         printf("Error sending data!\n\t");
-        pthread_mutex_unlock(&mutex_send);
-        pthread_exit(NULL);
+
+        pthread_exit(&ret);
 
     }
     if (ret == 0) {
 
         printf("socket closed\n");
-        pthread_mutex_unlock(&mutex_send);
-        pthread_exit(NULL);
+        ret = -100;
+        pthread_exit(&ret);
     }
-//    pthread_mutex_lock(&mutex_send);
-//    if( test_send(sockfd)<=0){
-//
-//        pthread_mutex_unlock(&mutex_send);
-//        pthread_exit(NULL);
-//    }
-//    pthread_mutex_unlock(&mutex_send);
-    pthread_exit(NULL);
+
+    pthread_exit(&ret);
 }
 
 struct Net_data search_net(char *key, bool *ima, struct Net_data new_data) {
@@ -105,6 +106,7 @@ struct Net_data search_net(char *key, bool *ima, struct Net_data new_data) {
 
 int get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct, __uint64_t transmitted,
                   __uint64_t *transmitted_struct) {
+
     struct Net_data net_data_new;
     struct Net_data net_data_old;
 
@@ -229,15 +231,15 @@ int interface_name(Network *network1) {
 
             FILE *file;
             char buffer[1024];
-            char buffer3[BUFFER_SIZE2];
+            char buffer3[64];
 
 
             memset(buffer, 0, BUFFER_SIZE);
-            memset(buffer3, 0, BUFFER_SIZE2);
-            strncpy(buffer3, name, BUFFER_SIZE2);
+            memset(buffer3, 0, 64);
+            strncpy(buffer3, name, 64);
 
 
-            for (int g = 0; g < BUFFER_SIZE2; g++) {
+            for (int g = 0; g < 64; g++) {
 
                 if (buffer3[g] == '\0')
                     break;

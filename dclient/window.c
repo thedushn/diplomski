@@ -24,9 +24,9 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
 
     GtkWidget *filemenu;
+    GtkWidget *filemenu2;
     GtkWidget *speed;
     GtkWidget *devices_menu;
-    GtkWidget *filemenu2;
     GtkWidget *quit;
     GtkWidget *increase_refresh;
     GtkWidget *decrease_refresh;
@@ -229,7 +229,7 @@ void swap_change(Memory_usage *memory_usage) {
     float f;
     f = (float) atof(memory_usage->swap_percentage);
 
-  //  cpu_list->data[7]=f;
+
     mem_list->data[1]=f;
 
     swap_used = g_format_size_full((guint64) memory_usage->swap_used, G_FORMAT_SIZE_IEC_UNITS);
@@ -263,9 +263,6 @@ void memory_change(Memory_usage *memory_usage) {
     total = g_format_size_full((guint64) memory_usage->memory_total, G_FORMAT_SIZE_IEC_UNITS);
 
 
-
-
-
     memory_usage_text1 = g_strdup_printf(("Memory: %0.2f%%(%s)%s"), f, used, total);
     gtk_label_set_text(GTK_LABEL (label_mem), memory_usage_text1);
 
@@ -275,35 +272,32 @@ void memory_change(Memory_usage *memory_usage) {
 
 }
 
-void cpu_change(Cpu_usage_list *cpu_usage_list) {
-
-    Cpu_usage_list *temp;
-    gchar *cpu0_usage_text=NULL;
-    gchar *temp_char=NULL;
+void cpu_change(Cpu_usage cpu_usage) {
 
 
-    temp=cpu_usage_list;
-    for(int i=0;i<cpu_number;i++){
 
-      sscanf (temp->cpu_usage.percentage,"%f",&cpu_list->data[i] ) ;
-        temp=temp->next;
+    gchar  *cpu0_usage_text=NULL;
+    gchar  *temp_char=NULL;
+
+    for(int i=0;i<CPU_NUM;i++){
+
+      sscanf (cpu_usage.percentage[i],"%f",&cpu_list->data[i] ) ;
+
        }
-//TODo add another box for cpu stats
-    //TODO add list of all the cpus and draw them in difrent coolors
-    temp=cpu_usage_list;
-    for(int i=0;i<cpu_number;i++){
+
+    for(int i=0;i<CPU_NUM;i++){
         gchar *p;
-        if(cpu0_usage_text==NULL){
-            cpu0_usage_text=g_strdup_printf("CPU%d: %.4s%% ",i,temp->cpu_usage.percentage);
+        if(i==0){
+            cpu0_usage_text=g_strdup_printf("CPU%d: %.4s%% ",i,cpu_usage.percentage[i]);
 
         }else{
            p=cpu0_usage_text;
-            temp_char=g_strdup_printf("CPU%d: %.4s%% ",i,temp->cpu_usage.percentage);
+            temp_char=g_strdup_printf("CPU%d: %.4s%% ",i,cpu_usage.percentage[i]);
             cpu0_usage_text=  g_strconcat(temp_char,p,NULL);
         }
 
         g_free(temp_char);
-        temp=temp->next;
+
     }
 
 
@@ -319,19 +313,8 @@ void cpu_change(Cpu_usage_list *cpu_usage_list) {
 void network_change_rc(Network *network) {
 
 
-    float net_kb_rc = (float) network->received_bytes / 1024;
-    float net_kb_tr = (float) network->transmited_bytes / 1024;
-
-
-        net_list->data[1] = net_kb_tr;
-        net_list->data[0] = net_kb_rc;
-
-
-
-
-
-
-
+    net_list->data[0] = (float) network->received_bytes / 1024;
+    net_list->data[1] = (float) network->transmited_bytes / 1024;
 
 
     gchar *rec_bytes = g_format_size_full(network->received_bytes, G_FORMAT_SIZE_IEC_UNITS);

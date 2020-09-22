@@ -1,9 +1,9 @@
-#include <sys/socket.h>
+
 #include "buttons.h"
 #include "drawing.h"
 #include "testing_tree.h"
-#include "window.h"
-#include "main_header.h"
+#include "functions.h"
+#include "stdbool.h"
 
 static gboolean device_devices = TRUE;
 static gboolean device_type = TRUE;
@@ -12,7 +12,7 @@ static gboolean device_used = TRUE;
 static gboolean device_free = TRUE;
 static gboolean device_total = TRUE;
 static gboolean device_avail = TRUE;
-static bool device_all = FALSE;
+
 
 static gboolean process_task = TRUE;
 static gboolean process_user = TRUE;
@@ -26,7 +26,7 @@ static gboolean process_state = TRUE;
 static gboolean process_duration = TRUE;
 
 
-static gboolean show_before = FALSE;
+
 
 void process_window() {
     GtkWidget *box2;
@@ -115,7 +115,7 @@ void process_window() {
     gtk_window_set_position(GTK_WINDOW(proc_window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(proc_window), "destroy",
-                     G_CALLBACK(close_window2), proc_window);
+                     G_CALLBACK(close_window), proc_window);
 
     gtk_widget_show_all(proc_window);
 
@@ -196,7 +196,7 @@ void device_window() {
     gtk_window_set_position(GTK_WINDOW(dev_window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(dev_window), "destroy",
-                     G_CALLBACK(close_window2), dev_window);
+                     G_CALLBACK(close_window), dev_window);
 
     gtk_widget_show_all(dev_window);
 
@@ -242,7 +242,7 @@ void dev_button_clicked2(GtkWidget *widget) {
 }
 
 
-void close_window() {
+void close_window_toggled() {
 
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph),
@@ -250,7 +250,7 @@ void close_window() {
 
 
 };
-void close_window2(GtkWidget *widget) {
+void close_window(GtkWidget *widget) {
 
 
     gtk_widget_hide(widget);
@@ -259,43 +259,7 @@ void close_window2(GtkWidget *widget) {
 
 };
 
-void start_stop(int show, char *signal, char *task_id) {
-    int ret;
-    char buffer[1500];
 
-    memset(buffer, 0, sizeof(buffer));
-
-    if (show == 1) {
-
-        show_before = !show_before;
-    }
-
-
-    if (signal != NULL && task_id != NULL) {
-        sprintf(buffer, "%d %s %s", device_all, signal, task_id);
-
-    } else {
-        sprintf(buffer, "%d", device_all);
-    }
-    printf("%s \n", buffer);
-    ret = (int) send(newsockfd1, &buffer, sizeof(buffer), 0);
-    if (ret < 0) {
-
-        printf("command did not get sent \n");
-        gtk_main_quit();
-
-
-    }
-    if (ret == 0) {
-
-        printf("command did not get sent \n");
-        printf("socket closed\n");
-        gtk_main_quit();
-
-
-    }
-
-}
 void graph_button_clicked(GtkWidget *widget) {
 
     GtkWidget *box2;
@@ -303,7 +267,7 @@ void graph_button_clicked(GtkWidget *widget) {
 
 
     char   string[10];
-    GdkRGBA rgba;
+
 
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
@@ -314,12 +278,9 @@ void graph_button_clicked(GtkWidget *widget) {
         gtk_container_add(GTK_CONTAINER(window2), box2);
 
 
-        for(int i=0;i<cpu_number;i++){
-            rgba.red=1;
-            rgba.green=0;
-            rgba.blue=0;
-           sprintf(string,"CPU%d",i);
-            temp=gtk_color_button_new_with_rgba(&rgba);
+        for(int i=0;i<CPU_NUM;i++){
+
+            sprintf(string,"CPU%d",i);
             temp=gtk_toggle_button_new_with_label(string);
 
 
@@ -335,7 +296,7 @@ void graph_button_clicked(GtkWidget *widget) {
         gtk_window_set_position(GTK_WINDOW(window2), GTK_WIN_POS_CENTER);
 
         g_signal_connect(G_OBJECT(window2), "destroy",
-                         G_CALLBACK(close_window), NULL);
+                         G_CALLBACK(close_window_toggled), NULL);
 
         gtk_widget_show_all(window2);
 
@@ -354,11 +315,11 @@ void show_all(GtkWidget *widget) {
 
         device_all = TRUE;
 
-        start_stop(1, proxy, proxy);
+        device_task_commands(1, proxy, proxy);
 
     } else {
         device_all = FALSE;
-        start_stop(1, proxy, proxy);
+        device_task_commands(1, proxy, proxy);
     }
 
 
@@ -556,15 +517,18 @@ void process_clicked(GtkWidget *widget) {
 void graph_clicked(GtkWidget *widget) {
 
 
-bool *temp_bool=cpu_status;
-GtkWidget *temp_widget=cpu_buttons;
+    bool *temp_bool=cpu_status;
+    GtkWidget *temp_widget=cpu_buttons;
+
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
-        for(int i=0;i<cpu_number;i++){
+        for(int i=0;i<CPU_NUM;i++){
+
             if(temp_widget->priv==widget->priv){
                 (*temp_bool)=true;
                 gtk_widget_queue_draw(graph1);
             }
+
             temp_bool++;
             temp_widget++;
 
@@ -572,11 +536,14 @@ GtkWidget *temp_widget=cpu_buttons;
 
     } else {
 
-        for(int i=0;i<cpu_number;i++){
+        for(int i=0;i<CPU_NUM;i++){
+
             if(temp_widget->priv==widget->priv){
+
                 (*temp_bool)=false;
                 gtk_widget_queue_draw(graph1);
             }
+
             temp_bool++;
             temp_widget++;
         }
@@ -621,7 +588,7 @@ void handle_task_menu(GtkWidget *widget, char *signal) {
 
             if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
                 gtk_tree_model_get(model, &iter, 1, &task_id, -1);
-                start_stop(0, signal, task_id);
+                device_task_commands(0, signal, task_id);
                 init_timeout();
             }
         }
@@ -640,7 +607,7 @@ void handle_task_prio(GtkWidget *widget, char *signal) {
 
             if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
                 gtk_tree_model_get(model, &iter, 1, &task_id, -1);
-                start_stop(0, signal, task_id);
+                device_task_commands(0, signal, task_id);
 
             }
         }
@@ -716,12 +683,14 @@ GtkWidget *create_taskpopup(void) {
 }
 
 gboolean on_treeview1_button_press_event(GtkButton *button, GdkEventButton *event) {
+
     if (event->button == 3) {
 
         GdkEventButton *mouseevent = event;
 
         if (task_popup == NULL)
             task_popup = create_taskpopup();
+
         gtk_menu_popup(GTK_MENU(task_popup), NULL, NULL, NULL, NULL, mouseevent->button, mouseevent->time);
 
     }

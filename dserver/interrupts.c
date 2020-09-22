@@ -21,14 +21,17 @@ void clean_interrupts(){
     if (interrupts != NULL) {
 
         free(interrupts);
+        interrupts = NULL;
     }
     if (interrupts_main != NULL) {
 
         free(interrupts_main);
+        interrupts_main = NULL;
     }
     if (interrupts_send != NULL) {
 
         free(interrupts_send);
+        interrupts_send = NULL;
     }
 
 };
@@ -40,11 +43,22 @@ void * send_interrupts(void *socket){
     __int32_t h = 0;
     int result;
     Data data={0};
+
+    pthread_mutex_lock(&mutex_send);
+    while (thread_break == false) {
+        ret = -100;
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(&ret);
+    }
+    pthread_mutex_unlock(&mutex_send);
+
     result = interrupt_usage2(&interrupts, &h);
     if (result != 0) {
 
         clean_interrupts();
-        pthread_exit(&result);
+
+        ret = -100;
+        pthread_exit(&ret);
     }
 
     if (interrupts_main == NULL) {
@@ -105,7 +119,7 @@ void * send_interrupts(void *socket){
 
     interrupts = NULL;
     interrupts_send = NULL;
-    pthread_exit(NULL);
+    pthread_exit(&ret);
 
 }
 int interrupt_usage2(Interrupts **array2, __int32_t *j) {

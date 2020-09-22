@@ -6,7 +6,7 @@
 #define DIPLOMSKI_CPU_USAGE_H
 
 #include "common.h"
-
+#include "pthread.h"
 
 pthread_mutex_t mutex_jiff;
 struct DataItem {
@@ -21,16 +21,15 @@ struct Cpu_data{
     __uint64_t cpu_system;
 };
 
-__int32_t cpu_num;
+
 struct DataItem *task_details;
+
 int hash_size;
 
-__int32_t cpu_number();
 
-int cpu_percentage(int ncpu, Cpu_usage **array);
+int cpu_percentage(Cpu_usage *array);
+
 void * send_cpu(void *socket);
-
-void free_cpu();
 
 
 int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *task);
