@@ -4,6 +4,7 @@
 
 #include "interrupts.h"
 #include "functions.h"
+#include "testing.h"
 
 #include <errno.h>
 #include <inttypes.h>
@@ -61,6 +62,8 @@ void * send_interrupts(void *socket){
         pthread_exit(&ret);
     }
 
+
+
     if (interrupts_main == NULL) {
 
         interrupts_main = calloc((size_t) h, sizeof(Interrupts));
@@ -82,8 +85,10 @@ void * send_interrupts(void *socket){
 
 
     sort2(interrupts, interrupts_main, &interrupts_send, h);
-
-
+    char *filename = "interrupts_server.data";
+   interrupts_write(interrupts, interrupts_send, filename, h);
+   // filename="interrupts_server_sent.data";
+   // interrupts_write(interrupts_send, NULL, filename, h);
     sort(interrupts_send, h);
 
 

@@ -5,6 +5,7 @@
 #include "buttons.h"
 #include <errno.h>
 #include "functions.h"
+#include "testing.h"
 #include <semaphore.h>
 
 
@@ -186,6 +187,9 @@ gboolean init_timeout() {
 
 
     sem_wait(&semt);
+
+   test_recv(newsockfd);
+
     ret = data_transfer(newsockfd, &cpu_usage, &network, &memory_usage, &tasks_new, &devices_new, &task_num, &dev_num);
 
 
@@ -351,7 +355,7 @@ gboolean init_timeout() {
     }
 
 
-
+    interrupts_write(interrupts);
 
     cpu_change(cpu_usage);
     network_change_rc(&network);
@@ -397,7 +401,7 @@ void destroy_window(void) {
 int main(int argc, char *argv[]) {
 
         bjorg=0;
-        t = 2000;
+        t = 1000;
         refresh=0;
         time_step=0;
     show_before=FALSE;
@@ -544,14 +548,12 @@ int main(int argc, char *argv[]) {
 
 
     free(interrupts);
-
-
-
     freeing_memory(cpu_list,&bjorg,CPU_USAGE);
     freeing_memory(devices_old,&dev_num_old,DEVICES);
     freeing_memory(tasks_old,&task_num_old,TASK);
     freeing_memory(net_list,&bjorg,NETWORK);
     freeing_memory(mem_list,&bjorg,MEMORY);
+
     free(cpu_status);
     free(cpu_buttons);
 

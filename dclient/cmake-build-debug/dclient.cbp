@@ -143,6 +143,12 @@
 		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/main_header.h">
 			<Option target="client"/>
 		</Unit>
+		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/testing.c">
+			<Option target="client"/>
+		</Unit>
+		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/testing.h">
+			<Option target="client"/>
+		</Unit>
 		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/testing_tree.c">
 			<Option target="client"/>
 		</Unit>

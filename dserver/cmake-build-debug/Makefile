@@ -339,6 +339,33 @@ task_manager.c.s:
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/task_manager.c.s
 .PHONY : task_manager.c.s
 
+testing.o: testing.c.o
+
+.PHONY : testing.o
+
+# target to build an object file
+testing.c.o:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/testing.c.o
+.PHONY : testing.c.o
+
+testing.i: testing.c.i
+
+.PHONY : testing.i
+
+# target to preprocess a source file
+testing.c.i:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/testing.c.i
+.PHONY : testing.c.i
+
+testing.s: testing.c.s
+
+.PHONY : testing.s
+
+# target to generate assembly for a file
+testing.c.s:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/testing.c.s
+.PHONY : testing.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -372,6 +399,9 @@ help:
 	@echo "... task_manager.o"
 	@echo "... task_manager.i"
 	@echo "... task_manager.s"
+	@echo "... testing.o"
+	@echo "... testing.i"
+	@echo "... testing.s"
 .PHONY : help
 
 

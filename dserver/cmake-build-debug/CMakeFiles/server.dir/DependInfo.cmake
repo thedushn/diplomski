@@ -12,6 +12,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/dushn/Diplomski/diplomski/dserver/memory_usage.c" "/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/CMakeFiles/server.dir/memory_usage.c.o"
   "/home/dushn/Diplomski/diplomski/dserver/network_bandwith.c" "/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/CMakeFiles/server.dir/network_bandwith.c.o"
   "/home/dushn/Diplomski/diplomski/dserver/task_manager.c" "/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/CMakeFiles/server.dir/task_manager.c.o"
+  "/home/dushn/Diplomski/diplomski/dserver/testing.c" "/home/dushn/Diplomski/diplomski/dserver/cmake-build-debug/CMakeFiles/server.dir/testing.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

@@ -157,7 +157,6 @@ int device_check(D_Collection *devices_new, int dev_num) {
 }
 
 int task_check(T_Collection *tasks_new, int task_num) {
-
     __int32_t i, j;
     /*tasks */
     T_Collection *rem_task_old = tasks_old;
@@ -203,15 +202,13 @@ int task_check(T_Collection *tasks_new, int task_num) {
 
                     memset(tmp->cpu_system, 0, sizeof(tmp->cpu_system));
                     memset(tmp->cpu_user, 0, sizeof(tmp->cpu_user));
-                    sprintf(tmp->cpu_system, "%f", cpu_system_tmp_new);
                     sprintf(tmp->cpu_user, "%f", cpu_user_tmp_new);
-
+                    sprintf(tmp->cpu_system, "%f", cpu_system_tmp_new);
 
                     memset(tmp->cpu_system, 0, sizeof(tmp->cpu_system));
                     memset(tmp->cpu_user, 0, sizeof(tmp->cpu_user));
-                    strcpy(tmp->cpu_system, new_tmp->cpu_system);
                     strcpy(tmp->cpu_user, new_tmp->cpu_user);
-
+                    strcpy(tmp->cpu_system, new_tmp->cpu_system);
 
 
                     tmp->rss = new_tmp->rss;

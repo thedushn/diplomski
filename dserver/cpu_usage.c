@@ -17,7 +17,7 @@
 pthread_cond_t cpu_cond= PTHREAD_COND_INITIALIZER;
 bool test;
 
-__uint64_t jiffies_total_delta[CPU_NUM + 1];
+static __uint64_t jiffies_total_delta[CPU_NUM + 1];
 __uint64_t jiffies_system[CPU_NUM];
 __uint64_t jiffies_total[CPU_NUM];
 __uint64_t jiffies_user[CPU_NUM];
@@ -69,7 +69,7 @@ void *send_cpu(void *socket) {
 
     if (ret < 0) {
         printf("Error sending data!\n\t");
-        pthread_mutex_unlock(&mutex_send);
+
 
         pthread_exit(&ret);
 
@@ -77,7 +77,7 @@ void *send_cpu(void *socket) {
     if (ret == 0) {
 
         printf("socket closed\n");
-        pthread_mutex_unlock(&mutex_send);
+
 
         ret = -1;
         pthread_exit(&ret);
@@ -151,10 +151,10 @@ int cpu_percentage(Cpu_usage *array) {
 
         percentage[i] = (cpu_user[i] + cpu_system[i]) * 100;
 
-        jiffies_total_delta[CPU_NUM] += jiffies_total_delta[i];
+
 
     }
-
+    jiffies_total_delta[CPU_NUM] = jiffies_total_delta[0]+jiffies_total_delta[1]+jiffies_total_delta[2]+ jiffies_total_delta[3];
 
 
 
@@ -222,13 +222,13 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
     float cpu_system=0;
 
 
-
+    pthread_mutex_lock(&mutex_jiff);
     bool ima = false;
     new.cpu_system=jiffies_system;
     new.cpu_user=jiffies_user;
 
 
-    pthread_mutex_lock(&mutex_jiff);
+
 
     old= search(&ima, new, task);
 
@@ -244,6 +244,7 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
             printf("calloc error %d \n", errno);
             return -1;
         }
+
 
         temp->cpu_user=jiffies_user;
         temp->cpu_system=jiffies_system;
@@ -267,6 +268,7 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
     pthread_cond_wait(&cpu_cond,&mutex_jiff);
 
     if (jiffies_total_delta[CPU_NUM] > 0) {
+
 
         cpu_user = (float) ((jiffies_user) - (old.cpu_user)) * 100 / (float) (jiffies_total_delta[CPU_NUM]);
         cpu_system = (float) ((jiffies_system - old.cpu_system) * 100) / (float) jiffies_total_delta[CPU_NUM];

@@ -248,7 +248,7 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
         }
         if (ret == 0) {
 
-            printf("error receiving data\n %d", (int) ret);
+            printf("error receiving data\n %d ", (int) ret);
             printf("socket closed\n");
             return 1;
         }
@@ -319,18 +319,6 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
                     return -1;
                 }
 
-                ret = test_recv(socket);
-                if (ret < 0) {
-
-                    printf("error receiving data\n %d", (int) ret);
-                    return (int)ret;
-                }
-                if (ret == 0) {
-
-                    printf("error sending data\n %d", (int) ret);
-                    printf("socket closed\n");
-                    return 1;
-                }
 
                     return 0;
 

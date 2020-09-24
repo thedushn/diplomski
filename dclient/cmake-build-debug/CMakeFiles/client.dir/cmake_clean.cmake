@@ -5,6 +5,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/client.dir/functions.c.o"
   "CMakeFiles/client.dir/window.c.o"
   "CMakeFiles/client.dir/testing_tree.c.o"
+  "CMakeFiles/client.dir/testing.c.o"
   "client.pdb"
   "client"
 )

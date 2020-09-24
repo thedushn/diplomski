@@ -64,6 +64,7 @@ void * send_task(void *socket){
 
         data.size=TASK;
         data.unification.task=temp_task->task;
+
         pthread_mutex_lock(&mutex_send);
         ret = send((*(int*)socket), &data, sizeof(Data), 0);
         pthread_mutex_unlock(&mutex_send);

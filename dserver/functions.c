@@ -261,6 +261,7 @@ void *sending(void *socket) {
 
         local_time = *localtime(&time1);
 
+        test_send((*(int *) socket));
 
        pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
 
@@ -278,6 +279,7 @@ void *sending(void *socket) {
             //   break;
 
         }
+
         return_value=pthread_create(&thr[1], &attr, send_cpu,socket);
 
         if (return_value != 0) {
@@ -290,6 +292,7 @@ void *sending(void *socket) {
             //   break;
 
         }
+
         return_value=pthread_create(&thr[2], &attr, send_network,socket);
 
         if (return_value != 0) {
@@ -302,6 +305,7 @@ void *sending(void *socket) {
             //   break;
 
         }
+
         return_value=pthread_create(&thr[3], &attr, send_interrupts,socket);
 
         if (return_value != 0) {
@@ -314,6 +318,7 @@ void *sending(void *socket) {
             //   break;
 
         }
+
         return_value=pthread_create(&thr[4], &attr, send_devices,socket);
 
         if (return_value != 0) {
@@ -325,6 +330,7 @@ void *sending(void *socket) {
             pthread_mutex_unlock(&mutex_send);
             //   break;
         }
+
         return_value=pthread_create(&thr[5], &attr, send_task,socket);
 
         if (return_value != 0) {
@@ -337,9 +343,11 @@ void *sending(void *socket) {
             //   break;
 
         }
+
         pthread_attr_destroy(&attr);
         for(int i=0;i<6;i++){
             void *status=NULL;
+
            if((return_value= pthread_join(thr[i], &status))){
 
                strerror_r(return_value,buffer,sizeof(buffer));
@@ -366,6 +374,7 @@ void *sending(void *socket) {
 
 
         if (thread_break == false) {
+
             break;
         }
 
@@ -380,17 +389,8 @@ void *sending(void *socket) {
             printf("socket closed\n");
             break;
         }
-        ret = test_send((*(int *) socket));
-        if (ret < 0) {
 
-            printf("error receiving data\n %d", (int) ret);
-            break;
-        }
-        if (ret == 0) {
 
-            printf("socket closed\n");
-            break;
-        }
 
 
     }

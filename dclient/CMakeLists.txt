@@ -15,7 +15,7 @@ add_executable(client main.c drawing.c
         window.c window.h
         testing_tree.c testing_tree.h
         main_header.h
-        )
+        testing.c testing.h)
 
 include_directories(${GTK3_INCLUDE_DIRS})
 

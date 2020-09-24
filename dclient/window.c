@@ -5,7 +5,7 @@
 #include "window.h"
 #include "testing_tree.h"
 #include "buttons.h"
-
+#include "testing.h"
 
 
 GtkWidget *label_rec;
@@ -299,6 +299,7 @@ void cpu_change(Cpu_usage cpu_usage) {
         g_free(temp_char);
 
     }
+  cpu_write(cpu_usage);
 
 
 

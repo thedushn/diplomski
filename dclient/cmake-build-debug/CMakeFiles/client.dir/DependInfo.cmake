@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/dushn/Diplomski/diplomski/dclient/drawing.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/drawing.c.o"
   "/home/dushn/Diplomski/diplomski/dclient/functions.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/functions.c.o"
   "/home/dushn/Diplomski/diplomski/dclient/main.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/main.c.o"
+  "/home/dushn/Diplomski/diplomski/dclient/testing.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/testing.c.o"
   "/home/dushn/Diplomski/diplomski/dclient/testing_tree.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/testing_tree.c.o"
   "/home/dushn/Diplomski/diplomski/dclient/window.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/window.c.o"
   )
