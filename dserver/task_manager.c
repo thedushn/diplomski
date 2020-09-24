@@ -352,6 +352,13 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
                 free(task_temp);
                 free(tp);
                 closedir(dir);
+                for(int i=0;i<thread_num;i++){
+
+                    tp=thread_task_main;
+                    thread_task_main=thread_task_main->next;
+                    free(tp);
+
+                }
                 printf("calloc error %d \n", errno);
                 return 1;
             }
@@ -367,7 +374,6 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
                 strerror_r(result,buffer,sizeof(buffer));
                 fprintf(stderr,"error = %d (%s)\n",result,buffer);
                 closedir(dir);
-                (*task_num)--;
                 free(task_temp);
                 free(tp);
                 thread_num--;
