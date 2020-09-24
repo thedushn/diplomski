@@ -325,9 +325,6 @@ void * get_task_details(void *ptr) {
 int get_task_list(T_Collection **array, __int32_t *task_num) {
 
 
-
-
-
     DIR *dir;
     struct dirent *d_file;
     char *directory = "/proc";
@@ -359,25 +356,26 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
                 return 1;
             }
 
-            (*task_num)++;
+
             thread_num++;
             tp->pid=pid;
             tp->task=&task_temp->task;
 
 
             if((result=pthread_create(&tp->pthread,NULL,get_task_details,tp))!=0){
+
                 strerror_r(result,buffer,sizeof(buffer));
-                fprintf(stderr,"pthread_create: error = %d (%s)\n",result,buffer);
+                fprintf(stderr,"error = %d (%s)\n",result,buffer);
                 closedir(dir);
                 (*task_num)--;
                 free(task_temp);
                 free(tp);
                 thread_num--;
+
                 for(int i=0;i<thread_num;i++){
+
                     tp=thread_task_main;
-
                     thread_task_main=thread_task_main->next;
-
                     free(tp);
 
                 }
@@ -385,7 +383,7 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
 
             }
 
-
+            (*task_num)++;
             task_temp->next = *array;
 
             if ((*array) != NULL) {
@@ -395,15 +393,9 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
 
             *array = task_temp;
 
-
-
                 tp->next=thread_task_main;
 
-
-
             thread_task_main=tp;
-
-
 
 
 
