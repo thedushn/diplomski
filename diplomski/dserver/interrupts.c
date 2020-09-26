@@ -4,6 +4,7 @@
 
 #include "interrupts.h"
 #include "functions.h"
+#include "testing.h"
 
 #include <errno.h>
 #include <inttypes.h>
@@ -21,14 +22,17 @@ void clean_interrupts(){
     if (interrupts != NULL) {
 
         free(interrupts);
+        interrupts = NULL;
     }
     if (interrupts_main != NULL) {
 
         free(interrupts_main);
+        interrupts_main = NULL;
     }
     if (interrupts_send != NULL) {
 
         free(interrupts_send);
+        interrupts_send = NULL;
     }
 
 };
@@ -40,12 +44,25 @@ void * send_interrupts(void *socket){
     __int32_t h = 0;
     int result;
     Data data={0};
+
+    pthread_mutex_lock(&mutex_send);
+    while (thread_break == false) {
+        ret = -100;
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(&ret);
+    }
+    pthread_mutex_unlock(&mutex_send);
+
     result = interrupt_usage2(&interrupts, &h);
     if (result != 0) {
 
         clean_interrupts();
-        exit(1);
+
+        ret = -100;
+        pthread_exit(&ret);
     }
+
+
 
     if (interrupts_main == NULL) {
 
@@ -68,8 +85,10 @@ void * send_interrupts(void *socket){
 
 
     sort2(interrupts, interrupts_main, &interrupts_send, h);
-
-
+    char *filename = "interrupts_server.data";
+   interrupts_write(interrupts, interrupts_send, filename, h);
+   // filename="interrupts_server_sent.data";
+   // interrupts_write(interrupts_send, NULL, filename, h);
     sort(interrupts_send, h);
 
 
@@ -84,21 +103,15 @@ void * send_interrupts(void *socket){
         pthread_mutex_unlock(&mutex_send);
         if (ret < 0) {
             printf("Error sending data!\n\t");
-            break;
-
+            pthread_exit(&ret);
         }
         if (ret == 0) {
 
             printf("socket closed\n");
-            break;
+            ret = -1;
+            pthread_exit(&ret);
         }
 
-//        pthread_mutex_lock(&mutex_send);
-//        if( test_send(sockfd)<=0){
-//
-//            break;
-//        }
-//        pthread_mutex_unlock(&mutex_send);
 
 
 
@@ -111,7 +124,7 @@ void * send_interrupts(void *socket){
 
     interrupts = NULL;
     interrupts_send = NULL;
-    pthread_exit(NULL);
+    pthread_exit(&ret);
 
 }
 int interrupt_usage2(Interrupts **array2, __int32_t *j) {

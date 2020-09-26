@@ -8,8 +8,20 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "common.h"
+#include "pthread.h"
+
+bool thread_break;
+pthread_mutex_t mutex_send;
+pthread_cond_t cpu_cond;
+typedef struct _Commands Commands;
+struct __attribute__((__packed__))_Commands {
 
 
+    bool show;
+    __uint32_t mem;
+    char command[16];
+    char task_id[256];
+};
 
 void *sending(void *socket);
 

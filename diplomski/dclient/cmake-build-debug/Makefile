@@ -231,6 +231,33 @@ main.c.s:
 	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/main.c.s
 .PHONY : main.c.s
 
+testing.o: testing.c.o
+
+.PHONY : testing.o
+
+# target to build an object file
+testing.c.o:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/testing.c.o
+.PHONY : testing.c.o
+
+testing.i: testing.c.i
+
+.PHONY : testing.i
+
+# target to preprocess a source file
+testing.c.i:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/testing.c.i
+.PHONY : testing.c.i
+
+testing.s: testing.c.s
+
+.PHONY : testing.s
+
+# target to generate assembly for a file
+testing.c.s:
+	$(MAKE) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/testing.c.s
+.PHONY : testing.c.s
+
 testing_tree.o: testing_tree.c.o
 
 .PHONY : testing_tree.o
@@ -306,6 +333,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... testing.o"
+	@echo "... testing.i"
+	@echo "... testing.s"
 	@echo "... testing_tree.o"
 	@echo "... testing_tree.i"
 	@echo "... testing_tree.s"

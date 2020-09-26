@@ -6,6 +6,7 @@ CMakeFiles/server.dir/cpu_usage.c.o
  /home/dushn/Diplomski/diplomski/dserver/cpu_usage.c
  /home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
  /home/dushn/Diplomski/diplomski/dserver/functions.h
+ /home/dushn/Diplomski/diplomski/dserver/testing.h
 CMakeFiles/server.dir/devices.c.o
  /home/dushn/Diplomski/diplomski/dserver/common.h
  /home/dushn/Diplomski/diplomski/dserver/devices.c
@@ -26,6 +27,7 @@ CMakeFiles/server.dir/interrupts.c.o
  /home/dushn/Diplomski/diplomski/dserver/functions.h
  /home/dushn/Diplomski/diplomski/dserver/interrupts.c
  /home/dushn/Diplomski/diplomski/dserver/interrupts.h
+ /home/dushn/Diplomski/diplomski/dserver/testing.h
 CMakeFiles/server.dir/main.c.o
  /home/dushn/Diplomski/diplomski/dserver/common.h
  /home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
@@ -38,6 +40,7 @@ CMakeFiles/server.dir/memory_usage.c.o
  /home/dushn/Diplomski/diplomski/dserver/functions.h
  /home/dushn/Diplomski/diplomski/dserver/memory_usage.c
  /home/dushn/Diplomski/diplomski/dserver/memory_usage.h
+ /home/dushn/Diplomski/diplomski/dserver/testing.h
 CMakeFiles/server.dir/network_bandwith.c.o
  /home/dushn/Diplomski/diplomski/dserver/common.h
  /home/dushn/Diplomski/diplomski/dserver/functions.h
@@ -49,3 +52,8 @@ CMakeFiles/server.dir/task_manager.c.o
  /home/dushn/Diplomski/diplomski/dserver/functions.h
  /home/dushn/Diplomski/diplomski/dserver/task_manager.c
  /home/dushn/Diplomski/diplomski/dserver/task_manager.h
+ /home/dushn/Diplomski/diplomski/dserver/testing.h
+CMakeFiles/server.dir/testing.c.o
+ /home/dushn/Diplomski/diplomski/dserver/common.h
+ /home/dushn/Diplomski/diplomski/dserver/testing.c
+ /home/dushn/Diplomski/diplomski/dserver/testing.h

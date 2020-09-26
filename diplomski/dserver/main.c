@@ -207,6 +207,8 @@ int main(int argc, char *argv[]) {
 
 
 
+
+
     ret2 = pthread_create(&t2, NULL, sending, &new_fd);
     if (ret2 != 0) {
 
@@ -231,8 +233,8 @@ int main(int argc, char *argv[]) {
     pthread_join(t3, NULL);
 
 
+    struct DataItem *temp;
 
-        struct DataItem *temp;
     for(int k=0;k<hash_size;k++){
         // save reference to first link
         temp = task_details;
@@ -257,8 +259,6 @@ int main(int argc, char *argv[]) {
 
     }
     close(sockfd);
-
-
 
 
     return 0;

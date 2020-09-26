@@ -7,29 +7,21 @@
 
 
 #include <gtk/gtk.h>
-#include <stdbool.h>
+
 
 
 GtkWidget *dev_window;
 GtkWidget *proc_window;
 
-
-
 GtkWidget *task_popup;
-
 
 GtkWidget *button_inc;
 GtkWidget *button_dec;
+
 GtkWidget *button_proc;
-
-
-
 GtkWidget *button_dev;
 GtkWidget *button_graph;
-GtkWidget *button_graph0;
-GtkWidget *button_graph1;
-GtkWidget *button_graph2;
-GtkWidget *button_graph3;
+
 GtkWidget *button_device_devices;
 GtkWidget *button_device_directory;
 GtkWidget *button_device_type;
@@ -38,6 +30,7 @@ GtkWidget *button_device_used;
 GtkWidget *button_device_all;
 GtkWidget *button_device_free;
 GtkWidget *button_device_total;
+
 GtkWidget *button_process_task;
 GtkWidget *button_process_user;
 GtkWidget *button_process_pid;
@@ -49,10 +42,7 @@ GtkWidget *button_process_cpu;
 GtkWidget *button_process_prio;
 GtkWidget *button_process_duration;
 
- gboolean CPU0_line ;
- gboolean CPU1_line ;
- gboolean CPU2_line ;
- gboolean CPU3_line ;
+GtkWidget *cpu_buttons;
 
 gboolean on_treeview1_button_press_event(GtkButton *button, GdkEventButton *event);
 
@@ -66,14 +56,13 @@ void button_clicked_view_process(GtkWidget *widget);
 
 void graph_button_clicked(GtkWidget *widget);
 
-void close_window();
-void close_window2(GtkWidget *widget);
+void close_window_toggled();
+
+void close_window(GtkWidget *widget);
 
 void show_hide(GtkWidget *button, GtkWidget *window);
 
 void dev_button_clicked2(GtkWidget *widget);
-
-
 
 void device_window();
 
@@ -83,9 +72,8 @@ void process_clicked(GtkWidget *widget);
 
 void device_clicked(GtkWidget *widget);
 
-void graph_clicked(GtkWidget *widget);
 
-void start_stop(int show, char *signal, char *task_id);
+void graph_clicked(GtkWidget *widget);
 
 void show_all(GtkWidget *widget);
 

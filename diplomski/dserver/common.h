@@ -8,8 +8,6 @@
 
 #include <stdbool.h>
 #include <time.h>
-#include "pthread.h"
-
 
 
 #define CPU_USAGE 1
@@ -19,11 +17,7 @@
 #define DEVICES 5
 #define INTERRUTPS 6
 #define TEXT 7
-
-pthread_mutex_t mutex_send;
-pthread_cond_t cpu_cond;
-
-bool test;
+#define CPU_NUM 4
 
 
 struct __attribute__((__packed__))tm1 {
@@ -72,13 +66,13 @@ typedef struct _Cpu_usage Cpu_usage;
 struct __attribute__((__packed__)) _Cpu_usage {
 
 
-    char percentage0[16];
-    char percentage1[16];
-    char percentage2[16];
-    char percentage3[16];
+    char percentage[CPU_NUM][16];
+
 
 
 };
+
+
 
 
 typedef struct _Memory_usage Memory_usage;
@@ -106,15 +100,7 @@ struct __attribute__((__packed__))_Interrupts {
     __uint64_t CPU3;
 
 };
-typedef struct _Commands Commands;
-struct __attribute__((__packed__))_Commands {
 
-
-    bool show;
-    __uint32_t mem;
-    char command[16];
-    char task_id[256];
-};
 
 typedef struct _Devices Devices;
 struct __attribute__((__packed__)) _Devices {
@@ -135,6 +121,7 @@ struct _Device_Collection{
 
     Devices devices;
     D_Collection * next;
+    D_Collection *prev;
 };
 
 
@@ -143,6 +130,7 @@ struct _Task_Collection{
 
     Task task;
     T_Collection * next;
+    T_Collection *prev;
 };
 
 typedef union _Unification Unification ;

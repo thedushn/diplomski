@@ -24,7 +24,15 @@ void * send_devices(void *socket){
     D_Collection *temp_dev;
     __int32_t device_num = 0;
 
+
     Data data={0};
+    pthread_mutex_lock(&mutex_send);
+    while (thread_break == false) {
+        ret = -100;
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(&ret);
+    }
+    pthread_mutex_unlock(&mutex_send);
 
     result = mount_list(&devices_c, &device_num, devices_show);
     if (result != 0) {
@@ -40,7 +48,8 @@ void * send_devices(void *socket){
             free(temp_dev);
 
         }
-        pthread_exit(NULL);
+        ret = -100;
+        pthread_exit(&ret);
     }
 
 
@@ -69,7 +78,7 @@ void * send_devices(void *socket){
                 free(temp_dev);
 
             }
-            pthread_exit(NULL);
+            pthread_exit(&ret);
 
         }
         if (ret == 0) {
@@ -86,30 +95,10 @@ void * send_devices(void *socket){
                 free(temp_dev);
 
             }
-           pthread_exit(NULL);
+            ret = -100;
+            pthread_exit(&ret);
         }
 
-
-
-//        pthread_mutex_lock(&mutex_send);
-//        if( test_send(sockfd)<=0){
-//
-//            pthread_mutex_unlock(&mutex_send);
-//            for(int k=0;k<device_num;k++){
-//                // save reference to first link
-//                temp_dev = devices_c;
-//
-//                //mark next to first link as first
-//                devices_c = devices_c->next;
-//
-//                //return the deleted link
-//                free(temp_dev);
-//
-//            }
-//
-//            pthread_exit(NULL);
-//        }
-//        pthread_mutex_unlock(&mutex_send);
 
         temp_dev=temp_dev->next;
 
@@ -127,8 +116,8 @@ void * send_devices(void *socket){
 
     }
 
-
-    pthread_exit(NULL);
+    ret = 0;
+    pthread_exit(&ret);
 
 }
 
@@ -201,12 +190,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
             sscanf(buffer, "%s %s %s", proxy.name,proxy.directory,proxy.type);
 
-
-
             struct stat filestat={0};
-
-
-
 
 
             lstat(proxy.name, &filestat);
@@ -232,8 +216,6 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
                     temp_dev->next=*array;
                     *array=temp_dev;
 
-
-
                     break;
 
                 }
@@ -242,15 +224,10 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
                     break;
             }
 
-
-
-
         }
     }
 
     fclose(file);
-
-
 
 
     return 0;

@@ -28,7 +28,9 @@ ssize_t test_send(int socket) {
 
     ssize_t ret = 0;
     Data data;
-   memset(&data,0,sizeof(Data));
+
+    memset(&data, 0, sizeof(Data));
+
     ret = recv(socket, &data, sizeof(Data), 0);
 
     if (ret < 0) {
@@ -105,7 +107,9 @@ ssize_t test_recv(int socket) {
 }
 
 void send_prio_to_task(char *task_id, char *signal) {
+
     int prio = 0;
+
     if (strcmp(signal, "VERY_LOW") == 0) {
         prio = 15;
 
@@ -235,10 +239,11 @@ void *sending(void *socket) {
 
     devices_show=false;
 
-    int sockfd = *(int *) socket;
 
+    thread_break = true;
 
     pthread_t  thr[6];
+    ssize_t thread_ret[6]={0,1,2,3,4,5};
     pthread_attr_t attr;
     pthread_mutex_init(&mutex_jiff,NULL);
     pthread_mutex_init(&mutex_send,NULL);
@@ -255,7 +260,8 @@ void *sending(void *socket) {
         time1 = time(NULL);
 
         local_time = *localtime(&time1);
-        test=false;
+
+        test_send((*(int *) socket));
 
        pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
 
@@ -267,81 +273,112 @@ void *sending(void *socket) {
             printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
 
             fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
-          break;
+            pthread_mutex_lock(&mutex_send);
+            thread_break = false;
+            pthread_mutex_unlock(&mutex_send);
+            //   break;
 
         }
+
         return_value=pthread_create(&thr[1], &attr, send_cpu,socket);
 
         if (return_value != 0) {
 
             printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
             fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
-            break;
+            pthread_mutex_lock(&mutex_send);
+            thread_break = false;
+            pthread_mutex_unlock(&mutex_send);
+            //   break;
 
         }
+
         return_value=pthread_create(&thr[2], &attr, send_network,socket);
 
         if (return_value != 0) {
 
             printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
             fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
-            break;
+            pthread_mutex_lock(&mutex_send);
+            thread_break = false;
+            pthread_mutex_unlock(&mutex_send);
+            //   break;
 
         }
+
         return_value=pthread_create(&thr[3], &attr, send_interrupts,socket);
 
         if (return_value != 0) {
 
             printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
             fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
-            break;
+            pthread_mutex_lock(&mutex_send);
+            thread_break = false;
+            pthread_mutex_unlock(&mutex_send);
+            //   break;
 
         }
+
         return_value=pthread_create(&thr[4], &attr, send_devices,socket);
 
         if (return_value != 0) {
 
             printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
             fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
-            break;
-
+            pthread_mutex_lock(&mutex_send);
+            thread_break = false;
+            pthread_mutex_unlock(&mutex_send);
+            //   break;
         }
+
         return_value=pthread_create(&thr[5], &attr, send_task,socket);
 
         if (return_value != 0) {
 
             printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
             fprintf(stderr,"Error = %d (%s)\n",return_value,strerror(return_value));
-            break;
+            pthread_mutex_lock(&mutex_send);
+            thread_break = false;
+            pthread_mutex_unlock(&mutex_send);
+            //   break;
 
         }
+
         pthread_attr_destroy(&attr);
         for(int i=0;i<6;i++){
-           if((return_value= pthread_join(thr[i], NULL))){
+            void *status=NULL;
+
+           if((return_value= pthread_join(thr[i], &status))){
 
                strerror_r(return_value,buffer,sizeof(buffer));
                fprintf(stderr,"error = %d (%s)\n",return_value,buffer);
-               pthread_mutex_destroy(&mutex_send);
-               pthread_mutex_destroy(&mutex_jiff);
-
-
-
-               clean_interrupts();
-               pthread_exit(NULL);
+               pthread_mutex_lock(&mutex_send);
+               thread_break = false;
+               pthread_mutex_unlock(&mutex_send);
 
            }
+            if(status==NULL){
+                thread_ret[i]=0;
+            }
+            else
+            {
+                thread_ret[i]=(*(ssize_t *)status);
+            }
+            if (thread_ret[i] < 0) {
+                pthread_mutex_lock(&mutex_send);
+                thread_break = false;
+                pthread_mutex_unlock(&mutex_send);
+            }
 
         }
 
 
+        if (thread_break == false) {
 
+            break;
+        }
 
-
-
-
-
-
-        ret = test_recv(sockfd);
+        ret = test_recv((*(int *) socket));
         if (ret < 0) {
 
             printf("error receiving data\n %d", (int) ret);
@@ -352,17 +389,8 @@ void *sending(void *socket) {
             printf("socket closed\n");
             break;
         }
-        ret = test_send(sockfd);
-        if (ret < 0) {
 
-            printf("error receiving data\n %d", (int) ret);
-            break;
-        }
-        if (ret == 0) {
 
-            printf("socket closed\n");
-            break;
-        }
 
 
     }

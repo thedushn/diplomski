@@ -7,25 +7,31 @@
 #include <memory.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <netdb.h>
 
 #include"sys/socket.h"
 #include "main_header.h"
 
-void input_command() {
+void device_task_commands(int show, char *signal, char *task_id) {
 
-
-    const gchar *text = gtk_entry_get_text(GTK_ENTRY(entry));
-    g_print("Command %s  \n", text);
-    command_sender((char *) text);
-
-};
-
-int command_sender(char *text) {
     int ret;
     char buffer[1500];
-    strcpy(buffer, "COMMAND");
-    strncat(buffer, " ", sizeof(buffer));
-    strncat(buffer, text, sizeof(buffer));
+
+    memset(buffer, 0, sizeof(buffer));
+
+    if (show == 1) {
+
+        show_before = !show_before;
+    }
+
+
+    if (signal != NULL && task_id != NULL) {
+        sprintf(buffer, "%d %s %s", device_all, signal, task_id);
+
+    } else {
+        sprintf(buffer, "%d", device_all);
+    }
+    printf("%s \n", buffer);
     ret = (int) send(newsockfd1, &buffer, sizeof(buffer), 0);
     if (ret < 0) {
 
@@ -39,6 +45,94 @@ int command_sender(char *text) {
         printf("command did not get sent \n");
         printf("socket closed\n");
         gtk_main_quit();
+
+
+    }
+
+}
+
+int connection(char *argv1, char *argv2) {
+
+
+    struct addrinfo hints, *servinfo, *p;
+    int rv;
+    int socketfd = 0;
+
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_UNSPEC; // use AF_INET6 to force IPv6
+    hints.ai_socktype = SOCK_STREAM;
+
+    if ((rv = getaddrinfo(argv2, argv1, &hints, &servinfo)) != 0) {
+        fprintf(stderr, "get_addr_info: %s\n", gai_strerror(rv));
+        return -2;
+    }
+
+// loop through all the results and connect to the first we can
+    for (p = servinfo; p != NULL; p = p->ai_next) {
+        if ((socketfd = socket(p->ai_family, p->ai_socktype,
+                               p->ai_protocol)) == -1) {
+            perror("socket");
+            continue;
+        }
+
+        if (connect(socketfd, p->ai_addr, p->ai_addrlen) == -1) {
+            perror("connect");
+            close(socketfd);
+            continue;
+        }
+
+        break; // if we get here, we must have connected successfully
+    }
+
+    if (p == NULL) {
+        // looped off the end of the list with no connection
+        free(servinfo);
+        fprintf(stderr, "failed to connect\n");
+        return -2;
+
+    }
+
+
+    if (socketfd < 0) {
+        printf("Error creating socket!\n");
+        return -2;
+    }
+
+
+    free(servinfo);
+    return socketfd;
+}
+void input_command() {
+
+
+    const gchar *text = gtk_entry_get_text(GTK_ENTRY(entry));
+    g_print("Command %s  \n", text);
+    command_sender((char *) text);
+
+};
+
+int command_sender(char *text) {
+
+    int ret;
+    char buffer[1500];
+    strcpy(buffer, "COMMAND");
+    strncat(buffer, " ", sizeof(buffer));
+    strncat(buffer, text, sizeof(buffer));
+    ret = (int) send(newsockfd1, &buffer, sizeof(buffer), 0);
+    if (ret < 0) {
+
+        printf("command did not get sent \n");
+        if (gtk_main_level() > 0)
+            gtk_main_quit();
+
+
+    }
+    if (ret == 0) {
+
+        printf("command did not get sent \n");
+        printf("socket closed\n");
+        if (gtk_main_level() > 0)
+            gtk_main_quit();
 
 
     }
@@ -98,12 +192,15 @@ ssize_t test_recv(int socket) {
 
     char buffer[64];
     ssize_t ret ;
+    Data data;
+
     memset(buffer, 0, 64);
     strcpy(buffer, "everything came");
-    Data data;
     data.size=TEXT;
+
     memset(data.unification.conformation,0,sizeof(data.unification.conformation));
     strcpy(data.unification.conformation,"everything came");
+
     ret = send(socket, &data, sizeof(Data), 0);
 
 
@@ -125,15 +222,18 @@ ssize_t test_recv(int socket) {
 }
 
 int
-data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage,
-              T_Collection **task_array, D_Collection **devices_array, int *task_num, int *dev_num) {
+data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *memory_usage, T_Collection **task_array,
+              D_Collection **devices_array, __int32_t *task_num, __int32_t *dev_num) {
 
 
     int flag = MSG_WAITALL;
     ssize_t ret;
 
-    T_Collection *temp_task_array;
-    D_Collection *temp_device_array;
+
+    T_Collection *temp_task_array=NULL;
+    D_Collection *temp_device_array=NULL;
+
+
     Interrupts *temp=interrupts;
     while (1){
         Data data;
@@ -148,7 +248,7 @@ data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage 
         }
         if (ret == 0) {
 
-            printf("error receiving data\n %d", (int) ret);
+            printf("error receiving data\n %d ", (int) ret);
             printf("socket closed\n");
             return 1;
         }
@@ -156,7 +256,10 @@ data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage 
         switch (data.size){
 
             case CPU_USAGE:
-                *cpu_usage1=(Cpu_usage)data.unification.cpu_usage;
+
+                *cpu_usage=(Cpu_usage)data.unification.cpu_usage;
+
+
                 break;
 
             case NETWORK:
@@ -216,18 +319,7 @@ data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage 
                     return -1;
                 }
 
-                ret = test_recv(socket);
-                if (ret < 0) {
 
-                    printf("error receiving data\n %d", (int) ret);
-                    return (int)ret;
-                }
-                if (ret == 0) {
-
-                    printf("error sending data\n %d", (int) ret);
-                    printf("socket closed\n");
-                    return 1;
-                }
                     return 0;
 
             default:

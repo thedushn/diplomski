@@ -19,7 +19,7 @@ GtkWidget *graph4;
 
 void quit_activated();
 
-void cpu_change(Cpu_usage *cpu_usage);
+void cpu_change(Cpu_usage cpu_usage);
 
 void memory_change(Memory_usage *memory_usage);
 

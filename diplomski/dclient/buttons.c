@@ -1,9 +1,9 @@
-#include <sys/socket.h>
+
 #include "buttons.h"
 #include "drawing.h"
 #include "testing_tree.h"
-#include "window.h"
-
+#include "functions.h"
+#include "stdbool.h"
 
 static gboolean device_devices = TRUE;
 static gboolean device_type = TRUE;
@@ -12,7 +12,7 @@ static gboolean device_used = TRUE;
 static gboolean device_free = TRUE;
 static gboolean device_total = TRUE;
 static gboolean device_avail = TRUE;
-static bool device_all = FALSE;
+
 
 static gboolean process_task = TRUE;
 static gboolean process_user = TRUE;
@@ -26,7 +26,7 @@ static gboolean process_state = TRUE;
 static gboolean process_duration = TRUE;
 
 
-static gboolean show_before = FALSE;
+
 
 void process_window() {
     GtkWidget *box2;
@@ -115,7 +115,7 @@ void process_window() {
     gtk_window_set_position(GTK_WINDOW(proc_window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(proc_window), "destroy",
-                     G_CALLBACK(close_window2), proc_window);
+                     G_CALLBACK(close_window), proc_window);
 
     gtk_widget_show_all(proc_window);
 
@@ -196,7 +196,7 @@ void device_window() {
     gtk_window_set_position(GTK_WINDOW(dev_window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(dev_window), "destroy",
-                     G_CALLBACK(close_window2), dev_window);
+                     G_CALLBACK(close_window), dev_window);
 
     gtk_widget_show_all(dev_window);
 
@@ -242,7 +242,7 @@ void dev_button_clicked2(GtkWidget *widget) {
 }
 
 
-void close_window() {
+void close_window_toggled() {
 
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph),
@@ -250,7 +250,7 @@ void close_window() {
 
 
 };
-void close_window2(GtkWidget *widget) {
+void close_window(GtkWidget *widget) {
 
 
     gtk_widget_hide(widget);
@@ -259,86 +259,44 @@ void close_window2(GtkWidget *widget) {
 
 };
 
-void start_stop(int show, char *signal, char *task_id) {
-    int ret;
-    char buffer[1500];
-
-    memset(buffer, 0, sizeof(buffer));
-
-    if (show == 1) {
-
-        show_before = !show_before;
-    }
-
-
-    if (signal != NULL && task_id != NULL) {
-        sprintf(buffer, "%d %s %s", device_all, signal, task_id);
-
-    } else {
-        sprintf(buffer, "%d", device_all);
-    }
-    printf("%s \n", buffer);
-    ret = (int) send(newsockfd1, &buffer, sizeof(buffer), 0);
-    if (ret < 0) {
-
-        printf("command did not get sent \n");
-        gtk_main_quit();
-
-
-    }
-    if (ret == 0) {
-
-        printf("command did not get sent \n");
-        printf("socket closed\n");
-        gtk_main_quit();
-
-
-    }
-
-}
 
 void graph_button_clicked(GtkWidget *widget) {
 
     GtkWidget *box2;
+    GtkWidget *temp;
+
+
+    char   string[10];
+
+
+
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
+
         window2 = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-
-        button_graph0 = gtk_toggle_button_new_with_label("CPu0");
-        button_graph1 = gtk_toggle_button_new_with_label("CPu1");
-        button_graph2 = gtk_toggle_button_new_with_label("CPu2");
-        button_graph3 = gtk_toggle_button_new_with_label("CPu3");
-
-        if (CPU0_line == TRUE) {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph0), TRUE);
-        }
-        if (CPU1_line == TRUE) {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph1), TRUE);
-        }
-        if (CPU2_line == TRUE) {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph2), TRUE);
-        }
-        if (CPU3_line == TRUE) {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph3), TRUE);
-        }
-
         gtk_window_set_title(GTK_WINDOW (window2), "GRAPH buttons");
-
         box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
         gtk_container_add(GTK_CONTAINER(window2), box2);
-        gtk_box_pack_start(GTK_BOX(box2), button_graph0, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_graph1, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_graph2, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_graph3, 1, 1, 0);
-        g_signal_connect(button_graph0, "toggled", G_CALLBACK(graph_clicked), NULL);
-        g_signal_connect(button_graph1, "toggled", G_CALLBACK(graph_clicked), NULL);
-        g_signal_connect(button_graph2, "toggled", G_CALLBACK(graph_clicked), NULL);
-        g_signal_connect(button_graph3, "toggled", G_CALLBACK(graph_clicked), NULL);
 
+
+        for(int i=0;i<CPU_NUM;i++){
+
+            sprintf(string,"CPU%d",i);
+            temp=gtk_toggle_button_new_with_label(string);
+
+
+            if(cpu_status[i]==true){
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(temp), TRUE);
+            }
+            gtk_box_pack_start(GTK_BOX(box2), temp, 1, 1, 0);
+            g_signal_connect(temp, "toggled", G_CALLBACK(graph_clicked), NULL);
+            cpu_buttons[i]=*temp;
+
+        }
 
         gtk_window_set_position(GTK_WINDOW(window2), GTK_WIN_POS_CENTER);
 
         g_signal_connect(G_OBJECT(window2), "destroy",
-                         G_CALLBACK(close_window), NULL);
+                         G_CALLBACK(close_window_toggled), NULL);
 
         gtk_widget_show_all(window2);
 
@@ -349,6 +307,7 @@ void graph_button_clicked(GtkWidget *widget) {
     }
 };
 
+
 void show_all(GtkWidget *widget) {
 
     char *proxy = NULL;
@@ -356,11 +315,11 @@ void show_all(GtkWidget *widget) {
 
         device_all = TRUE;
 
-        start_stop(1, proxy, proxy);
+        device_task_commands(1, proxy, proxy);
 
     } else {
         device_all = FALSE;
-        start_stop(1, proxy, proxy);
+        device_task_commands(1, proxy, proxy);
     }
 
 
@@ -558,58 +517,42 @@ void process_clicked(GtkWidget *widget) {
 void graph_clicked(GtkWidget *widget) {
 
 
+    bool *temp_bool=cpu_status;
+    GtkWidget *temp_widget=cpu_buttons;
+
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
-        if (widget == button_graph0) {
 
-            CPU0_line = TRUE;
-            graph_refresh(widget, CPU0_line);
+        for(int i=0;i<CPU_NUM;i++){
 
+            if(temp_widget->priv==widget->priv){
+                (*temp_bool)=true;
+                gtk_widget_queue_draw(graph1);
+            }
 
-        } else if (widget == button_graph1) {
-
-            CPU1_line = TRUE;
-            graph_refresh(widget, CPU1_line);
-
-        } else if (widget == button_graph2) {
-
-            CPU2_line = TRUE;
-            graph_refresh(widget, CPU2_line);
-
-        } else {
-
-            CPU3_line = TRUE;
-            graph_refresh(widget, CPU3_line);
+            temp_bool++;
+            temp_widget++;
 
         }
-
 
     } else {
 
-        if (widget == button_graph0) {
+        for(int i=0;i<CPU_NUM;i++){
 
-            CPU0_line = FALSE;
-            graph_refresh(widget, CPU0_line);
+            if(temp_widget->priv==widget->priv){
 
-        } else if (widget == button_graph1) {
+                (*temp_bool)=false;
+                gtk_widget_queue_draw(graph1);
+            }
 
-            CPU1_line = FALSE;
-            graph_refresh(widget, CPU1_line);
-
-        } else if (widget == button_graph2) {
-
-            CPU2_line = FALSE;
-            graph_refresh(widget, CPU2_line);
-
-        } else {
-
-            CPU3_line = FALSE;
-            graph_refresh(widget, CPU3_line);
-
+            temp_bool++;
+            temp_widget++;
         }
+
 
     }
 
 };
+
 
 
 
@@ -645,7 +588,7 @@ void handle_task_menu(GtkWidget *widget, char *signal) {
 
             if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
                 gtk_tree_model_get(model, &iter, 1, &task_id, -1);
-                start_stop(0, signal, task_id);
+                device_task_commands(0, signal, task_id);
                 init_timeout();
             }
         }
@@ -664,7 +607,7 @@ void handle_task_prio(GtkWidget *widget, char *signal) {
 
             if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
                 gtk_tree_model_get(model, &iter, 1, &task_id, -1);
-                start_stop(0, signal, task_id);
+                device_task_commands(0, signal, task_id);
 
             }
         }
@@ -740,12 +683,14 @@ GtkWidget *create_taskpopup(void) {
 }
 
 gboolean on_treeview1_button_press_event(GtkButton *button, GdkEventButton *event) {
+
     if (event->button == 3) {
 
         GdkEventButton *mouseevent = event;
 
         if (task_popup == NULL)
             task_popup = create_taskpopup();
+
         gtk_menu_popup(GTK_MENU(task_popup), NULL, NULL, NULL, NULL, mouseevent->button, mouseevent->time);
 
     }

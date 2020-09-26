@@ -26,14 +26,15 @@
 
 #include "common.h"
 #include "main_header.h"
+#include "window.h"
 
+gboolean on_draw_event(GtkWidget *widget, cairo_t *cr);
 
-void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, Collection *net_work);
+void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list *array);
 
-void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, const gboolean CPU0_line, const gboolean CPU1_line,
-                    const gboolean CPU2_line, const gboolean CPU3_line, Collection *collection);
+void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *collection);
 
-void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, Collection *mem_usage);
+void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list *array);
 
 void do_drawing_int(GtkWidget *widget, cairo_t *cr, Interrupts *interrupts1);
 
@@ -53,8 +54,11 @@ void writing_interrupts(cairo_t *cr, double font_size, double length, int i, con
 
 
 void draw_graph(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step, float max_num,
-                Collection *array);
+                Cpu_list *array);
 
+void
+draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step,
+                   float max_num, NetMem_list *array);
 
 #endif //DIPLOMSKI_DRAWING_H
 

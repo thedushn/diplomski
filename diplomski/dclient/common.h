@@ -11,6 +11,14 @@
 #include <time.h>
 
 
+#define CPU_USAGE 1
+#define NETWORK 2
+#define MEMORY 3
+#define TASK 4
+#define DEVICES 5
+#define INTERRUPTS 6
+#define TEXT 7
+#define CPU_NUM 4
 
 struct __attribute__((__packed__))tm1 {
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
@@ -57,13 +65,12 @@ typedef struct _Cpu_usage Cpu_usage;
 struct __attribute__((__packed__)) _Cpu_usage {
 
 
-    char percentage0[16];
-    char percentage1[16];
-    char percentage2[16];
-    char percentage3[16];
+    char percentage[CPU_NUM][16];
+
 
 
 };
+
 
 
 typedef struct _Memory_usage Memory_usage;
@@ -82,7 +89,7 @@ typedef struct _Interrupts Interrupts;
 struct __attribute__((__packed__)) _Interrupts {
 
 
-    char name[64];
+    char irq[64];
     char ime1[64];
     char ime2[64];
     char ime3[64];
@@ -118,6 +125,7 @@ struct _Device_Collection{
 
     Devices devices;
     D_Collection * next;
+    D_Collection * prev;
 };
 
 typedef struct _Task_Collection T_Collection;
@@ -125,6 +133,7 @@ struct _Task_Collection{
 
     Task task;
     T_Collection * next;
+    T_Collection * prev;
 };
 
 typedef union _Unification Unification ;
