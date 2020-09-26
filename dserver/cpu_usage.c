@@ -4,6 +4,7 @@
 
 #include "cpu_usage.h"
 #include "functions.h"
+#include "testing.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -59,7 +60,7 @@ void *send_cpu(void *socket) {
 
     memset(&data, 0, sizeof(Data));
         data.size = CPU_USAGE;
-
+    cpu_write(cpu_usage);
     data.unification.cpu_usage = cpu_usage;
 
     pthread_mutex_lock(&mutex_send);

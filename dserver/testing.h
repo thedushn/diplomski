@@ -8,4 +8,7 @@
 #define DSERVER_TESTING_H
 
 int interrupts_write(Interrupts *array, Interrupts *array2, char *filename, int size);
+int memory_write(Memory_usage *memory_usage);
+int cpu_write(Cpu_usage cpu_usage);
+int task_write(Task *task);
 #endif //DSERVER_TESTING_H

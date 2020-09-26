@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <stdlib.h>
-
+#include "testing.h"
 void * send_memory(void *socket){
 
     int sockfd=(*(int*)socket);
@@ -32,6 +32,7 @@ void * send_memory(void *socket){
 
         pthread_exit(&ret);
     }
+    memory_write(&memory_usage);
 
     data.size=MEMORY;
     data.unification.memory_usage=memory_usage;

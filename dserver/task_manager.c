@@ -16,10 +16,20 @@
 
 #include "functions.h"
 #include "cpu_usage.h"
+#include "testing.h"
 
 void * send_task(void *socket){
 
 
+    FILE *fp;
+    char *filename = "task.data";
+
+    if ((fp = fopen(filename, "a+")) == NULL) //create a file if it doesnt exist
+       pthread_exit(NULL);
+
+    time_t clk=time(NULL);
+    fprintf(fp,"%s\n",ctime(&clk));
+    fclose(fp);
     int result;
     ssize_t ret;
     Data data={0};
@@ -64,7 +74,7 @@ void * send_task(void *socket){
 
         data.size=TASK;
         data.unification.task=temp_task->task;
-
+        task_write(&temp_task->task);
         pthread_mutex_lock(&mutex_send);
         ret = send((*(int*)socket), &data, sizeof(Data), 0);
         pthread_mutex_unlock(&mutex_send);
