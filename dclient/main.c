@@ -188,7 +188,16 @@ gboolean init_timeout() {
 
     sem_wait(&semt);
 
-   test_recv(newsockfd);
+    ret=(int) test_recv(newsockfd);
+    if (ret != 0) {
+
+        if(refresh>0)
+            g_source_remove(refresh);
+
+        if (gtk_main_level() > 0)
+            gtk_main_quit();
+        return FALSE;
+    }
 
     ret = data_transfer(newsockfd, &cpu_usage, &network, &memory_usage, &tasks_new, &devices_new, &task_num, &dev_num);
 

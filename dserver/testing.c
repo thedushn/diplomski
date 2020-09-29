@@ -167,3 +167,25 @@ int task_write(Task *task){
 
     return 0;
 }
+int netw_write(Network network){
+
+    FILE *fp;
+    char *filename = "net.data";
+
+    if ((fp = fopen(filename, "a+")) == NULL) //create a file if it doesnt exist
+        return 1;
+
+
+    time_t clk=time(NULL);
+    fprintf(fp,"Time: %s\n",ctime(&clk));
+
+    fprintf(fp,"Transmited  %" SCNu64 " Received %" SCNu64"\n",network.transmited_bytes,network.received_bytes);
+
+
+
+    fclose(fp);
+
+
+    return 0;
+
+}

@@ -10,7 +10,7 @@
 #include "pthread.h"
 typedef struct _Thread_task Thread_task;
 
-struct _Thread_task{
+struct _Thread_task{ /*structure of a linked list used to gather data about tasks and results of return values*/
 
     __uint32_t pid;
     int result;

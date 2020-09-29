@@ -320,6 +320,7 @@ void network_change_rc(Network *network) {
 
     gchar *rec_bytes = g_format_size_full(network->received_bytes, G_FORMAT_SIZE_IEC_UNITS);
     gchar *rec_tr_bytes = g_format_size_full(network->transmited_bytes, G_FORMAT_SIZE_IEC_UNITS);
+    netw_write(rec_tr_bytes,rec_bytes);
     gchar *network_usage_received_text = g_strdup_printf("RECEIVED:  %s/s", rec_bytes);
     gchar *network_usage_transmitted_text = g_strdup_printf("TRANSMITTED: %s/s", rec_tr_bytes);
     gtk_label_set_text(GTK_LABEL (label_rec), network_usage_received_text);

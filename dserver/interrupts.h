@@ -8,13 +8,13 @@
 #include "common.h"
 
 
-int interrupt_usage2(Interrupts **array, __int32_t *j);
+int interrupt_usage(Interrupts **array, __int32_t *num);
 
 void * send_interrupts(void *socket);
 
-void sort2(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts **send_interrupts, int n);
+void compare_interrupts(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts *send_interrupts, int n);
 
-void sort(Interrupts *array, int n);
+int myCompare(const void *a, const void *b);
 
 void clean_interrupts();
 

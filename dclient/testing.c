@@ -75,3 +75,25 @@ int cpu_write(Cpu_usage cpu_usage) {
     return 0;
 
 }
+int netw_write(char *transmited, char *received) {
+
+    FILE *fp;
+    char *filename = "network_client.data";
+
+    if ((fp = fopen(filename, "a+")) == NULL) //create a file if it doesnt exist
+        return 1;
+
+
+    time_t clk=time(NULL);
+    fprintf(fp,"Time: %s\n",ctime(&clk));
+
+    fprintf(fp,"Transmited  %s  Received %s\n",transmited,received);
+
+
+
+    fclose(fp);
+
+
+    return 0;
+
+}

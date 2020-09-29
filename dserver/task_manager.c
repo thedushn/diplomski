@@ -18,6 +18,11 @@
 #include "cpu_usage.h"
 #include "testing.h"
 
+/*
+ * function send_task(); send data about all the tasks to client
+ * input : socket to send data to
+ * output : void
+ * */
 void * send_task(void *socket){
 
 

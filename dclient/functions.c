@@ -201,7 +201,7 @@ ssize_t test_recv(int socket) {
     memset(data.unification.conformation,0,sizeof(data.unification.conformation));
     strcpy(data.unification.conformation,"everything came");
 
-    ret = send(socket, &data, sizeof(Data), 0);
+    ret = send(socket, &data, sizeof(Data), MSG_WAITALL);
 
 
     if (ret < 0) {

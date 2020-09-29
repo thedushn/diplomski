@@ -11,14 +11,14 @@
 #include <time.h>
 
 
-#define CPU_USAGE 1
-#define NETWORK 2
-#define MEMORY 3
-#define TASK 4
-#define DEVICES 5
-#define INTERRUPTS 6
-#define TEXT 7
-#define CPU_NUM 4
+#define CPU_USAGE   1
+#define NETWORK     2
+#define MEMORY      3
+#define TASK        4
+#define DEVICES     5
+#define INTERRUPTS  6
+#define TEXT        7
+#define CPU_NUM     4
 
 struct __attribute__((__packed__))tm1 {
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
@@ -35,21 +35,21 @@ struct __attribute__((__packed__))tm1 {
 typedef struct _Task Task;
 
 struct __attribute__((__packed__)) _Task {
-    bool checked;
-    __int16_t prio;
+    bool       checked;
+    __int16_t  prio;
     __uint32_t uid;
     __uint32_t pid;
     __uint32_t ppid;
-    char cpu_user[16];
-    char cpu_system[16];
+    char       cpu_user[16];
+    char       cpu_system[16];
     __uint64_t vsz;
     __uint64_t rss;
     __uint64_t start_time;
     struct tm1 stime;
     struct tm1 duration;
-    char state[16];
-    char name[256];
-    char uid_name[256];
+    char       state[16];
+    char       name[256];
+    char       uid_name[256];
 
 
 };
@@ -76,12 +76,13 @@ struct __attribute__((__packed__)) _Cpu_usage {
 typedef struct _Memory_usage Memory_usage;
 
 struct __attribute__((__packed__)) _Memory_usage {
+
     __uint64_t memory_used;
     __uint64_t memory_total;
-    char swap_percentage[16];
+    char       swap_percentage[16];
     __uint64_t swap_total;
     __uint64_t swap_used;
-    char memory_percentage[16];
+    char       memory_percentage[16];
 
 
 };
@@ -89,11 +90,11 @@ typedef struct _Interrupts Interrupts;
 struct __attribute__((__packed__)) _Interrupts {
 
 
-    char irq[64];
-    char ime1[64];
-    char ime2[64];
-    char ime3[64];
-    char ime4[64];
+    char       irq[64];
+    char       ime1[64];
+    char       ime2[64];
+    char       ime3[64];
+    char       ime4[64];
     __uint64_t CPU0;
     __uint64_t CPU1;
     __uint64_t CPU2;
@@ -107,15 +108,15 @@ typedef struct _Devices Devices;
 struct __attribute__((__packed__))_Devices {
 
 
-    bool checked;
+    bool       checked;
     __uint64_t used;
     __uint64_t total;
     __uint64_t free;
     __uint64_t avail;
     __uint64_t fid;
-    char name[64];
-    char type[64];
-    char directory[256];
+    char       name[64];
+    char       type[64];
+    char       directory[256];
 };
 
 
@@ -123,7 +124,7 @@ struct __attribute__((__packed__))_Devices {
 typedef struct _Device_Collection D_Collection;
 struct _Device_Collection{
 
-    Devices devices;
+    Devices        devices;
     D_Collection * next;
     D_Collection * prev;
 };
@@ -131,7 +132,7 @@ struct _Device_Collection{
 typedef struct _Task_Collection T_Collection;
 struct _Task_Collection{
 
-    Task task;
+    Task           task;
     T_Collection * next;
     T_Collection * prev;
 };
@@ -140,13 +141,13 @@ typedef union _Unification Unification ;
 
 union _Unification {
 
-    Task task;
-    Network network;
-    Memory_usage memory_usage;
-    Cpu_usage cpu_usage;
-    Interrupts interrupts;
-    Devices devices;
-    char conformation[64];
+    Task            task;
+    Network         network;
+    Memory_usage    memory_usage;
+    Cpu_usage       cpu_usage;
+    Interrupts      interrupts;
+    Devices         devices;
+    char            conformation[64];
 
 
 
@@ -155,7 +156,7 @@ union _Unification {
 typedef struct _Data Data;
 struct __attribute__((__packed__)) _Data{
 
-    int size;
+    int         size;
     Unification unification;
 
 };

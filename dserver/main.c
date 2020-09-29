@@ -17,6 +17,7 @@
 #include "network_bandwith.h"
 
 
+
 #include <arpa/inet.h>
 
 
@@ -29,7 +30,11 @@
 
 #define BUFFER_SIZE 1024
 
-
+/*
+ * function sigchld_handler(): handles error signal
+ * input: none
+ * output:none
+ * */
 static void sigchld_handler() {
 
     int saved_errno = errno;
@@ -38,7 +43,11 @@ static void sigchld_handler() {
 
     errno = saved_errno;
 }
-
+/*
+ * function get_in_addr(): gets the type of socket address IP4 or IP6
+ * input  : pointer to Structure describing an Internet socket address
+ * output : none.
+ * */
 void *get_in_addr(struct sockaddr *sa) {
     if (sa->sa_family == AF_INET) {
         return &(((struct sockaddr_in *) sa)->sin_addr);
@@ -46,18 +55,37 @@ void *get_in_addr(struct sockaddr *sa) {
 
     return &(((struct sockaddr_in6 *) sa)->sin6_addr);
 }
+/*
+ * function main(): creates a TPC socket and waits for a connection of the client,if that was successful it gathers
+ * information about when the kernel started working and creates threads to send information to the client and receive
+ * commands from him, after the client wants to stop getting information about the servers host, the server closes the
+ * sockets and free the allocated memory from the gathering of the data
+ * input  : pointer to Structure describing an Internet socket address
+ * output : returns a non zero value if something goes wrong
+ * */
 
 int main(int argc, char *argv[]) {
 
-    hash_size=0;
-    task_details=NULL;
-    hash_network=NULL;
-    net_hash_size=0;
+    hash_size     = 0;
+    task_details  = NULL;
+    hash_network  = NULL;
+    net_hash_size = 0;
 
 
-    pthread_t t2, t3;
-    int sockfd = 0;
-    int new_fd = 0;
+
+    FILE *fp;
+
+    time_t time1;
+    struct tm tm2;
+    int sec0, hr0, min0, t0;
+    struct tm1 stop_time;
+    int errnum;
+    int uptime1 = 0;
+
+    pthread_t thr1, thrd2;
+
+    int sockfd  = 0;
+    int new_fd  = 0;
     int new_fd1 = 0;  // listen on sock_fd, new connection on new_fd
     struct addrinfo hints, *servinfo, *p;
     struct sockaddr_storage their_addr; // connector's address information
@@ -65,18 +93,23 @@ int main(int argc, char *argv[]) {
     struct sigaction sa;
     int yes = 1;
     char s[INET6_ADDRSTRLEN];
-    int rv, ret, ret2;
+    int rv, ret;
     char buffer[BUFFER_SIZE];
-    memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_UNSPEC;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_flags = AI_PASSIVE; // use my IP
+
+
+    struct DataItem     *temp;
+    struct DataItem_net *temp_net;
 
     if (argc < 2) {
 
         printf("no port provided");
         return -1;
     }
+
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_PASSIVE; // use my IP
 
 
     if ((rv = getaddrinfo(NULL, argv[1], &hints, &servinfo)) != 0) {
@@ -161,9 +194,6 @@ int main(int argc, char *argv[]) {
               s, sizeof s);
 
 
-    FILE *fp;
-
-    int uptime1 = 0;
     fp = fopen("/proc/uptime", "r");
     if (fp != NULL) {
 
@@ -173,7 +203,7 @@ int main(int argc, char *argv[]) {
             sscanf(buffer, "%d", &uptime1);
         }
     } else {
-        int errnum;
+
         errnum = errno;
         fprintf(stderr, "Value of errno: %d\n", errno);
         perror("Error printed by perror");
@@ -187,12 +217,10 @@ int main(int argc, char *argv[]) {
     fclose(fp);
 
 
-    time_t time1 = time(NULL);
-    struct tm tm2 = *localtime(&time1);
+    time1 = time(NULL);
+    tm2 = *localtime(&time1);
 
-    int sec0, hr0, min0, t0;
 
-    struct tm1 stop_time;
 
 
     hr0 = uptime1 / 3600;
@@ -206,59 +234,78 @@ int main(int argc, char *argv[]) {
     differenceBetweenTimePeriod(tm2, stop_time, &begin_time);// time when linux started
 
 
+    ret = pthread_create(&thr1, NULL, sending, &new_fd);
+    if (ret != 0) {
 
-
-
-    ret2 = pthread_create(&t2, NULL, sending, &new_fd);
-    if (ret2 != 0) {
-
-        printf("ERROR: Return Code from pthread_create() is %d\n", ret2);
+        printf("ERROR: Return Code from pthread_create() is %d\n", ret);
         close(sockfd);
+        close(new_fd1);
+        close(new_fd);
         return -1;
 
     }
 
-    ret = pthread_create(&t3, NULL, accept_c, &new_fd1);
+    ret = pthread_create(&thrd2, NULL, accept_command, &new_fd1);
 
     if (ret != 0) {
 
         printf("ERROR: Return Code from pthread_create() is %d\n", ret);
         close(sockfd);
+        close(new_fd1);
+        close(new_fd);
         return -1;
 
     }
+    void *status=NULL;
+
+    if((ret= pthread_join(thr1, &status))){
+
+        strerror_r(ret,buffer,sizeof(buffer));
+        fprintf(stderr,"error = %d (%s)\n",ret,buffer);
+        pthread_mutex_lock(&mutex_send);
+        thread_break = false;
+        pthread_mutex_unlock(&mutex_send);
+
+    }
 
 
-    pthread_join(t2, NULL);
-    pthread_join(t3, NULL);
+    if((ret= pthread_join(thrd2, &status))){
+
+        strerror_r(ret,buffer,sizeof(buffer));
+        fprintf(stderr,"error = %d (%s)\n",ret,buffer);
+        pthread_mutex_lock(&mutex_send);
+        thread_break = false;
+        pthread_mutex_unlock(&mutex_send);
+    }
 
 
-    struct DataItem *temp;
 
-    for(int k=0;k<hash_size;k++){
-        // save reference to first link
-        temp = task_details;
 
-        //mark next to first link as first
+
+
+
+
+
+
+    for(int k=0;k<hash_size;k++){ /*freeing the list of task details*/
+
+        temp         = task_details;
         task_details = task_details->next;
-
-        //return the deleted link
         free(temp);
 
     }
-    struct DataItem_net *temp_net;
-    for(int k=0;k<net_hash_size;k++){
-        // save reference to first link
-        temp_net = hash_network;
 
-        //mark next to first link as first
+    for(int k=0;k<net_hash_size;k++){/*freeing the list of task details*/
+
+        temp_net     = hash_network;
         hash_network = hash_network->next;
-
-        //return the deleted link
         free(temp_net);
 
     }
+
     close(sockfd);
+    close(new_fd1);
+    close(new_fd);
 
 
     return 0;

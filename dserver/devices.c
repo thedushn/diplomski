@@ -13,11 +13,15 @@
 #include <memory.h>
 #include <sys/socket.h>
 
-
+/*
+ * function send_devices(): send data about the devices  to client
+ * input  : socket to send data to
+ * output : returns a value less then zero if something did not work
+ * */
 void * send_devices(void *socket){
 
-    int sockfd=(*(int*)socket);
-    int result;
+    int     sockfd=(*(int*)socket);
+    int     result;
     ssize_t ret;
 
     D_Collection *devices_c;
@@ -27,7 +31,7 @@ void * send_devices(void *socket){
 
     Data data={0};
     pthread_mutex_lock(&mutex_send);
-    while (thread_break == false) {
+    while (thread_break == false) { //check if other threads had problems
         ret = -100;
         pthread_mutex_unlock(&mutex_send);
         pthread_exit(&ret);
@@ -38,13 +42,9 @@ void * send_devices(void *socket){
     if (result != 0) {
         printf("error in mount_list\n");
         for(int k=0;k<device_num;k++){
-            // save reference to first link
-            temp_dev = devices_c;
 
-            //mark next to first link as first
+            temp_dev  = devices_c;
             devices_c = devices_c->next;
-
-            //return the deleted link
             free(temp_dev);
 
         }
@@ -54,7 +54,7 @@ void * send_devices(void *socket){
 
 
     temp_dev=devices_c;
-    for (int i = 0; i < device_num; i++) {
+    for (int i = 0; i < device_num; i++) {/*send all the data about devices to client*/
         temp_dev->devices.checked=false;
         memset(&data,0,sizeof(Data));
         data.size=DEVICES;
@@ -65,16 +65,12 @@ void * send_devices(void *socket){
 
 
 
-        if (ret < 0) {
+        if (ret < 0) { /*if the socket broke SIGPIPE error free allocated memory*/
             printf("Error sending data!\n\t");
             for(int k=0;k<device_num;k++){
-                // save reference to first link
+
                 temp_dev = devices_c;
-
-                //mark next to first link as first
                 devices_c = devices_c->next;
-
-                //return the deleted link
                 free(temp_dev);
 
             }
@@ -85,13 +81,9 @@ void * send_devices(void *socket){
 
             printf("socket closed\n");
             for(int k=0;k<device_num;k++){
-                // save reference to first link
+
                 temp_dev = devices_c;
-
-                //mark next to first link as first
                 devices_c = devices_c->next;
-
-                //return the deleted link
                 free(temp_dev);
 
             }
@@ -104,14 +96,14 @@ void * send_devices(void *socket){
 
 
     }
-    for(int k=0;k<device_num;k++){
-        // save reference to first link
+    for(int k=0;k<device_num;k++){ /*done with device list time to free memory*/
+
         temp_dev = devices_c;
 
-        //mark next to first link as first
+
         devices_c = devices_c->next;
 
-        //return the deleted link
+
         free(temp_dev);
 
     }
@@ -120,8 +112,12 @@ void * send_devices(void *socket){
     pthread_exit(&ret);
 
 }
-
-void testing_files(Devices *devices) {
+/*
+ * function input_device_stats(): uses the function statvfs to get stats about  mounted device
+ * input : pointer to Devices structure;
+ * output : none.
+ * */
+void input_device_stats(Devices *devices) {
 
     struct statvfs info;
 
@@ -137,7 +133,12 @@ void testing_files(Devices *devices) {
 
 }
 
-
+/*
+ * function mount_list(): creates a list of mounted devices based on their type
+ * input : Double pointer to a structure that contains stats about a device, pointer to the number of devices
+ * and a bool that specifies which type of devices we want in our list
+ * output : returns a non zero value if something goes wrong
+ * */
 
 int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
@@ -160,7 +161,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
     }
     fseek(file, 0, SEEK_SET);
 
-    if (mount == true) {
+    if (mount == true) {/*checking if the client wants all the mounted files */
         while (fgets(buffer, 1024, file) != NULL) {
 
           temp_dev=  calloc(1, sizeof(D_Collection));
@@ -175,7 +176,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
             sscanf(buffer, "%63s %255s %63s", temp_dev->devices.name,temp_dev->devices.directory,temp_dev->devices.type);
 
-            testing_files(&temp_dev->devices);
+            input_device_stats(&temp_dev->devices);
             (*dev_num)++;
             temp_dev->next=*array;
             *array=temp_dev;
@@ -183,7 +184,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
         }
     } else {
-        while (fgets(buffer, 1024, file) != NULL) {
+        while (fgets(buffer, 1024, file) != NULL) { /*if the client only wants Block devices */
             Devices proxy={0};
 
 
@@ -197,10 +198,10 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
             switch (filestat.st_mode & S_IFMT) {
 
-                case S_IFBLK: {
+                case S_IFBLK: {  /*checking to see if its a block device*/
 
 
-                    testing_files(&proxy);
+                    input_device_stats(&proxy);
                     temp_dev=  (D_Collection *)calloc(1, sizeof(D_Collection));
                     if(temp_dev==NULL){
                         free(temp_dev);
@@ -219,7 +220,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
                     break;
 
                 }
-                default:
+                default: /*if its not a Block device we skip it*/
 
                     break;
             }

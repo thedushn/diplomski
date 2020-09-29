@@ -7,10 +7,10 @@
 
 #include "common.h"
 
-bool devices_show ;
+bool devices_show ; /*bool used to check if client wants Block devices or all of the mounted devices*/
 
 
-void testing_files(Devices *devices);
+void input_device_stats(Devices *devices);
 
 void * send_devices(void *socket);
 

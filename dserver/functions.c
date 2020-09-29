@@ -22,7 +22,11 @@
 
 
 
-
+/*
+ * function test_send(): receives a packet and checks if its match a string
+ * input : socket
+ * output : returns a value equal or lower then zero if something is not correct else it return a value higher then 0
+ * */
 
 ssize_t test_send(int socket) {
 
@@ -75,6 +79,12 @@ ssize_t test_send(int socket) {
     return sizeof(Data);
 };
 
+
+/*
+ * function test_recv():  sends a conformation packet that has a specific string in it
+ * input : socket
+ * output : returns a value equal or lower then zero if something is not correct else it return a value higher then 0
+ * */
 ssize_t test_recv(int socket) {
 
 
@@ -105,7 +115,12 @@ ssize_t test_recv(int socket) {
     return ret;
 
 }
-
+/*
+ * function send_prio_to_task():  sets tasks priority, they can span from -15 to 15
+ * input : pointer to a string that contains the name of the task and a pointer to a string that contains the type of
+ * priority we want to set
+ * output : none.
+ * */
 void send_prio_to_task(char *task_id, char *signal) {
 
     int prio = 0;
@@ -146,7 +161,12 @@ void send_prio_to_task(char *task_id, char *signal) {
 
 
 }
-
+/*
+ * function send_signal_to_task():  sends signal to task, they can be KILL,STOP,CONTINUE,TERMINATE
+ * input : pointer to a string that contains the name of the task and a pointer to a string that contains the type of
+ * signal we want to send
+ * output : none.
+ * */
 void send_signal_to_task(char *task_id, char *signal) {
 
     if (task_id != NULL && signal != NULL) {
@@ -159,39 +179,45 @@ void send_signal_to_task(char *task_id, char *signal) {
             printf("command failed\n");
     }
 }
+/*
+ * function accept_command():  accepts commands from client
+ * input : pointer to socket
+ * output : if the socket gets closed or it breaks SIGPIPE the function exits with the value of ret
+ * */
+void *accept_command(void *socket) {
 
-void *accept_c(void *socket) {
+    int         sockfd = *(int *) socket;
 
-    int sockfd = *(int *) socket;
-
-    Commands commands;
-    char buffer[1500];
-    char text[256];
-    char *text1;
+    Commands    commands;
+    char        buffer[1500];
+    char        text[256];
+    char        *text1;
+    ssize_t     ret;
+    int         g=0;
 
     while (1) {
+
         memset(buffer,0,sizeof(buffer));
         memset(&commands,0,sizeof(commands));
         memset(&text,0,sizeof(text));
         memset(&text1,0,sizeof(text1));
-        ssize_t ret = recv(sockfd, &buffer, sizeof(buffer), 0);
+
+        ret = recv(sockfd, &buffer, sizeof(buffer), 0);
         if (ret < 0) {
             printf("error condition didn't get received\n");
-
-
             pthread_exit(&ret);
         }
         if (ret == 0) {
             printf("error condition did not get received\n");
             printf("ret %d\n", (int) ret);
-
+            ret=-100;
             pthread_exit(&ret);
         }
 
 
         sscanf(buffer, "%s %s %s",text,commands.command,commands.task_id);
         if(strcmp(text,"COMMAND")!=0){
-            int g=0;
+
            g=atoi(text);
            if(g==1){
                devices_show=true;
@@ -216,20 +242,23 @@ void *accept_c(void *socket) {
             text1=strchr(buffer,' ');
                 strcat(text1, " &");
 
-            if (system(text1) != 0)
+            if (system(text1) != 0){
                 printf("command failed\n");
+            }
+
         }
-
-
-
-
-
-
 
     }
 
 };
-
+/*
+ * function sending():  gets request from client to send it data from the proc file system,it runs multiple threads to
+ * accomplish this task, after it has sent all the data it sends a conformation message back to the client that all the
+ * data has been sent
+ * input : pointer to socket
+ * output : if there is any error in the execution of the code the function waits for all of the threads to notice
+ * that there is an error and lets them finish their execution,after it frees the memory and exits.
+ * */
 
 void *sending(void *socket) {
 
@@ -237,13 +266,13 @@ void *sending(void *socket) {
     time_t time1;
 
 
-    devices_show=false;
+    devices_show=false;/*bool that tells the server only to send Block devices*/
 
 
     thread_break = true;
 
     pthread_t  thr[6];
-    ssize_t thread_ret[6]={0,1,2,3,4,5};
+    ssize_t thread_ret[6]={0};
     pthread_attr_t attr;
     pthread_mutex_init(&mutex_jiff,NULL);
     pthread_mutex_init(&mutex_send,NULL);
@@ -261,14 +290,14 @@ void *sending(void *socket) {
 
         local_time = *localtime(&time1);
 
-        test_send((*(int *) socket));
+        test_send((*(int *) socket)); /*wait for client to ask for data*/
 
        pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
 
 
         return_value=pthread_create(&thr[0], &attr, send_memory,socket);
 
-        if (return_value != 0) {
+        if (return_value != 0) {/*if the server fails to create the thread we tell the other threads to exit*/
 
             printf("ERROR: Return Code from pthread_create() is %d\n", return_value);
 
@@ -276,7 +305,7 @@ void *sending(void *socket) {
             pthread_mutex_lock(&mutex_send);
             thread_break = false;
             pthread_mutex_unlock(&mutex_send);
-            //   break;
+
 
         }
 
@@ -289,7 +318,7 @@ void *sending(void *socket) {
             pthread_mutex_lock(&mutex_send);
             thread_break = false;
             pthread_mutex_unlock(&mutex_send);
-            //   break;
+
 
         }
 
@@ -302,7 +331,7 @@ void *sending(void *socket) {
             pthread_mutex_lock(&mutex_send);
             thread_break = false;
             pthread_mutex_unlock(&mutex_send);
-            //   break;
+
 
         }
 
@@ -315,7 +344,7 @@ void *sending(void *socket) {
             pthread_mutex_lock(&mutex_send);
             thread_break = false;
             pthread_mutex_unlock(&mutex_send);
-            //   break;
+
 
         }
 
@@ -328,7 +357,7 @@ void *sending(void *socket) {
             pthread_mutex_lock(&mutex_send);
             thread_break = false;
             pthread_mutex_unlock(&mutex_send);
-            //   break;
+
         }
 
         return_value=pthread_create(&thr[5], &attr, send_task,socket);
@@ -340,7 +369,7 @@ void *sending(void *socket) {
             pthread_mutex_lock(&mutex_send);
             thread_break = false;
             pthread_mutex_unlock(&mutex_send);
-            //   break;
+
 
         }
 
@@ -348,7 +377,7 @@ void *sending(void *socket) {
         for(int i=0;i<6;i++){
             void *status=NULL;
 
-           if((return_value= pthread_join(thr[i], &status))){
+           if((return_value= pthread_join(thr[i], &status))){/*checking if threads had problems gathering data*/
 
                strerror_r(return_value,buffer,sizeof(buffer));
                fprintf(stderr,"error = %d (%s)\n",return_value,buffer);
@@ -364,7 +393,7 @@ void *sending(void *socket) {
             {
                 thread_ret[i]=(*(ssize_t *)status);
             }
-            if (thread_ret[i] < 0) {
+            if (thread_ret[i] < 0) {/*if a thread encountered a problem*/
                 pthread_mutex_lock(&mutex_send);
                 thread_break = false;
                 pthread_mutex_unlock(&mutex_send);
@@ -375,10 +404,12 @@ void *sending(void *socket) {
 
         if (thread_break == false) {
 
+            ret=-100;
             break;
+
         }
 
-        ret = test_recv((*(int *) socket));
+        ret = test_recv((*(int *) socket));/*telling the client that we sent all the data*/
         if (ret < 0) {
 
             printf("error receiving data\n %d", (int) ret);
@@ -399,13 +430,7 @@ void *sending(void *socket) {
     pthread_mutex_destroy(&mutex_send);
     pthread_mutex_destroy(&mutex_jiff);
 
-
-
-
    clean_interrupts();
 
-
-
-
-    pthread_exit(NULL);
+    pthread_exit(&ret);
 }

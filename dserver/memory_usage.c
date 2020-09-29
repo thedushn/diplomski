@@ -10,6 +10,12 @@
 #include <sys/socket.h>
 #include <stdlib.h>
 #include "testing.h"
+
+/*
+ * function send_memory(): send data about the memory usage to client
+ * input : socket to send data to
+ * output : void
+ * */
 void * send_memory(void *socket){
 
     int sockfd=(*(int*)socket);
@@ -57,6 +63,11 @@ void * send_memory(void *socket){
     pthread_exit(&ret);
 }
 
+/*
+ * function get_memory_usage(); parsing data from proc/meminfo
+ * input : pointer to structure of data about memory usage that we want to send to the client
+ * output : returns a non zero value if something didn't work correctly
+ * */
 int get_memory_usage(Memory_usage *memory_usage) {
 
 

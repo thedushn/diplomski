@@ -17,6 +17,11 @@ Interrupts *interrupts = NULL;
 Interrupts *interrupts_main = NULL;
 Interrupts *interrupts_send = NULL;
 
+/*
+ * function clean_interrupts(): checks if any of the pointers are NULL if not it free the memory allocated
+ * input    : none.
+ * output   : none.
+ * */
 void clean_interrupts(){
 
     if (interrupts != NULL) {
@@ -36,14 +41,18 @@ void clean_interrupts(){
     }
 
 };
+/*
+ * function send_interrupts(): send data about the the top 10 interrupts  to client
+ * input    : socket to send data to
+ * output   : returns a non zero value if something goes wrong
+ * */
 void * send_interrupts(void *socket){
 
-    int sockfd=(*(int*)socket);
-
-    ssize_t ret;
-    __int32_t h = 0;
-    int result;
-    Data data={0};
+    int         sockfd=(*(int*)socket);
+    ssize_t     ret;
+    __int32_t   h = 0;
+    int         result;
+    Data        data={0};
 
     pthread_mutex_lock(&mutex_send);
     while (thread_break == false) {
@@ -53,7 +62,7 @@ void * send_interrupts(void *socket){
     }
     pthread_mutex_unlock(&mutex_send);
 
-    result = interrupt_usage2(&interrupts, &h);
+    result = interrupt_usage(&interrupts, &h);
     if (result != 0) {
 
         clean_interrupts();
@@ -71,7 +80,8 @@ void * send_interrupts(void *socket){
 
             printf("calloc error %d \n", errno);
             free(interrupts_main);
-
+            ret = -100;
+            pthread_exit(&ret);
 
         }
         for (int r = 0; r < h; r++) {
@@ -82,21 +92,26 @@ void * send_interrupts(void *socket){
 
     }
 
-
-
-    sort2(interrupts, interrupts_main, &interrupts_send, h);
+    interrupts_send = calloc((size_t)  h, sizeof(Interrupts));
+    if(interrupts_send==NULL){
+        printf("calloc error %d \n", errno);
+        free(interrupts_send);
+        ret = -100;
+        pthread_exit(&ret);
+    }
+    compare_interrupts(interrupts, interrupts_main, interrupts_send, h);
     char *filename = "interrupts_server.data";
    interrupts_write(interrupts, interrupts_send, filename, h);
    // filename="interrupts_server_sent.data";
    // interrupts_write(interrupts_send, NULL, filename, h);
-    sort(interrupts_send, h);
 
+    qsort(interrupts_send, (size_t) h, sizeof(Interrupts), myCompare);
 
     for (int r = h - 10; r < h; r++) {
 
         memset(&data,0,sizeof(Data));
 
-        data.size=INTERRUTPS;
+        data.size=INTERRUPTS;
         data.unification.interrupts=interrupts_send[r];
         pthread_mutex_lock(&mutex_send);
         ret = send(sockfd, &data, sizeof(Data), 0);
@@ -113,8 +128,6 @@ void * send_interrupts(void *socket){
         }
 
 
-
-
     }
 
     free(interrupts);
@@ -127,7 +140,13 @@ void * send_interrupts(void *socket){
     pthread_exit(&ret);
 
 }
-int interrupt_usage2(Interrupts **array2, __int32_t *j) {
+/*
+ * function interrupt_usage(): gathers all the interrupts to a list and counts how many there are
+ * input    : double pointer to a list of structure of data about interrupts and a pointer to the number of interrupts.
+ * output   : returns a non zero value if something goes wrong
+ * */
+
+int interrupt_usage(Interrupts **array, __int32_t *num) {
 
 
     FILE *file;
@@ -139,12 +158,13 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
 
 
 
-    *array2=malloc(sizeof(Interrupts));
+    *array=malloc(sizeof(Interrupts));
 
-    if (*array2 == NULL) {
+    if (*array == NULL) {
 
         fprintf(stderr, "malloc failed\n");
-        return 1;
+        free(*array);
+        return -1;
 
     }
     if ((file = fopen(filename, "r")) == NULL || fgets(buffer, 1024, file) == NULL)
@@ -154,44 +174,45 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
     while (fgets(buffer, 1024, file) != NULL) {
 
 
-        memset(*array2, 0, sizeof(Interrupts));
+        memset(*array, 0, sizeof(Interrupts));
 
 
 
         sscanf(buffer, "%s %" SCNu64 " %" SCNu64 " %" SCNu64 " %" SCNu64 " %s %s %s %s",
-              (*array2)->irq,
-              &(*array2)->CPU0,
-               &(*array2)->CPU1,
-               &(*array2)->CPU2,
-               &(*array2)->CPU3,
-               (*array2)->ime1,
-               (*array2)->ime2,
-               (*array2)->ime3,
-               (*array2)->ime4);
+              (*array)->irq,
+              &(*array)->CPU0,
+               &(*array)->CPU1,
+               &(*array)->CPU2,
+               &(*array)->CPU3,
+               (*array)->ime1,
+               (*array)->ime2,
+               (*array)->ime3,
+               (*array)->ime4);
 
         char  *p;
-       if( (p=strchr((*array2)->irq,':'))){
+       if( (p=strchr((*array)->irq,':'))){ /*after every IRQ name there is a : */
            *p= '\0';
        }
 
 
 
-        (*j)++;
+        (*num)++;
             if(temp!=NULL){
-                *array2=temp;
+                *array=temp;
             }
-        temp = realloc(*array2, (*j + 1) * sizeof(Interrupts));
+        temp = realloc(*array, (*num + 1) * sizeof(Interrupts));
 
         if (temp != NULL) {
 
-            (*array2)= temp;
+            (*array)= temp;
 
-                (*array2)=(*array2)+(*j);
+                (*array)=(*array)+(*num);
 
 
-        } else {
+        }
+        else {
 
-            free(*array2);
+            free(*array);
             fclose(file);
             printf("reallocate error %d", errno);
             return 1;
@@ -203,14 +224,19 @@ int interrupt_usage2(Interrupts **array2, __int32_t *j) {
 
 
     fclose(file);
-    *array2 = temp;
+    *array = temp;
 
 
     return 0;
 }
 
-
-static int myCompare(const void *a, const void *b) {
+/*
+ * function myCompare(): compares all the elements of the the list and sorts them from lowest to highest,
+ * by adding their collective number of interrupts and comparing them to a others  collective number of interrupts
+ * input    : two void pointers that represent elements of the array
+ * output   : returns a non zero value if something goes wrong
+ * */
+int myCompare(const void *a, const void *b) {
 
     Interrupts interrupts1 = *(Interrupts *) a;
     Interrupts interrupts2 = *(Interrupts *) b;
@@ -227,60 +253,61 @@ static int myCompare(const void *a, const void *b) {
     return CPUa - CPUb;
 
 }
+/*
+ * function compare_interrupts(): checks for differences between the new list of interrupts and the old
+              and saves to differences to a new list, if the differences are less then 0
+              that means the that proc/interrupts file has restarted
+ * input    : Interrupts pointer pointing to Interrupts the new list;Interrupts pointer pointing to the old list ,
+ *            pointer pointing to the list that is going to get sent to the client;
+ * output   : none.
+ * */
+void compare_interrupts(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts *send_interrupts, int n) {
 
-void sort2(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts **send_interrupts, int n) {
 
-
-    (*send_interrupts) = calloc((size_t) n, sizeof(Interrupts));
-    Interrupts *temp_send=(*send_interrupts);
-    Interrupts *temp_old=old_interrupts;
-    Interrupts *temp_new=new_interrupts;
     for (int i = 0; i < n; i++) {
 
 
-        strcpy(temp_send->irq, temp_new->irq);
+        strcpy(send_interrupts->irq, new_interrupts->irq);
 
-        __int64_t temp = temp_new->CPU0 - temp_old->CPU0;
+        __int64_t temp = new_interrupts->CPU0 - old_interrupts->CPU0;
         if (temp < 0) {
             temp = 0;
         }
-        temp_send->CPU0 = (__uint64_t) temp;
+        send_interrupts->CPU0 = (__uint64_t) temp;
 
-        temp = temp_new->CPU1 - temp_old->CPU1;
+        temp = new_interrupts->CPU1 - old_interrupts->CPU1;
         if (temp < 0) {
             temp = 0;
         }
-        (*send_interrupts)->CPU1 = (__uint64_t) temp;
+        send_interrupts->CPU1 = (__uint64_t) temp;
 
 
-        temp = temp_new->CPU2 - temp_old->CPU2;
+        temp = new_interrupts->CPU2 - old_interrupts->CPU2;
         if (temp < 0) {
             temp = 0;
         }
-        temp_send->CPU2 = (__uint64_t) temp;
+        send_interrupts->CPU2 = (__uint64_t) temp;
 
-        temp =temp_new->CPU3 - temp_old->CPU3;
+        temp =new_interrupts->CPU3 - old_interrupts->CPU3;
         if (temp < 0) {
             temp = 0;
         }
-        temp_send->CPU3 = (__uint64_t) temp;
+        send_interrupts->CPU3 = (__uint64_t) temp;
 
 
-        strcpy(temp_send->ime1, temp_new->ime1);
-        strcpy(temp_send->ime2, temp_new->ime2);
-        strcpy(temp_send->ime3, temp_new->ime3);
-        strcpy(temp_send->ime4, temp_new->ime4);
-            *temp_old=*temp_new;
-        temp_send++;
-        temp_new++;
-        temp_old++;
+        strcpy(send_interrupts->ime1, new_interrupts->ime1);
+        strcpy(send_interrupts->ime2, new_interrupts->ime2);
+        strcpy(send_interrupts->ime3, new_interrupts->ime3);
+        strcpy(send_interrupts->ime4, new_interrupts->ime4);
+
+        *old_interrupts=*new_interrupts;
+
+        send_interrupts++;
+        new_interrupts++;
+        old_interrupts++;
     }
 
 
 
 }
 
-void sort(Interrupts *array, int n) {
-
-    qsort(array, (size_t) n, sizeof(Interrupts), myCompare);
-}

@@ -8,23 +8,25 @@
 #include "common.h"
 #include "pthread.h"
 
-pthread_mutex_t mutex_jiff;
-struct DataItem {
-    __uint64_t cpu_user;
-    __uint64_t cpu_system;
-    unsigned int pid;
-    char name[256];
+pthread_mutex_t mutex_jiff; /* mutex that protects the task list */
+
+struct DataItem {           /*structure that contains cpu stats about a task */
+    __uint64_t      cpu_user;
+    __uint64_t      cpu_system;
+    unsigned int    pid;
+    char            name[256];
     struct DataItem *next;
 };
+
 struct Cpu_data{
     __uint64_t cpu_user;
     __uint64_t cpu_system;
 };
 
 
-struct DataItem *task_details;
+struct DataItem *task_details; /*pointer to the link list of task cpu stats*/
 
-int hash_size;
+int hash_size;   /* number of tasks that are in the list */
 
 
 int cpu_percentage(Cpu_usage *array);

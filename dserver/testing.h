@@ -11,4 +11,5 @@ int interrupts_write(Interrupts *array, Interrupts *array2, char *filename, int 
 int memory_write(Memory_usage *memory_usage);
 int cpu_write(Cpu_usage cpu_usage);
 int task_write(Task *task);
+int netw_write(Network network);
 #endif //DSERVER_TESTING_H

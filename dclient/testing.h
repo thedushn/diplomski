@@ -11,5 +11,5 @@
 int interrupts_write(Interrupts *array);
 
 int cpu_write(Cpu_usage cpu_usage);
-
+int netw_write(char *transmited, char *received);
 #endif //DCLIENT_TESTING_H
