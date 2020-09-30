@@ -3,36 +3,39 @@
 #include "drawing.h"
 #include "testing_tree.h"
 #include "functions.h"
-#include "stdbool.h"
-
-static gboolean device_devices = TRUE;
-static gboolean device_type = TRUE;
-static gboolean device_directory = TRUE;
-static gboolean device_used = TRUE;
-static gboolean device_free = TRUE;
-static gboolean device_total = TRUE;
-static gboolean device_avail = TRUE;
 
 
-static gboolean process_task = TRUE;
-static gboolean process_user = TRUE;
-static gboolean process_prio = TRUE;
-static gboolean process_pid = TRUE;
-static gboolean process_ppid = TRUE;
-static gboolean process_cpu = TRUE;
-static gboolean process_vm_size = TRUE;
-static gboolean process_rss = TRUE;
-static gboolean process_state = TRUE;
-static gboolean process_duration = TRUE;
+static gboolean device_devices      = TRUE;
+static gboolean device_type         = TRUE;
+static gboolean device_directory    = TRUE;
+static gboolean device_used         = TRUE;
+static gboolean device_free         = TRUE;
+static gboolean device_total        = TRUE;
+static gboolean device_avail        = TRUE;
+
+
+static gboolean process_task        = TRUE;
+static gboolean process_user        = TRUE;
+static gboolean process_prio        = TRUE;
+static gboolean process_pid         = TRUE;
+static gboolean process_ppid        = TRUE;
+static gboolean process_cpu         = TRUE;
+static gboolean process_vm_size     = TRUE;
+static gboolean process_rss         = TRUE;
+static gboolean process_state       = TRUE;
+static gboolean process_duration    = TRUE;
 
 
 
 
 void process_window() {
     GtkWidget *box2;
-    if(proc_window!=NULL){
-        if(gtk_widget_get_visible(proc_window)){
-            gtk_widget_destroy(proc_window);
+    if(proc_window !=NULL){
+        if (proc_window->parent_instance.qdata != NULL) {
+            if (gtk_widget_get_visible(proc_window)) {
+                gtk_widget_destroy(proc_window);
+
+            }
         }
     }
 
@@ -126,11 +129,15 @@ void device_window() {
 
 
     GtkWidget *box2;
-    if (dev_window != NULL) {
-        if (gtk_widget_get_visible(dev_window)) {
-            gtk_widget_destroy(dev_window);
+    if(dev_window !=NULL){
+        if (dev_window->parent_instance.qdata != NULL) {
+            if (gtk_widget_get_visible(dev_window)) {
+                gtk_widget_destroy(dev_window);
+
+            }
         }
     }
+
 
 
     dev_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -257,6 +264,7 @@ void close_window(GtkWidget *widget) {
     gtk_widget_destroyed(widget,&widget);
 
 
+
 };
 
 
@@ -272,10 +280,10 @@ void graph_button_clicked(GtkWidget *widget) {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
-        window2 = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_title(GTK_WINDOW (window2), "GRAPH buttons");
+        window_graphs = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_title(GTK_WINDOW (window_graphs), "GRAPH buttons");
         box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-        gtk_container_add(GTK_CONTAINER(window2), box2);
+        gtk_container_add(GTK_CONTAINER(window_graphs), box2);
 
 
         for(int i=0;i<CPU_NUM;i++){
@@ -293,16 +301,16 @@ void graph_button_clicked(GtkWidget *widget) {
 
         }
 
-        gtk_window_set_position(GTK_WINDOW(window2), GTK_WIN_POS_CENTER);
+        gtk_window_set_position(GTK_WINDOW(window_graphs), GTK_WIN_POS_CENTER);
 
-        g_signal_connect(G_OBJECT(window2), "destroy",
+        g_signal_connect(G_OBJECT(window_graphs), "destroy",
                          G_CALLBACK(close_window_toggled), NULL);
 
-        gtk_widget_show_all(window2);
+        gtk_widget_show_all(window_graphs);
 
     } else {
 
-        gtk_widget_destroy(window2);
+        gtk_widget_destroy(window_graphs);
 
     }
 };
@@ -315,11 +323,11 @@ void show_all(GtkWidget *widget) {
 
         device_all = TRUE;
 
-        device_task_commands(1, proxy, proxy);
+        device_task_commands(proxy, proxy);
 
     } else {
         device_all = FALSE;
-        device_task_commands(1, proxy, proxy);
+        device_task_commands(proxy, proxy);
     }
 
 
@@ -588,7 +596,7 @@ void handle_task_menu(GtkWidget *widget, char *signal) {
 
             if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
                 gtk_tree_model_get(model, &iter, 1, &task_id, -1);
-                device_task_commands(0, signal, task_id);
+                device_task_commands(signal, task_id);
                 init_timeout();
             }
         }
@@ -607,7 +615,7 @@ void handle_task_prio(GtkWidget *widget, char *signal) {
 
             if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
                 gtk_tree_model_get(model, &iter, 1, &task_id, -1);
-                device_task_commands(0, signal, task_id);
+                device_task_commands(signal, task_id);
 
             }
         }

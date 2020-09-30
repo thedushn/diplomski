@@ -4,6 +4,7 @@
 
 #include "testing_tree.h"
 #include <errno.h>
+#include <asm/errno.h>
 
 
 #include "buttons.h"
@@ -837,14 +838,7 @@ gint compare_int_list_item(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter 
     return ret;
 }
 
-void test_strtol(int val) {
 
-    if ((errno == ERANGE && (val == LONG_MAX || val == LONG_MIN))
-        || (errno != 0 && val == 0)) {
-        perror("strtol");
-        gtk_main_quit();
-    }
-};
 
 gint compare_int_list_item_size(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter *iter2, gpointer column) {
     gchar *s1 = NULL;

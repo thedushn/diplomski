@@ -11,6 +11,7 @@
 #include <time.h>
 
 
+/*defines what type of data we are sending */
 #define CPU_USAGE   1
 #define NETWORK     2
 #define MEMORY      3
@@ -18,9 +19,10 @@
 #define DEVICES     5
 #define INTERRUPTS  6
 #define TEXT        7
-#define CPU_NUM     4
 
-struct __attribute__((__packed__))tm1 {
+#define CPU_NUM     4/*number of CPU*/
+
+struct __attribute__((__packed__))tm1 {/*structure that contains information about time used for tasks*/
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
     __uint32_t tm_min;            /* Minutes.	[0-59] */
     __uint32_t tm_hour;            /* Hours.	[0-23] */
@@ -32,7 +34,7 @@ struct __attribute__((__packed__))tm1 {
     __uint32_t tm_isdst;            /* DST.		[-1/0/1]*/
 
 };
-typedef struct _Task Task;
+typedef struct _Task Task;/*structure that contains information about a task*/
 
 struct __attribute__((__packed__)) _Task {
     bool       checked;
@@ -53,7 +55,7 @@ struct __attribute__((__packed__)) _Task {
 
 
 };
-typedef struct _Network Network;
+typedef struct _Network Network;/*structure that contains all the network usage*/
 struct __attribute__((__packed__))_Network {
 
     __uint64_t received_bytes;
@@ -61,7 +63,7 @@ struct __attribute__((__packed__))_Network {
 
 
 };
-typedef struct _Cpu_usage Cpu_usage;
+typedef struct _Cpu_usage Cpu_usage;/*structure that contains cpu usage of all the different cpus */
 struct __attribute__((__packed__)) _Cpu_usage {
 
 
@@ -73,7 +75,7 @@ struct __attribute__((__packed__)) _Cpu_usage {
 
 
 
-typedef struct _Memory_usage Memory_usage;
+typedef struct _Memory_usage Memory_usage;/*structure that contains information about memory usage */
 
 struct __attribute__((__packed__)) _Memory_usage {
 
@@ -86,7 +88,7 @@ struct __attribute__((__packed__)) _Memory_usage {
 
 
 };
-typedef struct _Interrupts Interrupts;
+typedef struct _Interrupts Interrupts;/*structure that contains the information of a interrupt type*/
 struct __attribute__((__packed__)) _Interrupts {
 
 
@@ -104,7 +106,7 @@ struct __attribute__((__packed__)) _Interrupts {
 };
 
 
-typedef struct _Devices Devices;
+typedef struct _Devices Devices;/*structure that contains the information of a device*/
 struct __attribute__((__packed__))_Devices {
 
 
@@ -121,7 +123,7 @@ struct __attribute__((__packed__))_Devices {
 
 
 
-typedef struct _Device_Collection D_Collection;
+typedef struct _Device_Collection D_Collection;/*doubly linked list for devices*/
 struct _Device_Collection{
 
     Devices        devices;
@@ -129,7 +131,7 @@ struct _Device_Collection{
     D_Collection * prev;
 };
 
-typedef struct _Task_Collection T_Collection;
+typedef struct _Task_Collection T_Collection;/*doubly linked list for tasks*/
 struct _Task_Collection{
 
     Task           task;
@@ -137,7 +139,7 @@ struct _Task_Collection{
     T_Collection * prev;
 };
 
-typedef union _Unification Unification ;
+typedef union _Unification Unification ; /*union data structure that uses the same memory space for all elements*/
 
 union _Unification {
 
@@ -153,7 +155,7 @@ union _Unification {
 
 };
 
-typedef struct _Data Data;
+typedef struct _Data Data;/*the structure we use to send data*/
 struct __attribute__((__packed__)) _Data{
 
     int         size;

@@ -46,7 +46,7 @@ void *send_cpu(void *socket) {
     Data      data;
 
     pthread_mutex_lock(&mutex_send);
-    while (thread_break == false) {
+    while (thread_break == false) { /*if other threads have failed close this thread before it allocates any memory*/
         ret = -100;
         pthread_mutex_unlock(&mutex_send);
         pthread_exit(&ret);
@@ -72,14 +72,14 @@ void *send_cpu(void *socket) {
     pthread_mutex_unlock(&mutex_send);
 
     if (ret < 0) {
-        printf("Error sending data!\n\t");
+        printf("Error sending data\n return = %d\n", (int) ret);
 
 
         pthread_exit(&ret);
 
     }
     if (ret == 0) {
-
+        printf("Error sending data\n return = %d\n", (int) ret);
         printf("socket closed\n");
 
 
@@ -233,18 +233,18 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
     struct DataItem     *temp;
     float  cpu_user   = 0;
     float  cpu_system = 0;
-    bool   ima;
+    bool   exists;
 
     pthread_mutex_lock(&mutex_jiff);
-    ima = false;
+    exists = false;
     new.cpu_system=jiffies_system;
     new.cpu_user=jiffies_user;
 
 
-    old= search(&ima, new, task);
+    old= search(&exists, new, task);
 
 
-    if (ima == false) {
+    if (exists == false) {/*if the task doesnt exist in the list*/
 
         temp=(struct DataItem *) calloc(1, sizeof(struct DataItem));
 
@@ -276,7 +276,7 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
 
 
 
-    while(test==false)
+    while(test==false) /*if the cpu usage thread didn't acquire data about jiffies */
     pthread_cond_wait(&cpu_cond,&mutex_jiff);
 
     if (jiffies_total_delta[CPU_NUM] > 0) {

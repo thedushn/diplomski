@@ -370,8 +370,8 @@ draw_graph(cairo_t *cr, int r, int i, double width, double height, double font_s
 
 
     int g = (int) time_step;
-    if (bjorg < time_step) {
-        g = bjorg;
+    if (list_num_size < time_step) {
+        g = list_num_size;
     }
 
 
@@ -434,8 +434,8 @@ draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, doubl
 
 
     __int32_t g = (__int32_t) time_step;
-    if (bjorg < time_step) {
-        g = bjorg;
+    if (list_num_size < time_step) {
+        g = list_num_size;
     }
 
 
@@ -685,8 +685,8 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
     cairo_stroke(cr);
 
     int g = (int) time_step;
-    if (bjorg < time_step) {
-        g = bjorg;
+    if (list_num_size < time_step) {
+        g = list_num_size;
     }
     for (int j = 0; j <= 1; j++) {
         temp = array;

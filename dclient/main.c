@@ -7,15 +7,20 @@
 #include "functions.h"
 #include "testing.h"
 #include <semaphore.h>
+#include <asm/errno.h>
 
 
-GtkWidget *window;
+GtkWidget *window; /*main window*/
 
-sem_t semt;
+sem_t semt; /*semaphore for letting the init_timeout function finish before we change the time interval */
 
-bool flag_timeout=true;
+bool flag_timeout=true;/*flag for letting the init_timeout function know what to do */
 
-
+/*
+ * function inc_refresh(): increments the time that we want the client to request data from server
+ * input  : none.
+ * output : none.
+ * */
 
 void inc_refresh() {
 
@@ -31,6 +36,11 @@ void inc_refresh() {
 
 }
 
+/*
+ * function dec_refresh(): decrease the time that we want the client to request data from server
+ * input  : none.
+ * output : none.
+ * */
 void dec_refresh() {
 
 
@@ -49,7 +59,11 @@ void dec_refresh() {
 
 
 
-
+/*
+ * function timeout_refresh(): reruns the function init_timeout and tells the previous version to stop
+ * input  : none.
+ * output : none.
+ * */
 void timeout_refresh() {
 
 
@@ -70,7 +84,11 @@ void timeout_refresh() {
 
 
 
-
+/*
+ * function freeing_memory(): frees different types of memory
+ * input  : void pointer to an array, pointer to the size of the array and the type of the array.
+ * output : none.
+ * */
 
 
 void freeing_memory(void *array, __int32_t *array_size, int type){
@@ -166,36 +184,46 @@ void freeing_memory(void *array, __int32_t *array_size, int type){
     }
 
     }
+/*
+ * function init_timeout(): sends a request to server and then waits for data,after it got all the data it inputs it in
+ * the right places and checks if the list_num_size is bigger then the LIST_SIZE if that is the case it removes the
+ * oldest element of the list and adds the newest to the begging.After the data has been properly handled it displays it
+ * in the lists and draws the new data on the graph.We check if the function is running in an infinite loop,if not we
+ * set it to run in regular intervals that we have set.
+ * input  : none
+ * output : returns TRUE if we want to continue or FALSE if we want to stop;
+ * */
 
 gboolean init_timeout() {
 
-    int ret;
+    int             ret;
+    __int32_t       dev_num      =  0;//in the begging its zero
+    __int32_t       task_num     =  0;
+    T_Collection    *tasks_new   =  NULL;
+    D_Collection    *devices_new =  NULL;
 
-    __int32_t  dev_num = 0;//in the begging its zero
-    __int32_t  task_num = 0;
 
+    Cpu_usage       cpu_usage    =  {0};
+    Network         network      =  {0};
+    Memory_usage    memory_usage =  {0};
 
-    Cpu_usage cpu_usage = {0};
-    Network network = {0};
-    Memory_usage memory_usage = {0};
-    T_Collection *tasks_new = NULL;
-    D_Collection *devices_new = NULL;
-
-    Cpu_list *temp_collection;
-    NetMem_list *temp_net;
-    NetMem_list *temp_mem;
+    Cpu_list        *temp_collection;
+    NetMem_list     *temp_net;
+    NetMem_list     *temp_mem;
 
 
     sem_wait(&semt);
 
     ret=(int) test_recv(newsockfd);
-    if (ret != 0) {
+    if (ret <= 0) {
 
         if(refresh>0)
             g_source_remove(refresh);
 
         if (gtk_main_level() > 0)
             gtk_main_quit();
+
+        sem_post(&semt);
         return FALSE;
     }
 
@@ -204,18 +232,18 @@ gboolean init_timeout() {
 
     if (ret != 0) {
 
-        printf("freeing memory\n");
 
         freeing_memory(devices_new,&dev_num,DEVICES);
         freeing_memory(tasks_new,&task_num,TASK);
-
-
 
         if(refresh>0)
             g_source_remove(refresh);
 
         if (gtk_main_level() > 0)
             gtk_main_quit();
+
+        sem_post(&semt);
+
         return FALSE;
     }
 
@@ -229,26 +257,28 @@ gboolean init_timeout() {
 
         if(refresh>0)
             g_source_remove(refresh);
+
         if (gtk_main_level() > 0)
             gtk_main_quit();
 
+        sem_post(&semt);
         return FALSE;
 
     }
 
 
-
     if(( task_check(tasks_new, task_num))!=0){
-
 
         freeing_memory(devices_new,&dev_num,DEVICES);
         freeing_memory(tasks_new,&task_num,TASK);
 
-
         if(refresh>0)
             g_source_remove(refresh);
+
         if (gtk_main_level() > 0)
             gtk_main_quit();
+
+        sem_post(&semt);
 
         return FALSE;
 
@@ -266,9 +296,12 @@ gboolean init_timeout() {
 
 
         if(refresh>0)
-        g_source_remove(refresh);
+            g_source_remove(refresh);
+
         if (gtk_main_level() > 0)
             gtk_main_quit();
+
+        sem_post(&semt);
 
        return FALSE;
     }
@@ -295,9 +328,11 @@ gboolean init_timeout() {
 
         if(refresh>0)
             g_source_remove(refresh);
+
         if (gtk_main_level() > 0)
             gtk_main_quit();
 
+        sem_post(&semt);
         return FALSE;
     }
 
@@ -305,7 +340,7 @@ gboolean init_timeout() {
     //point it to old first node
     temp_mem->next = mem_list;
     //point first to new first node
-    mem_list = temp_mem;
+    mem_list       = temp_mem;
 
 
     temp_net = (NetMem_list *) calloc(1, sizeof(NetMem_list));
@@ -321,9 +356,11 @@ gboolean init_timeout() {
 
         if(refresh>0)
             g_source_remove(refresh);
+
         if (gtk_main_level() > 0)
             gtk_main_quit();
 
+        sem_post(&semt);
         return FALSE;
     }
 
@@ -331,35 +368,33 @@ gboolean init_timeout() {
     //point it to old first node
     temp_net->next = net_list;
     //point first to new first node
-    net_list = temp_net;
+    net_list       = temp_net;
 
 
 
-    if (bjorg < LIST_SIZE) {
-        bjorg++;
+    if (list_num_size < LIST_SIZE) {
+        list_num_size++;
     }
 
 
 
-    if (bjorg >= LIST_SIZE) {
+    if (list_num_size >= LIST_SIZE) {
 
         temp_collection = cpu_list;
-        temp_mem=mem_list;
-        temp_net=net_list;
+        temp_mem        = mem_list;
+        temp_net        = net_list;
 
         for (int g = 0; g < LIST_SIZE; g++) {
+
             temp_collection = temp_collection->next;
-            temp_mem= temp_mem->next;
-            temp_net= temp_net->next;
+            temp_mem        = temp_mem->next;
+            temp_net        = temp_net->next;
 
         }
 
         free(temp_collection);
         free(temp_net);
         free(temp_mem);
-
-
-
 
     }
 
@@ -391,6 +426,7 @@ gboolean init_timeout() {
     }
     sem_post(&semt);
     if(flag_timeout==false){
+
         flag_timeout=true;
         return FALSE;
     }
@@ -399,51 +435,73 @@ gboolean init_timeout() {
 }
 
 void destroy_window(void) {
-    if (gtk_main_level() > 0)
+
+    sem_wait(&semt);
+    if (gtk_main_level() > 0){
         gtk_main_quit();
+    }
+    sem_post(&semt);
 }
 
+void test_strtol(int val) {
+
+    sem_wait(&semt);
+    if ((errno == ERANGE && (val == LONG_MAX || val == LONG_MIN))
+        || (errno != 0 && val == 0)) {
+        perror("strtol");
+
+        if (gtk_main_level() > 0){
+            gtk_main_quit();
+        }
+
+    }
+         sem_post(&semt);
+};
 
 
-
-
+/*
+ * function main(): creates a TPC socket and tries to connect to the server,if that was successful
+ * it initializes the window and starts to request for data from the server;
+ *
+ * input  : port number and IP address
+ * output : returns a non zero value if something goes wrong
+ * */
 int main(int argc, char *argv[]) {
 
-        bjorg=0;
-        t = 1000;
-        refresh=0;
-        time_step=0;
-    show_before=FALSE;
-    device_all=false;
+        list_num_size   = 0;
+        t               = 1000; /*what delay we want when asking for data*/
+        refresh         = 0;
+        time_step       = 0;
+        show_before     = FALSE;
+        device_all      = false;
 
 
     if (argc < 3) {
 
         printf("port not provided \n");
         printf("ip_address not provided \n");
-        exit(1);
+        return -1;
     }
 
     if (argv[1] == NULL) {
         printf("argv failed %s", argv[1]);
-        exit(1);
+        return -1;
 
     }
     if (argv[2] == NULL) {
         printf("argv failed %s", argv[2]);
-        exit(1);
+        return -1;
 
     }
     newsockfd = connection(argv[1], argv[2]);
     if (newsockfd < 0) {
         close(newsockfd);
-        exit(1);
+        return -1;
     }
     newsockfd1 = connection(argv[1], argv[2]);
     if (newsockfd1 < 0) {
-        close(newsockfd);
-        close(newsockfd1);
-        exit(1);
+
+        return -1;
     }
 
 
@@ -452,7 +510,8 @@ int main(int argc, char *argv[]) {
     cpu_status=calloc((size_t)CPU_NUM,sizeof(bool));
     if(cpu_status==NULL){
         free(cpu_status);
-
+        close(newsockfd);
+        close(newsockfd1);
         printf("calloc error %d \n", errno);
         return -1;
     }
@@ -464,13 +523,15 @@ int main(int argc, char *argv[]) {
     cpu_buttons=calloc((size_t)CPU_NUM,sizeof(GtkWidget));
     if(cpu_buttons==NULL){
 
+        free(cpu_status);
         free(cpu_buttons);
-
+        close(newsockfd);
+        close(newsockfd1);
         printf("calloc error %d \n", errno);
         return -1;
     }
 
-    gtk_disable_setlocale();
+    gtk_disable_setlocale(); /*sscanf and sprintf dont work if this isn't used */
 
     gtk_init(&argc, &argv);
 
@@ -480,14 +541,13 @@ int main(int argc, char *argv[]) {
 
         free(interrupts);
         free(cpu_status);
+        free(cpu_buttons);
+        close(newsockfd);
+        close(newsockfd1);
 
         printf("calloc error %d \n", errno);
         return -1;
     }
-
-
-
-
 
 
 
@@ -507,7 +567,7 @@ int main(int argc, char *argv[]) {
 
 
 
-    window = main_window(device_swindow, process_swindow);
+    window = main_window(device_swindow, process_swindow);/*creating the main window*/
 
     g_signal_connect(button_inc, "clicked", G_CALLBACK(inc_refresh), NULL);
     g_signal_connect(button_dec, "clicked", G_CALLBACK(dec_refresh), NULL);
@@ -528,7 +588,7 @@ int main(int argc, char *argv[]) {
                               NULL);
 
 
-
+    /*creating graphs by sending the draw signal to the function we create a cairo_t structure*/
     g_signal_connect_data((GObject *) (graph1),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
     g_signal_connect_data((GObject *) (graph2),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
     g_signal_connect_data((GObject *) (graph3),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
@@ -547,21 +607,21 @@ int main(int argc, char *argv[]) {
 
     sem_init(&semt,0,1);
 
-    init_timeout();
+    init_timeout();  /*starting the infinite loop for asking for data and drawing it*/
 
 
     gtk_main();
 
-    gtk_tree_store_clear(list_store);
-    gtk_tree_store_clear(list_store1);
+    gtk_tree_store_clear(list_store); /*freeing memory allocated for task list*/
+    gtk_tree_store_clear(list_store1);/*freeing memory allocated for device list*/
 
 
     free(interrupts);
-    freeing_memory(cpu_list,&bjorg,CPU_USAGE);
+    freeing_memory(cpu_list,&list_num_size,CPU_USAGE);
     freeing_memory(devices_old,&dev_num_old,DEVICES);
     freeing_memory(tasks_old,&task_num_old,TASK);
-    freeing_memory(net_list,&bjorg,NETWORK);
-    freeing_memory(mem_list,&bjorg,MEMORY);
+    freeing_memory(net_list,&list_num_size,NETWORK);
+    freeing_memory(mem_list,&list_num_size,MEMORY);
 
     free(cpu_status);
     free(cpu_buttons);

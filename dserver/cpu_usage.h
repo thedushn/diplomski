@@ -18,7 +18,7 @@ struct DataItem {           /*structure that contains cpu stats about a task */
     struct DataItem *next;
 };
 
-struct Cpu_data{
+struct Cpu_data{ /*structure used for storing a tasks cpu stats*/
     __uint64_t cpu_user;
     __uint64_t cpu_system;
 };

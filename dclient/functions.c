@@ -12,17 +12,14 @@
 #include"sys/socket.h"
 #include "main_header.h"
 
-void device_task_commands(int show, char *signal, char *task_id) {
+void device_task_commands(char *signal, char *task_id) {
 
     int ret;
     char buffer[1500];
 
     memset(buffer, 0, sizeof(buffer));
 
-    if (show == 1) {
 
-        show_before = !show_before;
-    }
 
 
     if (signal != NULL && task_id != NULL) {

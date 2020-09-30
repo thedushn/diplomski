@@ -15,8 +15,6 @@ testing_tree.h
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
 functions.h
 /home/dushn/Diplomski/diplomski/dclient/functions.h
-stdbool.h
-/home/dushn/Diplomski/diplomski/dclient/stdbool.h
 
 /home/dushn/Diplomski/diplomski/dclient/buttons.h
 gtk/gtk.h
@@ -97,6 +95,8 @@ testing.h
 /home/dushn/Diplomski/diplomski/dclient/testing.h
 semaphore.h
 -
+asm/errno.h
+-
 
 /home/dushn/Diplomski/diplomski/dclient/main_header.h
 gtk/gtk.h
@@ -124,6 +124,8 @@ common.h
 testing_tree.h
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
 errno.h
+-
+asm/errno.h
 -
 buttons.h
 /home/dushn/Diplomski/diplomski/dclient/buttons.h

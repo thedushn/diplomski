@@ -26,7 +26,7 @@ void * send_memory(void *socket){
     Data data={0};
 
     pthread_mutex_lock(&mutex_send);
-    while (thread_break == false) {
+    while (thread_break == false) {/*if other threads have failed close this thread before it allocates any memory*/
         ret = -100;
         pthread_mutex_unlock(&mutex_send);
         pthread_exit(&ret);
@@ -48,12 +48,12 @@ void * send_memory(void *socket){
     pthread_mutex_unlock(&mutex_send);
 
     if (ret < 0) {
-        printf("Error sending data!\n\t");
+        printf("Error sending data\n return = %d\n", (int) ret);
         pthread_exit(&ret);
 
     }
     if (ret == 0) {
-
+        printf("Error sending data\n return = %d\n", (int) ret);
         printf("socket closed\n");
         pthread_exit(&ret);
 

@@ -8,9 +8,9 @@
 
 #include "common.h"
 #include "pthread.h"
-typedef struct _Thread_task Thread_task;
+typedef struct _Thread_task Thread_task; /*structure of a linked list used to gather data about tasks and results of return values*/
 
-struct _Thread_task{ /*structure of a linked list used to gather data about tasks and results of return values*/
+struct _Thread_task{
 
     __uint32_t pid;
     int result;

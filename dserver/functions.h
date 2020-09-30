@@ -10,9 +10,9 @@
 #include "common.h"
 #include "pthread.h"
 
-bool thread_break;/*bool that if set to false tells other threads to exit before they allocate memory or open files*/
+bool            thread_break;/*bool that if set to false tells other threads to exit before they allocate memory or open files*/
 pthread_mutex_t mutex_send;/*mutex that protects the socket */
-pthread_cond_t cpu_cond; /*condtion_variable that tells if the jiffies_total_delta variable can be read*/
+pthread_cond_t  cpu_cond; /*condtion_variable that tells if the jiffies_total_delta variable can be read*/
 typedef struct _Commands Commands; /* structure used to tell thread what to do*/
 struct __attribute__((__packed__))_Commands {
 

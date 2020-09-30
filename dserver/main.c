@@ -60,7 +60,7 @@ void *get_in_addr(struct sockaddr *sa) {
  * information about when the kernel started working and creates threads to send information to the client and receive
  * commands from him, after the client wants to stop getting information about the servers host, the server closes the
  * sockets and free the allocated memory from the gathering of the data
- * input  : pointer to Structure describing an Internet socket address
+ * input  : port number
  * output : returns a non zero value if something goes wrong
  * */
 
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
     struct sigaction sa;
     int yes = 1;
     char s[INET6_ADDRSTRLEN];
-    int rv, ret;
+    int  ret;
     char buffer[BUFFER_SIZE];
 
 
@@ -112,8 +112,8 @@ int main(int argc, char *argv[]) {
     hints.ai_flags = AI_PASSIVE; // use my IP
 
 
-    if ((rv = getaddrinfo(NULL, argv[1], &hints, &servinfo)) != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+    if ((ret = getaddrinfo(NULL, argv[1], &hints, &servinfo)) != 0) {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(ret));
         freeaddrinfo(servinfo);
         return 1;
     }
@@ -167,7 +167,8 @@ int main(int argc, char *argv[]) {
     {  // main accept() loop
         sin_size = sizeof their_addr;
         new_fd = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size);
-        if (sockfd == -1) {
+        if (new_fd == -1) {
+            close(sockfd);
             perror("accept");
             return -1;
         }
@@ -183,6 +184,8 @@ int main(int argc, char *argv[]) {
         sin_size = sizeof their_addr;
         new_fd1 = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size);
         if (new_fd1 == -1) {
+            close(new_fd);
+            close(sockfd);
             perror("accept");
             return -1;
         }
@@ -194,7 +197,7 @@ int main(int argc, char *argv[]) {
               s, sizeof s);
 
 
-    fp = fopen("/proc/uptime", "r");
+    fp = fopen("/proc/uptime", "r"); /*information on when the kernel started working*/
     if (fp != NULL) {
 
         while (fgets(buffer, BUFFER_SIZE, fp) != NULL) {
@@ -227,14 +230,14 @@ int main(int argc, char *argv[]) {
     t0 = uptime1 % 3600;
     min0 = t0 / 60;
     sec0 = t0 % 60;
-    stop_time.tm_hour = (__uint32_t) hr0; //when did the computer start running
+    stop_time.tm_hour = (__uint32_t) hr0; /*when did the computer start running*/
     stop_time.tm_min = (__uint32_t) min0;
     stop_time.tm_sec = (__uint32_t) sec0;
 
     differenceBetweenTimePeriod(tm2, stop_time, &begin_time);// time when linux started
 
 
-    ret = pthread_create(&thr1, NULL, sending, &new_fd);
+    ret = pthread_create(&thr1, NULL, sending, &new_fd);/*creating thread for sending data to client*/
     if (ret != 0) {
 
         printf("ERROR: Return Code from pthread_create() is %d\n", ret);
@@ -245,7 +248,7 @@ int main(int argc, char *argv[]) {
 
     }
 
-    ret = pthread_create(&thrd2, NULL, accept_command, &new_fd1);
+    ret = pthread_create(&thrd2, NULL, accept_command, &new_fd1);/*creating thread for receiving commands from client*/
 
     if (ret != 0) {
 
@@ -277,10 +280,6 @@ int main(int argc, char *argv[]) {
         thread_break = false;
         pthread_mutex_unlock(&mutex_send);
     }
-
-
-
-
 
 
 

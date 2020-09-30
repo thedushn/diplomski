@@ -60,7 +60,7 @@ gint compare_int_list_item(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter 
 
 void create_list_store_dev(void);
 
-void test_strtol(int val);
+
 
 enum {
     COL_TASK = 0,

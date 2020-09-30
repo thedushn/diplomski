@@ -13,7 +13,7 @@ ssize_t test_recv(int socket);
 
 ssize_t test_send(int socket);
 
-void device_task_commands(int show, char *signal, char *task_id);
+void device_task_commands(char *signal, char *task_id);
 
 int
 data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *memory_usage, T_Collection **task_array,

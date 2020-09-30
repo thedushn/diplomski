@@ -31,7 +31,7 @@ void * send_devices(void *socket){
 
     Data data={0};
     pthread_mutex_lock(&mutex_send);
-    while (thread_break == false) { //check if other threads had problems
+    while (thread_break == false) { /*if other threads have failed close this thread before it allocates any memory*/
         ret = -100;
         pthread_mutex_unlock(&mutex_send);
         pthread_exit(&ret);
@@ -66,7 +66,8 @@ void * send_devices(void *socket){
 
 
         if (ret < 0) { /*if the socket broke SIGPIPE error free allocated memory*/
-            printf("Error sending data!\n\t");
+
+            printf("Error sending data\n return = %d\n", (int) ret);
             for(int k=0;k<device_num;k++){
 
                 temp_dev = devices_c;
@@ -78,7 +79,7 @@ void * send_devices(void *socket){
 
         }
         if (ret == 0) {
-
+            printf("Error sending data\n return = %d\n", (int) ret);
             printf("socket closed\n");
             for(int k=0;k<device_num;k++){
 
@@ -211,7 +212,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
 
                     }
-
+                    /*adding the the device to the list*/
                     (*dev_num)++;
                     temp_dev->devices=proxy;
                     temp_dev->next=*array;

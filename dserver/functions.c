@@ -101,12 +101,12 @@ ssize_t test_recv(int socket) {
 
     if (ret < 0) {
 
-        printf("error sending data\n %d", (int) ret);
+        printf("Error sending data\n return = %d\n", (int) ret);
         return ret;
     }
     if (ret == 0) {
 
-        printf("error sending data\n %d", (int) ret);
+        printf("Error sending data\n return = %d\n", (int) ret);
         printf("socket closed\n");
         return ret;
     }
@@ -148,7 +148,7 @@ void send_prio_to_task(char *task_id, char *signal) {
 
 
     char str[4];
-
+    /*these are some of the commands that need to be implemented if we want to change a tasks priority*/
     sprintf(str, "%d", prio);
     char command[64] = "renice -n ";
     strncat(command, str, sizeof command);
@@ -205,6 +205,7 @@ void *accept_command(void *socket) {
         ret = recv(sockfd, &buffer, sizeof(buffer), 0);
         if (ret < 0) {
             printf("error condition didn't get received\n");
+            printf("Error receiving data\n return = %d\n", (int) ret);
             pthread_exit(&ret);
         }
         if (ret == 0) {
@@ -216,7 +217,7 @@ void *accept_command(void *socket) {
 
 
         sscanf(buffer, "%s %s %s",text,commands.command,commands.task_id);
-        if(strcmp(text,"COMMAND")!=0){
+        if(strcmp(text,"COMMAND")!=0){ /*if its a command to implement on a  task*/
 
            g=atoi(text);
            if(g==1){
@@ -238,7 +239,7 @@ void *accept_command(void *socket) {
             }
         }
 
-        else {
+        else {/*if its a textual command not involving tasks*/
             text1=strchr(buffer,' ');
                 strcat(text1, " &");
 
@@ -412,11 +413,12 @@ void *sending(void *socket) {
         ret = test_recv((*(int *) socket));/*telling the client that we sent all the data*/
         if (ret < 0) {
 
-            printf("error receiving data\n %d", (int) ret);
+            printf("Error sending data\n return = %d\n", (int) ret);
             break;
         }
         if (ret == 0) {
 
+            printf("Error sending data\n return = %d\n", (int) ret);
             printf("socket closed\n");
             break;
         }
@@ -430,7 +432,7 @@ void *sending(void *socket) {
     pthread_mutex_destroy(&mutex_send);
     pthread_mutex_destroy(&mutex_jiff);
 
-   clean_interrupts();
+    clean_interrupts();
 
     pthread_exit(&ret);
 }

@@ -18,7 +18,7 @@ Interrupts *interrupts_main = NULL;
 Interrupts *interrupts_send = NULL;
 
 /*
- * function clean_interrupts(): checks if any of the pointers are NULL if not it free the memory allocated
+ * function clean_interrupts(): checks if any of the pointers are NULL if not it frees the allocated memory
  * input    : none.
  * output   : none.
  * */
@@ -55,7 +55,7 @@ void * send_interrupts(void *socket){
     Data        data={0};
 
     pthread_mutex_lock(&mutex_send);
-    while (thread_break == false) {
+    while (thread_break == false) {/*if other threads have failed close this thread before it allocates any memory*/
         ret = -100;
         pthread_mutex_unlock(&mutex_send);
         pthread_exit(&ret);
@@ -100,14 +100,14 @@ void * send_interrupts(void *socket){
         pthread_exit(&ret);
     }
     compare_interrupts(interrupts, interrupts_main, interrupts_send, h);
-    char *filename = "interrupts_server.data";
-   interrupts_write(interrupts, interrupts_send, filename, h);
-   // filename="interrupts_server_sent.data";
-   // interrupts_write(interrupts_send, NULL, filename, h);
+
+  /*  char *filename = "interrupts_server.data";
+   interrupts_write(interrupts, interrupts_send, filename, h);*/
+
 
     qsort(interrupts_send, (size_t) h, sizeof(Interrupts), myCompare);
 
-    for (int r = h - 10; r < h; r++) {
+    for (int r = h - 10; r < h; r++) { /*sending only the top 10 interrupts */
 
         memset(&data,0,sizeof(Data));
 
@@ -117,11 +117,11 @@ void * send_interrupts(void *socket){
         ret = send(sockfd, &data, sizeof(Data), 0);
         pthread_mutex_unlock(&mutex_send);
         if (ret < 0) {
-            printf("Error sending data!\n\t");
+            printf("Error sending data\n return = %d\n", (int) ret);
             pthread_exit(&ret);
         }
         if (ret == 0) {
-
+            printf("Error sending data\n return = %d\n", (int) ret);
             printf("socket closed\n");
             ret = -1;
             pthread_exit(&ret);
@@ -200,13 +200,13 @@ int interrupt_usage(Interrupts **array, __int32_t *num) {
             if(temp!=NULL){
                 *array=temp;
             }
-        temp = realloc(*array, (*num + 1) * sizeof(Interrupts));
+        temp = realloc(*array, (*num + 1) * sizeof(Interrupts));/*adding another interrupts sturcture to the array*/
 
         if (temp != NULL) {
 
             (*array)= temp;
 
-                (*array)=(*array)+(*num);
+                (*array)=(*array)+(*num); /*moving to the newly allocated element of the array*/
 
 
         }
