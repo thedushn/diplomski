@@ -22,6 +22,7 @@ GtkWidget *treeview1;
 
 GtkTreeStore *list_store;
 GtkTreeStore *list_store1;
+GtkWidget *test_widget;
 
 int task_check(T_Collection *tasks_new, int task_num);
 

@@ -138,74 +138,77 @@ void device_window() {
         }
     }
 
+        dev_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+        gtk_window_set_default_size(GTK_WINDOW(dev_window), 200, 200);
+        button_device_devices = gtk_check_button_new_with_label("Devices");
+        button_device_directory = gtk_check_button_new_with_label("Directories");
+        button_device_total = gtk_check_button_new_with_label("Total size");
+        button_device_avail = gtk_check_button_new_with_label("available");
+        button_device_type = gtk_check_button_new_with_label("type");
+        button_device_free = gtk_check_button_new_with_label("free");
+        button_device_used = gtk_check_button_new_with_label("used");
+        button_device_all = gtk_check_button_new_with_label("Show_all");
+
+        if (device_devices == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_devices), TRUE);
+        }
+        if (device_all == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_all), TRUE);
+        }
+        if (device_directory == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_directory), TRUE);
+        }
+        if (device_used == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_used), TRUE);
+        }
+        if (device_free == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_free), TRUE);
+        }
+
+        if (device_total == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_total), TRUE);
+        }
+        if (device_avail == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_avail), TRUE);
+        }
+        if (device_type == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_type), TRUE);
+        }
 
 
-    dev_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size(GTK_WINDOW(dev_window), 200, 200);
-    button_device_devices = gtk_check_button_new_with_label("Devices");
-    button_device_directory = gtk_check_button_new_with_label("Directories");
-    button_device_total = gtk_check_button_new_with_label("Total size");
-    button_device_avail = gtk_check_button_new_with_label("available");
-    button_device_type = gtk_check_button_new_with_label("type");
-    button_device_free = gtk_check_button_new_with_label("free");
-    button_device_used = gtk_check_button_new_with_label("used");
-    button_device_all = gtk_check_button_new_with_label("Show_all");
+        gtk_window_set_title(GTK_WINDOW (dev_window), "Device window");
 
-    if (device_devices == TRUE) {
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_devices), TRUE);
-    }
-    if (device_all == TRUE) {
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_all), TRUE);
-    }
-    if (device_directory == TRUE) {
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_directory), TRUE);
-    }
-    if (device_used == TRUE) {
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_used), TRUE);
-    }
-    if (device_free == TRUE) {
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_free), TRUE);
-    }
-
-    if (device_total == TRUE) {
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_total), TRUE);
-    }
-    if (device_avail == TRUE) {
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_avail), TRUE);
-    }
-    if (device_type == TRUE) {
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_type), TRUE);
-    }
+        box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+        gtk_container_add(GTK_CONTAINER(dev_window), box2);
+        gtk_box_pack_start(GTK_BOX(box2), button_device_all, 1, 1, 0);
+        gtk_box_pack_start(GTK_BOX(box2), button_device_devices, 1, 1, 0);
+        gtk_box_pack_start(GTK_BOX(box2), button_device_directory, 1, 1, 0);
+        gtk_box_pack_start(GTK_BOX(box2), button_device_avail, 1, 1, 0);
+        gtk_box_pack_start(GTK_BOX(box2), button_device_total, 1, 1, 0);
+        gtk_box_pack_start(GTK_BOX(box2), button_device_free, 1, 1, 0);
+        gtk_box_pack_start(GTK_BOX(box2), button_device_used, 1, 1, 0);
+        gtk_box_pack_start(GTK_BOX(box2), button_device_type, 1, 1, 0);
+        g_signal_connect(button_device_devices, "toggled", G_CALLBACK(device_clicked), NULL);
+        g_signal_connect(button_device_all, "toggled", G_CALLBACK(show_all), NULL);
+        g_signal_connect(button_device_directory, "toggled", G_CALLBACK(device_clicked), NULL);
+        g_signal_connect(button_device_avail, "toggled", G_CALLBACK(device_clicked), NULL);
+        g_signal_connect(button_device_total, "toggled", G_CALLBACK(device_clicked), NULL);
+        g_signal_connect(button_device_free, "toggled", G_CALLBACK(device_clicked), NULL);
+        g_signal_connect(button_device_used, "toggled", G_CALLBACK(device_clicked), NULL);
+        g_signal_connect(button_device_type, "toggled", G_CALLBACK(device_clicked), NULL);
 
 
-    gtk_window_set_title(GTK_WINDOW (dev_window), "Device window");
+        gtk_window_set_position(GTK_WINDOW(dev_window), GTK_WIN_POS_CENTER);
 
-    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_container_add(GTK_CONTAINER(dev_window), box2);
-    gtk_box_pack_start(GTK_BOX(box2), button_device_all, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(box2), button_device_devices, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(box2), button_device_directory, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(box2), button_device_avail, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(box2), button_device_total, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(box2), button_device_free, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(box2), button_device_used, 1, 1, 0);
-    gtk_box_pack_start(GTK_BOX(box2), button_device_type, 1, 1, 0);
-    g_signal_connect(button_device_devices, "toggled", G_CALLBACK(device_clicked), NULL);
-    g_signal_connect(button_device_all, "toggled", G_CALLBACK(show_all), NULL);
-    g_signal_connect(button_device_directory, "toggled", G_CALLBACK(device_clicked), NULL);
-    g_signal_connect(button_device_avail, "toggled", G_CALLBACK(device_clicked), NULL);
-    g_signal_connect(button_device_total, "toggled", G_CALLBACK(device_clicked), NULL);
-    g_signal_connect(button_device_free, "toggled", G_CALLBACK(device_clicked), NULL);
-    g_signal_connect(button_device_used, "toggled", G_CALLBACK(device_clicked), NULL);
-    g_signal_connect(button_device_type, "toggled", G_CALLBACK(device_clicked), NULL);
+        g_signal_connect(G_OBJECT(dev_window), "destroy",
+                         G_CALLBACK(close_window), dev_window);
+
+        gtk_widget_show_all(dev_window);
 
 
-    gtk_window_set_position(GTK_WINDOW(dev_window), GTK_WIN_POS_CENTER);
 
-    g_signal_connect(G_OBJECT(dev_window), "destroy",
-                     G_CALLBACK(close_window), dev_window);
 
-    gtk_widget_show_all(dev_window);
+
 
 
 }
@@ -261,7 +264,7 @@ void close_window(GtkWidget *widget) {
 
 
     gtk_widget_hide(widget);
-    gtk_widget_destroyed(widget,&widget);
+  //  gtk_widget_destroyed(widget,&widget);
 
 
 

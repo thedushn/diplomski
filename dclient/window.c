@@ -118,6 +118,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     treeview = gtk_tree_view_new();
 
 
+
     create_list_store();
 
     selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
@@ -130,6 +131,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
 
     treeview1 = gtk_tree_view_new();
+
 
     gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
     create_list_store_dev();

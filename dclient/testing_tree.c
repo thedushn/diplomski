@@ -341,49 +341,63 @@ void create_list_store(void) {
 
     column = gtk_tree_view_column_new_with_attributes(("Tasks"), cell_renderer, "text", COL_TASK, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_TASK);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_TASK));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store), COL_TASK, compare_string_list_item,
                                     (void *) COL_TASK, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
     column = gtk_tree_view_column_new_with_attributes(("USERS"), cell_renderer, "text", COL_UNAME, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_UNAME);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_UNAME));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store), COL_UNAME, compare_string_list_item,
                                     (void *) COL_UNAME, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
     column = gtk_tree_view_column_new_with_attributes(("PID"), cell_renderer, "text", COL_PID, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_PID);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_PID));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store), COL_PID, compare_int_list_item, (void *) COL_PID,
                                     NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
     column = gtk_tree_view_column_new_with_attributes(("PPID"), cell_renderer, "text", COL_PPID, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_PPID);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_PPID));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store), COL_PPID, compare_int_list_item, (void *) COL_PPID,
                                     NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
     column = gtk_tree_view_column_new_with_attributes(("State"), cell_renderer, "text", COL_STATE, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_STATE);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_STATE));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store), COL_STATE, compare_string_list_item,
                                     (void *) COL_STATE, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
     column = gtk_tree_view_column_new_with_attributes(("VM-Size"), cell_renderer, "text", COL_VSZ, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_VSZ);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_VSZ));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store), COL_VSZ, compare_int_list_item_size,
                                     (void *) COL_VSZ, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
     column = gtk_tree_view_column_new_with_attributes(("RSS"), cell_renderer, "text", COL_RSS, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_RSS);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_RSS));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store), COL_RSS, compare_int_list_item_size,
                                     (void *) COL_RSS, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
@@ -391,21 +405,27 @@ void create_list_store(void) {
 
     column = gtk_tree_view_column_new_with_attributes(("CPU%"), cell_renderer, "text", COL_CPU, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_CPU);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_CPU));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store), COL_CPU, compare_int_list_item, (void *) COL_CPU,
                                     NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
     column = gtk_tree_view_column_new_with_attributes(("Prio"), cell_renderer, "text", COL_PRIO, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_PRIO);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_PRIO));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store), COL_PRIO, compare_int_list_item, (void *) COL_PRIO,
                                     NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
 
     column = gtk_tree_view_column_new_with_attributes(("Duration"), cell_renderer, "text", COL_DUR, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_DUR);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_DUR));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store), COL_DUR, compare_int_list_item_time,
                                     (void *) COL_DUR, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
@@ -425,52 +445,72 @@ void create_list_store_dev(void) {
 
     column = gtk_tree_view_column_new_with_attributes(("Devices"), cell_renderer, "text", COL_DEV, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
+
     gtk_tree_view_column_set_sort_column_id(column, COL_DEV);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_DEV));
+
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store1), COL_DEV, compare_string_list_item, (void *) COL_DEV,
                                     NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview1), column);
 
     column = gtk_tree_view_column_new_with_attributes(("Available"), cell_renderer, "text", COL_AVAILABLE, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
+
     gtk_tree_view_column_set_sort_column_id(column, COL_AVAILABLE);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_AVAILABLE));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store1), COL_AVAILABLE, compare_int_list_item_size,
                                     (void *) COL_AVAILABLE, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview1), column);
 
     column = gtk_tree_view_column_new_with_attributes(("Used"), cell_renderer, "text", COL_USED, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_USED);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_USED));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store1), COL_USED, compare_int_list_item_size,
                                     (void *) COL_USED, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview1), column);
 
     column = gtk_tree_view_column_new_with_attributes(("Type"), cell_renderer, "text", COL_TYPE, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_TYPE);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_TYPE));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store1), COL_TYPE, compare_string_list_item,
                                     (void *) COL_TYPE, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview1), column);
 
     column = gtk_tree_view_column_new_with_attributes(("Directory"), cell_renderer, "text", COL_DIR, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_DIR);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_DIR));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store1), COL_DIR, compare_string_list_item, (void *) COL_DIR,
                                     NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview1), column);
 
     column = gtk_tree_view_column_new_with_attributes(("Total"), cell_renderer, "text", COL_TOTAL, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_TOTAL);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_TOTAL));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store1), COL_TOTAL, compare_int_list_item_size,
                                     (void *) COL_TOTAL, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview1), column);
 
     column = gtk_tree_view_column_new_with_attributes(("Free"), cell_renderer, "text", COL_FREE, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
+    gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_FREE);
+    g_object_set_data(G_OBJECT(column),"column-id",GINT_TO_POINTER(COL_FREE));
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_store1), COL_FREE, compare_int_list_item_size,
                                     (void *) COL_FREE, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview1), column);
+
+
+
 
 
 }
@@ -492,68 +532,245 @@ void add_new_list_item_dev(Devices *d_temp) {
 }
 
 void change_list_store_view_devices(GtkWidget *widget, gboolean visible) {
-
+    GList *array,*temp;
+    GtkTreeViewColumn *column;
+    gint column_id;
+    array= gtk_tree_view_get_columns(GTK_TREE_VIEW(treeview1));
+    temp=array;
     if (button_device_devices == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview1), 0), visible);
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_DEV){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
+
+
     } else if (button_device_avail == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview1), 1), visible);
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_AVAILABLE){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_device_used == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview1), 2), visible);
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_USED){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_device_type == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview1), 3), visible);
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_TYPE){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_device_directory == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview1), 4), visible);
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_DIR){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_device_total == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview1), 5), visible);
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_TOTAL){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview1), 6), visible);
-    }
+        while(temp!=NULL){
 
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+            if(column_id==COL_FREE){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
+    }
+    g_list_free(array);
 }
 
 void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
 
+    GList *array,*temp;
+    GtkTreeViewColumn *column;
+    gint column_id;
+    array= gtk_tree_view_get_columns(GTK_TREE_VIEW(treeview));
+    temp=array;
     if (button_process_task == widget) {
+        while(temp!=NULL){
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 0), visible);
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_TASK){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_process_user == widget) {
+        while(temp!=NULL){
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 1), visible);
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_UNAME){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_process_pid == widget) {
+        while(temp!=NULL){
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 2), visible);
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_PID){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_process_ppid == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 3), visible);
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_PPID){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_process_state == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 4), visible);
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_STATE){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_process_vm_size == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 5), visible);
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_VSZ){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_process_rss == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 6), visible);
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_RSS){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_process_cpu == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 7), visible);
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_CPU){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else if (button_process_prio == widget) {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 8), visible);
+        while(temp!=NULL){
 
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_PRIO){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     } else {
 
-        gtk_tree_view_column_set_visible(gtk_tree_view_get_column(GTK_TREE_VIEW(treeview), 9), visible);
+
+        while(temp!=NULL){
+
+            column= GTK_TREE_VIEW_COLUMN(temp->data);
+            column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
+
+            if(column_id==COL_DUR){
+                gtk_tree_view_column_set_visible(column,visible);
+                break;
+            }
+            temp=temp->next;
+        }
     }
 
-
+    g_list_free(array);
 }
 
 

@@ -574,6 +574,7 @@ int main(int argc, char *argv[]) {
     g_signal_connect(button_proc, "toggled", G_CALLBACK(button_clicked_view_process), NULL);
 
 
+
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_proc),
                                  TRUE);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_dev),
@@ -603,6 +604,7 @@ int main(int argc, char *argv[]) {
     g_signal_connect ((GObject *)(device_swindow), "destroy",
                       G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect(entry, "activate", G_CALLBACK(input_command), NULL);
+
 
 
     sem_init(&semt,0,1);
