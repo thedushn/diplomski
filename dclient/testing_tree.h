@@ -41,9 +41,9 @@ int fill_task_item(Task *task_item, GtkTreeIter *iter);
 int fill_device_item(Devices *f_temp, GtkTreeIter *iter);
 
 
-void change_list_store_view_devices(GtkWidget *widget, gboolean visible);
+void change_list_store_view_devices(GtkWidget *widget);
 
-void change_list_store_view_process(GtkWidget *widget, gboolean visible);
+void change_list_store_view_process(GtkWidget *widget);
 
 int add_new_task(Task *task_t);
 

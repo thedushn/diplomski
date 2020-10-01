@@ -12,10 +12,10 @@ typedef struct _Thread_task Thread_task; /*structure of a linked list used to ga
 
 struct _Thread_task{
 
-    __uint32_t pid;
-    int result;
-    Task *task;
-    pthread_t pthread;
+    __uint32_t  pid;
+    int         result;
+    Task        *task;
+    pthread_t   pthread;
     Thread_task *next;
 
 

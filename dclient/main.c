@@ -475,6 +475,7 @@ int main(int argc, char *argv[]) {
         device_all      = false;
 
 
+
     if (argc < 3) {
 
         printf("port not provided \n");
@@ -570,7 +571,7 @@ int main(int argc, char *argv[]) {
 
     g_signal_connect(button_inc, "clicked", G_CALLBACK(inc_refresh), NULL);
     g_signal_connect(button_dec, "clicked", G_CALLBACK(dec_refresh), NULL);
-    g_signal_connect(button_proc, "toggled", G_CALLBACK(button_clicked_view_process), NULL);
+    g_signal_connect(button_proc, "toggled", G_CALLBACK(show_hide), process_swindow);
 
 
 
@@ -578,13 +579,14 @@ int main(int argc, char *argv[]) {
                                  TRUE);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_dev),
                                  TRUE);
-    g_signal_connect(button_dev, "toggled", G_CALLBACK(dev_button_clicked2), NULL);
+    g_signal_connect(button_dev, "toggled", G_CALLBACK(show_hide), device_swindow);
 
 
 
-    g_signal_connect(button_graph, "clicked", G_CALLBACK(graph_button_clicked), NULL);
+    g_signal_connect(button_graph, "clicked", G_CALLBACK(graph_button_clicked),NULL);
 
-    g_signal_connect_swapped ((gpointer) treeview_tasks, "button-press-event", G_CALLBACK(on_treeview1_button_press_event),
+    g_signal_connect_swapped ((gpointer) treeview_tasks, "button-press-event",
+                              G_CALLBACK(on_treeview_tasks_button_press_event),
                               NULL);
 
 

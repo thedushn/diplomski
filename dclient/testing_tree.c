@@ -585,10 +585,11 @@ int add_new_dev(Devices *devices) {
  * input:pointer to the button we pressed  and a gboolean telling the column if it should be visible or not
  * output:none
  * */
-void change_list_store_view_devices(GtkWidget *widget, gboolean visible) {
+void change_list_store_view_devices(GtkWidget *widget) {
     GList *array,*temp;
     GtkTreeViewColumn *column;
     gint column_id;
+
     array= gtk_tree_view_get_columns(GTK_TREE_VIEW(treeview_devices));
     temp=array;
     if (button_device_devices == widget) {
@@ -599,7 +600,8 @@ void change_list_store_view_devices(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_DEV){
-                gtk_tree_view_column_set_visible(column,visible);
+
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -614,7 +616,7 @@ void change_list_store_view_devices(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_AVAILABLE){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -627,7 +629,7 @@ void change_list_store_view_devices(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_USED){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -640,7 +642,7 @@ void change_list_store_view_devices(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_TYPE){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -653,7 +655,7 @@ void change_list_store_view_devices(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_DIR){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -666,7 +668,7 @@ void change_list_store_view_devices(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_TOTAL){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -678,7 +680,7 @@ void change_list_store_view_devices(GtkWidget *widget, gboolean visible) {
             column= GTK_TREE_VIEW_COLUMN(temp->data);
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
             if(column_id==COL_FREE){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -693,7 +695,7 @@ void change_list_store_view_devices(GtkWidget *widget, gboolean visible) {
  * input:pointer to the button we pressed  and a gboolean telling the column if it should be visible or not
  * output:none
  * */
-void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
+void change_list_store_view_process(GtkWidget *widget) {
 
     GList *array,*temp;
     GtkTreeViewColumn *column;
@@ -707,7 +709,7 @@ void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_TASK){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -719,7 +721,7 @@ void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_UNAME){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -731,7 +733,7 @@ void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_PID){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -744,7 +746,7 @@ void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_PPID){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -757,7 +759,7 @@ void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_STATE){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -770,7 +772,7 @@ void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_VSZ){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -783,7 +785,7 @@ void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_RSS){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -796,7 +798,7 @@ void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_CPU){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -809,7 +811,7 @@ void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_PRIO){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;
@@ -823,7 +825,7 @@ void change_list_store_view_process(GtkWidget *widget, gboolean visible) {
             column_id=GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column),"column-id"));
 
             if(column_id==COL_DUR){
-                gtk_tree_view_column_set_visible(column,visible);
+                gtk_tree_view_column_set_visible(column,!gtk_tree_view_column_get_visible(column));
                 break;
             }
             temp=temp->next;

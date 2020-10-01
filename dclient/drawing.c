@@ -729,10 +729,10 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
     cairo_stroke(cr);
 
     int g = (int) time_step;
-    if (list_num_size < time_step) {
+    if (list_num_size < time_step) {/*how many elements do we have in an array*/
         g = list_num_size;
     }
-    for (int j = 0; j <= 1; j++) {
+    for (int j = 0; j <= 1; j++) {/*seaching for the highest number in network usage*/
         temp = array;
         for (int i = 0; i < g; i++) {
 
@@ -749,7 +749,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
 
     cairo_set_source_rgb(cr, 0, 0, 0);
 
-    if (max_num > 1024) {
+    if (max_num > 1024) {/*if highest number is larger then a mb*/
 
 
         rec_bytes = max_num / 1024;//mb
@@ -759,7 +759,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
 
         max_num = max_num + 1024;
 
-    } else if (max_num <= 1024 && max_num > 1) {
+    } else if (max_num <= 1024 && max_num > 1) {/*if highest number is less then a mb and bigger then a kb*/
 
         rec_bytes = max_num;//kb
 
@@ -768,7 +768,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
         max_num = max_num + 100;
 
 
-    } else {
+    } else { /*if its lesser then a kb*/
 
 
         rec_bytes = max_num * 1024;//bytes
@@ -847,7 +847,7 @@ void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *a
 
     for(__int32_t i=0;i<CPU_NUM;i++){/*draws the lines*/
 
-        if((*temp_bool)==true){
+        if((*temp_bool)==true){/*display the cpus we want to be displayed*/
             draw_graph(cr, i, width, height, font_size, time_step, array1);
         }
         temp_bool++;
