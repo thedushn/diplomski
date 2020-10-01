@@ -402,7 +402,7 @@ gboolean init_timeout() {
     interrupts_write(interrupts);
 
     cpu_change(cpu_usage);
-    network_change_rc(&network);
+    network_change(&network);
     memory_change(&memory_usage);
     swap_change(&memory_usage);
 
@@ -469,10 +469,9 @@ void test_strtol(int val) {
 int main(int argc, char *argv[]) {
 
         list_num_size   = 0;
-        t               = 1000; /*what delay we want when asking for data*/
+        t               = 2000; /*what delay we want when asking for data*/
         refresh         = 0;
-        time_step       = 0;
-        show_before     = FALSE;
+        time_step       = 0;    /*space between data*/
         device_all      = false;
 
 
@@ -585,7 +584,7 @@ int main(int argc, char *argv[]) {
 
     g_signal_connect(button_graph, "clicked", G_CALLBACK(graph_button_clicked), NULL);
 
-    g_signal_connect_swapped ((gpointer) treeview, "button-press-event", G_CALLBACK(on_treeview1_button_press_event),
+    g_signal_connect_swapped ((gpointer) treeview_tasks, "button-press-event", G_CALLBACK(on_treeview1_button_press_event),
                               NULL);
 
 
@@ -614,8 +613,8 @@ int main(int argc, char *argv[]) {
 
     gtk_main();
 
-    gtk_tree_store_clear(list_store); /*freeing memory allocated for task list*/
-    gtk_tree_store_clear(list_store1);/*freeing memory allocated for device list*/
+    gtk_tree_store_clear(list_tasks); /*freeing memory allocated for task list*/
+    gtk_tree_store_clear(list_devices);/*freeing memory allocated for device list*/
 
 
     free(interrupts);

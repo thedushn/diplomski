@@ -264,7 +264,7 @@ void close_window(GtkWidget *widget) {
 
 
     gtk_widget_hide(widget);
-  //  gtk_widget_destroyed(widget,&widget);
+    gtk_widget_destroyed(widget,&widget);
 
 
 

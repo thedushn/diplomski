@@ -8,14 +8,18 @@
 #include "testing.h"
 
 
-GtkWidget *label_rec;
-GtkWidget *label_trans;
-GtkWidget *label_cpu0;
-GtkWidget *label_mem;
-GtkWidget *label_swap;
+GtkWidget *label_rec;   /*GtkWidget where we input received data*/
+GtkWidget *label_trans; /*GtkWidget where we input transmitted data*/
+GtkWidget *label_cpu0;  /*GtkWidget where we input cpu data*/
+GtkWidget *label_mem;   /*GtkWidget where we input memory data*/
+GtkWidget *label_swap;  /*GtkWidget where we input swap memory data*/
 
 
-
+/*
+ * function main_window(): creates the main window and all the components in it
+ * input:pointer to the device window, pointer to the process window;
+ * output: main window
+ * */
 
 GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
@@ -31,6 +35,9 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     GtkWidget *increase_refresh;
     GtkWidget *decrease_refresh;
     GtkWidget *file_system;
+    GtkWidget *process_menu;
+    GtkWidget *filemenu3;
+    GtkWidget *process_item;
 
 
     GtkWidget *vbox;
@@ -51,38 +58,38 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
 
 
-    GtkWidget *window1 = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    GtkWidget *window1 = gtk_window_new(GTK_WINDOW_TOPLEVEL); /*creates the window*/
     gtk_window_set_position(GTK_WINDOW(window1), GTK_WIN_POS_CENTER);
     gtk_window_set_default_size(GTK_WINDOW(window1), 800, 400);
 
 
-    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//cpu labels
-    hbox1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph1 graph2 frame1 frame2
-    hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//in between graphs
-    hbox3 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph3 graph4 frame3 frame4
+    vbox            = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);/*creating boxes where we are going to stack or graphs*/
+    hbox            = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//cpu labels
+    hbox1           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph1 graph2 frame1 frame2
+    hbox2           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//in between graphs
+    hbox3           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph3 graph4 frame3 frame4
 
-    button_inc = gtk_button_new_with_label("refresh rate +");
-    button_dec = gtk_button_new_with_label("refresh rate-");
-    button_proc = gtk_toggle_button_new_with_label("Process");
-    button_dev = gtk_toggle_button_new_with_label("Dev");
-    button_graph = gtk_toggle_button_new_with_label("graphs");
-
-
-    menubar = gtk_menu_bar_new();
-    filemenu = gtk_menu_new();
-    filemenu2 = gtk_menu_new();
-    GtkWidget *filemenu3 = gtk_menu_new();
+    button_inc      = gtk_button_new_with_label("refresh rate +");/*creating buttons under the main menu*/
+    button_dec      = gtk_button_new_with_label("refresh rate-");
+    button_proc     = gtk_toggle_button_new_with_label("Process");
+    button_dev      = gtk_toggle_button_new_with_label("Dev");
+    button_graph    = gtk_toggle_button_new_with_label("graphs");
 
 
-    speed = gtk_menu_item_new_with_label("speed");
-    devices_menu = gtk_menu_item_new_with_label("devices");
-    GtkWidget *process_menu = gtk_menu_item_new_with_label("Process Manager");
+    menubar         = gtk_menu_bar_new(); /*creating the menu bar*/
+    filemenu        = gtk_menu_new();   /*menu bar items*/
+    filemenu2       = gtk_menu_new();
+    filemenu3       = gtk_menu_new();
 
-    GtkWidget *process_item = gtk_menu_item_new_with_label("Processes");
+
+    speed            = gtk_menu_item_new_with_label("speed");
+    devices_menu     = gtk_menu_item_new_with_label("devices");
+    process_menu     = gtk_menu_item_new_with_label("Process Manager");
+
+    process_item     = gtk_menu_item_new_with_label("Processes");
     increase_refresh = gtk_menu_item_new_with_label("+250");
     decrease_refresh = gtk_menu_item_new_with_label("-250");
-    file_system = gtk_menu_item_new_with_label("file_systems");
+    file_system      = gtk_menu_item_new_with_label("file_systems");
 
     quit = gtk_menu_item_new_with_label("Quit");
 
@@ -106,7 +113,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     gtk_menu_shell_append(GTK_MENU_SHELL(menubar), devices_menu);
 
 
-    g_signal_connect(quit, "activate", G_CALLBACK(quit_activated), NULL);
+    g_signal_connect(quit, "activate", G_CALLBACK(destroy_window), NULL);
 
     g_signal_connect(increase_refresh, "activate", G_CALLBACK(inc_refresh), NULL);
     g_signal_connect(decrease_refresh, "activate", G_CALLBACK(dec_refresh), NULL);
@@ -115,51 +122,50 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     g_signal_connect(process_item, "activate", G_CALLBACK(process_window), NULL);
 
 
-    treeview = gtk_tree_view_new();
+    treeview_tasks = gtk_tree_view_new();
 
 
+    create_list_store_task();
 
-    create_list_store();
-
-    selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
-
-
-    gtk_tree_view_set_model(GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(list_store));
-
-    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(list_store), 1, GTK_SORT_ASCENDING);
-    gtk_container_add(GTK_CONTAINER(process_swindow), treeview);
+    selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview_tasks));
 
 
-    treeview1 = gtk_tree_view_new();
+    gtk_tree_view_set_model(GTK_TREE_VIEW(treeview_tasks), GTK_TREE_MODEL(list_tasks));
+
+    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(list_tasks), 1, GTK_SORT_ASCENDING);
+    gtk_container_add(GTK_CONTAINER(process_swindow), treeview_tasks);
+
+
+    treeview_devices = gtk_tree_view_new();
 
 
     gtk_box_pack_start(GTK_BOX(vbox), menubar, FALSE, FALSE, 0);
     create_list_store_dev();
 
 
-    gtk_tree_view_set_model(GTK_TREE_VIEW(treeview1), GTK_TREE_MODEL(list_store1));
+    gtk_tree_view_set_model(GTK_TREE_VIEW(treeview_devices), GTK_TREE_MODEL(list_devices));
 
-    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(list_store1), 1, GTK_SORT_ASCENDING);
-    gtk_container_add(GTK_CONTAINER(dev_swindow), treeview1);
-
-
-    graph1 = gtk_drawing_area_new();
-    graph2 = gtk_drawing_area_new();
-    graph3 = gtk_drawing_area_new();
-    graph4 = gtk_drawing_area_new();
-
-    frame1 = gtk_frame_new(NULL);
-    frame2 = gtk_frame_new(NULL);
-    frame3 = gtk_frame_new(NULL);
-    frame4 = gtk_frame_new(NULL);
+    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(list_devices), 1, GTK_SORT_ASCENDING);
+    gtk_container_add(GTK_CONTAINER(dev_swindow), treeview_devices);
 
 
-    label_rec = gtk_label_new(NULL);//network_received
-    label_trans = gtk_label_new(NULL);//network_transmitted
-    label_cpu0 = gtk_label_new(NULL);//cpu1
+    graph1      = gtk_drawing_area_new(); /*creating graphs*/
+    graph2      = gtk_drawing_area_new();
+    graph3      = gtk_drawing_area_new();
+    graph4      = gtk_drawing_area_new();
 
-    label_mem = gtk_label_new(NULL);//memory
-    label_swap = gtk_label_new(NULL);//swap
+    frame1      = gtk_frame_new(NULL);
+    frame2      = gtk_frame_new(NULL);
+    frame3      = gtk_frame_new(NULL);
+    frame4      = gtk_frame_new(NULL);
+
+
+    label_rec   = gtk_label_new(NULL);/*network_received*/
+    label_trans = gtk_label_new(NULL);/*network_transmitted*/
+    label_cpu0  = gtk_label_new(NULL);/*cpu usage */
+
+    label_mem   = gtk_label_new(NULL);/*memory*/
+    label_swap  = gtk_label_new(NULL);/*swap memory*/
 
 
 
@@ -218,11 +224,13 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     return window1;
 };
 
-void quit_activated() {
-    g_print("File -> Quit activated...bye.\n");
-    gtk_main_quit();
-};
 
+
+/*
+ * function swap_change(): inputs swap usage into list and displays it textually in window
+ * input:pointer to memory usage
+ * output: none
+ * */
 void swap_change(Memory_usage *memory_usage) {
 
 
@@ -234,7 +242,7 @@ void swap_change(Memory_usage *memory_usage) {
 
     mem_list->data[1]=f;
 
-    swap_used = g_format_size_full((guint64) memory_usage->swap_used, G_FORMAT_SIZE_IEC_UNITS);
+    swap_used  = g_format_size_full((guint64) memory_usage->swap_used, G_FORMAT_SIZE_IEC_UNITS);
     swap_total = g_format_size_full((guint64) memory_usage->swap_total, G_FORMAT_SIZE_IEC_UNITS);
 
 
@@ -248,7 +256,11 @@ void swap_change(Memory_usage *memory_usage) {
     g_free(swap_used);
 
 }
-
+/*
+ * function memory_change(): inputs memory usage into list and displays it textually in window
+ * input:pointer to memory usage
+ * output: none
+ * */
 void memory_change(Memory_usage *memory_usage) {
 
 
@@ -273,7 +285,11 @@ void memory_change(Memory_usage *memory_usage) {
     g_free(used);
 
 }
-
+/*
+ * function cpu_change(): inputs cpu usage into list and displays it textually in window
+ * input:   structure of  cpu_usage usage
+ * output: none
+ * */
 void cpu_change(Cpu_usage cpu_usage) {
 
 
@@ -312,8 +328,12 @@ void cpu_change(Cpu_usage cpu_usage) {
 
 
 };
-
-void network_change_rc(Network *network) {
+/*
+ * function network_change(): inputs network usage into list and displays it textually in window
+ * input:   pointer to  Network usage
+ * output: none
+ * */
+void network_change(Network *network) {
 
 
     net_list->data[0] = (float) network->received_bytes / 1024;

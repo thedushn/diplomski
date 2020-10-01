@@ -44,8 +44,8 @@ __int32_t list_num_size;/*the size of the lists of cpu usage network usage and m
 
 bool *cpu_status;/*array of bools that represent each cpu if a bool is  true the cpu usage for that cpu is drawn*/
 
-gboolean show_before;/*bool used in device_swindow to set devices all to clicked or not clicked */
-bool device_all;
+
+bool device_all;/*bool used to check if the client wants all the devices shown */
 
 D_Collection *devices_old;
 T_Collection *tasks_old;

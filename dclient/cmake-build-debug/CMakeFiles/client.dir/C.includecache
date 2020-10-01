@@ -29,6 +29,8 @@ time.h
 /home/dushn/Diplomski/diplomski/dclient/drawing.c
 inttypes.h
 -
+errno.h
+-
 drawing.h
 /home/dushn/Diplomski/diplomski/dclient/drawing.h
 
