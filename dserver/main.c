@@ -196,6 +196,7 @@ int main(int argc, char *argv[]) {
               get_in_addr((struct sockaddr *) &their_addr),
               s, sizeof s);
 
+    close(sockfd);//close socket so no more clients can connect
 
     fp = fopen("/proc/uptime", "r"); /*information on when the kernel started working*/
     if (fp != NULL) {
@@ -253,7 +254,7 @@ int main(int argc, char *argv[]) {
     if (ret != 0) {
 
         printf("ERROR: Return Code from pthread_create() is %d\n", ret);
-        close(sockfd);
+
         close(new_fd1);
         close(new_fd);
         return -1;
@@ -302,7 +303,7 @@ int main(int argc, char *argv[]) {
 
     }
 
-    close(sockfd);
+
     close(new_fd1);
     close(new_fd);
 

@@ -1,7 +1,10 @@
 //
 // Created by dushn on 23.7.20..
 //
-
+/**
+ * add to doxygend asdfasdasffsdggsdfdasrfasd
+ *
+ * hello there please show this in doxygen*/
 #ifndef DIPLOMSKI_COMMON_H
 #define DIPLOMSKI_COMMON_H
 
@@ -11,7 +14,7 @@
 #include <time.h>
 
 
-/*defines what type of data we are sending */
+/*!defines what type of data we are sending */
 #define CPU_USAGE   1
 #define NETWORK     2
 #define MEMORY      3
@@ -34,7 +37,8 @@ struct __attribute__((__packed__))tm1 {/*structure that contains information abo
     __uint32_t tm_isdst;            /* DST.		[-1/0/1]*/
 
 };
-typedef struct _Task Task;/*structure that contains information about a task*/
+/**<<structure that contains task details */
+typedef struct _Task Task;
 
 struct __attribute__((__packed__)) _Task {
     bool       checked;
@@ -55,7 +59,7 @@ struct __attribute__((__packed__)) _Task {
 
 
 };
-typedef struct _Network Network;/*structure that contains all the network usage*/
+typedef struct _Network Network;/**structure that contains all the network usage*/
 struct __attribute__((__packed__))_Network {
 
     __uint64_t received_bytes;
@@ -63,11 +67,12 @@ struct __attribute__((__packed__))_Network {
 
 
 };
-typedef struct _Cpu_usage Cpu_usage;/*structure that contains cpu usage of all the different cpus */
-struct __attribute__((__packed__)) _Cpu_usage {
+/**<<structure that contains cpu usage of all the different cpus */
+typedef struct _Cpu_usage Cpu_usage;
+struct __attribute__((__packed__)) _Cpu_usage {/**structure that contains cpu usage of all the different cpus */
 
 
-    char percentage[CPU_NUM][16];
+    char percentage[CPU_NUM][16];/*<variable containg cpu percentage*/
 
 
 
@@ -75,7 +80,7 @@ struct __attribute__((__packed__)) _Cpu_usage {
 
 
 
-typedef struct _Memory_usage Memory_usage;/*structure that contains information about memory usage */
+typedef struct _Memory_usage Memory_usage;/*!structure that contains information about memory usage */
 
 struct __attribute__((__packed__)) _Memory_usage {
 
@@ -88,7 +93,8 @@ struct __attribute__((__packed__)) _Memory_usage {
 
 
 };
-typedef struct _Interrupts Interrupts;/*structure that contains the information of a interrupt type*/
+/*!<structure that contains the information of a interrupt type*/
+typedef struct _Interrupts Interrupts;
 struct __attribute__((__packed__)) _Interrupts {
 
 
@@ -106,7 +112,7 @@ struct __attribute__((__packed__)) _Interrupts {
 };
 
 
-typedef struct _Devices Devices;/*structure that contains the information of a device*/
+typedef struct _Devices Devices;
 struct __attribute__((__packed__))_Devices {
 
 
@@ -123,15 +129,15 @@ struct __attribute__((__packed__))_Devices {
 
 
 
-typedef struct _Device_Collection D_Collection;/*doubly linked list for devices*/
+typedef struct _Device_Collection D_Collection;/*!doubly linked list for devices*/
 struct _Device_Collection{
 
     Devices        devices;
     D_Collection * next;
     D_Collection * prev;
 };
-
-typedef struct _Task_Collection T_Collection;/*doubly linked list for tasks*/
+/*!doubly linked list for tasks*/
+typedef struct _Task_Collection T_Collection;
 struct _Task_Collection{
 
     Task           task;
@@ -139,7 +145,7 @@ struct _Task_Collection{
     T_Collection * prev;
 };
 
-typedef union _Unification Unification ; /*union data structure that uses the same memory space for all elements*/
+typedef union _Unification Unification ; /*!union data structure that uses the same memory space for all elements*/
 
 union _Unification {
 
@@ -155,7 +161,7 @@ union _Unification {
 
 };
 
-typedef struct _Data Data;/*the structure we use to send data*/
+typedef struct _Data Data;/*!the structure we use to send data*/
 struct __attribute__((__packed__)) _Data{
 
     int         size;

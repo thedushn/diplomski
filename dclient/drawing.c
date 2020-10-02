@@ -814,7 +814,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
 
 
 }
-/*
+/**
  * function do_drawing_cpu(): draws the entire graph, the lines, the frame the seconds and the percentage
  * input:pointer to the graph, pointer to the canvas, step between data, and pointer to the array of cpu usage
  * output:none.

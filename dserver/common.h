@@ -73,7 +73,7 @@ struct __attribute__((__packed__)) _Cpu_usage {
 
 
 
-typedef struct _Memory_usage Memory_usage;/*structure that contains information about memory usage */
+typedef struct _Memory_usage Memory_usage;/**structure that contains information about memory usage */
 
 struct __attribute__((__packed__)) _Memory_usage {
 
@@ -121,7 +121,7 @@ struct __attribute__((__packed__))_Devices {
 
 
 
-typedef struct _Device_Collection D_Collection;/*doubly linked list for devices*/
+typedef struct _Device_Collection D_Collection;/*!doubly linked list for devices*/
 struct _Device_Collection{
 
     Devices        devices;
@@ -129,7 +129,7 @@ struct _Device_Collection{
     D_Collection * prev;
 };
 
-typedef struct _Task_Collection T_Collection;/*doubly linked list for tasks*/
+typedef struct _Task_Collection T_Collection;/*!doubly linked list for tasks*/
 struct _Task_Collection{
 
     Task           task;
@@ -137,7 +137,7 @@ struct _Task_Collection{
     T_Collection * prev;
 };
 
-typedef union _Unification Unification ; /*union data structure that uses the same memory space for all elements*/
+typedef union _Unification Unification ; /*!union data structure that uses the same memory space for all elements*/
 
 union _Unification {
 
@@ -153,7 +153,7 @@ union _Unification {
 
 };
 
-typedef struct _Data Data;/*the structure we use to send data*/
+typedef struct _Data Data;/**the structure we use to send data*/
 struct __attribute__((__packed__)) _Data{
 
     int         size;

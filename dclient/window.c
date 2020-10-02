@@ -328,7 +328,7 @@ void cpu_change(Cpu_usage cpu_usage) {
 
 
 };
-/*
+/**
  * function network_change(): inputs network usage into list and displays it textually in window
  * input:   pointer to  Network usage
  * output: none

@@ -7,11 +7,6 @@
 
 
 
-//
-// Created by dushn on 8.9.17..
-//
-
-
 
 #include <math.h>
 #include <sys/stat.h>

@@ -605,7 +605,7 @@ GtkWidget *create_taskpopup(void) {
 
     return taskpopup;
 }
-/*
+/**
  * function on_treeview_tasks_button_press_event(): reacts to a right click on a task in the list and then creates a pop
  * up menu.
  * input:gtk button  and pointer to an event.

@@ -11,7 +11,11 @@
 
 #include"sys/socket.h"
 #include "main_header.h"
-
+/**
+ * function device_task_commands(): sends command to server about what type of devices it wants to see
+ * input:pointer to signal and to task id
+ * output:none.
+ * */
 void device_task_commands(char *signal, char *task_id) {
 
     int ret;
@@ -47,7 +51,11 @@ void device_task_commands(char *signal, char *task_id) {
     }
 
 }
-
+/**
+ * function connection(): establishes a connection with the server
+ * input: port number and IP address
+ * output:return non zero value if something is wrong
+ * */
 int connection(char *argv1, char *argv2) {
 
 
@@ -99,15 +107,23 @@ int connection(char *argv1, char *argv2) {
     free(servinfo);
     return socketfd;
 }
+/**
+ * function input_command(): takes what we have typed in the entry widget and sends it to the server
+ * input: none
+ * output:none
+ * */
 void input_command() {
 
 
     const gchar *text = gtk_entry_get_text(GTK_ENTRY(entry));
-    g_print("Command %s  \n", text);
     command_sender((char *) text);
 
 };
-
+/**
+ * function command_sender(): prepares a text command to be sent and sends it to server
+ * input: none
+ * output:return non zero value if something is wrong
+ * */
 int command_sender(char *text) {
 
     int ret;
@@ -135,6 +151,11 @@ int command_sender(char *text) {
     }
     return ret;
 }
+/**
+ * function test_send(): tests if the server can send TCP packets
+ * input: socket
+ * output:return non zero value if something is wrong
+ * */
 ssize_t test_send(int socket) {
 
     ssize_t ret = 0;
@@ -183,7 +204,11 @@ ssize_t test_send(int socket) {
 
     return sizeof(Data);
 };
-
+/**
+ * function test_send(): tests if the client can send TCP packets
+ * input: socket
+ * output:return non zero value if something is wrong
+ * */
 ssize_t test_recv(int socket) {
 
 
@@ -217,7 +242,12 @@ ssize_t test_recv(int socket) {
     return ret;
 
 }
-
+/**
+ * function data_transfer(): receives TCP packets from the server and handles them depending on the type of file they are
+ * input: socket,pointer cpu usage structure, pointer to network usage structure, double pointer to a Task doubly linked
+ * list,double pointer to a Device doubly linked list, tasks number and devices number
+ * output:return non zero value if something is wrong
+ * */
 int
 data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *memory_usage, T_Collection **task_array,
               D_Collection **devices_array, __int32_t *task_num, __int32_t *dev_num) {

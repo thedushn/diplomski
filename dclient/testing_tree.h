@@ -17,8 +17,8 @@
 GtkTreeSelection *selection; /*so we know which task we clicked*/
 
 
-GtkWidget *treeview_tasks; /*treeview for tasks*/
-GtkWidget *treeview_devices;/*treeview for devices*/
+GtkWidget *treeview_tasks; /*!treeview for tasks*/
+GtkWidget *treeview_devices;/*!treeview for devices*/
 
 GtkTreeStore *list_tasks; /*liststore for tasks*/
 GtkTreeStore *list_devices; /*liststore for devices*/
