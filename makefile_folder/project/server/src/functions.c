@@ -6,8 +6,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include"sys/socket.h"
-#include"pthread.h"
 
 
 #include "interrupts.h"
@@ -17,17 +17,18 @@
 #include "devices.h"
 #include "network_bandwith.h"
 
-#define BUF_SIZE 1024
 
 
-bool devices_show = false;
+
+
+
 
 ssize_t test_send(int socket) {
 
     ssize_t ret = 0;
-    char buffer[64];
-    memset(buffer, 0, sizeof(buffer));
-    ret = recv(socket, buffer, sizeof(buffer), 0);
+    Data data;
+   memset(&data,0,sizeof(Data));
+    ret = recv(socket, &data, sizeof(Data), 0);
 
     if (ret < 0) {
 
@@ -39,13 +40,13 @@ ssize_t test_send(int socket) {
         printf("socket closed\n");
         return ret;
     }
-    if (ret < 64) {
-        size_t velicina = 64;
+    if (ret < sizeof(Data)) {
+        size_t velicina = sizeof(Data);
         velicina -= ret;
         while (velicina > 0 || velicina < 0) {
 
 
-            ret = (int) recv(socket, buffer, velicina, 0);
+            ret = (int) recv(socket, &data, velicina, 0);
             velicina -= ret;
 
             if (ret < 0) {
@@ -61,15 +62,46 @@ ssize_t test_send(int socket) {
 
         }
     }
-    if (strcmp(buffer, "stiglo sve") != 0) {
+    if (strcmp(data.unification.conformation, "everything came") != 0) {
 
-        printf("conformation didnt get received  \n");
+        printf("conformation didn't get received  \n");
 
         return -1;
     }
 
-    return 64;
+    return sizeof(Data);
 };
+
+ssize_t test_recv(int socket) {
+
+
+
+    ssize_t ret ;
+
+    Data data={0};
+    data.size=TEXT;
+    memset(data.unification.conformation,0,sizeof(data.unification.conformation));
+    strcpy(data.unification.conformation,"everything came");
+
+    ret = send(socket, &data, sizeof(Data), 0);
+
+
+    if (ret < 0) {
+
+        printf("error sending data\n %d", (int) ret);
+        return ret;
+    }
+    if (ret == 0) {
+
+        printf("error sending data\n %d", (int) ret);
+        printf("socket closed\n");
+        return ret;
+    }
+
+
+    return ret;
+
+}
 
 void send_prio_to_task(char *task_id, char *signal) {
     int prio = 0;
@@ -128,38 +160,68 @@ void *accept_c(void *socket) {
     int sockfd = *(int *) socket;
 
     Commands commands;
+    char buffer[1600];
+    char text[256];
+    char *text1;
+    pthread_mutex_init(&mutex_jiff,NULL);
+    pthread_mutex_init(&mutex_send,NULL);
 
     while (1) {
-
-        ssize_t ret = recv(sockfd, &commands, sizeof(Commands), 0);
+        memset(buffer,0,sizeof(buffer));
+        memset(&commands,0,sizeof(commands));
+        memset(&text,0,sizeof(text));
+        memset(&text1,0,sizeof(text1));
+        ssize_t ret = recv(sockfd, &buffer, sizeof(buffer), 0);
         if (ret < 0) {
-            printf("error condition didnt get received\n");
+            printf("error condition didn't get received\n");
 
 
             pthread_exit(&ret);
         }
         if (ret == 0) {
-            printf("error condition didnt get received\n");
+            printf("error condition did not get received\n");
             printf("ret %d\n", (int) ret);
 
             pthread_exit(&ret);
         }
+        printf("%d\n",(int)ret);
+        printf("%s\n",buffer);
+     //   strncpy(text,buffer,7);
+        sscanf(buffer, "%s %s %s",text,commands.command,commands.task_id);
+        if(strcmp(text,"COMMAND")!=0){
+            int g=0;
+           g=atoi(text);
+           if(g==1){
+               devices_show=true;
+           }else{
+               devices_show=false;
+           }
+            if (strcmp(commands.task_id, "") != 0 && strcmp(commands.command, "") != 0) {
+                if (strcmp(commands.command, "STOP") == 0 ||
+                    strcmp(commands.command, "CONT") == 0 ||
+                    strcmp(commands.command, "KILL") == 0 ||
+                    strcmp(commands.command, "TERM") == 0) {
+                    send_signal_to_task(commands.task_id, commands.command);
+                } else {
 
-        devices_show = commands.show;
+                    send_prio_to_task(commands.task_id, commands.command);
+                }
 
-
-        if (strcmp(commands.task_id, "") != 0 && strcmp(commands.command, "") != 0) {
-            if (strcmp(commands.command, "STOP") == 0 ||
-                strcmp(commands.command, "CONT") == 0 ||
-                strcmp(commands.command, "KILL") == 0 ||
-                strcmp(commands.command, "TERM") == 0) {
-                send_signal_to_task(commands.task_id, commands.command);
-            } else {
-
-                send_prio_to_task(commands.task_id, commands.command);
             }
-
         }
+
+        else {
+            text1=strchr(buffer,' ');
+                strcat(text1, " &");
+            printf("text1 %s\n",text1);
+            if (system(text1) != 0)
+                printf("command failed\n");
+        }
+
+
+
+
+
 
 
     }
@@ -170,278 +232,124 @@ void *accept_c(void *socket) {
 void *sending(void *socket) {
 
     ssize_t ret = 0;
-
-
     time_t time1;
 
-    Task *task_array = NULL;
-    Interrupts *interrupts = NULL;
-    Interrupts *interrupts_main = NULL;
-    Interrupts *interrupts_send = NULL;
 
-    Devices *devices = NULL;
+    devices_show=false;
+
     int sockfd = *(int *) socket;
-    int result = 0;
 
+    int return_trhead[6];
+    pthread_t  thr[6];
+    pthread_attr_t attr;
     while (1) {
-
-        Memory_usage memory_usage = {0};
-        Cpu_usage cpu_usage = {{0}};
-        Network network = {0};
-        memset(&network, 0, sizeof(Network));
-
 
         time1 = time(NULL);
 
-        lokalno = *localtime(&time1);
+        local_time = *localtime(&time1);
+
+
+       pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
+
+
+        return_trhead[0]=pthread_create(&thr[0], &attr, send_memory,socket);
+
+        if (return_trhead[0] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[0]);
+          break;
+
+        }
+        return_trhead[1]=pthread_create(&thr[1], &attr, send_cpu,socket);
+
+        if (return_trhead[1] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[1]);
+            break;
+
+        }
+        return_trhead[2]=pthread_create(&thr[2], &attr, send_network,socket);
+
+        if (return_trhead[2] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[2]);
+            break;
+
+        }
+        return_trhead[3]=pthread_create(&thr[3], &attr, send_interrupts,socket);
+
+        if (return_trhead[3] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[3]);
+            break;
+
+        }
+        return_trhead[4]=pthread_create(&thr[4], &attr, send_devices,socket);
+
+        if (return_trhead[4] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[4]);
+            break;
+
+        }
+        return_trhead[5]=pthread_create(&thr[5], &attr, send_task,socket);
+
+        if (return_trhead[5] != 0) {
+
+            printf("ERROR: Return Code from pthread_create() is %d\n", return_trhead[5]);
+            break;
+
+        }
+        pthread_attr_destroy(&attr);
+        for(int i=0;i<6;i++){
+            pthread_join(thr[i], NULL);
+        }
+
+
+
         ///memory
-        get_memory_usage(&memory_usage);
+     //   send_memory(socket);
 
 
-        ret = send(sockfd, &memory_usage, sizeof(Memory_usage), 0);
-
-        if (ret < 0) {
-            printf("Error sending data!\n\t");
-            break;
-
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-
-        ret = test_send(sockfd);
-        if (ret < 0) {
-            printf("Error receiving  num_packets!\n\t");
-            break;
-
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-
-
-
-        ///memory_end
         ///cpu
-        __int32_t cpu_num = cpu_number();
-        cpu_percentage(cpu_num, &cpu_usage);
+    //    send_cpu(socket);
 
-        ret = send(sockfd, &cpu_usage, sizeof(Cpu_usage), 0);
-        if (ret < 0) {
-            printf("Error sending data!\n\t");
-            break;
 
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-        ret = test_send(sockfd);
-        if (ret < 0) {
-
-            printf("error receiving data\n %d", (int) ret);
-            break;
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-
-        ///cpu end
 
         ///network
-        result = interface_name(&network);
-        if (result != 0) {
-
-            break;
-        }
-        ret = send(sockfd, &network, sizeof(Network), 0);
-
-        if (ret < 0) {
-            printf("Error sending data!\n\t");
-            break;
-
-        }
-        if (ret == 0) {
-            printf("Error sending data!\n\t");
-            printf("socket closed\n");
-            break;
-
-        }
-        ret = test_send(sockfd);
-        if (ret < 0) {
-
-            printf("error receing data\n %d", (int) ret);
-            break;
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-
-
+    //     send_network(socket);
 
 
         ///devices
-        __int32_t niz = 0;
-
-        result = device2(&devices, devices_show, &niz);
-        if (result != 0) {
-
-            break;
-        }
+   //     send_devices(socket);
 
 
-        ret = send(sockfd, &niz, sizeof(__int32_t), 0);
-        if (ret < 0) {
-            printf("Error sending num_packets!\n\t");
 
-            break;
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-        ret = test_send(sockfd);
-        if (ret < 0) {
-
-            printf("error receiving data\n %d", (int) ret);
-            break;
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-
-        for (int i = 0; i < niz; i++) {
-            devices[i].checked = false;
-            ret = (int) send(sockfd, &devices[i], sizeof(Devices), 0);
-
-            if (ret < 0) {
-                printf("Error sending data!\n\t");
-                break;
-
-            }
-            if (ret == 0) {
-
-                printf("socket closed\n");
-                break;
-            }
-
-
-        }
 
         /// tasks
-        int niz_task = 0;
+    //    send_task(socket);
 
-        result = get_task_list(&task_array, &niz_task);
-        if (result != 0) {
-
-            printf("error in get_task_list\n");
-            break;
-        }
-        __int32_t niz_temp = (__int32_t) niz_task;
-        ret = send(sockfd, &niz_temp, sizeof(__int32_t), 0);
-        if (ret < 0) {
-            printf("Error sending num_packets!\n\t");
-
-            break;
-
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-        ret = test_send(sockfd);
-        if (ret < 0) {
-
-            printf("error receing data\n %d", (int) ret);
-            break;
-        }
-        if (ret == 0) {
-
-            printf("socket closed\n");
-            break;
-        }
-
-        for (int i = 0; i < niz_task; i++) {
-
-
-            ret = send(sockfd, &task_array[i], sizeof(Task), 0);
-
-            if (ret < 0) {
-                printf("Error sending data!\n\t");
-                break;
-
-            }
-            if (ret == 0) {
-
-                printf("socket closed\n");
-                break;
-            }
-
-
-        }
 
 
 
 
         ///interrupts
-        __int32_t h = 0;
+     //   send_interrupts(socket);
 
-        result = interrupt_usage2(&interrupts, &h);
-        if (result != 0) {
 
+
+
+
+        ret = test_recv(sockfd);
+        if (ret < 0) {
+
+            printf("error receiving data\n %d", (int) ret);
             break;
         }
+        if (ret == 0) {
 
-        if (interrupts_main == NULL) {
-
-            interrupts_main = calloc((size_t) h, sizeof(Interrupts));
-            for (int r = 0; r < h; r++) {
-
-                interrupts_main[r] = interrupts[r];
-            }
-
-
-        }
-
-
-
-        sort2(interrupts, interrupts_main, &interrupts_send, h);
-
-
-        sort(interrupts_send, h);
-
-
-        for (int r = h - 10; r < h; r++) {
-
-
-            ret = send(sockfd, &interrupts_send[r], sizeof(Interrupts), 0);
-
-
-            if (ret < 0) {
-                printf("Error sending data!\n\t");
-                break;
-
-            }
-            if (ret == 0) {
-
-                printf("socket closed\n");
-                break;
-            }
-
-
+            printf("socket closed\n");
+            break;
         }
         ret = test_send(sockfd);
         if (ret < 0) {
@@ -456,47 +364,16 @@ void *sending(void *socket) {
         }
 
 
-        for (int r = 0; r < h; r++) {
-
-            interrupts_main[r] = interrupts[r];
-        }
-
-
-        free(task_array);
-        free(devices);
-        free(interrupts);
-        free(interrupts_send);
-
-        task_array = NULL;
-        devices = NULL;
-        interrupts = NULL;
-        interrupts_send = NULL;
-
-
     }
 
 
-    if (task_array != NULL) {
+    pthread_mutex_destroy(&mutex_send);
+    pthread_mutex_destroy(&mutex_jiff);
 
-        free(task_array);
-    }
-    if (devices != NULL) {
 
-        free(devices);
-    }
+   clean_interrupts();
 
-    if (interrupts != NULL) {
 
-        free(interrupts);
-    }
-    if (interrupts_main != NULL) {
-
-        free(interrupts_main);
-    }
-    if (interrupts_send != NULL) {
-
-        free(interrupts_send);
-    }
 
 
     return 0;

@@ -11,12 +11,109 @@
 #include <pwd.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <sys/socket.h>
 #include "errno.h"
 
 #include "functions.h"
-#include "task_manager.h"
 #include "cpu_usage.h"
 
+void * send_task(void *socket){
+
+    int sockfd=(*(int*)socket);
+    int result;
+    ssize_t ret;
+    Data data={0};
+
+    T_Collection *tasks;
+    T_Collection *temp_task;
+
+   __int32_t task_num=0;
+
+    result = get_task_list(&tasks, &task_num);
+    if (result != 0) {
+
+        printf("error in get_task_list\n");
+        for(int k=0;k<task_num;k++){
+            // save reference to first link
+            temp_task = tasks;
+
+            //mark next to first link as first
+            tasks = tasks->next;
+
+            //return the deleted link
+            free(temp_task);
+
+
+        }
+        pthread_exit(NULL);
+    }
+
+    temp_task=tasks;
+    for (int i = 0; i < task_num; i++) {
+        memset(&data,0,sizeof(Data));
+
+        data.size=TASK;
+        data.unification.task=temp_task->task;
+        pthread_mutex_lock(&mutex_send);
+        ret = send(sockfd, &data, sizeof(Data), 0);
+        pthread_mutex_unlock(&mutex_send);
+
+
+        if (ret < 0) {
+            printf("Error sending data!\n\t");
+
+            for(int k=0;k<task_num;k++){
+                // save reference to first link
+                temp_task = tasks;
+
+                //mark next to first link as first
+                tasks = tasks->next;
+
+                //return the deleted link
+                free(temp_task);
+
+
+            }
+           pthread_exit(NULL);
+
+        }
+        if (ret == 0) {
+
+            printf("socket closed\n");
+            for(int k=0;k<task_num;k++){
+                // save reference to first link
+                temp_task = tasks;
+
+                //mark next to first link as first
+                tasks = tasks->next;
+
+                //return the deleted link
+                free(temp_task);
+
+
+            }
+            pthread_exit(NULL);
+        }
+        temp_task=temp_task->next;
+
+
+    }
+
+    for(int k=0;k<task_num;k++){
+        // save reference to first link
+        temp_task = tasks;
+
+        //mark next to first link as first
+        tasks = tasks->next;
+
+        //return the deleted link
+        free(temp_task);
+
+
+    }
+
+    pthread_exit(NULL);
+}
 
 void differenceBetweenTimePeriod(struct tm start, struct tm1 stop, struct tm1 *diff) {
 
@@ -55,14 +152,13 @@ get_task_details(int pid, Task *task) {
     FILE *file;
     char filename[96];
     char buffer[1024];
-    float cpu_user = 0;
-    float cpu_system = 0;
+
 
 
     snprintf(filename, 96, "/proc/%d/stat", pid);
 
     if ((file = fopen(filename, "r")) == NULL || fgets(buffer, 1024, file) == NULL) {
-        printf("nece da otvori fajl\n");
+        printf("the file cant open %s\n",filename);
         return 1;
     }
 
@@ -92,7 +188,8 @@ get_task_details(int pid, Task *task) {
 
 
     sscanf(buffer,
-           "%i %255s %1s %i %i %i %i %i %255s %255s %255s %255s %255s %" SCNu64 "   %" SCNu64 " %i %i %i %hi %i %i  %" SCNu64 " %" SCNu64 " %" SCNu64 " %255s %255s %255s %i %255s %255s %255s %255s %255s %255s %255s %255s %255s %255s %i %255s %255s",
+           "%i %255s %1s %i %i %i %i %i %255s %255s %255s %255s %255s %" SCNu64 "   %" SCNu64 " %i %i %i %hi %i %i "
+                   " %" SCNu64 " %" SCNu64 " %" SCNu64 " %255s %255s %255s %i %255s %255s %255s %255s %255s %255s %255s %255s %255s %255s %i %255s %255s",
            &task->pid,    // processid
            dummy,        // processname
            task->state,    // processstate
@@ -144,20 +241,12 @@ get_task_details(int pid, Task *task) {
     );
 
     task->rss *= get_pagesize();
-    int result = get_cpu_percent(task->pid, jiffies_user, &cpu_user, jiffies_system, &cpu_system);
-    if (result == -1) {
+
+    int result = get_cpu_percent(jiffies_user, jiffies_system, task);
+    if (result == -1 ||result==1 ) {
         return result;
     }
-    if (sprintf(task->cpu_user, "%f", cpu_user) < 0) {
 
-        printf("nije uspelo convertovanje %s \n", task->cpu_user);
-        return -1;
-    }
-    if (sprintf(task->cpu_system, "%f", cpu_system) < 0) {
-
-        printf("nije uspelo convertovanje %s \n", task->cpu_system);
-        return -1;
-    }
 
     stat(filename, &sstat);
     pw = getpwuid(sstat.st_uid);
@@ -177,17 +266,17 @@ get_task_details(int pid, Task *task) {
 
     h = 0;
     m = 0;
-    s = sec + pocetno.tm_sec;
+    s = sec + begin_time.tm_sec;
     if (s > 60) {
         m = s / 60;
         s = s % 60;
     }
-    m = m + min + pocetno.tm_min;
+    m = m + min + begin_time.tm_min;
     if (m > 60) {
         h = m / 60;
         m = m % 60;
     }
-    h = h + pocetno.tm_hour + hr;
+    h = h + begin_time.tm_hour + hr;
 
 
     task->stime.tm_hour = 0;
@@ -198,7 +287,7 @@ get_task_details(int pid, Task *task) {
     task->stime.tm_sec = (__uint32_t) s;
 
 
-    differenceBetweenTimePeriod(lokalno, task->stime, &diff);
+    differenceBetweenTimePeriod(local_time, task->stime, &diff);
     task->duration.tm_hour = diff.tm_hour;
     task->duration.tm_min = diff.tm_min;
     task->duration.tm_sec = diff.tm_sec;
@@ -208,51 +297,53 @@ get_task_details(int pid, Task *task) {
 }
 
 int
-get_task_list(Task **array, int *niz) {
+get_task_list(T_Collection **array, __int32_t *task_num) {
 
-    Task *tasks_array;
-    Task *temp = NULL;
-    tasks_array = calloc(0, sizeof(Task));
+
+
+
 
     DIR *dir;
     struct dirent *d_file;
     char *directory = "/proc";
     int pid = 0;
-    int g = 0;
-
 
     if ((dir = opendir(directory)) == NULL) {
         printf("error task dir %d\n", errno);
         return 1;
     }
 
-
     while ((d_file = readdir(dir)) != NULL) {
 
         if ((pid = (int) strtol(d_file->d_name, NULL, 0)) > 0) {
 
-
-            g++;
-            temp = realloc(tasks_array, g * sizeof(Task));
-
-            if (temp != NULL) {
-                tasks_array = temp;
-            } else {
-                free(tasks_array);
+            T_Collection *task_temp=calloc(1,sizeof(T_Collection));
+           if(task_temp==NULL) {
+               free(task_temp);
                 closedir(dir);
-                printf("relloc error %d \n", errno);
+                printf("calloc error %d \n", errno);
                 return 1;
-            }
-            memset(&tasks_array[g - 1], 0, sizeof(Task));
-            int result = get_task_details(pid, &tasks_array[g - 1]);
+           }
+
+            (*task_num)++;
+
+            int result = get_task_details(pid, &task_temp->task);
             if (result == -1) {
-                free(tasks_array);
+
                 closedir(dir);
+                (*task_num)--;
+                free(task_temp);
                 return -1;
             }
-            if (result == 1) {
+            if (result == 1) { //file did not open
+                (*task_num)--;
+                free(task_temp);
+               // return 1;
 
-                g--;
+            }
+            if(result==0){
+                task_temp->next=*array;
+                *array=task_temp;
             }
 
 
@@ -262,8 +353,8 @@ get_task_list(Task **array, int *niz) {
     }
 
 
-    *niz = g;
-    *array = tasks_array;
+
+
     closedir(dir);
     return 0;
 

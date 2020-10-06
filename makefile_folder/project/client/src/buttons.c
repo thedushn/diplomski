@@ -3,7 +3,7 @@
 #include "drawing.h"
 #include "testing_tree.h"
 #include "main_header.h"
-#include "buttons_s.h"
+
 
 static gboolean device_devices = TRUE;
 static gboolean device_type = TRUE;
@@ -30,7 +30,13 @@ static gboolean show_before = FALSE;
 
 void process_window() {
     GtkWidget *box2;
-    GtkWidget *proc_window;
+    if(proc_window!=NULL){
+        if(gtk_widget_get_visible(proc_window)){
+            gtk_widget_destroy(proc_window);
+        }
+    }
+
+
     proc_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(proc_window), 200, 200);
     button_process_cpu = gtk_check_button_new_with_label("CPU");
@@ -109,7 +115,7 @@ void process_window() {
     gtk_window_set_position(GTK_WINDOW(proc_window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(proc_window), "destroy",
-                     G_CALLBACK(close_window), NULL);
+                     G_CALLBACK(close_window2), proc_window);
 
     gtk_widget_show_all(proc_window);
 
@@ -117,8 +123,16 @@ void process_window() {
 
 void device_window() {
 
+
+
     GtkWidget *box2;
-    GtkWidget *dev_window;
+    if (dev_window != NULL) {
+        if (gtk_widget_get_visible(dev_window)) {
+            gtk_widget_destroy(dev_window);
+        }
+    }
+
+
     dev_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_default_size(GTK_WINDOW(dev_window), 200, 200);
     button_device_devices = gtk_check_button_new_with_label("Devices");
@@ -182,7 +196,7 @@ void device_window() {
     gtk_window_set_position(GTK_WINDOW(dev_window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(dev_window), "destroy",
-                     G_CALLBACK(close_window), NULL);
+                     G_CALLBACK(close_window2), dev_window);
 
     gtk_widget_show_all(dev_window);
 
@@ -237,42 +251,45 @@ void close_window() {
 
 
 };
+void close_window2(GtkWidget *widget) {
+
+
+    gtk_widget_hide(widget);
+    gtk_widget_destroyed(widget,&widget);
+
+
+};
 
 void start_stop(int show, char *signal, char *task_id) {
     int ret;
+    char buffer[1600];
 
-    Commands commands = {0};
-
+    memset(buffer, 0, sizeof(buffer));
 
     if (show == 1) {
 
         show_before = !show_before;
     }
 
-    commands.mem = 0;
-    commands.show = device_all;
+
     if (signal != NULL && task_id != NULL) {
-        for (int i = 0; i < sizeof(signal); i++) {
+        sprintf(buffer, "%d %s %s", device_all, signal, task_id);
 
-            commands.command[i] = signal[i];
-        }
-        for (int i = 0; i < sizeof(task_id); i++) {
-
-            commands.task_id[i] = task_id[i];
-        }
+    } else {
+        sprintf(buffer, "%d", device_all);
     }
-
-    ret = (int) send(newsockfd1, &commands, sizeof(Commands), 0);
+    printf("%s \n", buffer);
+    ret = (int) send(newsockfd1, &buffer, sizeof(buffer), 0);
     if (ret < 0) {
 
-        printf("nije uspelo slanje cond \n");
+        printf("command did not get sent \n");
         gtk_main_quit();
 
 
     }
     if (ret == 0) {
 
-        printf("nije uspelo slanje cond \n");
+        printf("command did not get sent \n");
         printf("socket closed\n");
         gtk_main_quit();
 
@@ -335,14 +352,16 @@ void graph_button_clicked(GtkWidget *widget) {
 
 void show_all(GtkWidget *widget) {
 
+    char *proxy = NULL;
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
         device_all = TRUE;
-        start_stop(1, "", "");
+
+        start_stop(1, proxy, proxy);
 
     } else {
         device_all = FALSE;
-        start_stop(1, "", "");
+        start_stop(1, proxy, proxy);
     }
 
 

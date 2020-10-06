@@ -1,0 +1,30 @@
+\hypertarget{struct__Device__Collection}{}\section{\+\_\+\+Device\+\_\+\+Collection Struct Reference}
+\label{struct__Device__Collection}\index{\+\_\+\+Device\+\_\+\+Collection@{\+\_\+\+Device\+\_\+\+Collection}}
+
+
+{\ttfamily \#include $<$common.\+h$>$}
+
+
+
+Collaboration diagram for \+\_\+\+Device\+\_\+\+Collection\+:
+% FIG 0
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Devices {\bfseries devices}\hypertarget{struct__Device__Collection_a7743fa0916861e9491a2503ea26798ed}{}\label{struct__Device__Collection_a7743fa0916861e9491a2503ea26798ed}
+
+\item 
+\hyperlink{struct__Device__Collection}{D\+\_\+\+Collection} $\ast$ {\bfseries next}\hypertarget{struct__Device__Collection_ae87eaaa4e396a1eb2df82f66f10a959c}{}\label{struct__Device__Collection_ae87eaaa4e396a1eb2df82f66f10a959c}
+
+\item 
+\hyperlink{struct__Device__Collection}{D\+\_\+\+Collection} $\ast$ {\bfseries prev}\hypertarget{struct__Device__Collection_adfc00f9f812a8f60b2050986af5414ca}{}\label{struct__Device__Collection_adfc00f9f812a8f60b2050986af5414ca}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+doubly linked list for devices 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+common.\+h\end{DoxyCompactItemize}

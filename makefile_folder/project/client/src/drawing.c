@@ -13,6 +13,9 @@
 #include "main_header.h"
 
 
+
+
+
 void writing_interrupts2(cairo_t *cr, double font_size, double length, int i, const gchar *name1, const gchar *name2) {
 
 
@@ -304,42 +307,65 @@ void draw_interrupts(cairo_t *cr, int i, Interrupts *peak, double height, double
 
 
 }
+void draw_graph(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step, float max_num,
+                Collection *array) {
 
-
-void draw_graph(cairo_t *cr, GArray *history_p, int r, int y, int i, double height, double font_size, double step,
-                float max_num) {
-
-
-    double prev = height - font_size; //nula
+    Collection *temp=collection;
+    double prev = height - font_size; //zero
+    double step;
 
 
     if (r == 0 || r == 5) {
+        if(r==5){
+            step = (width - 5 * font_size - 5 * font_size) / time_step;
+        }else{
+            step = (width - 3 * font_size - 3 * font_size) / time_step;
+
+        }
         cairo_set_source_rgb(cr, 1, 0, 0);//rgb
-    } else if (r == 1) {
+    } else if (r == 1|| r==7) {
+        step = (width - 3 * font_size - 3 * font_size) / time_step;
         cairo_set_source_rgb(cr, 0, 1, 0);
-    } else if (r == 2 || r == 4) {
+    } else if (r == 2 || r == 4 || r==6) {
+        if(r==4){
+            step = (width - 5 * font_size - 5 * font_size) / time_step;
+        }else{
+            step = (width - 3 * font_size - 3 * font_size) / time_step;
+
+        }
         cairo_set_source_rgb(cr, 0, 0, 1);
     } else {
-        cairo_set_source_rgb(cr, 1, .5, 0);
+
+        cairo_set_source_rgb(cr, 1, 0.5, 0);
+        step = (width - 3 * font_size - 3 * font_size) / time_step;
 
     }
 
 
-    for (int j = 0; j < y; j++) {
+    int g=(int)time_step;
+    if(bjorg<time_step){
+        g=bjorg;
+    }
 
-        gfloat *peak;
+
+    for (int j = 0; j < g; j++) {
+
+        gfloat peak;
         double percentage;
 
-        peak = &g_array_index(history_p, gfloat, j);
+        peak=temp->data[r];
+        temp=temp->next;
 
 
         cairo_move_to(cr, i * font_size, prev);
 
 
         if (r == 4 || r == 5) {
-            percentage = ((height - font_size) / max_num) * *peak;
+
+
+            percentage = ((height - font_size) / max_num) * peak;
         } else {
-            percentage = ((height - font_size) / 100) * *peak;
+            percentage = ((height - font_size) / 100) * peak;
         }
 
         prev = height - font_size - percentage;
@@ -355,15 +381,21 @@ void draw_graph(cairo_t *cr, GArray *history_p, int r, int y, int i, double heig
 
     }
 
+
+    cairo_line_to(cr,  i * font_size, height - font_size );// the last line always touches the floor
+
     cairo_stroke(cr);
 
 
-    cairo_translate(cr, -step * y, 0);
+    cairo_translate(cr, -step * g, 0);  //return to start of graph
 
 
 }
 
-void do_drawing_mem(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) {
+
+
+
+void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, Collection *mem_usage) {
     double width, height;
     height = (double) gtk_widget_get_allocated_height(widget);
     width = (double) gtk_widget_get_allocated_width(widget);
@@ -375,7 +407,6 @@ void do_drawing_mem(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
 
     cairo_set_line_width(cr, 1);
     double font_size = 10;
-    double step = (width - 3 * font_size - 3 * font_size) / time_step;
 
     cairo_set_font_size(cr, font_size);
 
@@ -397,9 +428,9 @@ void do_drawing_mem(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
     //seconds
     writing_seconds(cr, width, height, font_size, 3, 6);
 
+    draw_graph(cr, 6, 3, width, height, font_size, time_step, 0, mem_usage);
+    draw_graph(cr, 7, 3, width, height, font_size, time_step, 0, mem_usage);
 
-    draw_graph(cr, history[6], 0, num_w, 3, height, font_size, step, 0);
-    draw_graph(cr, history[7], 2, num_w, 3, height, font_size, step, 0);
 
 
     if (graph_surface != NULL) {
@@ -411,15 +442,17 @@ void do_drawing_mem(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
 
 }
 
-void do_drawing_int(GtkWidget *widget, cairo_t *cr) {
+void do_drawing_int(GtkWidget *widget, cairo_t *cr, Interrupts *interrupts1) {
 
     double width, height;
 
     gchar name[3];
     __uint64_t max_num = 0;
-    __uint64_t temp ;
+
     double length ;
     Interrupts *peak;
+    Interrupts *temp_p;
+
     gchar num[5];
 
     cairo_surface_t *graph_surface;
@@ -439,11 +472,12 @@ void do_drawing_int(GtkWidget *widget, cairo_t *cr) {
     draw_frame(cr, width, height, font_size, 5);
     cairo_set_source_rgb(cr, 0, 0, 0);
 
-
-    for (int i = 0; i <= 9; i++) {
+    temp_p=interrupts1;
+    for (int i = 0; i < 10; i++) {
 
         cairo_move_to(cr, 5 * font_size, height);
-        peak = &g_array_index(interrupt_array_d, Interrupts, i);
+       // peak = &g_array_index(interrupt_array_d, Interrupts, i);
+        peak=temp_p;
 
         if (max_num <= peak->CPU0) {
 
@@ -461,6 +495,7 @@ void do_drawing_int(GtkWidget *widget, cairo_t *cr) {
 
             max_num = peak->CPU3;
         }
+        temp_p++;
 
     }
 
@@ -471,10 +506,10 @@ void do_drawing_int(GtkWidget *widget, cairo_t *cr) {
     for (int i = 1; i <= 3; i++) {
 
 
-        temp = max_num / 4 * i;
+
 
         cairo_move_to(cr, 0, (height - font_size) / 4 * (4 - i));
-        sprintf(num, "%"PRIu64, temp);
+        sprintf(num, "%"PRIu64,( max_num / 4 * i));
         cairo_show_text(cr, num);
 
 
@@ -483,11 +518,12 @@ void do_drawing_int(GtkWidget *widget, cairo_t *cr) {
     cairo_move_to(cr, 0, height - font_size);
     cairo_show_text(cr, "0");
     length = (width - (5 * font_size * 2)) / 5 / 10;
+    temp_p=interrupts1;
     for (int i = 0; i < 10; i++) {
 
 
-        peak = &g_array_index(interrupt_array_d, Interrupts, i);
 
+        peak=temp_p;
 
         cairo_move_to(cr, 5 * font_size + 5 * length * (i), height);
         sprintf(name, "%s", peak->name);
@@ -496,7 +532,7 @@ void do_drawing_int(GtkWidget *widget, cairo_t *cr) {
         cairo_show_text(cr, name);
 
         draw_interrupts(cr, i, peak, height, font_size, max_num, length);
-
+        temp_p++;
     }
 
     if (graph_surface != NULL) {
@@ -508,7 +544,7 @@ void do_drawing_int(GtkWidget *widget, cairo_t *cr) {
 
 }
 
-void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) {
+void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, Collection *net_work) {
     double width, height;
 
     char num[5];
@@ -518,19 +554,19 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
 
     gchar *kb = "KB/s";
     gchar *mb = "MB/s";
-    gchar *b = "bytes/s";
+    gchar *b = "b/s";
     gfloat max_num=0 ;
-    gfloat max_num2  ;
-    static gfloat max_num3 ;
 
-    gfloat *peak ;
+
+    float peak ;
     float font_size = 10;
     height = (double) gtk_widget_get_allocated_height(widget);
     width = (double) gtk_widget_get_allocated_width(widget);
 
 
-    float temp;
-    double step = (width - 5 * font_size - 5 * font_size) / time_step;
+
+    Collection *temp;
+
 
 
     cairo_surface_t *graph_surface;
@@ -553,22 +589,24 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
     writing_seconds(cr, width, height, font_size, 5, 10);
     cairo_stroke(cr);
 
-
+    int g = (int) time_step;
+    if (bjorg < time_step) {
+        g = bjorg;
+    }
     for (int j = 4; j <= 5; j++) {
-        for (int i = 0; i < num_w; i++) {
+        temp=collection;
+        for (int i = 0; i < g; i++) {
 
-            peak = &g_array_index(history[j], float, i);// kb
-            if (max_num2 <= *peak) {
+            peak = temp->data[j];// kb
+            if (max_num <= peak) {
 
-                max_num2 = *peak;
+                max_num = peak;
             }
+            temp=temp->next;
+
         }
     }
-    if (max_num <= max_num2) {
 
-        max_num = max_num2;
-
-    }
 
 
     cairo_set_source_rgb(cr, 0, 0, 0);
@@ -581,7 +619,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
         rec_bytes += 1;
         track = mb;
 
-        max_num3 = max_num + 1024;
+        max_num = max_num + 1024;
 
     } else if (max_num <= 1024 && max_num > 1) {
 
@@ -589,7 +627,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
 
         rec_bytes += 100;
         track = kb;
-        max_num3 = max_num + 100;
+        max_num = max_num + 100;
 
 
     } else {
@@ -599,7 +637,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
 
 
         track = b;
-        max_num3 = max_num + 1024;
+        max_num = max_num + 1024;
 
 
     }
@@ -614,10 +652,10 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
     for (int i = 1; i <= 3; i++) {
 
 
-        temp = rec_bytes / 4 * (float)i;
+
 
         cairo_move_to(cr, 0, (height - font_size) / 4 * (4 - i));
-        sprintf(num, "%.1f", temp);
+        sprintf(num, "%.1f", rec_bytes / 4 * (float)i);
         cairo_show_text(cr, num);
         cairo_show_text(cr, track);
 
@@ -627,9 +665,8 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
     cairo_show_text(cr, "0");
     cairo_show_text(cr, track);
 
-
-    draw_graph(cr, history[4], 4, num_w, 5, height, font_size, step, max_num3);
-    draw_graph(cr, history[5], 5, num_w, 5, height, font_size, step, max_num3);
+    draw_graph(cr, 4, 5, width, height, font_size, time_step, max_num, net_work);
+    draw_graph(cr, 5, 5, width, height, font_size, time_step, max_num, net_work);
 
     if (graph_surface != NULL) {
         cairo_set_source_surface(cr, graph_surface, 0.0, 0.0);
@@ -641,12 +678,12 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, int num_w, guint time_step) 
 
 }
 
-void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, int bjorg, guint time_step, const gboolean CPU0_line,
-                    const gboolean CPU1_line, const gboolean CPU2_line, const gboolean CPU3_line) {
+void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, const gboolean CPU0_line, const gboolean CPU1_line,
+                    const gboolean CPU2_line, const gboolean CPU3_line, Collection *collection) {
 
     double width, height;
     double font_size = 10;
-    double step;
+
 
 
     height = (double) gtk_widget_get_allocated_height(widget);
@@ -659,7 +696,7 @@ void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, int bjorg, guint time_step, 
     cairo_set_line_width(cr, 1);
 
 
-    step = (width - 3 * font_size - 3 * font_size) / time_step;
+
 
     cairo_set_font_size(cr, font_size);
 
@@ -672,18 +709,20 @@ void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, int bjorg, guint time_step, 
     writing_seconds(cr, width, height, font_size, 3, 6);
 
     if (CPU0_line == TRUE) {
+        draw_graph(cr, 0, 3, width, height, font_size, time_step, 0, collection);
 
-
-        draw_graph(cr, history[0], 0, bjorg, 3, height, font_size, step, 0);
     }
     if (CPU1_line == TRUE) {
-        draw_graph(cr, history[1], 1, bjorg, 3, height, font_size, step, 0);
+        draw_graph(cr, 1, 3, width, height, font_size, time_step, 0, collection);
+
     }
     if (CPU2_line == TRUE) {
-        draw_graph(cr, history[2], 2, bjorg, 3, height, font_size, step, 0);
+        draw_graph(cr, 2, 3, width, height, font_size, time_step, 0, collection);
+
     }
     if (CPU3_line == TRUE) {
-        draw_graph(cr, history[3], 3, bjorg, 3, height, font_size, step, 0);
+        draw_graph(cr, 3, 3, width, height, font_size, time_step, 0, collection);
+
     }
 
 

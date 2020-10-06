@@ -10,7 +10,7 @@
 #include <gtk/gtk.h>
 #include <stdlib.h>
 
-
+#include "common.h"
 
 //GtkTreeStore *list_store1;
 
@@ -28,22 +28,22 @@ void remove_list_item(gint pid);
 
 void remove_list_item_device(gchar *directory, gchar *name);
 
-void refresh_list_item(gint i);
+void refresh_list_item(Task *task_item);
 
-void refresh_list_item_device(gint i);
+void refresh_list_item_device(Devices *ref_temp);
 
-void fill_list_item(gint i, GtkTreeIter *iter);
+void fill_list_item(Task *task_item, GtkTreeIter *iter);
 
-void fill_list_item_device(gint i, GtkTreeIter *iter);
+void fill_list_item_device(Devices *f_temp, GtkTreeIter *iter);
 
 
 void change_list_store_view_devices(GtkWidget *widget, gboolean visible);
 
 void change_list_store_view_process(GtkWidget *widget, gboolean visible);
 
-void add_new_list_item(gint i);
+void add_new_list_item(Task *task_t);
 
-void add_new_list_item_dev(gint i);
+void add_new_list_item_dev(Devices *d_temp);
 
 void create_list_store(void);
 

@@ -10,7 +10,8 @@
 #include <stdbool.h>
 
 
-
+GtkWidget *dev_window;
+GtkWidget *proc_window;
 
 GtkWidget *task_popup;
 
@@ -44,10 +45,10 @@ GtkWidget *button_process_cpu;
 GtkWidget *button_process_prio;
 GtkWidget *button_process_duration;
 
-static gboolean CPU0_line = TRUE;
-static gboolean CPU1_line = TRUE;
-static gboolean CPU2_line = TRUE;
-static gboolean CPU3_line = TRUE;
+ gboolean CPU0_line ;
+ gboolean CPU1_line ;
+ gboolean CPU2_line ;
+gboolean CPU3_line ;
 
 gboolean on_treeview1_button_press_event(GtkButton *button, GdkEventButton *event);
 
@@ -62,6 +63,7 @@ void button_clicked_view_process(GtkWidget *widget);
 void graph_button_clicked(GtkWidget *widget);
 
 void close_window();
+void close_window2(GtkWidget *widget);
 
 void show_hide(GtkWidget *button, GtkWidget *window);
 

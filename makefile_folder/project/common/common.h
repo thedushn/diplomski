@@ -8,7 +8,19 @@
 
 #include <stdbool.h>
 #include <time.h>
+#include "pthread.h"
+#define BUFFER_SIZE 1024
 
+
+#define CPU_USAGE 1
+#define NETWORK 2
+#define MEMORY 3
+#define TASK 4
+#define DEVICES 5
+#define INTERRUTPS 6
+#define TEXT 7
+pthread_mutex_t mutex_jiff;
+pthread_mutex_t mutex_send;
 
 struct __attribute__((__packed__))tm1 {
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
@@ -79,7 +91,7 @@ struct __attribute__((__packed__)) _Memory_usage {
 typedef struct _Interrupts Interrupts;
 struct __attribute__((__packed__))_Interrupts {
 
-    char name[64];
+    char irq[64];
     char ime1[64];
     char ime2[64];
     char ime3[64];
@@ -113,6 +125,43 @@ struct __attribute__((__packed__)) _Devices {
     char name[64];
     char type[64];
     char directory[256];
+};
+typedef struct _Device_Collection D_Collection;
+struct _Device_Collection{
+
+    Devices devices;
+    D_Collection * next;
+};
+
+
+typedef struct _Task_Collection T_Collection;
+struct _Task_Collection{
+
+    Task task;
+    T_Collection * next;
+};
+
+typedef union _Unification Unification ;
+
+union _Unification {
+
+    Task task;
+    Network network;
+    Memory_usage memory_usage;
+    Cpu_usage cpu_usage;
+    Interrupts interrupts;
+    Devices devices;
+    char conformation[64];
+
+
+};
+
+typedef struct _Data Data;
+struct __attribute__((__packed__)) _Data{
+
+    int size;
+    Unification unification;
+
 };
 
 #endif //DIPLOMSKI_COMMON_H

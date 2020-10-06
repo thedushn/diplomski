@@ -1,0 +1,27 @@
+\hypertarget{struct__Cpu__List}{}\section{\+\_\+\+Cpu\+\_\+\+List Struct Reference}
+\label{struct__Cpu__List}\index{\+\_\+\+Cpu\+\_\+\+List@{\+\_\+\+Cpu\+\_\+\+List}}
+
+
+Collaboration diagram for \+\_\+\+Cpu\+\_\+\+List\+:
+% FIG 0
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float {\bfseries data} \mbox{[}C\+P\+U\+\_\+\+N\+UM\mbox{]}\hypertarget{struct__Cpu__List_a272f40f5234c43e632dced36bb5e2534}{}\label{struct__Cpu__List_a272f40f5234c43e632dced36bb5e2534}
+
+\item 
+\hyperlink{struct__Cpu__List}{Cpu\+\_\+list} $\ast$ {\bfseries next}\hypertarget{struct__Cpu__List_ad6f54f1c627085da99d1faa1158ab58b}{}\label{struct__Cpu__List_ad6f54f1c627085da99d1faa1158ab58b}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 23 of file main\+\_\+header.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+main\+\_\+header.\+h\end{DoxyCompactItemize}
