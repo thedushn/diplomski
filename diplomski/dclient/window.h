@@ -13,6 +13,7 @@ GtkWidget *graph1;/*graph for cpu usage*/
 GtkWidget *graph2;/*graph for network usage*/
 GtkWidget *graph3;/*graph for memory usage*/
 GtkWidget *graph4;/*graph for interrupts */
+GtkWidget *graph_write;/*graph for interrupts */
 
 
 

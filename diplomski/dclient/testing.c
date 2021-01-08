@@ -9,7 +9,7 @@
 #include <inttypes.h>
 #include <memory.h>
 #include <stdlib.h>
-
+#include <errno.h>
 
 
 int interrupts_write(Interrupts *array) {
@@ -18,6 +18,10 @@ int interrupts_write(Interrupts *array) {
     FILE *fp;
     char *filename = "interrupts.data";
     char *p;
+    char buffer[256];
+    memset(buffer,0,sizeof(buffer));
+    strcat(buffer,p_dir);
+    strcat(buffer,filename);
     ssize_t size;
 
     if (array == NULL) {
@@ -26,8 +30,14 @@ int interrupts_write(Interrupts *array) {
         return 1;
 
     }
-    if ((fp = fopen(filename, "a+")) == NULL) //create a file if it doesnt exist
+
+    if ((fp = fopen(buffer, "a+")) == NULL){
+        printf("fopen failed \n");
+        perror("Error");
         return 1;
+    } //create a file if it doesnt exist
+
+
 
 
     time_t clk=time(NULL);
@@ -38,7 +48,7 @@ int interrupts_write(Interrupts *array) {
 
     for (int i = 0; i < 10; i++) {
 
-        fprintf(fp, " \n %3s %" PRIu64 " %" PRIu64 " %" PRIu64 " %" PRIu64 " %s %s %s %s \n", array->irq, array->CPU0,
+        fprintf(fp, "%s %" PRIu64 " %" PRIu64 " %" PRIu64 " %" PRIu64 " %s %s %s %s \n", array->irq, array->CPU0,
                 array->CPU1, array->CPU2, array->CPU3, array->ime1, array->ime2, array->ime3, array->ime4);
 
 
@@ -59,9 +69,26 @@ int memory_write(Memory_usage *memory_usage){
     char *filename = "memory.data";
     char *p;
     ssize_t size;
+    char buffer[256];
+    memset(buffer,0,sizeof(buffer));
+    strcat(buffer,p_dir);
+    strcat(buffer,filename);
 
-    if ((fp = fopen(filename, "a+")) == NULL) //create a file if it doesnt exist
+
+    if (memory_usage == NULL) {
+
+        fprintf(stderr, "array is NULL failed\n");
         return 1;
+
+    }
+
+    if ((fp = fopen(buffer, "a+")) == NULL){
+        printf("fopen failed \n");
+        perror("Error");
+        return 1;
+    } //create a file if it doesnt exist
+
+
 
     time_t clk=time(NULL);
     p=ctime(&clk);
@@ -89,10 +116,19 @@ int cpu_write(Cpu_usage cpu_usage) {
     char *filename = "cpu.data";
     char *p;
     ssize_t size;
+    char buffer[256];
+    memset(buffer,0,sizeof(buffer));
+    strcat(buffer,p_dir);
+    strcat(buffer,filename);
 
 
-    if ((fp = fopen(filename, "a+")) == NULL) //create a file if it doesnt exist
+
+
+    if ((fp = fopen(buffer, "a+")) == NULL){
+        printf("fopen failed \n");
+        perror("Error");
         return 1;
+    } //create a file if it doesnt exist
 
 
     time_t clk=time(NULL);
@@ -116,11 +152,83 @@ int cpu_write(Cpu_usage cpu_usage) {
     return 0;
 
 }
+int cpu_read(Cpu_list **array) {
+
+
+    FILE *fp;
+    char *filename = "cpu.data";
+   char buffer[1024];
+   char *p;
+    Cpu_list *temp=NULL;
+    int ret=0;
+    int time;
+    if ((fp = fopen(filename, "r")) == NULL) //create a file if it doesnt exist
+        return 1;
+
+
+
+
+    while((fgets(buffer,1024,fp))!=NULL){
+
+        if(strncmp(buffer,"Time:",5)==0){
+            p=strchr(buffer,'D');
+            ret= sscanf(p,"Delay %d",&time);
+            if(fgets(buffer,1024,fp)==NULL){
+                ret=-1;
+                break;
+            }
+            if (buffer[0]=='\n'){
+                if(fgets(buffer,1024,fp)==NULL){
+                    ret=-1;
+                    break;
+                }
+            }
+
+        }
+        temp = (Cpu_list *) calloc(1, sizeof(Cpu_list));
+        if (temp == NULL) {
+            printf("calloc error %d \n", errno);
+            free(temp);
+            ret=-1;
+            break;
+        }
+
+        if(sscanf(buffer,"%f %f %f %f",&(temp)->data[0],&(temp)->data[1],&(temp)->data[2],&(temp)->data[3])==4){
+            temp->next = (*array);
+            (*array) = temp;
+            list_num_size++;
+        }
+        else{
+            printf("sscanf error  \n");
+            free(temp);
+            ret=-1;
+            break;
+        }
+
+
+
+
+
+    }
+
+
+
+
+    fclose(fp);
+    return ret;
+
+}
 int task_write(T_Collection *array){
     FILE *fp;
     char *filename = "task.data";
     char *p;
     ssize_t size;
+
+    char buffer[256];
+    memset(buffer,0,sizeof(buffer));
+    strcat(buffer,p_dir);
+    strcat(buffer,filename);
+
 
     if (array == NULL) {
 
@@ -129,8 +237,13 @@ int task_write(T_Collection *array){
 
     }
 
-    if ((fp = fopen(filename, "a+")) == NULL) //create a file if it doesnt exist
+    if ((fp = fopen(buffer, "a+")) == NULL){
+        printf("fopen failed \n");
+        perror("Error");
         return 1;
+    } //create a file if it doesnt exist
+
+
 
     time_t clk=time(NULL);
     p=ctime(&clk);
@@ -140,15 +253,28 @@ int task_write(T_Collection *array){
 
     while(array!=NULL){
         fprintf(fp,
-                "PID %i state %1s ppid %i  prio  %hi  "
-                        " vsz %" SCNu64 " rss %" SCNu64"\n",
+                "PID %i state %1s ppid %i prio %hi "
+                        "vsz %" PRIu64 " rss %" PRIu64" "
+                        "Name %s Uid_name %s uid %" PRIu32 " "
+                        "CPU_system %s CPU_user %s duration: hour %" PRIu32 " "
+                        "minute %" PRIu32 " second %" PRIu32 "\n",
                 array->task.pid,    // processid
                 array->task.state,    // processstate
                 array->task.ppid,    // parentid
                 array->task.prio, // nice range from 19 to -19
 
                 array->task.vsz, // vsize in bytes
-                array->task.rss // rss (number of pages in real memory)
+                array->task.rss, // rss (number of pages in real memory)
+                array->task.name,
+                array->task.uid_name,
+                array->task.uid,
+                array->task.cpu_system,
+                array->task.cpu_user,
+                array->task.duration.tm_hour,
+                array->task.duration.tm_min,
+                array->task.duration.tm_sec
+
+
 
         );
         array=array->next;
@@ -166,6 +292,12 @@ int device_write(D_Collection *array){
     char *p;
     ssize_t size;
 
+    char buffer[256];
+    memset(buffer,0,sizeof(buffer));
+    strcat(buffer,p_dir);
+    strcat(buffer,filename);
+
+
     if (array == NULL) {
 
         fprintf(stderr, "array is NULL failed\n");
@@ -173,8 +305,11 @@ int device_write(D_Collection *array){
 
     }
 
-    if ((fp = fopen(filename, "a+")) == NULL) //create a file if it doesnt exist
+    if ((fp = fopen(buffer, "a+")) == NULL){
+        printf("fopen failed \n");
+        perror("Error");
         return 1;
+    } //create a file if it doesnt exist
 
     time_t clk=time(NULL);
     p=ctime(&clk);
@@ -184,8 +319,8 @@ int device_write(D_Collection *array){
 
     while(array!=NULL){
         fprintf(fp,
-                "Devices %s available %" SCNu64 "  free %" SCNu64 " type %s directory %s used %" SCNu64 ""
-                        " total %" SCNu64 "\n",
+                "Devices %s available %" PRIu64 "  free %" PRIu64 " type %s directory %s used %" PRIu64 ""
+                        " total %" PRIu64 "\n",
                 array->devices.name,
                 array->devices.avail,
                 array->devices.free,
@@ -207,15 +342,24 @@ int device_write(D_Collection *array){
 
     return 0;
 }
-int netw_write(float transmited,float received) {
+int netw_write(uint64_t transmited, uint64_t received) {
 
     FILE *fp;
     char *filename = "network.data";
     char *p;
     ssize_t size;
 
-    if ((fp = fopen(filename, "a+")) == NULL) //create a file if it doesnt exist
+    char buffer[256];
+    memset(buffer,0,sizeof(buffer));
+    strcat(buffer,p_dir);
+    strcat(buffer,filename);
+
+
+    if ((fp = fopen(buffer, "a+")) == NULL){
+        printf("fopen failed \n");
+        perror("Error");
         return 1;
+    } //create a file if it doesnt exist
 
 
     time_t clk=time(NULL);
@@ -224,7 +368,7 @@ int netw_write(float transmited,float received) {
     p[size-1]=' ';
     fprintf(fp,"Time: %sDelay %d\n",p,t);
 
-    fprintf(fp,"Transmited %f  Received %f\n",transmited,received);
+    fprintf(fp,"Transmited %"PRIu64"  Received %"PRIu64"\n",transmited,received);
 
 
 
@@ -320,4 +464,40 @@ int ifstat_calculate(float *received_kb, float *transmitted_kb) {
 
     return 0;
 
+}
+int task_sort(T_Collection **array, int number) {
+
+    Task temp;
+    T_Collection *current=NULL;
+
+
+    for(int i=0;i<number;i++){
+        current =*array;
+
+
+
+    while(current->next!=NULL){
+        printf("PID before %d\n",current->task.pid);
+
+        if(0<(int)(current->task.pid-current->next->task.pid))
+        {
+            temp=current->task;
+            current->task       = current->next->task;
+            current->next->task = temp;
+
+
+        }
+        printf("PID after_ %d\n",current->task.pid);
+        current   =  current->next;
+    }
+
+
+
+
+    }
+
+
+
+
+    return 0;
 }

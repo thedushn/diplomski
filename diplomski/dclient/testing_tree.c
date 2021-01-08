@@ -7,6 +7,7 @@
 #include <asm/errno.h>
 
 
+
 #include "buttons.h"
 #include "main_header.h"
 
@@ -354,7 +355,7 @@ int task_check(T_Collection *tasks_new, int task_num) {
  * output:none
  * */
 void create_list_store_task(void) {
-    GtkCellRenderer *cell_renderer;
+
     GtkTreeViewColumn *column;
 
     list_tasks = gtk_tree_store_new(NUM_COLS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
@@ -364,6 +365,8 @@ void create_list_store_task(void) {
 
 
     column = gtk_tree_view_column_new_with_attributes(("Tasks"), cell_renderer, "text", COL_TASK, NULL);
+
+
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_TASK);
@@ -371,8 +374,10 @@ void create_list_store_task(void) {
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_tasks), COL_TASK, compare_string_list_item,
                                     (void *) COL_TASK, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_tasks), column);
-
+    g_object_ref_sink(G_OBJECT(column));
+    g_object_unref(G_OBJECT(column));
     column = gtk_tree_view_column_new_with_attributes(("USERS"), cell_renderer, "text", COL_UNAME, NULL);
+
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_UNAME);
@@ -380,8 +385,10 @@ void create_list_store_task(void) {
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_tasks), COL_UNAME, compare_string_list_item,
                                     (void *) COL_UNAME, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_tasks), column);
-
+    g_object_ref_sink(G_OBJECT(column));
+    g_object_unref(G_OBJECT(column));
     column = gtk_tree_view_column_new_with_attributes(("PID"), cell_renderer, "text", COL_PID, NULL);
+
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_PID);
@@ -391,6 +398,7 @@ void create_list_store_task(void) {
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_tasks), column);
 
     column = gtk_tree_view_column_new_with_attributes(("PPID"), cell_renderer, "text", COL_PPID, NULL);
+
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_PPID);
@@ -400,6 +408,7 @@ void create_list_store_task(void) {
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_tasks), column);
 
     column = gtk_tree_view_column_new_with_attributes(("State"), cell_renderer, "text", COL_STATE, NULL);
+
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_STATE);
@@ -409,6 +418,7 @@ void create_list_store_task(void) {
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_tasks), column);
 
     column = gtk_tree_view_column_new_with_attributes(("VM-Size"), cell_renderer, "text", COL_VSZ, NULL);
+
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_VSZ);
@@ -418,6 +428,7 @@ void create_list_store_task(void) {
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_tasks), column);
 
     column = gtk_tree_view_column_new_with_attributes(("RSS"), cell_renderer, "text", COL_RSS, NULL);
+
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_RSS);
@@ -428,6 +439,7 @@ void create_list_store_task(void) {
 
 
     column = gtk_tree_view_column_new_with_attributes(("CPU%"), cell_renderer, "text", COL_CPU, NULL);
+
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_CPU);
@@ -437,6 +449,7 @@ void create_list_store_task(void) {
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_tasks), column);
 
     column = gtk_tree_view_column_new_with_attributes(("Prio"), cell_renderer, "text", COL_PRIO, NULL);
+
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_PRIO);
@@ -446,6 +459,7 @@ void create_list_store_task(void) {
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_tasks), column);
 
     column = gtk_tree_view_column_new_with_attributes(("Duration"), cell_renderer, "text", COL_DUR, NULL);
+
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_DUR);
@@ -453,7 +467,6 @@ void create_list_store_task(void) {
     gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(list_tasks), COL_DUR, compare_int_list_item_time,
                                     (void *) COL_DUR, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_tasks), column);
-
 
 }
 /*

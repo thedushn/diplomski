@@ -19,7 +19,7 @@
 void * send_memory(void *socket){
 
     int sockfd=(*(int*)socket);
-    ssize_t ret;
+    ssize_t *ret=NULL;
 
 
     Memory_usage  memory_usage={0};
@@ -27,16 +27,22 @@ void * send_memory(void *socket){
 
     pthread_mutex_lock(&mutex_send);
     while (thread_break == false) {/*if other threads have failed close this thread before it allocates any memory*/
-        ret = -100;
+
         pthread_mutex_unlock(&mutex_send);
-        pthread_exit(&ret);
+        pthread_exit(NULL);
     }
     pthread_mutex_unlock(&mutex_send);
 
-    ret=(ssize_t)  get_memory_usage(&memory_usage);
-    if (ret > 0) {
+    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
+        free(ret);
+        pthread_exit(NULL);
+    }
 
-        pthread_exit(&ret);
+
+    *ret=(ssize_t)  get_memory_usage(&memory_usage);
+    if (*ret > 0) {
+
+        pthread_exit(ret);
     }
     //memory_write(&memory_usage);
 
@@ -44,23 +50,23 @@ void * send_memory(void *socket){
     data.unification.memory_usage=memory_usage;
 
     pthread_mutex_lock(&mutex_send);
-    ret = send(sockfd, &data, sizeof(Data), 0);
+    *ret = send(sockfd, &data, sizeof(Data), 0);
     pthread_mutex_unlock(&mutex_send);
 
-    if (ret < 0) {
-        printf("Error sending data\n return = %d\n", (int) ret);
-        pthread_exit(&ret);
+    if (*ret < 0) {
+        printf("Error sending data\n return = %d\n", (int) *ret);
+        pthread_exit(ret);
 
     }
-    if (ret == 0) {
-        printf("Error sending data\n return = %d\n", (int) ret);
+    if (*ret == 0) {
+        printf("Error sending data\n return = %d\n", (int) *ret);
         printf("socket closed\n");
-        pthread_exit(&ret);
+        pthread_exit(ret);
 
     }
 
 
-    pthread_exit(&ret);
+    pthread_exit(ret);
 }
 
 /*

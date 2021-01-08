@@ -35,6 +35,7 @@ CMakeFiles/server.dir/main.c.o
  /home/dushn/Diplomski/diplomski/dserver/main.c
  /home/dushn/Diplomski/diplomski/dserver/network_bandwith.h
  /home/dushn/Diplomski/diplomski/dserver/task_manager.h
+ /home/dushn/Diplomski/diplomski/dserver/time_managment.h
 CMakeFiles/server.dir/memory_usage.c.o
  /home/dushn/Diplomski/diplomski/dserver/common.h
  /home/dushn/Diplomski/diplomski/dserver/functions.h
@@ -57,3 +58,9 @@ CMakeFiles/server.dir/testing.c.o
  /home/dushn/Diplomski/diplomski/dserver/common.h
  /home/dushn/Diplomski/diplomski/dserver/testing.c
  /home/dushn/Diplomski/diplomski/dserver/testing.h
+CMakeFiles/server.dir/time_managment.c.o
+ /home/dushn/Diplomski/diplomski/dserver/common.h
+ /home/dushn/Diplomski/diplomski/dserver/functions.h
+ /home/dushn/Diplomski/diplomski/dserver/task_manager.h
+ /home/dushn/Diplomski/diplomski/dserver/time_managment.c
+ /home/dushn/Diplomski/diplomski/dserver/time_managment.h

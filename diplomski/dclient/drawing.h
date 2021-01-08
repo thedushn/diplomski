@@ -22,7 +22,7 @@
 #include "common.h"
 #include "main_header.h"
 #include "window.h"
-
+gboolean on_draw_event2(GtkWidget *widget, cairo_t *cr, Cpu_list *array);
 gboolean on_draw_event(GtkWidget *widget, cairo_t *cr);
 
 void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list *array);
@@ -56,6 +56,7 @@ draw_graph(cairo_t *cr, int r, double width, double height, double font_size, do
 void
 draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step,
                    float max_num, NetMem_list *array);
+void do_drawing_cpu2(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *array1);
 
 #endif //DIPLOMSKI_DRAWING_H
 

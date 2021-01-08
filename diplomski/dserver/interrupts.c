@@ -49,27 +49,35 @@ void clean_interrupts(){
 void * send_interrupts(void *socket){
 
     int         sockfd=(*(int*)socket);
-    ssize_t     ret;
+    ssize_t     *ret=NULL;
     __int32_t   h = 0;
-    int         result;
+
     Data        data={0};
 
     pthread_mutex_lock(&mutex_send);
-    while (thread_break == false) {/*if other threads have failed close this thread before it allocates any memory*/
-        ret = -100;
+    while (thread_break == false) { /*if other threads have failed close this thread before it allocates any memory*/
+
         pthread_mutex_unlock(&mutex_send);
-        pthread_exit(&ret);
+        pthread_exit(NULL);
     }
     pthread_mutex_unlock(&mutex_send);
 
-    result = interrupt_usage(&interrupts, &h);
-    if (result != 0) {
+    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
+        free(ret);
+        pthread_exit(NULL);
+    }
+
+
+    if((*ret = interrupt_usage(&interrupts, &h))!=0){
 
         clean_interrupts();
 
-        ret = -100;
-        pthread_exit(&ret);
+
+        pthread_exit(ret);
     }
+
+
+
 
 
 
@@ -80,8 +88,8 @@ void * send_interrupts(void *socket){
 
             printf("calloc error %d \n", errno);
             free(interrupts_main);
-            ret = -100;
-            pthread_exit(&ret);
+            *ret = -100;
+            pthread_exit(ret);
 
         }
         for (int r = 0; r < h; r++) {
@@ -96,8 +104,8 @@ void * send_interrupts(void *socket){
     if(interrupts_send==NULL){
         printf("calloc error %d \n", errno);
         free(interrupts_send);
-        ret = -100;
-        pthread_exit(&ret);
+        *ret = -100;
+        pthread_exit(ret);
     }
     compare_interrupts(interrupts, interrupts_main, interrupts_send, h);
 
@@ -114,17 +122,17 @@ void * send_interrupts(void *socket){
         data.size=INTERRUPTS;
         data.unification.interrupts=interrupts_send[r];
         pthread_mutex_lock(&mutex_send);
-        ret = send(sockfd, &data, sizeof(Data), 0);
+        *ret = send(sockfd, &data, sizeof(Data), 0);
         pthread_mutex_unlock(&mutex_send);
-        if (ret < 0) {
-            printf("Error sending data\n return = %d\n", (int) ret);
-            pthread_exit(&ret);
+        if (*ret < 0) {
+            printf("Error sending data\n return = %d\n", (int) *ret);
+            pthread_exit(ret);
         }
-        if (ret == 0) {
-            printf("Error sending data\n return = %d\n", (int) ret);
+        if (*ret == 0) {
+            printf("Error sending data\n return = %d\n", (int) *ret);
             printf("socket closed\n");
-            ret = -1;
-            pthread_exit(&ret);
+            *ret = -1;
+            pthread_exit(ret);
         }
 
 
@@ -137,7 +145,7 @@ void * send_interrupts(void *socket){
 
     interrupts = NULL;
     interrupts_send = NULL;
-    pthread_exit(&ret);
+    pthread_exit(ret);
 
 }
 /*
@@ -145,7 +153,7 @@ void * send_interrupts(void *socket){
  * input    : double pointer to a list of structure of data about interrupts and a pointer to the number of interrupts.
  * output   : returns a non zero value if something goes wrong
  * */
-
+//TODO make interrupts function for more cpus
 int interrupt_usage(Interrupts **array, __int32_t *num) {
 
 
@@ -168,7 +176,7 @@ int interrupt_usage(Interrupts **array, __int32_t *num) {
 
     }
     if ((file = fopen(filename, "r")) == NULL || fgets(buffer, 1024, file) == NULL)
-        return 1;
+        return -1;
 
 
     while (fgets(buffer, 1024, file) != NULL) {
@@ -215,7 +223,7 @@ int interrupt_usage(Interrupts **array, __int32_t *num) {
             free(*array);
             fclose(file);
             printf("reallocate error %d", errno);
-            return 1;
+            return -1;
 
         }
 

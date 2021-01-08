@@ -119,10 +119,14 @@ memory.h
 -
 stdlib.h
 -
+errno.h
+-
 
 /home/dushn/Diplomski/diplomski/dclient/testing.h
 common.h
 /home/dushn/Diplomski/diplomski/dclient/common.h
+main_header.h
+/home/dushn/Diplomski/diplomski/dclient/main_header.h
 
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.c
 testing_tree.h

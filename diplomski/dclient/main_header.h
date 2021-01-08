@@ -53,8 +53,8 @@ Interrupts *interrupts;/*!list to the interrupts  */
 Cpu_list *cpu_list;/*!list to the cpu usage  */
 NetMem_list *net_list;/*!list to the network usage  */
 NetMem_list *mem_list;/*!list to the memory usage  */
-
-
+Cpu_list *testerino;
+char p_dir[256];
 
 #define LIST_SIZE 240 /*!the max size of list of cpu, network and memory usage*/
 
@@ -79,6 +79,7 @@ void freeing_memory(void *array, __int32_t *array_size, int type);
 void test_strtol(int val);
 
 void set_record(GtkWidget *widget);
+void pause_app(GtkWidget *button);
 
 
 

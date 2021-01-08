@@ -17,7 +17,7 @@ sem_t semt; /*semaphore for letting the init_timeout function finish before we c
 
 bool flag_timeout=true;/*flag for letting the init_timeout function know what to do */
 
-
+bool writing=true;
 /*
  * function set_record(): sets the record flag to true or false depending on if the button is clicked or not
  * input  : widget.
@@ -77,7 +77,28 @@ void dec_refresh() {
     timeout_refresh();
 
 }
+void pause_app(GtkWidget *button) {
 
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (button))) {
+
+        sem_wait(&semt);
+        if(refresh>0)
+            if (!g_source_remove(refresh)) {
+                g_critical ("Unable to remove source");
+                return;
+            }
+
+        refresh = 0;
+        sem_post(&semt);
+
+
+
+    } else {
+        init_timeout();
+    }
+
+
+}
 
 
 
@@ -218,7 +239,7 @@ void freeing_memory(void *array, __int32_t *array_size, int type){
 
 gboolean init_timeout() {
 
-    int             ret;
+    int             ret          =  0;
     __int32_t       dev_num      =  0;//in the begging its zero
     __int32_t       task_num     =  0;
     T_Collection    *tasks_new   =  NULL;
@@ -232,6 +253,7 @@ gboolean init_timeout() {
     Cpu_list        *temp_collection;
     NetMem_list     *temp_net;
     NetMem_list     *temp_mem;
+
 
 
     sem_wait(&semt);
@@ -249,10 +271,10 @@ gboolean init_timeout() {
         return FALSE;
     }
 
-    ret = data_transfer(newsockfd, &cpu_usage, &network, &memory_usage, &tasks_new, &devices_new, &task_num, &dev_num);
 
 
-    if (ret != 0) {
+
+    if (data_transfer(newsockfd, &cpu_usage, &network, &memory_usage, &tasks_new, &devices_new, &task_num, &dev_num) != 0) {
 
 
         freeing_memory(devices_new,&dev_num,DEVICES);
@@ -421,12 +443,55 @@ gboolean init_timeout() {
     }
 
     if(record){
-        interrupts_write(interrupts);
-        device_write(devices_old);
-        task_write(tasks_old);
-        cpu_write(cpu_usage);
-        memory_write(&memory_usage);
-        netw_write( (float)network.transmited_bytes/1024, (float)network.received_bytes/1024);
+
+
+        if(writing==true){//beginning
+
+
+            char *test;
+            ssize_t size;
+
+            struct stat st;
+
+            time_t clk=time(NULL);
+            strcat(p_dir,ctime(&clk));
+            size= strlen(p_dir);
+            p_dir[size-1]=' ';
+            while((test=strchr(p_dir,' '))!=strrchr(p_dir,' ')){
+                *test='_';
+            }
+            test=strrchr(p_dir,' ');
+            *test='/';
+            if(stat(p_dir,&st)==-1){
+                mkdir(p_dir,0777);
+            }
+
+            writing=false;
+
+           interrupts_write(interrupts) ;
+            device_write(devices_old);
+
+
+            task_write(tasks_old);
+            cpu_write(cpu_usage);
+            memory_write(&memory_usage);
+            netw_write( network.transmited_bytes, network.received_bytes);
+        }else{
+
+           interrupts_write(interrupts) ;
+            device_write(devices_old);
+
+
+            task_write(tasks_old);
+            cpu_write(cpu_usage);
+            memory_write(&memory_usage);
+            netw_write( network.transmited_bytes, network.received_bytes);
+        }
+
+    }else{
+
+        writing=true;
+
     }
 
     cpu_change(cpu_usage);
@@ -502,7 +567,11 @@ int main(int argc, char *argv[]) {
         time_step       = 0;    /*space between data*/
         device_all      = false;
         record          = false;
-//
+        newsockfd       = 0;
+        newsockfd1      = 0;
+
+
+
 //    float rec=0;
 //    float tr=0;
 //    ifstat_calculate(&rec, &tr);
@@ -510,7 +579,9 @@ int main(int argc, char *argv[]) {
 //    float  received=0;
 //    float  trans=0;
 //    netw_calculate(&trans,&received);
-//    printf("client Transmited %f Received %f   \nifstat Transmited %f Received %f\n",trans,received,rec,tr);
+//    printf("klijent poslao %f primio %f   \nifstat  poslao %f primio %f\n",trans,received,rec,tr);
+
+
     if (argc < 3) {
 
         printf("port not provided \n");
@@ -528,14 +599,15 @@ int main(int argc, char *argv[]) {
         return -1;
 
     }
-    newsockfd = connection(argv[1], argv[2]);
-    if (newsockfd < 0) {
+
+    if ((newsockfd = connection(argv[1], argv[2])) < 0) {
         close(newsockfd);
         return -1;
     }
-    newsockfd1 = connection(argv[1], argv[2]);
-    if (newsockfd1 < 0) {
 
+    if ((newsockfd1 = connection(argv[1], argv[2])) < 0) {
+        close(newsockfd);
+        close(newsockfd1);
         return -1;
     }
 
@@ -566,7 +638,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    gtk_disable_setlocale(); /*sscanf and sprintf dont work if this isn't used */
+    gtk_disable_setlocale(); /*sscanf and sprintf don't work if this isn't used */
 
     gtk_init(&argc, &argv);
 
@@ -588,12 +660,10 @@ int main(int argc, char *argv[]) {
 
 
 
-    device_swindow = gtk_scrolled_window_new(NULL,
-                                             NULL);
+    device_swindow = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(device_swindow), GTK_POLICY_AUTOMATIC,
                                    GTK_POLICY_ALWAYS);
-    process_swindow = gtk_scrolled_window_new(NULL,
-                                              NULL);
+    process_swindow = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(process_swindow), GTK_POLICY_AUTOMATIC,
                                    GTK_POLICY_ALWAYS);
 
@@ -606,19 +676,21 @@ int main(int argc, char *argv[]) {
 
     g_signal_connect(button_inc, "clicked", G_CALLBACK(inc_refresh), NULL);
     g_signal_connect(button_dec, "clicked", G_CALLBACK(dec_refresh), NULL);
+    g_signal_connect(button_pause, "toggled", G_CALLBACK(pause_app), button_pause);
     g_signal_connect(button_proc, "toggled", G_CALLBACK(show_hide), process_swindow);
-
+    g_signal_connect(button_dev, "toggled", G_CALLBACK(show_hide), device_swindow);
 
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_proc),
                                  TRUE);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_dev),
                                  TRUE);
-    g_signal_connect(button_dev, "toggled", G_CALLBACK(show_hide), device_swindow);
+
 
 
 
     g_signal_connect(button_graph, "clicked", G_CALLBACK(graph_button_clicked),NULL);
+
 
     g_signal_connect_swapped ((gpointer) treeview_tasks, "button-press-event",
                               G_CALLBACK(on_treeview_tasks_button_press_event),
@@ -630,6 +702,15 @@ int main(int argc, char *argv[]) {
     g_signal_connect_data((GObject *) (graph2),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
     g_signal_connect_data((GObject *) (graph3),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
     g_signal_connect_data((GObject *) (graph4),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
+
+
+
+
+    time_step = 60000 / t;
+
+
+
+
 
 
 
@@ -650,9 +731,13 @@ int main(int argc, char *argv[]) {
 
     gtk_main();
 
+
+
+
     gtk_tree_store_clear(list_tasks); /*freeing memory allocated for task list*/
     gtk_tree_store_clear(list_devices);/*freeing memory allocated for device list*/
-
+    g_object_unref(list_tasks);
+    g_object_unref(list_devices);
 
     free(interrupts);
     freeing_memory(cpu_list,&list_num_size,CPU_USAGE);
@@ -673,6 +758,8 @@ int main(int argc, char *argv[]) {
 
     close(newsockfd);
     close(newsockfd1);
+
+
 
 
 

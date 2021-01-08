@@ -26,44 +26,51 @@ static int letter_counter;
 void * send_network(void *socket){
 
     int sockfd=(*(int*)socket);
-    int result;
+
     Data data={0};
     Network network={0};
-    ssize_t ret;
+    ssize_t *ret=NULL;
 
     pthread_mutex_lock(&mutex_send);
     while (thread_break == false) {
-        ret = -100;
+
         pthread_mutex_unlock(&mutex_send);
-        pthread_exit(&ret);
+        pthread_exit(NULL);
     }
     pthread_mutex_unlock(&mutex_send);
-    result = interface_name(&network);
-    if (result != 0) {
-        ret = -100;
-        pthread_exit(&ret);
+
+    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
+        free(ret);
+        pthread_exit(NULL);
+    }
+
+
+
+    if ((*ret =(ssize_t) interface_name(&network)) != 0) {
+        *ret = -100;
+        pthread_exit(ret);
     }
     memset(&data,0,sizeof(Data));
     data.size=NETWORK;
     data.unification.network=network;
     pthread_mutex_lock(&mutex_send);
-    ret = send(sockfd, &data, sizeof(Data), 0);
+    *ret = send(sockfd, &data, sizeof(Data), 0);
     pthread_mutex_unlock(&mutex_send);
 
-    if (ret < 0) {
-        printf("Error sending data\n return = %d\n", (int) ret);
+    if (*ret < 0) {
+        printf("Error sending data\n return = %d\n", (int) *ret);
 
-        pthread_exit(&ret);
+        pthread_exit(ret);
 
     }
-    if (ret == 0) {
-        printf("Error sending data\n return = %d\n", (int) ret);
+    if (*ret == 0) {
+        printf("Error sending data\n return = %d\n", (int) *ret);
         printf("socket closed\n");
-        ret = -100;
-        pthread_exit(&ret);
+        *ret = -100;
+        pthread_exit(ret);
     }
 
-    pthread_exit(&ret);
+    pthread_exit(ret);
 }
 /*
  * function search_net(); searches the linked list to find a network devices and  save its old data and replace it with the
@@ -222,7 +229,7 @@ int interface_name(Network *network) {
     if (pDir == NULL) {
 
         printf("Cannot open directory '%s'\n", dir_name);
-        return 1;
+        return -1;
 
     }
 
@@ -277,7 +284,7 @@ int interface_name(Network *network) {
 
             if ((file = fopen(filename, "r")) == NULL || fgets(buffer, BUFFER_SIZE, file) == NULL) {
                 closedir(pDir);
-                return 1;
+                return -1;
             }
 
 

@@ -21,10 +21,9 @@
 void * send_devices(void *socket){
 
     int     sockfd=(*(int*)socket);
-    int     result;
-    ssize_t ret;
+    ssize_t *ret=NULL;
 
-    D_Collection *devices_c;
+    D_Collection *devices_c=NULL;
     D_Collection *temp_dev;
     __int32_t device_num = 0;
 
@@ -32,14 +31,20 @@ void * send_devices(void *socket){
     Data data={0};
     pthread_mutex_lock(&mutex_send);
     while (thread_break == false) { /*if other threads have failed close this thread before it allocates any memory*/
-        ret = -100;
+
         pthread_mutex_unlock(&mutex_send);
-        pthread_exit(&ret);
+        pthread_exit(NULL);
     }
     pthread_mutex_unlock(&mutex_send);
 
-    result = mount_list(&devices_c, &device_num, devices_show);
-    if (result != 0) {
+    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
+        free(ret);
+        pthread_exit(NULL);
+    }
+
+
+
+    if ( (*ret=mount_list(&devices_c, &device_num, devices_show))) {
         printf("error in mount_list\n");
         for(int k=0;k<device_num;k++){
 
@@ -48,8 +53,8 @@ void * send_devices(void *socket){
             free(temp_dev);
 
         }
-        ret = -100;
-        pthread_exit(&ret);
+        *ret = -100;
+        pthread_exit(ret);
     }
 
 
@@ -60,14 +65,14 @@ void * send_devices(void *socket){
         data.size=DEVICES;
         data.unification.devices=(Devices)temp_dev->devices;
         pthread_mutex_lock(&mutex_send);
-        ret = send(sockfd, &data, sizeof(Data), 0);
+        *ret = send(sockfd, &data, sizeof(Data), 0);
         pthread_mutex_unlock(&mutex_send);
 
 
 
-        if (ret < 0) { /*if the socket broke SIGPIPE error free allocated memory*/
+        if (*ret < 0) { /*if the socket broke SIGPIPE error free allocated memory*/
 
-            printf("Error sending data\n return = %d\n", (int) ret);
+            printf("Error sending data\n return = %d\n", (int) *ret);
             for(int k=0;k<device_num;k++){
 
                 temp_dev = devices_c;
@@ -75,11 +80,11 @@ void * send_devices(void *socket){
                 free(temp_dev);
 
             }
-            pthread_exit(&ret);
+            pthread_exit(ret);
 
         }
-        if (ret == 0) {
-            printf("Error sending data\n return = %d\n", (int) ret);
+        if (*ret == 0) {
+            printf("Error sending data\n return = %d\n", (int) *ret);
             printf("socket closed\n");
             for(int k=0;k<device_num;k++){
 
@@ -88,8 +93,8 @@ void * send_devices(void *socket){
                 free(temp_dev);
 
             }
-            ret = -100;
-            pthread_exit(&ret);
+            *ret = -100;
+            pthread_exit(ret);
         }
 
 
@@ -109,8 +114,8 @@ void * send_devices(void *socket){
 
     }
 
-    ret = 0;
-    pthread_exit(&ret);
+
+    pthread_exit(ret);
 
 }
 /*
@@ -125,11 +130,11 @@ void input_device_stats(Devices *devices) {
     statvfs(devices->directory, &info);
 
 
-    devices->fid = info.f_flag;
-    devices->total = (__uint64_t) info.f_blocks * (__uint64_t) info.f_bsize;
-    devices->used = (((__uint64_t) info.f_blocks - (__uint64_t) info.f_bfree)) * (__uint64_t) info.f_bsize;
-    devices->avail = (__uint64_t) (info.f_bavail * info.f_bsize);
-    devices->free = (__uint64_t) (info.f_bfree * info.f_bsize);
+    devices->fid    = info.f_flag;
+    devices->total  = (__uint64_t) info.f_blocks * (__uint64_t) info.f_bsize;
+    devices->used   = (((__uint64_t) info.f_blocks - (__uint64_t) info.f_bfree)) * (__uint64_t) info.f_bsize;
+    devices->avail  = (__uint64_t) (info.f_bavail * info.f_bsize);
+    devices->free   = (__uint64_t) (info.f_bfree * info.f_bsize);
 
 
 }
@@ -170,7 +175,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
                 free(temp_dev);
 
                 printf("calloc error %d \n", errno);
-                return 1;
+                return -1;
 
 
             }
@@ -208,7 +213,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
                         free(temp_dev);
 
                         printf("calloc error %d \n", errno);
-                        return 1;
+                        return -1;
 
 
                     }

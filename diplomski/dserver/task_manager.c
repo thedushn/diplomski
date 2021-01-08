@@ -26,34 +26,30 @@
 void * send_task(void *socket){
 
 
-//    FILE *fp;
-//    char *filename = "task.data";
-//
-//    if ((fp = fopen(filename, "a+")) == NULL) //create a file if it doesnt exist
-//       pthread_exit(NULL);
-//
-//    time_t clk=time(NULL);
-//    fprintf(fp,"%s\n",ctime(&clk));
-//    fclose(fp);
-    int result;
-    ssize_t ret;
-    Data data={0};
 
-    T_Collection *tasks;
-    T_Collection *temp_task;
+    ssize_t         *ret=NULL;
+    Data            data={0};
 
-   __int32_t task_num=0;
+    T_Collection    *tasks=NULL;
+    T_Collection    *temp_task;
+
+   __int32_t        task_num=0;
 
     pthread_mutex_lock(&mutex_send);
-    while (thread_break == false) {
-        ret = -100;
+    while (thread_break == false) {/*if other threads have failed close this thread before it allocates any memory*/
+
         pthread_mutex_unlock(&mutex_send);
-        pthread_exit(&ret);
+        pthread_exit(NULL);
     }
     pthread_mutex_unlock(&mutex_send);
 
-    result = get_task_list(&tasks, &task_num);
-    if (result != 0) {
+    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
+        free(ret);
+        pthread_exit(NULL);
+    }
+
+
+    if (get_task_list(&tasks, &task_num) != 0) {
 
         printf("error in get_task_list\n");
         for(int k=0;k<task_num;k++){
@@ -64,9 +60,9 @@ void * send_task(void *socket){
 
 
         }
-        ret = -100;
+        *ret = -100;
 
-        pthread_exit(&ret);
+        pthread_exit(ret);
     }
 
     temp_task=tasks;
@@ -78,13 +74,11 @@ void * send_task(void *socket){
 
       //  task_write(&temp_task->task);
         pthread_mutex_lock(&mutex_send);
-        ret = send((*(int*)socket), &data, sizeof(Data), 0);
+        *ret = send((*(int*)socket), &data, sizeof(Data), 0);
         pthread_mutex_unlock(&mutex_send);
 
-
-        if (ret < 0) {
-            printf("Error sending data\n return = %d\n", (int) ret);
-
+        if (*ret <= 0) {
+            printf("Error sending data\n return = %d\n", (int) *ret);
             for(int k=0;k<task_num;k++){
 
                 temp_task   = tasks;
@@ -93,23 +87,9 @@ void * send_task(void *socket){
 
             }
 
-            pthread_exit(&ret);
-
+            pthread_exit(ret);
         }
-        if (ret == 0) {
-            printf("Error sending data\n return = %d\n", (int) ret);
-            printf("socket closed\n");
-            for(int k=0;k<task_num;k++){
 
-                temp_task   = tasks;
-                tasks       = tasks->next;
-                free(temp_task);
-
-            }
-
-            ret = -100;
-            pthread_exit(&ret);
-        }
 
         temp_task=temp_task->next;
 
@@ -123,7 +103,7 @@ void * send_task(void *socket){
         free(temp_task);
     }
 
-    pthread_exit(&ret);
+    pthread_exit(ret);
 }
 /*
  * function differenceBetweenTimePeriod(): calculates the age of the task
@@ -144,6 +124,10 @@ void differenceBetweenTimePeriod(struct tm start, struct tm1 stop, struct tm1 *d
     }
 
     diff->tm_min = start.tm_min - stop.tm_min;
+    if (stop.tm_hour > start.tm_hour) {
+        --start.tm_mday;
+        start.tm_hour += 1;
+    }
     diff->tm_hour = start.tm_hour - stop.tm_hour;
 
 }
@@ -176,17 +160,21 @@ void * get_task_details(void *ptr) {
     Thread_task *thread_task=(Thread_task*)ptr;
 
     FILE *file;
-    char filename[96];
-    char buffer[1024];
-    int result=0;
-
+    char filename [96];
+    char buffer   [1024];
+    char dummy    [256];
+    int result = 0;
+    int i      = 0;
+    int idummy;
     __uint64_t sec, hr, min, t;
     __uint64_t h, m, s;
     struct tm1 diff;
-    char dummy[256];
-    int idummy;
+    struct passwd *pw;
+    struct stat sstat;
+
+
     char *p1, *po, *p2;
-    int i = 0;
+
 
 
     snprintf(filename, 96, "/proc/%d/stat",thread_task->pid);
@@ -219,8 +207,7 @@ void * get_task_details(void *ptr) {
 
 
     __uint64_t jiffies_user = 0, jiffies_system = 0;
-    struct passwd *pw;
-    struct stat sstat;
+
 
 
     sscanf(buffer,
@@ -279,16 +266,24 @@ void * get_task_details(void *ptr) {
 
     thread_task->task->rss *= get_pagesize();
 
-    result= get_cpu_percent(jiffies_user, jiffies_system, thread_task->task);/*get the cpu usage of the task*/
-    if (result == -1  ) {
+
+    if ((result=get_cpu_percent(jiffies_user, jiffies_system, thread_task->task)) == -1  ) {/*get the cpu usage of the task*/
         thread_task->result=result;
 
         pthread_exit(NULL);
     }
 
 
-    stat(filename, &sstat);
-    pw = getpwuid(sstat.st_uid);
+    if((result=stat(filename, &sstat))!=0){
+        thread_task->result=result;
+
+        pthread_exit(NULL);
+    }
+    if((pw = getpwuid(sstat.st_uid))==NULL){
+        thread_task->result=-1;
+
+        pthread_exit(NULL);
+    }
     thread_task->task->uid = sstat.st_uid;
     strncpy(thread_task->task->uid_name, (pw != NULL) ? pw->pw_name : "nobody", sizeof(thread_task->task->uid_name));
 
@@ -346,10 +341,10 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
     DIR *dir;
     struct dirent *d_file;
     char *directory = "/proc";
-    uint32_t pid = 0;
-    int thread_num=0;
-    int result=0;
-    char buffer[128];
+    uint32_t pid    = 0;
+    int thread_num  = 0;
+    int result      = 0;
+    char buffer[128]={0};
     Thread_task     *thread_task_main=NULL;
     Thread_task     *tp=NULL;
     T_Collection    *task_temp=NULL;
@@ -387,7 +382,7 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
             tp->task=&task_temp->task;/*passing the address to the structure to be filled*/
 
 
-            if((result=pthread_create(&tp->pthread,NULL,get_task_details,tp))!=0){/*creating a thread to get details*/
+            if((result=pthread_create(&tp->pthread,NULL,get_task_details,(void*)tp))!=0){/*creating a thread to get details*/
 
                 strerror_r(result,buffer,sizeof(buffer));
                 fprintf(stderr,"error = %d (%s)\n",result,buffer);

@@ -34,6 +34,7 @@ CMakeFiles/server.dir/main.c.o: ../functions.h
 CMakeFiles/server.dir/main.c.o: ../main.c
 CMakeFiles/server.dir/main.c.o: ../network_bandwith.h
 CMakeFiles/server.dir/main.c.o: ../task_manager.h
+CMakeFiles/server.dir/main.c.o: ../time_managment.h
 
 CMakeFiles/server.dir/memory_usage.c.o: ../common.h
 CMakeFiles/server.dir/memory_usage.c.o: ../functions.h
@@ -56,4 +57,10 @@ CMakeFiles/server.dir/task_manager.c.o: ../testing.h
 CMakeFiles/server.dir/testing.c.o: ../common.h
 CMakeFiles/server.dir/testing.c.o: ../testing.c
 CMakeFiles/server.dir/testing.c.o: ../testing.h
+
+CMakeFiles/server.dir/time_managment.c.o: ../common.h
+CMakeFiles/server.dir/time_managment.c.o: ../functions.h
+CMakeFiles/server.dir/time_managment.c.o: ../task_manager.h
+CMakeFiles/server.dir/time_managment.c.o: ../time_managment.c
+CMakeFiles/server.dir/time_managment.c.o: ../time_managment.h
 

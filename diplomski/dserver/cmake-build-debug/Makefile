@@ -366,6 +366,33 @@ testing.c.s:
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/testing.c.s
 .PHONY : testing.c.s
 
+time_managment.o: time_managment.c.o
+
+.PHONY : time_managment.o
+
+# target to build an object file
+time_managment.c.o:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/time_managment.c.o
+.PHONY : time_managment.c.o
+
+time_managment.i: time_managment.c.i
+
+.PHONY : time_managment.i
+
+# target to preprocess a source file
+time_managment.c.i:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/time_managment.c.i
+.PHONY : time_managment.c.i
+
+time_managment.s: time_managment.c.s
+
+.PHONY : time_managment.s
+
+# target to generate assembly for a file
+time_managment.c.s:
+	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/time_managment.c.s
+.PHONY : time_managment.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -402,6 +429,9 @@ help:
 	@echo "... testing.o"
 	@echo "... testing.i"
 	@echo "... testing.s"
+	@echo "... time_managment.o"
+	@echo "... time_managment.i"
+	@echo "... time_managment.s"
 .PHONY : help
 
 

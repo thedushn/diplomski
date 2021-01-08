@@ -18,14 +18,21 @@
 pthread_cond_t cpu_cond= PTHREAD_COND_INITIALIZER; /*cond_variable that checks if the jiffies_total_delta is being used */
 bool test;/*flag for checking if we need to wait for pthread_cond_signal */
 
-__uint64_t jiffies_total_delta[CPU_NUM + 1]; /*total cpu jiffies that occurred */
-__uint64_t jiffies_system[CPU_NUM];
+//__uint64_t jiffies_total_delta[CPU_NUM + 1]; /*total cpu jiffies that occurred */
+//__uint64_t jiffies_system[CPU_NUM];
+//__uint64_t jiffies_total[CPU_NUM];
+//__uint64_t jiffies_user[CPU_NUM];
+//__uint64_t jiffies_user_old[CPU_NUM];
+//__uint64_t jiffies_system_old[CPU_NUM];
+//__uint64_t jiffies_total_old[CPU_NUM];
+
+__uint64_t *jiffies_total_delta; /*total cpu jiffies that occurred */
+__uint64_t jiffies_system[CPU_NUM]; //TODO make them pointers
 __uint64_t jiffies_total[CPU_NUM];
 __uint64_t jiffies_user[CPU_NUM];
 __uint64_t jiffies_user_old[CPU_NUM];
 __uint64_t jiffies_system_old[CPU_NUM];
 __uint64_t jiffies_total_old[CPU_NUM];
-
 float      cpu_user[CPU_NUM];
 float      cpu_system[CPU_NUM];
 __uint64_t user[CPU_NUM];
@@ -33,6 +40,47 @@ __uint64_t user_nice[CPU_NUM];
 __uint64_t idle[CPU_NUM];
 __uint64_t msystem[CPU_NUM];
 float      percentage[CPU_NUM];
+
+int cpu_number (){
+
+    int c=0;
+    FILE *fp;
+    char *filename = "/proc/cpuinfo";
+    char *name = "cpu cores";
+    char buffer[1024];
+    if ((fp = fopen (filename, "r")) == NULL || fgets (buffer, 1024, fp) == NULL)
+       return 0;
+
+    while (fgets (buffer, 1024, fp) != NULL) {
+        if (strncmp(buffer,name,strlen(name))==0)
+        {
+            sscanf(buffer, "cpu cores\t: %d", &c);
+            break;
+        }
+
+
+
+    }
+    fclose(fp);
+
+
+    return c;
+}
+int cpu_data_allocation(){
+
+    if((jiffies_total_delta=(__uint64_t*)calloc((size_t)(cpu_Number+1),sizeof(__uint64_t)))==NULL){
+        free(jiffies_total_delta);
+        printf("calloc error %d \n", errno);
+        return -1;
+    }
+    return 0;
+}
+void free_cpu_memory(){
+
+    if(jiffies_total_delta){
+        free(jiffies_total_delta);
+    }
+}
 /*
  * function send_cpu():send data about cpu usage to client
  * input : socket to send data to
@@ -41,54 +89,59 @@ float      percentage[CPU_NUM];
 void *send_cpu(void *socket) {
 
 
-    ssize_t   ret;
+    ssize_t   *ret=NULL;
+
     Cpu_usage cpu_usage = {0};
     Data      data;
 
     pthread_mutex_lock(&mutex_send);
     while (thread_break == false) { /*if other threads have failed close this thread before it allocates any memory*/
-        ret = -100;
+
         pthread_mutex_unlock(&mutex_send);
-        pthread_exit(&ret);
+        pthread_exit(NULL);
     }
     pthread_mutex_unlock(&mutex_send);
+    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
+        free(ret);
+        pthread_exit(NULL);
+    }
 
-    ret = cpu_percentage(&cpu_usage);
-    if (ret < 0) {
+
+
+    if ((*ret = cpu_percentage(&cpu_usage)) < 0) {
         printf("Error getting cpu data!\n\t");
-        pthread_exit(&ret);
+        pthread_exit(ret);
 
     }
 
 
     memset(&data, 0, sizeof(Data));
     data.size = CPU_USAGE;
-   // cpu_write(cpu_usage);
+
     data.unification.cpu_usage = cpu_usage;
 
     pthread_mutex_lock(&mutex_send);
 
-    ret = send((*(int *) socket), &data, sizeof(Data), 0);
+    *ret = send((*(int *) socket), &data, sizeof(Data), 0);
     pthread_mutex_unlock(&mutex_send);
 
-    if (ret < 0) {
-        printf("Error sending data\n return = %d\n", (int) ret);
+    if (*ret < 0) {
+        printf("Error sending data\n return = %d\n", (int) *ret);
 
 
-        pthread_exit(&ret);
+        pthread_exit(ret);
 
     }
-    if (ret == 0) {
-        printf("Error sending data\n return = %d\n", (int) ret);
+    if (*ret == 0) {
+        printf("Error sending data\n return = %d\n", (int) *ret);
         printf("socket closed\n");
 
 
-        ret = -1;
-        pthread_exit(&ret);
+        *ret = -1;
+        pthread_exit(ret);
     }
 
-
-    pthread_exit(&ret);
+    pthread_exit(ret);
 }
 
 /*
@@ -230,7 +283,7 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
 
     struct Cpu_data      old;
     struct Cpu_data      new;
-    struct DataItem     *temp;
+    struct DataItem     *temp=NULL;
     float  cpu_user   = 0;
     float  cpu_system = 0;
     bool   exists;
@@ -256,14 +309,14 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
         }
 
 
-        temp->cpu_user  =jiffies_user;
-        temp->cpu_system=jiffies_system;
-        temp->pid       =task->pid;
+        temp->cpu_user  = jiffies_user;
+        temp->cpu_system= jiffies_system;
+        temp->pid       = task->pid;
 
         strcpy(temp->name,task->name);
 
-        temp->next      =task_details;
-        task_details    =temp;
+        temp->next      = task_details;
+        task_details    = temp;
 
 
 

@@ -41,6 +41,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
     GtkWidget *record;
 
+
     GtkWidget *vbox;
     GtkWidget *hbox;
     GtkWidget *hbox1;
@@ -75,6 +76,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     button_proc     = gtk_toggle_button_new_with_label("Process");
     button_dev      = gtk_toggle_button_new_with_label("Dev");
     button_graph    = gtk_toggle_button_new_with_label("graphs");
+    button_pause    = gtk_toggle_button_new_with_label("pause");
 
 
     menubar         = gtk_menu_bar_new(); /*creating the menu bar*/
@@ -101,6 +103,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), increase_refresh);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), decrease_refresh);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), record);
+
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), quit);
 
 
@@ -123,6 +126,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     g_signal_connect(decrease_refresh, "activate", G_CALLBACK(dec_refresh), NULL);
     g_signal_connect(file_system, "activate", G_CALLBACK(device_window), NULL);
     g_signal_connect(record, "activate", G_CALLBACK(record_window), NULL);
+
 
     g_signal_connect(process_item, "activate", G_CALLBACK(process_window), NULL);
 
@@ -185,6 +189,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
     gtk_box_pack_start(GTK_BOX(hbox), button_dev, 0, 0, 0);
     gtk_box_pack_start(GTK_BOX(hbox), button_graph, 0, 0, 0);
+    gtk_box_pack_start(GTK_BOX(hbox), button_pause, 0, 0, 0);
 
     gtk_box_pack_start(GTK_BOX(hbox), label_cpu0, 0, 0, 0);
 
@@ -218,6 +223,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
     gtk_box_pack_start(GTK_BOX(vbox), dev_swindow, TRUE, TRUE, 1);
     gtk_box_pack_start(GTK_BOX(vbox), process_swindow, TRUE, TRUE, 1);
+  //  gtk_container_add(GTK_CONTAINER(vbox), process_swindow);
     gtk_box_pack_start(GTK_BOX(vbox), entry, FALSE, FALSE, 1);
 
     gtk_container_add(GTK_CONTAINER(window1), vbox);

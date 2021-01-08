@@ -212,12 +212,11 @@ ssize_t test_send(int socket) {
 ssize_t test_recv(int socket) {
 
 
-    char buffer[64];
-    ssize_t ret ;
-    Data data;
 
-    memset(buffer, 0, 64);
-    strcpy(buffer, "everything came");
+    ssize_t ret =0;
+    Data data={0};
+
+
     data.size=TEXT;
 
     memset(data.unification.conformation,0,sizeof(data.unification.conformation));

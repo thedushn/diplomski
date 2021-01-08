@@ -13,16 +13,19 @@
 GtkWidget *dev_window;/*window that contains the list of devices */
 GtkWidget *proc_window;/*window that contains the list of tasks */
 GtkWidget *rec_window;/*window that contains the button for recording */
+GtkWidget *wr_window;/*window that contains the button for writing */
 
 GtkWidget *task_popup;
 
 GtkWidget *button_inc;/*button that when pressed increments the time delay by 250 */
 GtkWidget *button_dec;/*button that when pressed decreases the time delay by 250 */
 
+
 GtkWidget *button_proc;/*button that when pressed shows or hides window that contains the list of tasks */
 GtkWidget *button_dev;/*button that when pressed shows or hides window that contains the list of devices */
 GtkWidget *button_rec;/*button that when pressed shows or hides window that contains the record window */
 GtkWidget *button_graph;/*button that when pressed shows buttons that control the graph that displays the cpu usage */
+GtkWidget *button_pause;/*button that when pressed pauses the app */
 
 /*buttons that when clicked show or hide columns in the window that contains the list of devices */
 GtkWidget *button_device_devices;
@@ -73,6 +76,7 @@ void record_window();
 void graph_clicked(GtkWidget *widget);
 
 void show_all(GtkWidget *widget);
+void write_window();
 
 
 

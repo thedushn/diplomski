@@ -15,7 +15,7 @@
 #include "cpu_usage.h"
 #include "task_manager.h"
 #include "network_bandwith.h"
-
+#include "time_managment.h"
 
 
 #include <arpa/inet.h>
@@ -70,30 +70,25 @@ int main(int argc, char *argv[]) {
     task_details  = NULL;
     hash_network  = NULL;
     net_hash_size = 0;
+    cpu_Number=0;
 
 
 
-    FILE *fp;
-
-    time_t time1;
-    struct tm tm2;
-    int sec0, hr0, min0, t0;
-    struct tm1 stop_time;
-    int errnum;
-    int uptime1 = 0;
 
     pthread_t thr1, thrd2;
 
     int sockfd  = 0;
     int new_fd  = 0;
     int new_fd1 = 0;  // listen on sock_fd, new connection on new_fd
+    int yes     = 1;
+    int ret;
     struct addrinfo hints, *servinfo, *p;
     struct sockaddr_storage their_addr; // connector's address information
     socklen_t sin_size;
     struct sigaction sa;
-    int yes = 1;
+
     char s[INET6_ADDRSTRLEN];
-    int  ret;
+
     char buffer[BUFFER_SIZE];
 
 
@@ -106,6 +101,10 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
+    cpu_Number=cpu_number();
+
+
+//TODO make a function that does the connections
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
@@ -164,7 +163,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    {  // main accept() loop
+        // main accept() loop
         sin_size = sizeof their_addr;
         new_fd = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size);
         if (new_fd == -1) {
@@ -172,7 +171,7 @@ int main(int argc, char *argv[]) {
             perror("accept");
             return -1;
         }
-    }
+
 
 
     inet_ntop(their_addr.ss_family,
@@ -180,7 +179,7 @@ int main(int argc, char *argv[]) {
               s, sizeof s);
 
 
-    {  // main accept() loop
+      // main accept() loop
         sin_size = sizeof their_addr;
         new_fd1 = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size);
         if (new_fd1 == -1) {
@@ -189,7 +188,7 @@ int main(int argc, char *argv[]) {
             perror("accept");
             return -1;
         }
-    }
+
 
 
     inet_ntop(their_addr.ss_family,
@@ -198,65 +197,41 @@ int main(int argc, char *argv[]) {
 
     close(sockfd);//close socket so no more clients can connect
 
-    fp = fopen("/proc/uptime", "r"); /*information on when the kernel started working*/
-    if (fp != NULL) {
 
-        while (fgets(buffer, BUFFER_SIZE, fp) != NULL) {
-
-
-            sscanf(buffer, "%d", &uptime1);
-        }
-    } else {
-
-        errnum = errno;
-        fprintf(stderr, "Value of errno: %d\n", errno);
-        perror("Error printed by perror");
-        fprintf(stderr, "Error opening file: %s\n", strerror(errnum));
-        close(sockfd);
-        close(new_fd1);
+    if(cpu_data_allocation()){
         close(new_fd);
+        close(sockfd);
         return -1;
     }
 
-    fclose(fp);
+   if(uptime()){
+       close(new_fd);
+       close(sockfd);
+       free_cpu_memory();
+   }
 
 
-    time1 = time(NULL);
-    tm2 = *localtime(&time1);
 
-
-
-
-    hr0 = uptime1 / 3600;
-    t0 = uptime1 % 3600;
-    min0 = t0 / 60;
-    sec0 = t0 % 60;
-    stop_time.tm_hour = (__uint32_t) hr0; /*when did the computer start running*/
-    stop_time.tm_min = (__uint32_t) min0;
-    stop_time.tm_sec = (__uint32_t) sec0;
-
-    differenceBetweenTimePeriod(tm2, stop_time, &begin_time);// time when linux started
-
-
-    ret = pthread_create(&thr1, NULL, sending, &new_fd);/*creating thread for sending data to client*/
-    if (ret != 0) {
-
-        printf("ERROR: Return Code from pthread_create() is %d\n", ret);
-        close(sockfd);
-        close(new_fd1);
-        close(new_fd);
-        return -1;
-
-    }
-
-    ret = pthread_create(&thrd2, NULL, accept_command, &new_fd1);/*creating thread for receiving commands from client*/
-
-    if (ret != 0) {
+    if ((ret=pthread_create(&thr1, NULL, &sending, &new_fd)) != 0) {/*creating thread for sending data to client*/
 
         printf("ERROR: Return Code from pthread_create() is %d\n", ret);
 
         close(new_fd1);
         close(new_fd);
+        free_cpu_memory();
+        return -1;
+
+    }
+
+    /*creating thread for receiving commands from client*/
+
+    if ((ret = pthread_create(&thrd2, NULL, accept_command, &new_fd1)) != 0) {
+
+        printf("ERROR: Return Code from pthread_create() is %d\n", ret);
+
+        close(new_fd1);
+        close(new_fd);
+        free_cpu_memory();
         return -1;
 
     }
@@ -287,8 +262,8 @@ int main(int argc, char *argv[]) {
 
 
 
-    for(int k=0;k<hash_size;k++){ /*freeing the list of task details*/
-
+//    for(int k=0;k<hash_size;k++){ /*freeing the list of task details*/
+    while(task_details){
         temp         = task_details;
         task_details = task_details->next;
         free(temp);
@@ -306,7 +281,8 @@ int main(int argc, char *argv[]) {
 
     close(new_fd1);
     close(new_fd);
-
+    free_cpu_memory();
+    printf("we exited");
 
     return 0;
 }

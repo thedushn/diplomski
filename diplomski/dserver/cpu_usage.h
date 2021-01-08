@@ -9,7 +9,7 @@
 #include "pthread.h"
 
 pthread_mutex_t mutex_jiff; /* mutex that protects the task list */
-
+int cpu_Number;
 struct DataItem {           /*structure that contains cpu stats about a task */
     __uint64_t      cpu_user;
     __uint64_t      cpu_system;
@@ -39,4 +39,7 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
 
 struct Cpu_data search(bool *ima, struct Cpu_data new_data, Task *task);
 
+int cpu_number ();
+int cpu_data_allocation();
+void free_cpu_memory();
 #endif //DIPLOMSKI_CPU_USAGE_H

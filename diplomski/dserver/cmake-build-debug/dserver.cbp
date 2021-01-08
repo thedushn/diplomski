@@ -167,6 +167,12 @@
 		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/testing.h">
 			<Option target="server"/>
 		</Unit>
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/time_managment.c">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/time_managment.h">
+			<Option target="server"/>
+		</Unit>
 		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

@@ -11,7 +11,13 @@
 #include <inttypes.h>
 #include <errno.h>
 #include "drawing.h"
+gboolean on_draw_event2(GtkWidget *widget, cairo_t *cr, Cpu_list *array) {
 
+
+
+    do_drawing_cpu2(widget, cr, 100, array);
+    return FALSE;
+}
 /*
  * function on_draw_event(): creating graphs by sending the draw signal to the function we create a cairo_t structure
  *
@@ -868,4 +874,57 @@ void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *a
 }
 
 
+
+/**
+ * function do_drawing_cpu(): draws the entire graph, the lines, the frame the seconds and the percentage
+ * input:pointer to the graph, pointer to the canvas, step between data, and pointer to the array of cpu usage
+ * output:none.
+ * */
+void do_drawing_cpu2(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *array1) {
+
+    double width, height;
+    double font_size = 10;
+    bool *temp_bool=cpu_status;
+
+    height = (double) 500;
+    width = (double) 1000;
+
+
+    cairo_surface_t *graph_surface;
+    graph_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, (int) width, (int) height);
+
+    cairo_set_line_width(cr, 1);
+
+
+    cairo_set_font_size(cr, font_size);
+
+    cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+    cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
+
+
+ //   draw_frame(cr, width, height, font_size, 3);
+   // draw_percentages(cr, height, font_size);
+
+
+    for(__int32_t i=0;i<CPU_NUM;i++){/*draws the lines*/
+
+        if((*temp_bool)==true){/*display the cpus we want to be displayed*/
+            draw_graph(cr, i, width, height, font_size, time_step, array1);
+        }
+        temp_bool++;
+
+
+    }
+
+ //   writing_seconds(cr, width, height, font_size, 3);
+
+    if (graph_surface != NULL) {
+        cairo_set_source_surface(cr, graph_surface, 0.0, 0.0);
+        cairo_paint(cr);
+        cairo_surface_destroy(graph_surface);
+
+
+    }
+
+}
 
