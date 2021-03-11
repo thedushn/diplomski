@@ -25,11 +25,11 @@ static int letter_counter;
  * */
 void * send_network(void *socket){
 
-    int sockfd=(*(int*)socket);
-
+   // int sockfd=(*(int*)socket);
+    Thread_pack thr_p=*(Thread_pack*)socket;
     Data data={0};
     Network network={0};
-    ssize_t *ret=NULL;
+  //  ssize_t *ret=NULL;
 
     pthread_mutex_lock(&mutex_send);
     while (thread_break == false) {
@@ -39,38 +39,36 @@ void * send_network(void *socket){
     }
     pthread_mutex_unlock(&mutex_send);
 
-    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
-        free(ret);
-        pthread_exit(NULL);
-    }
 
 
 
-    if ((*ret =(ssize_t) interface_name(&network)) != 0) {
-        *ret = -100;
-        pthread_exit(ret);
+
+    if ((thr_p.ret_val =(ssize_t) interface_name(&network)) != 0) {
+        thr_p.ret_val = -1;
+        pthread_exit(&thr_p.ret_val);
     }
     memset(&data,0,sizeof(Data));
     data.size=NETWORK;
     data.unification.network=network;
     pthread_mutex_lock(&mutex_send);
-    *ret = send(sockfd, &data, sizeof(Data), 0);
+    thr_p.ret_val= send(thr_p.socket, &data, sizeof(Data), 0);
     pthread_mutex_unlock(&mutex_send);
 
-    if (*ret < 0) {
-        printf("Error sending data\n return = %d\n", (int) *ret);
+    if (thr_p.ret_val < 0) {
+        printf("Error sending data\n return = %d %s\n", (int)  thr_p.ret_val,__FUNCTION__ );
+       // printf("Error sending data\n return = %d\n", (int) thr_p.ret_val);
 
-        pthread_exit(ret);
+        pthread_exit(&thr_p.ret_val);
 
     }
-    if (*ret == 0) {
-        printf("Error sending data\n return = %d\n", (int) *ret);
+    if (thr_p.ret_val == 0) {
+        printf("Error sending data\n return = %d\n", (int) thr_p.ret_val);
         printf("socket closed\n");
-        *ret = -100;
-        pthread_exit(ret);
+        thr_p.ret_val = -1;
+        pthread_exit(&thr_p.ret_val);
     }
 
-    pthread_exit(ret);
+    pthread_exit(&thr_p.ret_val);
 }
 /*
  * function search_net(); searches the linked list to find a network devices and  save its old data and replace it with the

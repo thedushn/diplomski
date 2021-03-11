@@ -12,7 +12,7 @@
 #include <errno.h>
 
 
-int interrupts_write(Interrupts *array) {
+int interrupts_write(I_Collection *array) {
 
 
     FILE *fp;
@@ -46,14 +46,23 @@ int interrupts_write(Interrupts *array) {
     p[size-1]=' ';
     fprintf(fp,"Time: %sDelay %d\n",p,t);
 
-    for (int i = 0; i < 10; i++) {
+    while(array){
 
-        fprintf(fp, "%s %" PRIu64 " %" PRIu64 " %" PRIu64 " %" PRIu64 " %s %s %s %s \n", array->irq, array->CPU0,
-                array->CPU1, array->CPU2, array->CPU3, array->ime1, array->ime2, array->ime3, array->ime4);
+        fprintf(fp, "%s %" PRIu64 " %" PRIu64 " %" PRIu64 " %" PRIu64 " %s %s %s %s \n",
+                array->interrupts.irq,
+                array->interrupts.CPU0,
+                array->interrupts.CPU1,
+                array->interrupts.CPU2,
+                array->interrupts.CPU3,
+                array->interrupts.ime1,
+                array->interrupts.ime2,
+                array->interrupts.ime3,
+                array->interrupts.ime4
+        );
 
 
 
-        array++;
+        array=array->next;
 
     }
 

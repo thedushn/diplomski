@@ -112,35 +112,7 @@ int interrupts_write(Interrupts *array, Interrupts *array2, char *filename, int 
      return 0;
 
  }
-int cpu_write(Cpu_usage cpu_usage) {
 
-
-    FILE *fp;
-    char *filename = "cpu.data";
-
-
-    if ((fp = fopen(filename, "a+")) == NULL) //create a file if it doesnt exist
-        return 1;
-
-
-
-    time_t clk=time(NULL);
-    fprintf(fp,"%s\n",ctime(&clk));
-    fprintf(fp, "%s %s %s %s \n",
-            cpu_usage.percentage[0],
-            cpu_usage.percentage[1],
-            cpu_usage.percentage[2],
-            cpu_usage.percentage[3]
-
-    );
-
-
-
-
-    fclose(fp);
-    return 0;
-
-}
 int task_write(Task *task){
     FILE *fp;
     char *filename = "task.data";

@@ -10,19 +10,19 @@
 
 //!main header please work
 
-typedef  struct  _NetMem_list NetMem_list;/*!structure for creating linked list for memory usage and network usage */
+typedef  struct  NetMem_list NetMem_list;/*!structure for creating linked list for memory usage and network usage */
 
-struct _NetMem_list{
+struct NetMem_list{
 
     float       data[2];
     NetMem_list *next;
 
 };
 
-typedef struct _Cpu_List Cpu_list;/*!structure for creating linked list for cpu usage */
-struct _Cpu_List {
+typedef struct Cpu_List Cpu_list;/*!structure for creating linked list for cpu usage */
+struct Cpu_List {
 
-    float     data[CPU_NUM];
+    float     data[4];
     Cpu_list *next;
 };
 
@@ -49,12 +49,14 @@ bool device_all;/**<<bool used to check if the client wants all the devices show
 bool record;
 D_Collection *devices_old;/*!list to the devices that we keep on client */
 T_Collection *tasks_old;/*!list to the tasks that we keep on client */
-Interrupts *interrupts;/*!list to the interrupts  */
+I_Collection *interrupts;/*!list to the interrupts  */
+I_Collection2 *interrupts2;/*!list to the interrupts  */
 Cpu_list *cpu_list;/*!list to the cpu usage  */
 NetMem_list *net_list;/*!list to the network usage  */
 NetMem_list *mem_list;/*!list to the memory usage  */
-Cpu_list *testerino;
 char p_dir[256];
+long cpu_num;
+long interrupt_num;
 
 #define LIST_SIZE 240 /*!the max size of list of cpu, network and memory usage*/
 
@@ -76,9 +78,10 @@ void destroy_window(void);
 
 void freeing_memory(void *array, __int32_t *array_size, int type);
 
-void test_strtol(int val);
+void test_strtol(long val);
 
 void set_record(GtkWidget *widget);
+
 void pause_app(GtkWidget *button);
 
 

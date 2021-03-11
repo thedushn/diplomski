@@ -4,33 +4,26 @@
 
 #include "testing_tree.h"
 #include <errno.h>
-#include <asm/errno.h>
+
 
 
 
 #include "buttons.h"
 #include "main_header.h"
 
-/*
- * function device_check(): uses the old list of devices and compares them to the new list if their are any differences
- * the list is changed, if items from the old list don't exist on the new list they are removed
- * input  : pointer to the list of devices , and number of elements in the list
- * output : returns a non zero value if something goes wrong
- * */
-int device_check(D_Collection *devices_new, int dev_num) {
+int refresh_devices_data(D_Collection *devices_new, __int32_t device_num) {
 
-    __int32_t i, j;
 
-    D_Collection *rem_old = devices_old;
-    D_Collection *rem_new = devices_new;
+    D_Collection *rem_new=devices_new;
+    D_Collection *rem_old=devices_old;
 
-    for (i = 0; i < dev_num_old; i++)   /*refreshing data*/
+    for (__int32_t i = 0; i < dev_num_old; i++)   /*refreshing data*/
     {
-        Devices *tmp = &devices_old->devices;
+        Devices *tmp = &rem_old->devices;
 
         tmp->checked = FALSE;
 
-        for (j = 0; j < dev_num; j++) {
+        for (__int32_t j = 0; j < device_num; j++) {
             Devices *new_tmp = &devices_new->devices;
 
             if (strcmp(new_tmp->directory, tmp->directory) == 0
@@ -69,73 +62,68 @@ int device_check(D_Collection *devices_new, int dev_num) {
             devices_new = devices_new->next;
         }
         devices_new = rem_new;
-        devices_old = devices_old->next;
+        rem_old = rem_old->next;
 
     }
+    return 0;
+}
+void delete_old_dev(D_Collection **array,__int32_t *dev_num){
 
-    devices_old = rem_old;
+    __int32_t i=0;
+    D_Collection *rem_old = (*array);
 
-    devices_new = rem_new;
-    //  check for unchecked old-devices for deleting
-    i = 0;
-    rem_old = devices_old;
-    while (i < dev_num_old) {
-        if (devices_old == NULL) {
-            break;
-        }
-        Devices *tmp = &devices_old->devices;
+    while (i < *dev_num) {
+
+        Devices *tmp = &(*array)->devices;
         D_Collection *dtemp;
 
         if (!tmp->checked)//element of the array that does not exist in the new array anymore
         {
             remove_list_item_device(tmp->directory, tmp->name);
             if (i == 0) {
-                dtemp = devices_old;
-                if (devices_old->next != NULL) {
-                    devices_old = devices_old->next;
-                    devices_old->prev=NULL;
+                dtemp = (*array);
+                if ((*array)->next != NULL) {
+                    (*array) = (*array)->next;
+                    (*array)->prev=NULL;
                 }
 
 
                 free(dtemp);
-                rem_old = devices_old; //setting the first node
+                rem_old = (*array); //setting the first node
             } else {
 
-                dtemp=devices_old; // the one that we don't want anymore
-                devices_old->next->prev=devices_old->prev; //remember the last prev
-                devices_old->prev->next=devices_old->next;
+                dtemp=(*array); // the one that we don't want anymore
+                (*array)->next->prev=(*array)->prev; //remember the last prev
+                (*array)->prev->next=(*array)->next;
                 free(dtemp);
-                devices_old = rem_old;
+                (*array) = rem_old;
             }
 
-
-            dev_num_old--;
+            i=0;
+            (*dev_num)--;
 
 
         } else {
 
 
             i++;
-            devices_old = devices_old->next;
+            (*array) = (*array)->next;
 
 
         }
 
     }
-    devices_old = rem_old;
+    (*array) = rem_old;
+}
+int insert_new_devices(D_Collection **array,D_Collection *devices_new,__int32_t dev_num,__int32_t *old_number){
 
-
-
-
-
-
-    for (i = 0; i < dev_num; i++) { /*  check for unchecked new devices for inserting*/
+    for (__int32_t i = 0; i < dev_num; i++) { /*  check for unchecked new devices for inserting*/
         D_Collection *new_tmp;
 
         if (!devices_new->devices.checked) {
 
             if(add_new_dev(&devices_new->devices)!=0){
-                    return -1;
+                return -1;
             }
             new_tmp = calloc(1, sizeof(D_Collection));
             if (new_tmp == NULL) {
@@ -148,42 +136,159 @@ int device_check(D_Collection *devices_new, int dev_num) {
             }
 
             new_tmp->devices = devices_new->devices;
-            new_tmp->next    = devices_old;
+            new_tmp->next    = (*array);
             new_tmp->prev    = NULL;
-            if(devices_old!=NULL){
-                devices_old->prev=new_tmp;
+            if((*array)!=NULL){
+                (*array)->prev=new_tmp;
             }
 
-            devices_old = new_tmp;
+            (*array) = new_tmp;
 
 
 
-            dev_num_old++;
+            (*old_number)++;
         }
 
         devices_new = devices_new->next;
     }
 
 
+    return 0;
+}
+
+/*
+ * function device_check(): uses the old list of devices and compares them to the new list if their are any differences
+ * the list is changed, if items from the old list don't exist on the new list they are removed
+ * input  : pointer to the list of devices , and number of elements in the list
+ * output : returns a non zero value if something goes wrong
+ * */
+int device_check(D_Collection *devices_new, int dev_num) {
+
+
+
+
+
+    refresh_devices_data(devices_new, dev_num);
+    //  check for unchecked old-devices for deleting
+
+
+    delete_old_dev(&devices_old,&dev_num_old);
+
+
+
+    insert_new_devices(&devices_old,devices_new,dev_num,&dev_num_old);
+
+
+
+
+
 
     return 0;
 
 }
-/*
- * function task_check(): uses the old list of tasks and compares them to the new list if their are any differences
- * the list is changed, if items from the old list don't exist on the new list they are removed
- * input  : pointer to the list of task , and number of elements in the list
- * output : returns a non zero value if something goes wrong
- * */
-int task_check(T_Collection *tasks_new, int task_num) {
-    __int32_t i, j;
+
+int insert_new_tasks(T_Collection **array,T_Collection *tasks_new,__int32_t task_num,__int32_t *old_number){
+
+
+    for (__int32_t i = 0; i < task_num; i++) { /*  check for unchecked new tasks for inserting*/
+        T_Collection *new_tmp;
+
+
+        if (!tasks_new->task.checked) {
+
+            if(add_new_task(&tasks_new->task)!=0){
+                return -1;
+            }
+            new_tmp = calloc(1, sizeof(T_Collection));
+            if (new_tmp == NULL) {
+
+                printf("calloc error %d \n", errno);
+                free(new_tmp);
+
+
+                return -1;
+
+            }
+
+            new_tmp->task = tasks_new->task;
+            new_tmp->next = (*array);
+            new_tmp->prev = NULL;
+            if((*array)!=NULL){
+                (*array)->prev=new_tmp;
+            }
+
+            (*array) = new_tmp;
+
+
+
+            (*old_number)++;
+        }
+
+        tasks_new=tasks_new->next;
+
+    }
+    return 0;
+}
+void delete_old_tasks(T_Collection **array,__int32_t *task_num){
+    __int32_t i=0;
     /*tasks */
-    T_Collection *rem_task_old = tasks_old;
-    T_Collection *rem_task_new = tasks_new;
+
+    T_Collection *rem_task_old = (*array);
+
+    while (i < *task_num) {
+
+        Task *tmp = &(*array)->task;
+        T_Collection *t_temp;
+        if (!tmp->checked) {
+
+            remove_task_item((gint) tmp->pid);
+            if (i == 0) {
+                t_temp = (*array);
+                if ((*array)->next != NULL) {
+                    (*array) = (*array)->next;
+                    (*array)->prev=NULL;
+                }
+
+
+
+
+                free(t_temp);
+                rem_task_old = (*array);//becomes new head
+            } else {
+
+                t_temp=(*array); // the one that we don't want anymore
+                (*array)->next->prev=(*array)->prev; //remember the last prev
+                (*array)->prev->next=(*array)->next;
+                free(t_temp);
+                (*array) = rem_task_old;
+
+
+            }
+
+            i=0;
+            (*task_num)--;
+        } else {
+            i++;
+
+            (*array) = (*array)->next;
+
+        }
+
+    }
+
+    (*array) = rem_task_old;
+}
+int refresh_task_data(T_Collection *tasks_new,int task_num){
+    __int32_t i,j;
+    /*tasks */
+
+    T_Collection *tasks_old_rem = tasks_old;
+    T_Collection *tasks_new_rem = tasks_new;
+
 
     for (i = 0; i < task_num_old; i++) {
 
-        Task *tmp = &tasks_old->task;
+        Task *tmp = &tasks_old_rem->task;
 
         tmp->checked = FALSE;
 
@@ -249,101 +354,32 @@ int task_check(T_Collection *tasks_new, int task_num) {
             tasks_new=tasks_new->next;
 
         }
-        tasks_new = rem_task_new;
-        tasks_old = tasks_old->next;
+        tasks_new=tasks_new_rem;
+        tasks_old_rem = tasks_old_rem->next;
 
     }
-
-    tasks_old = rem_task_old;
-
-    tasks_new = rem_task_new;
-    //  check for unchecked old-tasks for deleting
-    i = 0;
-    rem_task_old = tasks_old;
-    while (i < task_num_old) {
-
-        Task *tmp = &tasks_old->task;
-        T_Collection *t_temp;
-        if (!tmp->checked) {
-
-            remove_task_item((gint) tmp->pid);
-            if (i == 0) {
-                t_temp = tasks_old;
-                if (tasks_old->next != NULL) {
-                    tasks_old = tasks_old->next;
-                    tasks_old->prev=NULL;
-                }
+    return 0;
+}
+/*
+ * function task_check(): uses the old list of tasks and compares them to the new list if their are any differences
+ * the list is changed, if items from the old list don't exist on the new list they are removed
+ * input  : pointer to the list of task , and number of elements in the list
+ * output : returns a non zero value if something goes wrong
+ * */
+int task_check(T_Collection *tasks_new, int task_num) {
 
 
 
 
-                free(t_temp);
-                rem_task_old = tasks_old;//becomes new head
-            } else {
+    refresh_task_data(tasks_new,task_num);
 
-                t_temp=tasks_old; // the one that we don't want anymore
-                tasks_old->next->prev=tasks_old->prev; //remember the last prev
-                tasks_old->prev->next=tasks_old->next;
-                free(t_temp);
-                tasks_old = rem_task_old;
+    delete_old_tasks(&tasks_old,&task_num_old);
 
-
-            }
-
-
-            task_num_old--;
-        } else {
-            i++;
-
-            tasks_old = tasks_old->next;
-
-        }
-
-    }
-
-    tasks_old = rem_task_old;
+    insert_new_tasks(&tasks_old,tasks_new,task_num,&task_num_old);
 
 
 
 
-
-    for (i = 0; i < task_num; i++) { /*  check for unchecked new tasks for inserting*/
-        T_Collection *new_tmp;
-
-
-        if (!tasks_new->task.checked) {
-
-           if(add_new_task(&tasks_new->task)!=0){
-               return -1;
-           }
-            new_tmp = calloc(1, sizeof(T_Collection));
-            if (new_tmp == NULL) {
-
-                printf("calloc error %d \n", errno);
-                free(new_tmp);
-
-
-                return -1;
-
-            }
-
-            new_tmp->task = tasks_new->task;
-            new_tmp->next = tasks_old;
-            new_tmp->prev = NULL;
-            if(tasks_old!=NULL){
-                tasks_old->prev=new_tmp;
-            }
-
-            tasks_old = new_tmp;
-
-
-
-            task_num_old++;
-        }
-
-        tasks_new=tasks_new->next;
-
-    }
 
     return 0;
 }
@@ -477,16 +513,16 @@ void create_list_store_task(void) {
  * output:none
  * */
 void create_list_store_dev(void) {
-    GtkCellRenderer *cell_renderer;
+    GtkCellRenderer *renderer;
     GtkTreeViewColumn *column;
 
     list_devices = gtk_tree_store_new(NUM_COLS_DEV, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
                                      G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
 
-    cell_renderer = gtk_cell_renderer_text_new();
+    renderer = gtk_cell_renderer_text_new();
 
 
-    column = gtk_tree_view_column_new_with_attributes(("Devices"), cell_renderer, "text", COL_DEV, NULL);
+    column = gtk_tree_view_column_new_with_attributes(("Devices"), renderer, "text", COL_DEV, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
 
@@ -497,7 +533,7 @@ void create_list_store_dev(void) {
                                     NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_devices), column);
 
-    column = gtk_tree_view_column_new_with_attributes(("Available"), cell_renderer, "text", COL_AVAILABLE, NULL);
+    column = gtk_tree_view_column_new_with_attributes(("Available"), renderer, "text", COL_AVAILABLE, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
 
@@ -507,7 +543,7 @@ void create_list_store_dev(void) {
                                     (void *) COL_AVAILABLE, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_devices), column);
 
-    column = gtk_tree_view_column_new_with_attributes(("Used"), cell_renderer, "text", COL_USED, NULL);
+    column = gtk_tree_view_column_new_with_attributes(("Used"), renderer, "text", COL_USED, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_USED);
@@ -516,7 +552,7 @@ void create_list_store_dev(void) {
                                     (void *) COL_USED, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_devices), column);
 
-    column = gtk_tree_view_column_new_with_attributes(("Type"), cell_renderer, "text", COL_TYPE, NULL);
+    column = gtk_tree_view_column_new_with_attributes(("Type"), renderer, "text", COL_TYPE, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_TYPE);
@@ -525,7 +561,7 @@ void create_list_store_dev(void) {
                                     (void *) COL_TYPE, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_devices), column);
 
-    column = gtk_tree_view_column_new_with_attributes(("Directory"), cell_renderer, "text", COL_DIR, NULL);
+    column = gtk_tree_view_column_new_with_attributes(("Directory"), renderer, "text", COL_DIR, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_DIR);
@@ -534,7 +570,7 @@ void create_list_store_dev(void) {
                                     NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_devices), column);
 
-    column = gtk_tree_view_column_new_with_attributes(("Total"), cell_renderer, "text", COL_TOTAL, NULL);
+    column = gtk_tree_view_column_new_with_attributes(("Total"), renderer, "text", COL_TOTAL, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_TOTAL);
@@ -543,7 +579,7 @@ void create_list_store_dev(void) {
                                     (void *) COL_TOTAL, NULL);
     gtk_tree_view_append_column(GTK_TREE_VIEW(treeview_devices), column);
 
-    column = gtk_tree_view_column_new_with_attributes(("Free"), cell_renderer, "text", COL_FREE, NULL);
+    column = gtk_tree_view_column_new_with_attributes(("Free"), renderer, "text", COL_FREE, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_column_set_reorderable(column,TRUE);
     gtk_tree_view_column_set_sort_column_id(column, COL_FREE);

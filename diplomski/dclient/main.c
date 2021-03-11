@@ -9,6 +9,7 @@
 #include <semaphore.h>
 #include <asm/errno.h>
 #include <inttypes.h>
+#include <fontconfig/fontconfig.h>
 
 
 GtkWidget *window; /*main window*/
@@ -147,6 +148,8 @@ void freeing_memory(void *array, __int32_t *array_size, int type){
     Cpu_list    *temp_cpu;
     Cpu_list    *temp_cpuf;
 
+    I_Collection2 *temp_i2=NULL;
+    I_Collection2 *temp_i2f=NULL;
 
 
 
@@ -219,7 +222,15 @@ void freeing_memory(void *array, __int32_t *array_size, int type){
             (*array_size)=0;
 
             break;
-
+        case INTERRUPTS:
+            temp_i2=(I_Collection2 *)array;
+            while(temp_i2){
+                temp_i2f=temp_i2;
+                temp_i2=temp_i2->next;
+                if(temp_i2f->interrupts.CPU)
+                    free(temp_i2f->interrupts.CPU);
+                free(temp_i2f);
+            }
 
         default:
             return;
@@ -290,6 +301,7 @@ gboolean init_timeout() {
 
         return FALSE;
     }
+
 
 
     if((device_check(devices_new, dev_num))!=0){
@@ -468,7 +480,7 @@ gboolean init_timeout() {
 
             writing=false;
 
-           interrupts_write(interrupts) ;
+            interrupts_write(interrupts) ;
             device_write(devices_old);
 
 
@@ -506,7 +518,11 @@ gboolean init_timeout() {
 
     time_step = 60000 / t;
 
-    gtk_widget_queue_draw(window);
+    gtk_widget_queue_draw(graph1);
+    gtk_widget_queue_draw(graph_net);
+    gtk_widget_queue_draw(graph_mem);
+    gtk_widget_queue_draw(graph_inttrp);
+
 
 
 
@@ -536,20 +552,20 @@ void destroy_window(void) {
     sem_post(&semt);
 }
 
-void test_strtol(int val) {
+void test_strtol(long val) {
 
-    sem_wait(&semt);
+
     if ((errno == ERANGE && (val == LONG_MAX || val == LONG_MIN))
-        || (errno != 0 && val == 0)) {
+        || (errno != 0 )) {
         perror("strtol");
-
+        sem_wait(&semt);
         if (gtk_main_level() > 0){
             gtk_main_quit();
         }
-
+        sem_post(&semt);
     }
-         sem_post(&semt);
-};
+
+}
 
 
 /*
@@ -569,7 +585,7 @@ int main(int argc, char *argv[]) {
         record          = false;
         newsockfd       = 0;
         newsockfd1      = 0;
-
+        fontdesc        = NULL;
 
 
 //    float rec=0;
@@ -612,9 +628,16 @@ int main(int argc, char *argv[]) {
     }
 
 
+    if(!(cpu_num=receive_number_cpu(newsockfd))){
+        printf("cpu number failed\n");
+        close(newsockfd);
+        close(newsockfd1);
+        return -1;
+    }
 
 
-    cpu_status=calloc((size_t)CPU_NUM,sizeof(bool));
+    fontdesc = pango_font_description_from_string ("Arial 8");
+    cpu_status=calloc((size_t)cpu_num,sizeof(bool));
     if(cpu_status==NULL){
         free(cpu_status);
         close(newsockfd);
@@ -623,11 +646,11 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    for(int i=0;i<CPU_NUM;i++){
+    for(int i=0;i<cpu_num;i++){
         cpu_status[i]=true;
     }
 
-    cpu_buttons=calloc((size_t)CPU_NUM,sizeof(GtkWidget));
+    cpu_buttons=calloc((size_t)cpu_num,sizeof(GtkWidget));
     if(cpu_buttons==NULL){
 
         free(cpu_status);
@@ -643,18 +666,6 @@ int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
 
 
-    interrupts=calloc(10,sizeof(Interrupts));
-    if(interrupts==NULL){
-
-        free(interrupts);
-        free(cpu_status);
-        free(cpu_buttons);
-        close(newsockfd);
-        close(newsockfd1);
-
-        printf("calloc error %d \n", errno);
-        return -1;
-    }
 
 
 
@@ -699,9 +710,9 @@ int main(int argc, char *argv[]) {
 
     /*creating graphs by sending the draw signal to the function we create a cairo_t structure*/
     g_signal_connect_data((GObject *) (graph1),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
-    g_signal_connect_data((GObject *) (graph2),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
-    g_signal_connect_data((GObject *) (graph3),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
-    g_signal_connect_data((GObject *) (graph4),"draw",G_CALLBACK(on_draw_event),NULL,NULL,0);
+    g_signal_connect_data((GObject *) (graph_net), "draw", G_CALLBACK(on_draw_event), NULL, NULL, 0);
+    g_signal_connect_data((GObject *) (graph_mem), "draw", G_CALLBACK(on_draw_event), NULL, NULL, 0);
+    g_signal_connect_data((GObject *) (graph_inttrp), "draw", G_CALLBACK(on_draw_event), NULL, NULL, 0);
 
 
 
@@ -732,14 +743,14 @@ int main(int argc, char *argv[]) {
     gtk_main();
 
 
-
+    pango_font_description_free (fontdesc);
 
     gtk_tree_store_clear(list_tasks); /*freeing memory allocated for task list*/
     gtk_tree_store_clear(list_devices);/*freeing memory allocated for device list*/
     g_object_unref(list_tasks);
     g_object_unref(list_devices);
 
-    free(interrupts);
+
     freeing_memory(cpu_list,&list_num_size,CPU_USAGE);
     freeing_memory(devices_old,&dev_num_old,DEVICES);
     freeing_memory(tasks_old,&task_num_old,TASK);
@@ -748,7 +759,15 @@ int main(int argc, char *argv[]) {
 
     free(cpu_status);
     free(cpu_buttons);
+    I_Collection2 *temp;
+    while(interrupts2){
+        temp=interrupts2;
+        interrupts2=interrupts2->next;
+        free(temp->interrupts.CPU);
+        free(temp);
 
+
+    }
 
 
 
@@ -760,7 +779,9 @@ int main(int argc, char *argv[]) {
     close(newsockfd1);
 
 
-
+    pango_cairo_font_map_set_default(NULL);
+    cairo_debug_reset_static_data();
+    FcFini();
 
 
 

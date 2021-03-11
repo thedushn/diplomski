@@ -164,75 +164,75 @@ void process_window() {
     g_list_free(array);
 
 }
-void write_window(){
-
-    GtkWidget *vbox;
-    GtkWidget *hbox;
-    GtkWidget *window_temp;
-    GtkWidget *grid;
-    GtkWidget *viewport;
-    GtkWidget *frame4;
-    if(wr_window !=NULL){
-        if ( wr_window->parent_instance.qdata != NULL) {
-            if (gtk_widget_get_visible(wr_window)) {
-                gtk_widget_destroy(wr_window);
-
-
-
-            }
-
-        }
-    }
-    wr_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_position(GTK_WINDOW(wr_window), GTK_WIN_POS_CENTER);
-    gtk_window_set_default_size(GTK_WINDOW(wr_window), 200, 200);
-    window_temp = gtk_scrolled_window_new(NULL, NULL);
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(window_temp), GTK_POLICY_AUTOMATIC,
-                                   GTK_POLICY_ALWAYS);
-
-
-    graph_write      = gtk_drawing_area_new();
-
-
-    graph_write      = gtk_drawing_area_new();
-    frame4           = gtk_frame_new(NULL);
-    viewport=gtk_viewport_new(NULL,NULL);
-
-
-    gtk_window_set_title(GTK_WINDOW (wr_window), "write window");
-
-    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);
-
-
-    gtk_container_add(GTK_CONTAINER(viewport),graph_write);
-   // gtk_container_add(GTK_CONTAINER(frame4), graph_write);
-
-   // gtk_box_pack_start(GTK_BOX(hbox), frame4, 1, TRUE, 0);
-
-    gtk_box_pack_start(GTK_BOX(hbox), window_temp, TRUE, TRUE, 1);
-
-    gtk_container_add(GTK_CONTAINER(window_temp),viewport);
-
-
-    gtk_container_add(GTK_CONTAINER(wr_window), hbox);
-    gtk_widget_set_hexpand(window_temp,TRUE);
-    gtk_widget_set_vexpand(window_temp,TRUE);
-
-
-
-    gtk_window_set_position(GTK_WINDOW(wr_window), GTK_WIN_POS_CENTER);
-
-    g_signal_connect(G_OBJECT(wr_window), "destroy",
-                     G_CALLBACK(close_window), wr_window);
-    g_signal_connect ((GObject *)(wr_window), "destroy",
-                      G_CALLBACK(gtk_main_quit), NULL);
-
-    gtk_widget_show_all(wr_window);
-
-
-
-
-}
+//void write_window(){
+//
+//    GtkWidget *vbox;
+//    GtkWidget *hbox;
+//    GtkWidget *window_temp;
+//    GtkWidget *grid;
+//    GtkWidget *viewport;
+//    GtkWidget *frame4;
+//    if(wr_window !=NULL){
+//        if ( wr_window->parent_instance.qdata != NULL) {
+//            if (gtk_widget_get_visible(wr_window)) {
+//                gtk_widget_destroy(wr_window);
+//
+//
+//
+//            }
+//
+//        }
+//    }
+//    wr_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+//    gtk_window_set_position(GTK_WINDOW(wr_window), GTK_WIN_POS_CENTER);
+//    gtk_window_set_default_size(GTK_WINDOW(wr_window), 200, 200);
+//    window_temp = gtk_scrolled_window_new(NULL, NULL);
+//    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(window_temp), GTK_POLICY_AUTOMATIC,
+//                                   GTK_POLICY_ALWAYS);
+//
+//
+//    graph_write      = gtk_drawing_area_new();
+//
+//
+//    graph_write      = gtk_drawing_area_new();
+//    frame4           = gtk_frame_new(NULL);
+//    viewport=gtk_viewport_new(NULL,NULL);
+//
+//
+//    gtk_window_set_title(GTK_WINDOW (wr_window), "write window");
+//
+//    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);
+//
+//
+//    gtk_container_add(GTK_CONTAINER(viewport),graph_write);
+//   // gtk_container_add(GTK_CONTAINER(frame4), graph_write);
+//
+//   // gtk_box_pack_start(GTK_BOX(hbox), frame4, 1, TRUE, 0);
+//
+//    gtk_box_pack_start(GTK_BOX(hbox), window_temp, TRUE, TRUE, 1);
+//
+//    gtk_container_add(GTK_CONTAINER(window_temp),viewport);
+//
+//
+//    gtk_container_add(GTK_CONTAINER(wr_window), hbox);
+//    gtk_widget_set_hexpand(window_temp,TRUE);
+//    gtk_widget_set_vexpand(window_temp,TRUE);
+//
+//
+//
+//    gtk_window_set_position(GTK_WINDOW(wr_window), GTK_WIN_POS_CENTER);
+//
+//    g_signal_connect(G_OBJECT(wr_window), "destroy",
+//                     G_CALLBACK(close_window), wr_window);
+//    g_signal_connect ((GObject *)(wr_window), "destroy",
+//                      G_CALLBACK(gtk_main_quit), NULL);
+//
+//    gtk_widget_show_all(wr_window);
+//
+//
+//
+//
+//}
 /** function record_window() creates a window that holds the record button
  * input : none
  * otput : none
@@ -481,7 +481,7 @@ void graph_button_clicked(GtkWidget *widget) {
         gtk_container_add(GTK_CONTAINER(window_graphs), box2);
 
 
-        for(int i=0;i<CPU_NUM;i++){
+        for(int i=0;i<cpu_num;i++){
 
             sprintf(string,"CPU%d",i);
             temp=gtk_toggle_button_new_with_label(string);
@@ -550,7 +550,7 @@ void graph_clicked(GtkWidget *widget) {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {/*if a button is toggled we set its bool to true*/
 
-        for(int i=0;i<CPU_NUM;i++){
+        for(int i=0;i<cpu_num;i++){
 
             if(temp_widget->priv==widget->priv){
                 (*temp_bool)=true;
@@ -564,7 +564,7 @@ void graph_clicked(GtkWidget *widget) {
 
     } else {
 
-        for(int i=0;i<CPU_NUM;i++){
+        for(int i=0;i<cpu_num;i++){
 
             if(temp_widget->priv==widget->priv){
 

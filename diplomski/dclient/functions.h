@@ -24,5 +24,6 @@ void input_command();
 
 int connection(char *argv1, char *argv2);
 
+long receive_number_cpu(int socket);
 
 #endif //DIPLOMSKI_FUNCTIONS_H

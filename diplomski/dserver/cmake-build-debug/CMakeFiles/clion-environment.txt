@@ -1,2 +1,3 @@
-Options: 
-CMake: 3.7.2@/home/dushn/clion/clion-2017.1.3/bin/cmake/bin/cmake
+ToolSet: 1.0 (local)Options: 
+
+Options:

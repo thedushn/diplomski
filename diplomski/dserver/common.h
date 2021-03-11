@@ -8,7 +8,8 @@
 
 #include <stdbool.h>
 #include <time.h>
-
+#include <cairo.h>
+#include <gtk/gtk.h>
 /*defines what type of data we are sending */
 #define CPU_USAGE   1
 #define NETWORK     2
@@ -17,8 +18,10 @@
 #define DEVICES     5
 #define INTERRUPTS  6
 #define TEXT        7
+#define CPU_PACK    8
+#define INT_PACK    9
 
-#define CPU_NUM     4/*number of CPU*/
+
 
 struct __attribute__((__packed__))tm1 {/*structure that contains information about time used for tasks*/
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
@@ -61,15 +64,7 @@ struct __attribute__((__packed__))_Network {
 
 
 };
-typedef struct _Cpu_usage Cpu_usage;/*structure that contains cpu usage of all the different cpus */
-struct __attribute__((__packed__)) _Cpu_usage {
 
-
-    char percentage[CPU_NUM][16];
-
-
-
-};
 
 
 
@@ -102,7 +97,29 @@ struct __attribute__((__packed__)) _Interrupts {
 
 
 };
+typedef struct _Interrupts_send Interrupts_send;/*structure that contains the information of a interrupt type*/
+struct __attribute__((__packed__)) _Interrupts_send {
 
+    __uint64_t   total;
+    char       irq[64];
+    char       name[256];
+
+
+};
+typedef struct _Interrupts2 Interrupts2;/*structure that contains the information of a interrupt type*/
+struct __attribute__((__packed__)) _Interrupts2 {
+
+
+    bool        checked;
+    __uint64_t   *CPU;
+    __uint64_t   total;
+    char        irq[64];
+    char        name[256];
+    Interrupts2 *next;
+    Interrupts2 *prev;
+
+
+};
 
 typedef struct _Devices Devices;/*structure that contains the information of a device*/
 struct __attribute__((__packed__))_Devices {
@@ -121,42 +138,43 @@ struct __attribute__((__packed__))_Devices {
 
 
 
-typedef struct _Device_Collection D_Collection;/*!doubly linked list for devices*/
-struct _Device_Collection{
+typedef struct Device_Collection D_Collection;/*!doubly linked list for devices*/
+struct Device_Collection{
 
     Devices        devices;
     D_Collection * next;
     D_Collection * prev;
 };
 
-typedef struct _Task_Collection T_Collection;/*!doubly linked list for tasks*/
-struct _Task_Collection{
+typedef struct Task_Collection T_Collection;/*!doubly linked list for tasks*/
+struct Task_Collection{
 
     Task           task;
     T_Collection * next;
     T_Collection * prev;
 };
 
-typedef union _Unification Unification ; /*!union data structure that uses the same memory space for all elements*/
+typedef union Unification Unification ; /*!union data structure that uses the same memory space for all elements*/
 
-union _Unification {
+union Unification {
 
     Task            task;
     Network         network;
     Memory_usage    memory_usage;
-    Cpu_usage       cpu_usage;
     Interrupts      interrupts;
+    Interrupts_send interrupts_send;
     Devices         devices;
     char            conformation[64];
+    char            data_pack [1024];
 
 
 
 };
 
-typedef struct _Data Data;/**the structure we use to send data*/
-struct __attribute__((__packed__)) _Data{
+typedef struct Data Data;/**the structure we use to send data*/
+struct __attribute__((__packed__)) Data{
 
-    int         size;
+    __int16_t         size;
     Unification unification;
 
 };

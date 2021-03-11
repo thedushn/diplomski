@@ -20,9 +20,9 @@
  * */
 void * send_devices(void *socket){
 
-    int     sockfd=(*(int*)socket);
-    ssize_t *ret=NULL;
-
+   // int     sockfd=(*(int*)socket);
+    //ssize_t *ret=NULL;
+    Thread_pack thr_p=*(Thread_pack*)socket;
     D_Collection *devices_c=NULL;
     D_Collection *temp_dev;
     __int32_t device_num = 0;
@@ -37,14 +37,11 @@ void * send_devices(void *socket){
     }
     pthread_mutex_unlock(&mutex_send);
 
-    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
-        free(ret);
-        pthread_exit(NULL);
-    }
 
 
 
-    if ( (*ret=mount_list(&devices_c, &device_num, devices_show))) {
+
+    if ( (thr_p.ret_val=mount_list(&devices_c, &device_num, devices_show))) {
         printf("error in mount_list\n");
         for(int k=0;k<device_num;k++){
 
@@ -53,8 +50,8 @@ void * send_devices(void *socket){
             free(temp_dev);
 
         }
-        *ret = -100;
-        pthread_exit(ret);
+        thr_p.ret_val = -1;
+        pthread_exit(&thr_p.ret_val);
     }
 
 
@@ -65,14 +62,14 @@ void * send_devices(void *socket){
         data.size=DEVICES;
         data.unification.devices=(Devices)temp_dev->devices;
         pthread_mutex_lock(&mutex_send);
-        *ret = send(sockfd, &data, sizeof(Data), 0);
+        thr_p.ret_val = send(thr_p.socket, &data, sizeof(Data), 0);
         pthread_mutex_unlock(&mutex_send);
 
 
 
-        if (*ret < 0) { /*if the socket broke SIGPIPE error free allocated memory*/
+        if (thr_p.ret_val< 0) { /*if the socket broke SIGPIPE error free allocated memory*/
 
-            printf("Error sending data\n return = %d\n", (int) *ret);
+            printf("Error sending data\n return = %d\n", (int)thr_p.ret_val);
             for(int k=0;k<device_num;k++){
 
                 temp_dev = devices_c;
@@ -80,11 +77,11 @@ void * send_devices(void *socket){
                 free(temp_dev);
 
             }
-            pthread_exit(ret);
+            pthread_exit(&thr_p.ret_val);
 
         }
-        if (*ret == 0) {
-            printf("Error sending data\n return = %d\n", (int) *ret);
+        if (thr_p.ret_val == 0) {
+            printf("Error sending data\n return = %d\n", (int) thr_p.ret_val);
             printf("socket closed\n");
             for(int k=0;k<device_num;k++){
 
@@ -93,8 +90,8 @@ void * send_devices(void *socket){
                 free(temp_dev);
 
             }
-            *ret = -100;
-            pthread_exit(ret);
+            thr_p.ret_val = -1;
+            pthread_exit(&thr_p.ret_val);
         }
 
 
@@ -115,7 +112,7 @@ void * send_devices(void *socket){
     }
 
 
-    pthread_exit(ret);
+    pthread_exit(&thr_p.ret_val);
 
 }
 /*

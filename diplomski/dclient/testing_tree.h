@@ -27,6 +27,10 @@ int task_check(T_Collection *tasks_new, int task_num);
 
 int device_check(D_Collection *devices_new, int dev_num);
 
+void delete_old_dev(D_Collection **array,__int32_t *dev_num);
+
+void delete_old_tasks(T_Collection **array,__int32_t *task_num);
+
 void remove_task_item(gint pid);
 
 void remove_list_item_device(gchar *directory, gchar *name);

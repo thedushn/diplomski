@@ -5,56 +5,69 @@
 #include "interrupts.h"
 #include "functions.h"
 #include "testing.h"
+#include "cpu_usage.h"
 
 #include <errno.h>
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h>
 
-Interrupts *interrupts = NULL;
-Interrupts *interrupts_main = NULL;
-Interrupts *interrupts_send = NULL;
 
-/*
- * function clean_interrupts(): checks if any of the pointers are NULL if not it frees the allocated memory
- * input    : none.
- * output   : none.
- * */
-void clean_interrupts(){
 
-    if (interrupts != NULL) {
 
-        free(interrupts);
-        interrupts = NULL;
+Interrupts2 *interrupts2      = NULL;
+Interrupts2 *interrupts_main2 = NULL;
+Interrupts2 *interrupts_send2 = NULL;
+
+void clean_interrupts2(){
+    Interrupts2 *temp;
+    while (interrupts2 != NULL) {
+        temp            = interrupts2;
+        interrupts2     =interrupts2->next;
+        if(temp->CPU!=NULL)
+            free(temp->CPU);
+        temp->CPU=NULL;
+        free(temp);
+        temp=NULL;
+
     }
-    if (interrupts_main != NULL) {
+    while (interrupts_main2 != NULL) {
+        temp                = interrupts_main2;
+        interrupts_main2    = interrupts_main2->next;
+        if(temp->CPU!=NULL)
+            free(temp->CPU);
+        temp->CPU=NULL;
+        free(temp);
+        temp=NULL;
 
-        free(interrupts_main);
-        interrupts_main = NULL;
     }
-    if (interrupts_send != NULL) {
+    while (interrupts_send2 != NULL) {
+        temp                = interrupts_send2;
+        interrupts_send2    = interrupts_send2->next;
+        if(temp->CPU!=NULL)
+            free(temp->CPU);
+        temp->CPU=NULL;
+        free(temp);
+        temp=NULL;
 
-        free(interrupts_send);
-        interrupts_send = NULL;
     }
 
-};
-/*
- * function send_interrupts(): send data about the the top 10 interrupts  to client
- * input    : socket to send data to
- * output   : returns a non zero value if something goes wrong
- * */
-void * send_interrupts(void *socket){
+}
 
-    int         sockfd=(*(int*)socket);
-    ssize_t     *ret=NULL;
-    __int32_t   h = 0;
 
-    Data        data={0};
+void * send_interrupts2(void *socket){
+
+ //   int         sockfd      = (*(int*)socket);
+  //  ssize_t     *ret        = NULL;
+    __int32_t   cpu_indx    = 0      ;
+   Thread_pack thr_p=*(Thread_pack*)socket;
+
+    Data        data        = {0};
+    Interrupts2 *temp       = NULL;
 
     pthread_mutex_lock(&mutex_send);
+
     while (thread_break == false) { /*if other threads have failed close this thread before it allocates any memory*/
 
         pthread_mutex_unlock(&mutex_send);
@@ -62,260 +75,735 @@ void * send_interrupts(void *socket){
     }
     pthread_mutex_unlock(&mutex_send);
 
-    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
-        free(ret);
-        pthread_exit(NULL);
+
+
+
+    if((thr_p.ret_val = interrupt_usage2(&interrupts2)) != 0){   //get data
+
+        clean_interrupts2();
+
+
+        pthread_exit(&thr_p.ret_val);
     }
 
-
-    if((*ret = interrupt_usage(&interrupts, &h))!=0){
-
-        clean_interrupts();
+    refresh_interrupt_data(interrupts2,interrupts_main2); //refresh data
 
 
-        pthread_exit(ret);
-    }
+    delete_old_interrupts2(&interrupts_main2);
+    
+    if(insert_new_interrupts(&interrupts_main2, interrupts2) < 0){ //insert new interrupts
 
-
-
-
-
-
-    if (interrupts_main == NULL) {
-
-        interrupts_main = calloc((size_t) h, sizeof(Interrupts));
-        if(interrupts_main==NULL){
-
-            printf("calloc error %d \n", errno);
-            free(interrupts_main);
-            *ret = -100;
-            pthread_exit(ret);
-
-        }
-        for (int r = 0; r < h; r++) {
-
-            interrupts_main[r] = interrupts[r];
-        }
-
-
-    }
-
-    interrupts_send = calloc((size_t)  h, sizeof(Interrupts));
-    if(interrupts_send==NULL){
         printf("calloc error %d \n", errno);
-        free(interrupts_send);
-        *ret = -100;
-        pthread_exit(ret);
+        clean_interrupts2();
+        thr_p.ret_val = -1;
+        pthread_exit(&thr_p.ret_val);
+
     }
-    compare_interrupts(interrupts, interrupts_main, interrupts_send, h);
-
-  /*  char *filename = "interrupts_server.data";
-   interrupts_write(interrupts, interrupts_send, filename, h);*/
 
 
-    qsort(interrupts_send, (size_t) h, sizeof(Interrupts), myCompare);
 
-    for (int r = h - 10; r < h; r++) { /*sending only the top 10 interrupts */
 
+
+
+
+
+   if(compare_interrupts2( interrupts_main2,interrupts2, &interrupts_send2)<0) {
+       printf("calloc error %d \n", errno);
+       clean_interrupts2();
+       thr_p.ret_val = -1;
+       pthread_exit(&thr_p.ret_val);
+   }
+
+   sort_interrupts2(&interrupts_send2);
+
+
+
+
+
+    temp=interrupts_send2;
+    while(temp){
+        cpu_indx=0;
         memset(&data,0,sizeof(Data));
 
+
+
         data.size=INTERRUPTS;
-        data.unification.interrupts=interrupts_send[r];
-        pthread_mutex_lock(&mutex_send);
-        *ret = send(sockfd, &data, sizeof(Data), 0);
-        pthread_mutex_unlock(&mutex_send);
-        if (*ret < 0) {
-            printf("Error sending data\n return = %d\n", (int) *ret);
-            pthread_exit(ret);
+        strcpy(data.unification.interrupts_send.irq,temp->irq);
+        strcpy(data.unification.interrupts_send.name,temp->name);
+        data.unification.interrupts_send.total=temp->total;
+        if(send_data(thr_p.socket,data)<0){
+            clean_interrupts2();
+            thr_p.ret_val = -1;
+            pthread_exit(NULL);
         }
-        if (*ret == 0) {
-            printf("Error sending data\n return = %d\n", (int) *ret);
-            printf("socket closed\n");
-            *ret = -1;
-            pthread_exit(ret);
+        memset(&data,0,sizeof(Data));
+        data.size=INT_PACK;
+
+        while(cpu_indx!=cpu_Number){
+
+            if(buffer_interrupts(temp,data.unification.data_pack,&cpu_indx)<0){
+
+                clean_interrupts2();
+                thr_p.ret_val = -1;
+                pthread_exit(NULL);
+            }
+               // printf("%s\n",data.unification.data_pack);
+            if(send_data(thr_p.socket,data)<0){
+                clean_interrupts2();
+                thr_p.ret_val = -1;
+                pthread_exit(NULL);
+            }
+           memset(data.unification.data_pack,0,sizeof(data.unification.data_pack));
         }
 
+
+
+
+        temp=temp->next;
+    }
+
+    while (interrupts2 != NULL) {
+        temp            = interrupts2;
+        interrupts2     =interrupts2->next;
+        if(temp->CPU!=NULL)
+            free(temp->CPU);
+        temp->CPU=NULL;
+        free(temp);
+        temp=NULL;
+
+    }
+  
+    while (interrupts_send2 != NULL) {
+        temp                = interrupts_send2;
+        interrupts_send2    = interrupts_send2->next;
+        if(temp->CPU!=NULL)
+            free(temp->CPU);
+        temp->CPU=NULL;
+        free(temp);
+        temp=NULL;
 
     }
 
-    free(interrupts);
-    free(interrupts_send);
 
 
 
-    interrupts = NULL;
-    interrupts_send = NULL;
-    pthread_exit(ret);
+    pthread_exit(&thr_p.ret_val);
 
 }
-/*
- * function interrupt_usage(): gathers all the interrupts to a list and counts how many there are
- * input    : double pointer to a list of structure of data about interrupts and a pointer to the number of interrupts.
- * output   : returns a non zero value if something goes wrong
- * */
-//TODO make interrupts function for more cpus
-int interrupt_usage(Interrupts **array, __int32_t *num) {
+
+int buffer_interrupts(Interrupts2 *array, char *cp_array, int *cpu_indx){
+
+
+
+    size_t j;
+    int    mov;
+
+
+    while((array)){
+        j=1024-1;
+      //  printf("%d %d %d %d \n",(array)->CPU[0],(array)->CPU[1],(array)->CPU[2],(array)->CPU[3]);
+        for (int i = *cpu_indx; i < cpu_Number; i++) {
+
+
+
+
+            if ((mov=snprintf(cp_array,j, "%"SCNu64"", (array)->CPU[i])) < 0) {
+
+
+                printf("converting didn't work %s \n", cp_array);
+
+
+                return -1;
+            }
+
+            if(j<mov){
+
+                break;
+            }
+
+            cp_array=cp_array+mov;
+
+            j-=mov;
+            *cp_array++=' ';
+            (*cpu_indx)++;
+
+            if(j>0){
+                j--;
+            }
+            else{
+                break;
+            }
+
+
+
+        }
+        *cp_array='\n';
+
+        if( (*cpu_indx)==cpu_Number)
+        return 0;
+        else
+            return 1;
+    }
+
+
+   return -1;
+}
+Interrupts2* MergeSortedList(Interrupts2* lst1, Interrupts2* lst2)
+{
+    Interrupts2* result = NULL;
+
+    // Base Cases
+    if (lst1 == NULL)
+        return (lst2);
+    else if (lst2 == NULL)
+        return (lst1);
+
+    // recursively merging two lists
+    if (lst1->total < lst2->total) {
+        result = lst1;
+        result->next = MergeSortedList(lst1->next, lst2);
+    }
+    else {
+        result = lst2;
+        result->next = MergeSortedList(lst1, lst2->next);
+    }
+    return result;
+}
+
+// Splitting two into halves.
+// If the size of the list is odd, then extra element goes in the first list.
+void SplitList(Interrupts2* source, Interrupts2** front, Interrupts2** back)
+{
+    Interrupts2* ptr1;
+    Interrupts2* ptr2;
+    ptr2 = source;
+    ptr1 = source->next;
+
+    // ptr1 is incremented twice and ptr2 is incremented once.
+    while (ptr1 != NULL) {
+        ptr1 = ptr1->next;
+        if (ptr1 != NULL) {
+            ptr2 = ptr2->next;
+            ptr1 = ptr1->next;
+        }
+    }
+
+    // ptr2 is at the midpoint.
+    *front = source;
+    *back = ptr2->next;
+    ptr2->next = NULL;
+}
+void MergeSort(Interrupts2** thead)
+{
+    Interrupts2* head = *thead;
+    Interrupts2* ptr1;
+    Interrupts2* ptr2;
+
+    // Base Case
+    if ((head == NULL) || (head->next == NULL)) {
+        return;
+    }
+
+    // Splitting list
+    SplitList(head, &ptr1, &ptr2);
+
+    // Recursively sorting two lists.
+    MergeSort(&ptr1);
+    MergeSort(&ptr2);
+
+    // Sorted List.
+    *thead = MergeSortedList(ptr1, ptr2);
+}
+
+void sort_interrupts2(Interrupts2 **array){
+    MergeSort(array);
+}
+
+bool scan_numbers(__uint64_t *CPU, char **ptr, const char *endp, int  *index, int *cpu_index, bool end_of_string){
+
+    char num_buffer[64];
+    char *str_temp;
+    memset(num_buffer,0,sizeof(num_buffer));
+
+    if(end_of_string){
+        for(int i=*cpu_index;i<cpu_Number;i++) {
+            while (**ptr == ' ') { //find the first number
+
+                (*ptr)++;
+            }
+            while (**ptr != ' ' && **ptr != '\n') {
+                num_buffer[(*index)++] = **ptr;
+                (*ptr)++;
+            }
+            *index = 0;
+
+        //    sscanf(num_buffer, " %" SCNu64 "", &CPU[i]);
+            CPU[i]=  strtoul(num_buffer,NULL,10);
+        (*cpu_index)++;
+
+            memset(num_buffer, 0, sizeof(num_buffer));
+            if ((str_temp = strchr((*ptr), ' ')) == NULL) {//jump over the numbers
+
+                break; //if there isn't a space after the number it means that there is no name
+            } else {
+                (*ptr) = str_temp;
+            }
+
+        }
+        (*cpu_index)=0;
+        return true;
+
+    }else{
+        for(int i=(*cpu_index);i<cpu_Number;i++) {
+            while(**ptr==' ' && *ptr!=endp ){ //find the first number
+
+                (*ptr)++;
+            }
+            if(*ptr!=endp ){
+
+                while(**ptr!=' ' && *ptr!=endp ){
+                    num_buffer[(*index)++]=**ptr;
+                    (*ptr)++;
+                }
+                if(**ptr==' '){
+                    CPU[i]=  strtoul(num_buffer,NULL,10);
+                   // sscanf(num_buffer, " %" SCNu64 "", &CPU[i]);
+                    (*cpu_index)++;
+                    memset(num_buffer, 0, sizeof(num_buffer));
+                    *index=0;
+                }else{
+                    break;
+                }
+            }else{
+                break;
+            }
+
+
+
+
+        }
+
+        if((*cpu_index)==cpu_Number)
+            return true;
+    }
+
+    return false;
+}
+
+
+bool irq_scan(Interrupts2 *element,char **ptr,const char *endp,int  *index,bool end_of_string){
+
+
+        if(end_of_string){
+            while((**ptr)!=':'){//insert the IRQ into storage
+
+                (element)->irq[(*index)++]=(**ptr);
+                (*ptr)++;
+            }
+                *index=0;
+                (*ptr)++;
+                return true;
+
+        }else{
+            while(**ptr!=':' && *ptr!=endp){//insert the IRQ into storage
+
+                (element)->irq[(*index)++]=(**ptr);
+                (*ptr)++;
+            }
+            if(*ptr!=endp ){
+
+
+                *index=0;
+                (*ptr)++;
+                return true;
+
+            }
+            else{
+                return false;
+        }
+
+    }
+}
+bool scan_name(Interrupts2 *array,char *string,const char *endptr,int *i,bool end_of_string){
+    if(end_of_string){
+        while(*string!='\n'){ //write the name into storage
+
+            while(*string==' '){
+
+                string++;
+            }
+            while(*string!=' '){
+
+                if(*string=='\n'){
+                    (*i)=0;
+                    return true;
+                }
+
+
+
+                array->name[(*i)++]=*string++;
+
+            }
+            if(*string=='\n'){
+                (*i)=0;
+               return true;
+            }
+            array->name[(*i)++]=' ';
+
+        }
+        (*i)=0;
+        return true;
+
+    }else{
+        while(string!=endptr){
+            while(*string==' '){
+
+                string++;
+            }
+            while(*string!=' '){
+
+                if(string==endptr)
+                    return false;
+
+                array->name[(*i)++]=*string++;
+
+            }
+            array->name[(*i)++]=' ';
+
+        }
+        return false;
+    }
+
+}
+
+
+int interrupt_usage2(Interrupts2 **array) {
 
 
     FILE *file;
     char *filename = "/proc/interrupts";
+   // char *filename = "interrupts.data";
     char buffer[1024];
+    char *string            = NULL;
 
 
-    Interrupts *temp=NULL;
+    int irq_idx=0;
+    int number_index=0;
+    Interrupts2 *temp       = NULL;
+
+    bool irq_inserted       = false;
+    bool number_inserted    = false;
+    bool memory_allocated   = false;
+
+    bool end_of_string;
 
 
 
-    *array=malloc(sizeof(Interrupts));
 
-    if (*array == NULL) {
-
-        fprintf(stderr, "malloc failed\n");
-        free(*array);
-        return -1;
-
-    }
     if ((file = fopen(filename, "r")) == NULL || fgets(buffer, 1024, file) == NULL)
         return -1;
 
+    while ((string=fgets(buffer, 1024, file)) != NULL) {
+     //  printf("%d %s\n",strlen(&buffer),&buffer);
+        if((strchr(string,'\n')==NULL) ? (end_of_string=false) :(end_of_string=true))
 
-    while (fgets(buffer, 1024, file) != NULL) {
-
-
-        memset(*array, 0, sizeof(Interrupts));
-
-
-
-        sscanf(buffer, "%s %" SCNu64 " %" SCNu64 " %" SCNu64 " %" SCNu64 " %s %s %s %s",
-              (*array)->irq,
-              &(*array)->CPU0,
-               &(*array)->CPU1,
-               &(*array)->CPU2,
-               &(*array)->CPU3,
-               (*array)->ime1,
-               (*array)->ime2,
-               (*array)->ime3,
-               (*array)->ime4);
-
-        char  *p;
-       if( (p=strchr((*array)->irq,':'))){ /*after every IRQ name there is a : */
-           *p= '\0';
-       }
-
-
-
-        (*num)++;
-            if(temp!=NULL){
-                *array=temp;
+        if(!memory_allocated)  {
+            temp=calloc(1,sizeof(Interrupts2)); //allocate memory for storage
+            if(temp==NULL){
+                fprintf(stderr, "malloc failed\n");
+                free(temp);
+                while((*array)){
+                    temp         = (*array);
+                    (*array)=(*array)->next;
+                    free(temp->CPU);
+                    free(temp);
+                }
+                fclose(file);
+                return -1;
             }
-        temp = realloc(*array, (*num + 1) * sizeof(Interrupts));/*adding another interrupts sturcture to the array*/
 
-        if (temp != NULL) {
+            temp->next=(*array); //link the lists
 
-            (*array)= temp;
+            if ((*array) != NULL) {
+                (*array)->prev = temp;
+            }
+            (*array)=temp;
 
-                (*array)=(*array)+(*num); /*moving to the newly allocated element of the array*/
+            (*array)->total=0;
 
 
+
+
+
+
+            (*array)->CPU=calloc((size_t)cpu_Number,sizeof(__uint64_t)); //allocate the interrupt numbers
+            if ((*array)->CPU == NULL) {
+
+                fprintf(stderr, "malloc failed\n");
+                free((*array)->CPU);
+                while((*array)){
+                    temp  = (*array);
+                    (*array)=(*array)->next;
+                    free(temp->CPU);
+                    free(temp);
+                }
+                fclose(file);
+                return -1;
+
+
+            }
+            memory_allocated=true;
         }
-        else {
 
-            free(*array);
-            fclose(file);
-            printf("reallocate error %d", errno);
-            return -1;
 
+
+
+            while(*string==' '){//find the first occurrence of a letter or number
+
+            string++;
+            }
+
+                if(!irq_inserted){
+                    if(!(irq_inserted= irq_scan((*array),&string,&buffer[1023],&irq_idx,end_of_string))){
+                 continue;
+                 }
+                }
+
+
+
+     if(!number_inserted) {
+        if(!(number_inserted= scan_numbers((*array)->CPU,&string,&buffer[1023],&number_index,&irq_idx,end_of_string))){
+            continue;
         }
+
+     }
+
+        if (!(scan_name((*array), string, &buffer[1023], &number_index, end_of_string)))
+            continue;
+
+
+
+
+        memory_allocated = false;
+        number_inserted  = false;
+        irq_inserted     = false;
+
+
+
+
 
 
     }
 
 
     fclose(file);
-    *array = temp;
+
 
 
     return 0;
 }
 
-/*
- * function myCompare(): compares all the elements of the the list and sorts them from lowest to highest,
- * by adding their collective number of interrupts and comparing them to a others  collective number of interrupts
- * input    : two void pointers that represent elements of the array
- * output   : returns a non zero value if something goes wrong
- * */
-int myCompare(const void *a, const void *b) {
 
-    Interrupts interrupts1 = *(Interrupts *) a;
-    Interrupts interrupts2 = *(Interrupts *) b;
+int compare_interrupts2(Interrupts2 *new_interrupts, Interrupts2 *old_interrupts, Interrupts2 **array){
 
+    Interrupts2 *   temp_new= NULL;
+    Interrupts2 *   temp    = NULL;
+    __uint64_t      total         ;
 
-    int CPUa ;
-    int CPUb ;
+    while(old_interrupts){
+        temp_new=new_interrupts;
+        while(temp_new) {
+
+            if (strcmp(old_interrupts->name, temp_new->name) == 0 && strcmp(old_interrupts->irq, temp_new->irq) == 0) {
 
 
-    CPUa = (int) (interrupts1.CPU0 + interrupts1.CPU1 + interrupts1.CPU2 + interrupts1.CPU3);
-    CPUb = (int) (interrupts2.CPU0 + interrupts2.CPU1 + interrupts2.CPU2 + interrupts2.CPU3);
+                temp = calloc(1, sizeof(Interrupts2)); //allocate memory for storage
+                if (temp == NULL) {
+                    fprintf(stderr, "malloc failed\n");
+                    free(temp);
+
+                    return -1;
+                }
+
+                temp->next = (*array); //link the lists
+
+                if ((*array) != NULL) {
+                    (*array)->prev = temp;
+                }
+                (*array) = temp;
+                (*array)->checked = false;
 
 
-    return CPUa - CPUb;
+                (*array)->CPU = calloc((size_t) cpu_Number, sizeof(__uint64_t)); //allocate the interrupt numbers
+                if ((*array)->CPU == NULL) {
 
+                    fprintf(stderr, "malloc failed\n");
+                    free((*array)->CPU);
+
+                    return -1;
+
+
+                }
+
+                strcpy((*array)->name, temp_new->name);
+                strcpy((*array)->irq, temp_new->irq);
+                total = 0;
+
+                for (int i = 0; i < cpu_Number; i++) {
+                  //  printf("%lu ",temp_new->CPU[i] - old_interrupts->CPU[i]);
+                    (*array)->CPU[i] = temp_new->CPU[i] - old_interrupts->CPU[i];
+//                    if (((*array)->CPU[i] = temp_new->CPU[i] - old_interrupts->CPU[i])>temp_new->CPU[i]) {
+//                        (*array)->CPU[i] = (*array)->CPU[i]-1 ; //overflow
+//                    }
+                    total += (*array)->CPU[i];
+                }
+
+               // printf("%d %d %d %d \n",(*array)->CPU[0],(*array)->CPU[1],(*array)->CPU[2],(*array)->CPU[3]);
+
+                (*array)->total = total;
+
+            }
+            temp_new = temp_new->next;
+        }
+        old_interrupts=old_interrupts->next;
+    }
+    return 0;
 }
-/*
- * function compare_interrupts(): checks for differences between the new list of interrupts and the old
-              and saves to differences to a new list, if the differences are less then 0
-              that means the that proc/interrupts file has restarted
- * input    : Interrupts pointer pointing to Interrupts the new list;Interrupts pointer pointing to the old list ,
- *            pointer pointing to the list that is going to get sent to the client;
- * output   : none.
- * */
-void compare_interrupts(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts *send_interrupts, int n) {
 
 
-    for (int i = 0; i < n; i++) {
+void refresh_interrupt_data(Interrupts2 *new_interrupts, Interrupts2 *old_interrupts) {
+    Interrupts2 *temp=new_interrupts;
+    __uint64_t   *cpu_temp;
 
+    while(old_interrupts) {
 
-        strcpy(send_interrupts->irq, new_interrupts->irq);
+        old_interrupts->checked=false;
 
-        __int64_t temp = new_interrupts->CPU0 - old_interrupts->CPU0;
-        if (temp < 0) {
-            temp = 0;
+        while(new_interrupts) {
+
+            if(strcmp(old_interrupts->irq, new_interrupts->irq)==0 && strcmp(old_interrupts->name, new_interrupts->name)==0){
+
+                cpu_temp                = old_interrupts->CPU;
+                old_interrupts->CPU     = new_interrupts->CPU;
+                old_interrupts->total   = new_interrupts->total;
+                new_interrupts->CPU     = cpu_temp;
+                old_interrupts->checked = true;
+                new_interrupts->checked = true;
+
+                break;
+            }
+            new_interrupts->checked = false;
+                new_interrupts          =  new_interrupts->next;
         }
-        send_interrupts->CPU0 = (__uint64_t) temp;
-
-        temp = new_interrupts->CPU1 - old_interrupts->CPU1;
-        if (temp < 0) {
-            temp = 0;
-        }
-        send_interrupts->CPU1 = (__uint64_t) temp;
-
-
-        temp = new_interrupts->CPU2 - old_interrupts->CPU2;
-        if (temp < 0) {
-            temp = 0;
-        }
-        send_interrupts->CPU2 = (__uint64_t) temp;
-
-        temp =new_interrupts->CPU3 - old_interrupts->CPU3;
-        if (temp < 0) {
-            temp = 0;
-        }
-        send_interrupts->CPU3 = (__uint64_t) temp;
-
-
-        strcpy(send_interrupts->ime1, new_interrupts->ime1);
-        strcpy(send_interrupts->ime2, new_interrupts->ime2);
-        strcpy(send_interrupts->ime3, new_interrupts->ime3);
-        strcpy(send_interrupts->ime4, new_interrupts->ime4);
-
-        *old_interrupts=*new_interrupts;
-
-        send_interrupts++;
-        new_interrupts++;
-        old_interrupts++;
+        new_interrupts  =   temp;
+        old_interrupts  =   old_interrupts->next;
     }
 
-
-
 }
+void delete_old_interrupts2(Interrupts2 **array){
+
+
+
+    Interrupts2 *rem_old=(*array);
+    Interrupts2 *temp=NULL;
+    while ((*array)) {
+
+        if(!(*array)->checked){
+
+            if ((*array)->prev==NULL) {
+                temp = (*array);
+                if ((*array)->next != NULL) {
+                    (*array) = (*array)->next;
+                    (*array)->prev=NULL;
+                }
+
+                free(temp->CPU);
+                temp->CPU=NULL;
+                free(temp);
+                temp=NULL;
+                rem_old = (*array); //setting the first node
+            } else {
+
+                temp=(*array); // the one that we don't want anymore
+                if((*array)->next){
+                    (*array)->next->prev=(*array)->prev; //remember the last prev
+                   if((*array)->prev)
+                       (*array)->prev->next=(*array)->next;
+
+                }
+                else{
+                    if((*array)->prev)
+                        (*array)->prev->next=(*array)->next;
+                    free(temp->CPU);
+                    temp->CPU=NULL;
+                    free(temp);
+                    temp=NULL;
+                    break;
+                }
+
+
+                free(temp->CPU);
+                temp->CPU=NULL;
+                free(temp);
+                temp=NULL;
+
+                //(*array) = rem_old;
+            }
+
+        }
+
+            (*array) = (*array)->next;
+
+
+
+    }
+    (*array) = rem_old;
+}
+
+int insert_new_interrupts(Interrupts2 **array, Interrupts2 *new_interrupts) {
+    Interrupts2 *temp;
+
+
+
+    while(new_interrupts) {
+
+        if(!new_interrupts->checked){
+
+
+
+
+            temp=calloc(1,sizeof(Interrupts2));
+            if (temp == NULL) {
+
+                printf("calloc error %d \n", errno);
+                free(temp);
+
+                return -1;
+            }
+            temp->CPU=calloc((size_t)cpu_Number,sizeof(__uint64_t));
+              memcpy(temp->CPU,new_interrupts->CPU,cpu_Number*sizeof(__uint64_t)) ;
+
+                temp->checked=true;
+
+
+            strcpy(temp->name,new_interrupts->name);
+            strcpy(temp->irq,new_interrupts->irq);
+            temp->total=new_interrupts->total;
+            temp->next = (*array);
+            temp->prev = NULL;
+            if((*array)!=NULL){
+                (*array)->prev=temp;
+            }
+
+            (*array) = temp;
+
+
+
+        }
+        new_interrupts=new_interrupts->next;
+    }
+    return 0;
+}
+
+
 

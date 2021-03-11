@@ -9,7 +9,8 @@
 
 #include <stdbool.h>
 #include <time.h>
-
+#include <cairo.h>
+#include <gtk/gtk.h>
 
 /*!defines what type of data we are sending */
 #define CPU_USAGE   1
@@ -19,8 +20,10 @@
 #define DEVICES     5
 #define INTERRUPTS  6
 #define TEXT        7
+#define CPU_PACK    8
+#define INT_PACK    9
 
-#define CPU_NUM     4/*number of CPU*/
+
 
 struct __attribute__((__packed__))tm1 {/*structure that contains information about time used for tasks*/
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
@@ -35,9 +38,9 @@ struct __attribute__((__packed__))tm1 {/*structure that contains information abo
 
 };
 /**<<structure that contains task details */
-typedef struct _Task Task;
+typedef struct Task Task;
 
-struct __attribute__((__packed__)) _Task {
+struct __attribute__((__packed__)) Task {
     bool       checked;
     __int16_t  prio;
     __uint32_t uid;
@@ -56,8 +59,8 @@ struct __attribute__((__packed__)) _Task {
 
 
 };
-typedef struct _Network Network;/**structure that contains all the network usage*/
-struct __attribute__((__packed__))_Network {
+typedef struct Network Network;/**structure that contains all the network usage*/
+struct __attribute__((__packed__))Network {
 
     __uint64_t received_bytes;
     __uint64_t transmited_bytes;
@@ -65,11 +68,11 @@ struct __attribute__((__packed__))_Network {
 
 };
 
-typedef struct _Cpu_usage Cpu_usage;
-struct __attribute__((__packed__)) _Cpu_usage {/**structure that contains cpu usage of all the different cpus */
+typedef struct Cpu_usage Cpu_usage;
+struct __attribute__((__packed__)) Cpu_usage {/**structure that contains cpu usage of all the different cpus */
 
 
-    char percentage[CPU_NUM][16];
+    char percentage[4][16];
 
 
 
@@ -77,9 +80,9 @@ struct __attribute__((__packed__)) _Cpu_usage {/**structure that contains cpu us
 
 
 
-typedef struct _Memory_usage Memory_usage;/*!structure that contains information about memory usage */
+typedef struct Memory_usage Memory_usage;/*!structure that contains information about memory usage */
 
-struct __attribute__((__packed__)) _Memory_usage {
+struct __attribute__((__packed__)) Memory_usage {
 
     __uint64_t memory_used;
     __uint64_t memory_total;
@@ -90,9 +93,33 @@ struct __attribute__((__packed__)) _Memory_usage {
 
 
 };
+typedef struct Interrupts_send Interrupts_send;/*structure that contains the information of a interrupt type*/
+struct __attribute__((__packed__)) Interrupts_send {
+
+    __int64_t   total;
+    char       irq[64];
+    char       name[256];
+
+
+};
+typedef struct Interrupts2 Interrupts2;/*structure that contains the information of a interrupt type*/
+struct __attribute__((__packed__)) Interrupts2 {
+
+
+    bool        checked;
+    __uint64_t   *CPU;
+    __uint64_t   total;
+    char        irq[64];
+    char        name[256];
+    Interrupts2 *next;
+    Interrupts2 *prev;
+
+
+};
+
 /*!<structure that contains the information of a interrupt type*/
-typedef struct _Interrupts Interrupts;
-struct __attribute__((__packed__)) _Interrupts {
+typedef struct Interrupts Interrupts;
+struct __attribute__((__packed__)) Interrupts {
 
 
     char       irq[64];
@@ -109,8 +136,8 @@ struct __attribute__((__packed__)) _Interrupts {
 };
 
 
-typedef struct _Devices Devices;
-struct __attribute__((__packed__))_Devices {
+typedef struct Devices Devices;
+struct __attribute__((__packed__))Devices {
 
 
     bool       checked;
@@ -126,47 +153,62 @@ struct __attribute__((__packed__))_Devices {
 
 
 
-typedef struct _Device_Collection D_Collection;/*!doubly linked list for devices*/
-struct _Device_Collection{
+typedef struct Device_Collection D_Collection;/*!doubly linked list for devices*/
+struct Device_Collection{
 
     Devices        devices;
     D_Collection * next;
     D_Collection * prev;
 };
 /*!doubly linked list for tasks*/
-typedef struct _Task_Collection T_Collection;
-struct _Task_Collection{
+typedef struct Task_Collection T_Collection;
+struct Task_Collection{
 
     Task           task;
     T_Collection * next;
     T_Collection * prev;
 };
 
-typedef union _Unification Unification ; /*!union data structure that uses the same memory space for all elements*/
+typedef struct Interrupt_Collection I_Collection;
+struct Interrupt_Collection{
 
-union _Unification {
+    Interrupts           interrupts;
+    I_Collection * next;
+    I_Collection * prev;
+}
+;
+typedef struct Interrupt_Collection2 I_Collection2;
+struct Interrupt_Collection2{
+
+    Interrupts2           interrupts;
+    I_Collection2 * next;
+    I_Collection2 * prev;
+};
+typedef union Unification Unification ; /*!union data structure that uses the same memory space for all elements*/
+
+union Unification {
 
     Task            task;
     Network         network;
     Memory_usage    memory_usage;
-    Cpu_usage       cpu_usage;
     Interrupts      interrupts;
+    Interrupts_send interrupts_send;
     Devices         devices;
     char            conformation[64];
-
+    char            data_pack [1024];
 
 
 };
 
-typedef struct _Data Data;/*!the structure we use to send data*/
-struct __attribute__((__packed__)) _Data{
+typedef struct Data Data;/*!the structure we use to send data*/
+struct __attribute__((__packed__)) Data{
 
-    int         size;
+    __int16_t         size;
     Unification unification;
 
 };
 
 
-
+PangoFontDescription *fontdesc;
 
 #endif //DIPLOMSKI_COMMON_H

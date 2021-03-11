@@ -18,9 +18,9 @@
  * */
 void * send_memory(void *socket){
 
-    int sockfd=(*(int*)socket);
-    ssize_t *ret=NULL;
-
+   // int sockfd=(*(int*)socket);
+  //  ssize_t *ret=NULL;
+    Thread_pack thr_p=*(Thread_pack*)socket;
 
     Memory_usage  memory_usage={0};
     Data data={0};
@@ -33,16 +33,16 @@ void * send_memory(void *socket){
     }
     pthread_mutex_unlock(&mutex_send);
 
-    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
-        free(ret);
-        pthread_exit(NULL);
-    }
+//    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
+//        free(ret);
+//        pthread_exit(NULL);
+//    }
 
 
-    *ret=(ssize_t)  get_memory_usage(&memory_usage);
-    if (*ret > 0) {
+    thr_p.ret_val=(ssize_t)  get_memory_usage(&memory_usage);
+    if (thr_p.ret_val < 0) {
 
-        pthread_exit(ret);
+        pthread_exit(&thr_p.ret_val);
     }
     //memory_write(&memory_usage);
 
@@ -50,23 +50,24 @@ void * send_memory(void *socket){
     data.unification.memory_usage=memory_usage;
 
     pthread_mutex_lock(&mutex_send);
-    *ret = send(sockfd, &data, sizeof(Data), 0);
+    thr_p.ret_val = send(thr_p.socket, &data, sizeof(Data), 0);
     pthread_mutex_unlock(&mutex_send);
 
-    if (*ret < 0) {
-        printf("Error sending data\n return = %d\n", (int) *ret);
-        pthread_exit(ret);
+    if ( thr_p.ret_val < 0) {
+        printf("Error sending data\n return = %d %s\n", (int)  thr_p.ret_val,__FUNCTION__ );
+        pthread_exit( &thr_p.ret_val);
 
     }
-    if (*ret == 0) {
-        printf("Error sending data\n return = %d\n", (int) *ret);
+    if ( thr_p.ret_val == 0) {
+        printf("Error sending data\n return = %d\n", (int)  thr_p.ret_val);
         printf("socket closed\n");
-        pthread_exit(ret);
+        thr_p.ret_val = -1;
+        pthread_exit( &thr_p.ret_val);
 
     }
 
 
-    pthread_exit(ret);
+    pthread_exit( &thr_p.ret_val);
 }
 
 /*
@@ -97,7 +98,7 @@ int get_memory_usage(Memory_usage *memory_usage) {
 
    if(( file = fopen(filename, "r "))==NULL){
        printf("the file cant open %s\n",filename);
-       return 1;
+       return -1;
    }
 
 

@@ -29,12 +29,12 @@ struct DataItem *task_details; /*pointer to the link list of task cpu stats*/
 int hash_size;   /* number of tasks that are in the list */
 
 
-int cpu_percentage(Cpu_usage *array);
+int cpu_percentage(char *array);
 
 void * send_cpu(void *socket);
 
 
-int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *task);
+int get_cpu_percent(__uint64_t jiffies_user_local, __uint64_t jiffies_system_local, Task *task);
 
 
 struct Cpu_data search(bool *ima, struct Cpu_data new_data, Task *task);

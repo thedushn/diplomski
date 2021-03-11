@@ -9,8 +9,56 @@
 #include <errno.h>
 #include <netdb.h>
 
+
 #include"sys/socket.h"
 #include "main_header.h"
+bool scan_numbers(__uint64_t *CPU, char *ptr, int *cpu_index){
+    int  index=0;
+    char num_buffer[64];
+    memset(num_buffer,0,sizeof(num_buffer));
+
+    {
+        for(int i=(*cpu_index);i<cpu_num;i++) {
+            while (*ptr == ' ') { //find the first number
+
+                ptr++;
+            }
+            while (*ptr != ' ' && *ptr != '\n') {
+                num_buffer[index++] = *ptr;
+                ptr++;
+            }
+            if( *ptr == '\n' && index == 0){
+                break;
+            }
+            index = 0;
+            errno=0;
+            CPU[i]= strtol(num_buffer, 0, 10 );
+            if(errno !=0){
+                test_strtol( CPU[i]) ;
+            }
+
+           // sscanf(num_buffer, " %" SCNu64 "", &CPU[i]);
+            (*cpu_index)++;
+
+            memset(num_buffer, 0, sizeof(num_buffer));
+
+
+
+
+
+        }
+
+        if((*cpu_index)==cpu_num){
+            ((*cpu_index))=0;
+
+            return true;
+        }
+
+    }
+
+    return false;
+}
+
 /**
  * function device_task_commands(): sends command to server about what type of devices it wants to see
  * input:pointer to signal and to task id
@@ -118,7 +166,7 @@ void input_command() {
     const gchar *text = gtk_entry_get_text(GTK_ENTRY(entry));
     command_sender((char *) text);
 
-};
+}
 /**
  * function command_sender(): prepares a text command to be sent and sends it to server
  * input: none
@@ -129,8 +177,8 @@ int command_sender(char *text) {
     int ret;
     char buffer[1500];
     strcpy(buffer, "COMMAND");
-    strncat(buffer, " ", sizeof(buffer));
-    strncat(buffer, text, sizeof(buffer));
+    strncat(buffer, " ", sizeof(buffer)-1);
+    strncat(buffer, text, sizeof(buffer)-1);
     ret = (int) send(newsockfd1, &buffer, sizeof(buffer), MSG_WAITALL);
     if (ret < 0) {
 
@@ -158,8 +206,9 @@ int command_sender(char *text) {
  * */
 ssize_t test_send(int socket) {
 
-    ssize_t ret = 0;
-    Data data;
+    ssize_t     ret;
+    Data       data;
+
     memset(&data,0,sizeof(Data));
     ret = recv(socket, &data, sizeof(Data), 0);
 
@@ -203,7 +252,7 @@ ssize_t test_send(int socket) {
     }
 
     return sizeof(Data);
-};
+}
 /**
  * function test_send(): tests if the client can send TCP packets
  * input: socket
@@ -213,7 +262,7 @@ ssize_t test_recv(int socket) {
 
 
 
-    ssize_t ret =0;
+    ssize_t ret  ;
     Data data={0};
 
 
@@ -254,13 +303,35 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
 
     int flag = MSG_WAITALL;
     ssize_t ret;
+    char *p=NULL;
+    int cpu_number=0;
+    interrupt_num=0;
+   // I_Collection *temp_i=NULL;
+    I_Collection2 *temp_i2=NULL;
+//    while(interrupts){
+//        temp_i=interrupts;
+//        interrupts=interrupts->next;
+//        free(temp_i);
+//        temp_i=NULL;
+//
+//    }
+//    interrupts=NULL;
+    while(interrupts2){
+        temp_i2=interrupts2;
+        if(temp_i2->interrupts.CPU){
+            free(temp_i2->interrupts.CPU);
+        }
+        interrupts2=interrupts2->next;
+        free(temp_i2);
+        temp_i2=NULL;
 
+    }
+    interrupts2=NULL;
 
-    T_Collection *temp_task_array=NULL;
-    D_Collection *temp_device_array=NULL;
-
-
-    Interrupts *temp=interrupts;
+    T_Collection *temp_task_array   =NULL;
+    D_Collection *temp_device_array =NULL;
+   // I_Collection *temp_interrupts   =NULL;
+    I_Collection2 *temp_interrupts2 =NULL;
     while (1){
         Data data;
         memset(&data,0,sizeof(Data));
@@ -281,12 +352,6 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
 
         switch (data.size){
 
-            case CPU_USAGE:
-
-                *cpu_usage=(Cpu_usage)data.unification.cpu_usage;
-
-
-                break;
 
             case NETWORK:
 
@@ -331,9 +396,68 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
                 break;
 
             case INTERRUPTS:
+                temp_interrupts2=calloc(1,sizeof(I_Collection2));
+                if(temp_interrupts2==NULL){
+                    free(temp_interrupts2);
 
-                *temp=(Interrupts)(data.unification.interrupts);
-                temp++;
+                    printf("calloc error %d \n", errno);
+                    return 1;
+                }
+                strcpy(temp_interrupts2->interrupts.name,data.unification.interrupts_send.name);
+                strcpy(temp_interrupts2->interrupts.irq,data.unification.interrupts_send.irq);
+                temp_interrupts2->interrupts.total=data.unification.interrupts_send.total;
+
+                temp_interrupts2->next=interrupts2;
+                interrupts2= temp_interrupts2;
+
+                interrupts2->interrupts.CPU=calloc(cpu_num,sizeof(interrupts2->interrupts.CPU));
+                if(interrupts2->interrupts.CPU==NULL){
+                    free(interrupts2->interrupts.CPU);
+                    free(temp_interrupts2);
+                    printf("calloc error %d \n", errno);
+                    return 1;
+                }
+                interrupt_num++;
+
+
+//                temp_interrupts =calloc(1,sizeof(I_Collection));
+//                if(temp_interrupts==NULL){
+//                    free(temp_interrupts);
+//
+//                    printf("calloc error %d \n", errno);
+//                    return 1;
+//                }
+//                temp_interrupts->interrupts=(Interrupts)(data.unification.interrupts);
+//                temp_interrupts->next=interrupts;
+//                interrupts=temp_interrupts;
+
+
+
+                break;
+            case CPU_PACK:
+               p= data.unification.data_pack;
+             //  printf("PACK %s\n",data.unification.data_pack);
+                for(int i=0;i<cpu_num;i++){
+                    int j=0;
+                    while(*p==' '){
+                        p++;
+                    }
+                    while(*p!=' ' && *p!='\n'){
+                        cpu_usage->percentage[i][j++]=*p++;
+                       // p++;
+
+                    }
+//                    strncpy(cpu_usage->percentage[i],p,5);
+//                    p=p+5;
+                  //  printf("%s ",cpu_usage->percentage[i]);
+                }
+              //  printf("\n");
+
+                break;
+            case INT_PACK:
+
+                scan_numbers(interrupts2->interrupts.CPU,data.unification.data_pack,&cpu_number);
+
                 break;
 
             case TEXT:
@@ -359,5 +483,46 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
 
 
 
+
+}
+long receive_number_cpu(int socket) {
+
+
+
+    ssize_t ret  ;
+    Data data={0};
+    long number;
+
+    data.size=TEXT;
+
+    memset(data.unification.conformation,0,sizeof(data.unification.conformation));
+
+
+    ret = recv(socket, &data, sizeof(Data), MSG_WAITALL);
+
+
+    if (ret < 0) {
+
+        printf("error sending data\n %d", (int) ret);
+        return ret;
+    }
+    if (ret == 0) {
+
+        printf("error sending data\n %d", (int) ret);
+        printf("socket closed\n");
+        return ret;
+    }
+    number=(int)strtol(data.unification.conformation,NULL,10);
+    if(errno!=0) {
+        if ((errno == ERANGE && (number == LONG_MAX || number == LONG_MIN))
+            || (errno != 0 && number == 0)) {
+            perror("strtol");
+
+           return -1;
+
+        }
+    }
+
+    return number;
 
 }

@@ -51,7 +51,8 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     GtkWidget *frame1;
     GtkWidget *frame2;
     GtkWidget *frame3;
-    GtkWidget *frame4;
+
+
 
     entry = gtk_entry_new();
     gtk_entry_set_text(GTK_ENTRY(entry), "insert command here...");
@@ -67,9 +68,9 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
     vbox            = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);/*creating boxes where we are going to stack or graphs*/
     hbox            = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//cpu labels
-    hbox1           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph1 graph2 frame1 frame2
+    hbox1           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph1 graph_net frame1 frame2
     hbox2           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//in between graphs
-    hbox3           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph3 graph4 frame3 frame4
+    hbox3           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);//graph_mem graph_inttrp frame3 frame4
 
     button_inc      = gtk_button_new_with_label("refresh rate +");/*creating buttons under the main menu*/
     button_dec      = gtk_button_new_with_label("refresh rate-");
@@ -159,15 +160,26 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
 
     graph1      = gtk_drawing_area_new(); /*creating graphs*/
-    graph2      = gtk_drawing_area_new();
-    graph3      = gtk_drawing_area_new();
-    graph4      = gtk_drawing_area_new();
+    graph_net      = gtk_drawing_area_new();
+    graph_mem      = gtk_drawing_area_new();
+    graph_inttrp      = gtk_drawing_area_new();
 
     frame1      = gtk_frame_new(NULL);
     frame2      = gtk_frame_new(NULL);
     frame3      = gtk_frame_new(NULL);
-    frame4      = gtk_frame_new(NULL);
 
+
+
+    viewport  = gtk_viewport_new (NULL,NULL);
+    gtk_container_add (GTK_CONTAINER(viewport), graph_inttrp);
+    interrupts_swindow  = gtk_scrolled_window_new(NULL, NULL);
+    gtk_container_set_border_width (GTK_CONTAINER (interrupts_swindow), 1);
+    gtk_container_add (GTK_CONTAINER(interrupts_swindow), viewport);
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (interrupts_swindow),
+                                    GTK_POLICY_ALWAYS,
+                                    GTK_POLICY_ALWAYS);
+    gtk_widget_set_hexpand(GTK_WIDGET(interrupts_swindow), TRUE);
+    gtk_widget_set_vexpand(GTK_WIDGET(interrupts_swindow), TRUE);
 
     label_rec   = gtk_label_new(NULL);/*network_received*/
     label_trans = gtk_label_new(NULL);/*network_transmitted*/
@@ -211,15 +223,18 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     gtk_box_pack_start(GTK_BOX(hbox2), label_swap, 0, FALSE, 1);
 
 
-    gtk_container_add(GTK_CONTAINER(frame2), graph2);
+    gtk_container_add(GTK_CONTAINER(frame2), graph_net);
     gtk_box_pack_start(GTK_BOX(hbox1), frame2, 1, TRUE, 0);
 
 
     gtk_box_pack_start(GTK_BOX(vbox), hbox3, 1, TRUE, 0);
-    gtk_container_add(GTK_CONTAINER(frame3), graph3);
-    gtk_container_add(GTK_CONTAINER(frame4), graph4);
+    gtk_container_add(GTK_CONTAINER(frame3), graph_mem);
+
+    //gtk_container_add(GTK_CONTAINER(frame4), graph_inttrp);
+
     gtk_box_pack_start(GTK_BOX(hbox3), frame3, 1, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(hbox3), frame4, 1, TRUE, 0);
+   // gtk_box_pack_start(GTK_BOX(hbox3), frame4, 1, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(hbox3), interrupts_swindow, 0, TRUE, 0);
 
     gtk_box_pack_start(GTK_BOX(vbox), dev_swindow, TRUE, TRUE, 1);
     gtk_box_pack_start(GTK_BOX(vbox), process_swindow, TRUE, TRUE, 1);
@@ -277,18 +292,18 @@ void memory_change(Memory_usage *memory_usage) {
 
     gchar *used, *total, *memory_usage_text1;
 
-    float f = 0;
-    f = (float) atof(memory_usage->memory_percentage);
+    //float f = 0;
+   // (float) atof(memory_usage->memory_percentage);
 
-    mem_list->data[0]=f;
-
-
-    used = g_format_size_full((guint64) memory_usage->memory_used, G_FORMAT_SIZE_IEC_UNITS);
-
-    total = g_format_size_full((guint64) memory_usage->memory_total, G_FORMAT_SIZE_IEC_UNITS);
+    mem_list->data[0]   = (float) strtof(memory_usage->memory_percentage,NULL);
 
 
-    memory_usage_text1 = g_strdup_printf(("Memory: %0.2f%%(%s)%s"), f, used, total);
+    used                = g_format_size_full((guint64) memory_usage->memory_used, G_FORMAT_SIZE_IEC_UNITS);
+
+    total               = g_format_size_full((guint64) memory_usage->memory_total, G_FORMAT_SIZE_IEC_UNITS);
+
+
+    memory_usage_text1  = g_strdup_printf(("Memory: %0.2f%%(%s)%s"), mem_list->data[0], used, total);
     gtk_label_set_text(GTK_LABEL (label_mem), memory_usage_text1);
 
     g_free(memory_usage_text1);
@@ -305,16 +320,17 @@ void cpu_change(Cpu_usage cpu_usage) {
 
 
 
-    gchar  *cpu0_usage_text=NULL;
-    gchar  *temp_char=NULL;
+    gchar  *cpu0_usage_text =NULL;
+    gchar  *temp_char       =NULL;
 
-    for(int i=0;i<CPU_NUM;i++){
+    for(int i=0;i<cpu_num;i++){
 
-      sscanf (cpu_usage.percentage[i],"%f",&cpu_list->data[i] ) ;
+     // sscanf (cpu_usage.percentage[i],"%f",&cpu_list->data[i] ) ;
+        cpu_list->data[i]= strtof (cpu_usage.percentage[i],NULL) ;
 
        }
 
-    for(int i=0;i<CPU_NUM;i++){
+    for(int i=0;i<cpu_num;i++){
         gchar *p;
         if(i==0){
             cpu0_usage_text=g_strdup_printf("CPU%d: %.4s%% ",i,cpu_usage.percentage[i]);
@@ -338,7 +354,7 @@ void cpu_change(Cpu_usage cpu_usage) {
 
 
 
-};
+}
 /**
  * function network_change(): inputs network usage into list and displays it textually in window
  * input:   pointer to  Network usage

@@ -26,8 +26,8 @@
 void * send_task(void *socket){
 
 
-
-    ssize_t         *ret=NULL;
+    Thread_pack thr_p=*(Thread_pack*)socket;
+    //ssize_t         *ret=NULL;
     Data            data={0};
 
     T_Collection    *tasks=NULL;
@@ -43,10 +43,7 @@ void * send_task(void *socket){
     }
     pthread_mutex_unlock(&mutex_send);
 
-    if((ret=calloc(1,sizeof(ssize_t)))==NULL){
-        free(ret);
-        pthread_exit(NULL);
-    }
+
 
 
     if (get_task_list(&tasks, &task_num) != 0) {
@@ -60,9 +57,9 @@ void * send_task(void *socket){
 
 
         }
-        *ret = -100;
+        thr_p.ret_val = -1;
 
-        pthread_exit(ret);
+        pthread_exit(&thr_p.ret_val);
     }
 
     temp_task=tasks;
@@ -74,11 +71,11 @@ void * send_task(void *socket){
 
       //  task_write(&temp_task->task);
         pthread_mutex_lock(&mutex_send);
-        *ret = send((*(int*)socket), &data, sizeof(Data), 0);
+        thr_p.ret_val = send(thr_p.socket, &data, sizeof(Data), 0);
         pthread_mutex_unlock(&mutex_send);
 
-        if (*ret <= 0) {
-            printf("Error sending data\n return = %d\n", (int) *ret);
+        if (thr_p.ret_val <= 0) {
+            printf("Error sending data\n return = %d %s\n", (int) thr_p.ret_val,__FUNCTION__ );
             for(int k=0;k<task_num;k++){
 
                 temp_task   = tasks;
@@ -87,7 +84,7 @@ void * send_task(void *socket){
 
             }
 
-            pthread_exit(ret);
+            pthread_exit(&thr_p.ret_val);
         }
 
 
@@ -103,7 +100,7 @@ void * send_task(void *socket){
         free(temp_task);
     }
 
-    pthread_exit(ret);
+    pthread_exit(&thr_p.ret_val);
 }
 /*
  * function differenceBetweenTimePeriod(): calculates the age of the task
@@ -163,7 +160,7 @@ void * get_task_details(void *ptr) {
     char filename [96];
     char buffer   [1024];
     char dummy    [256];
-    int result = 0;
+    int result ;
     int i      = 0;
     int idummy;
     __uint64_t sec, hr, min, t;
@@ -338,13 +335,13 @@ void * get_task_details(void *ptr) {
 int get_task_list(T_Collection **array, __int32_t *task_num) {
 
 
-    DIR *dir;
-    struct dirent *d_file;
-    char *directory = "/proc";
-    uint32_t pid    = 0;
-    int thread_num  = 0;
-    int result      = 0;
-    char buffer[128]={0};
+    DIR             *dir;
+    struct dirent   *d_file;
+    char            *directory = "/proc";
+    uint32_t        pid;
+    int             thread_num  = 0;
+    int             result;
+    char            buffer[128]={0};
     Thread_task     *thread_task_main=NULL;
     Thread_task     *tp=NULL;
     T_Collection    *task_temp=NULL;
@@ -353,7 +350,7 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
 
     if ((dir = opendir(directory)) == NULL) {
         printf("error task dir %d\n", errno);
-        return 1;
+        return -1;
     }
 
     while ((d_file = readdir(dir)) != NULL) { /*going through all the directories that have a number as a name*/
@@ -373,7 +370,7 @@ int get_task_list(T_Collection **array, __int32_t *task_num) {
 
                 }
                 printf("calloc error %d \n", errno);
-                return 1;
+                return -1;
             }
 
 

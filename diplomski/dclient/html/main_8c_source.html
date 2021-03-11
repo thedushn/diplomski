@@ -659,9 +659,9 @@ $(function() {
 <div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160; </div>
 <div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;    <span class="comment">/*creating graphs by sending the draw signal to the function we create a cairo_t structure*/</span></div>
 <div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;    g_signal_connect_data((GObject *) (graph1),<span class="stringliteral">&quot;draw&quot;</span>,G_CALLBACK(on_draw_event),NULL,NULL,0);</div>
-<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;    g_signal_connect_data((GObject *) (graph2),<span class="stringliteral">&quot;draw&quot;</span>,G_CALLBACK(on_draw_event),NULL,NULL,0);</div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;    g_signal_connect_data((GObject *) (graph3),<span class="stringliteral">&quot;draw&quot;</span>,G_CALLBACK(on_draw_event),NULL,NULL,0);</div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;    g_signal_connect_data((GObject *) (graph4),<span class="stringliteral">&quot;draw&quot;</span>,G_CALLBACK(on_draw_event),NULL,NULL,0);</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;    g_signal_connect_data((GObject *) (graph_net),<span class="stringliteral">&quot;draw&quot;</span>,G_CALLBACK(on_draw_event),NULL,NULL,0);</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;    g_signal_connect_data((GObject *) (graph_mem),<span class="stringliteral">&quot;draw&quot;</span>,G_CALLBACK(on_draw_event),NULL,NULL,0);</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;    g_signal_connect_data((GObject *) (graph_inttrp),<span class="stringliteral">&quot;draw&quot;</span>,G_CALLBACK(on_draw_event),NULL,NULL,0);</div>
 <div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160; </div>
 <div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160; </div>
 <div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160; </div>

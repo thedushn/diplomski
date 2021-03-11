@@ -132,9 +132,9 @@ $(function() {
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    vbox            = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);<span class="comment">/*creating boxes where we are going to stack or graphs*/</span></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    hbox            = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);<span class="comment">//cpu labels</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    hbox1           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);<span class="comment">//graph1 graph2 frame1 frame2</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    hbox1           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);<span class="comment">//graph1 graph_net frame1 frame2</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    hbox2           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);<span class="comment">//in between graphs</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    hbox3           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);<span class="comment">//graph3 graph4 frame3 frame4</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    hbox3           = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 1);<span class="comment">//graph_mem graph_inttrp frame3 frame4</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    button_inc      = gtk_button_new_with_label(<span class="stringliteral">&quot;refresh rate +&quot;</span>);<span class="comment">/*creating buttons under the main menu*/</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    button_dec      = gtk_button_new_with_label(<span class="stringliteral">&quot;refresh rate-&quot;</span>);</div>
@@ -217,9 +217,9 @@ $(function() {
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    graph1      = gtk_drawing_area_new(); <span class="comment">/*creating graphs*/</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    graph2      = gtk_drawing_area_new();</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    graph3      = gtk_drawing_area_new();</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    graph4      = gtk_drawing_area_new();</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    graph_net      = gtk_drawing_area_new();</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    graph_mem      = gtk_drawing_area_new();</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    graph_inttrp      = gtk_drawing_area_new();</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    frame1      = gtk_frame_new(NULL);</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    frame2      = gtk_frame_new(NULL);</div>
@@ -268,13 +268,13 @@ $(function() {
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    gtk_box_pack_start(GTK_BOX(hbox2), label_swap, 0, FALSE, 1);</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    gtk_container_add(GTK_CONTAINER(frame2), graph2);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    gtk_container_add(GTK_CONTAINER(frame2), graph_net);</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    gtk_box_pack_start(GTK_BOX(hbox1), frame2, 1, TRUE, 0);</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    gtk_box_pack_start(GTK_BOX(vbox), hbox3, 1, TRUE, 0);</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    gtk_container_add(GTK_CONTAINER(frame3), graph3);</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    gtk_container_add(GTK_CONTAINER(frame4), graph4);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    gtk_container_add(GTK_CONTAINER(frame3), graph_mem);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    gtk_container_add(GTK_CONTAINER(frame4), graph_inttrp);</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    gtk_box_pack_start(GTK_BOX(hbox3), frame3, 1, TRUE, 0);</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    gtk_box_pack_start(GTK_BOX(hbox3), frame4, 1, TRUE, 0);</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
