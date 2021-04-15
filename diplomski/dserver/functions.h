@@ -35,7 +35,7 @@ struct Thread_pack {
     pthread_t thread_id;
     ssize_t ret_val;
 };
-
+Thread_pack thr_p_main[2];
 struct tm local_time; /*structure used to set task duration*/
 
 struct tm1 begin_time;  /*structure used to set task duration*/

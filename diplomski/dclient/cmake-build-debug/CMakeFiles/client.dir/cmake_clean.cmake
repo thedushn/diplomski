@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/client.dir/application.c.o"
   "CMakeFiles/client.dir/buttons.c.o"
   "CMakeFiles/client.dir/drawing.c.o"
   "CMakeFiles/client.dir/functions.c.o"

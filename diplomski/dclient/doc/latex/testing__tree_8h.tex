@@ -1,0 +1,333 @@
+\hypertarget{testing__tree_8h}{}\section{testing\+\_\+tree.\+h File Reference}
+\label{testing__tree_8h}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+{\ttfamily \#include \char`\"{}string.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$gtk/gtk.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}common.\+h\char`\"{}}\\*
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \\*
+\hyperlink{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba9b0c615f18eb387077e0190be79036a8}{C\+O\+L\+\_\+\+T\+A\+SK} = 0, 
+\hyperlink{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba5565cae2c0dd398b8d90b93b8b4f9f90}{C\+O\+L\+\_\+\+P\+ID}, 
+\hyperlink{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba2c78151e8549eb805935469ad4469ad9}{C\+O\+L\+\_\+\+R\+SS}, 
+\hyperlink{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba7b2372c88b7c60df9f1b961f70fbf706}{C\+O\+L\+\_\+\+C\+PU}, 
+\\*
+\hyperlink{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba9e87e53f55f4dbc43742369580127119}{C\+O\+L\+\_\+\+P\+R\+IO}, 
+\hyperlink{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba7c3698059a751d79072adc7b20c9bdd7}{C\+O\+L\+\_\+\+V\+SZ}, 
+\hyperlink{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba6dba5044a2e4c69fe8c3dd7ecf21f49a}{C\+O\+L\+\_\+\+P\+P\+ID}, 
+\hyperlink{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba10bde55644127c3a9786795e2cc83968}{C\+O\+L\+\_\+\+S\+T\+A\+TE}, 
+\\*
+\hyperlink{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba311078c9c273e67623dce3e851552d4a}{C\+O\+L\+\_\+\+U\+N\+A\+ME}, 
+\hyperlink{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55badbc87f76411711afc2604e6acd1fd2f8}{C\+O\+L\+\_\+\+D\+UR}, 
+\hyperlink{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba8843686a2923021b5ded06faeaaf66f1}{N\+U\+M\+\_\+\+C\+O\+LS}
+ \}
+\item 
+enum \{ \\*
+\hyperlink{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7a99c6904e9242fc5012a1729035f8ba3f}{C\+O\+L\+\_\+\+D\+EV} = 0, 
+\hyperlink{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7afdf433fb37c4f835e08a524b9925518d}{C\+O\+L\+\_\+\+D\+IR}, 
+\hyperlink{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7ae82b107fa2be7713a91806f3ed94c442}{C\+O\+L\+\_\+\+T\+Y\+PE}, 
+\hyperlink{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7aae9e7f34f0da5cd7525d5e3a7077d248}{C\+O\+L\+\_\+\+T\+O\+T\+AL}, 
+\\*
+\hyperlink{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7ae7c0da39ccf05b0b1660531b05d0ee09}{C\+O\+L\+\_\+\+A\+V\+A\+I\+L\+A\+B\+LE}, 
+\hyperlink{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7aead54680f5a3ae13dbe2764b6f3624f2}{C\+O\+L\+\_\+\+U\+S\+ED}, 
+\hyperlink{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7a3790a669cc277e06d1688c6efac23e7b}{C\+O\+L\+\_\+\+F\+R\+EE}, 
+\hyperlink{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7a02196a85e865b752df58efccfb4993ee}{N\+U\+M\+\_\+\+C\+O\+L\+S\+\_\+\+D\+EV}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{testing__tree_8h_ab68bdf130d2ca8d1fe6da6fa47b14a95}{task\+\_\+check} (\hyperlink{common_8h_aa9f2ae5a85e60fbcbda672bc74c74e0d}{T\+\_\+\+Collection} $\ast$tasks\+\_\+new, int task\+\_\+num)
+\item 
+int \hyperlink{testing__tree_8h_af1d8e7994cad0303281fe1521fbaa38e}{device\+\_\+check} (\hyperlink{common_8h_a78fbed7dbe1a9b59fa372944508fa48e}{D\+\_\+\+Collection} $\ast$devices\+\_\+new, int dev\+\_\+num)
+\item 
+void \hyperlink{testing__tree_8h_a435572229d12e87e17245787e4609515}{delete\+\_\+old\+\_\+dev} (\hyperlink{common_8h_a78fbed7dbe1a9b59fa372944508fa48e}{D\+\_\+\+Collection} $\ast$$\ast$array, \+\_\+\+\_\+int32\+\_\+t $\ast$dev\+\_\+num)
+\item 
+void \hyperlink{testing__tree_8h_a7e6a9ce05e2f7828e2a60f5e1b1e35c7}{delete\+\_\+old\+\_\+tasks} (\hyperlink{common_8h_aa9f2ae5a85e60fbcbda672bc74c74e0d}{T\+\_\+\+Collection} $\ast$$\ast$array, \+\_\+\+\_\+int32\+\_\+t $\ast$task\+\_\+num)
+\item 
+void \hyperlink{testing__tree_8h_ac8889cf14c506e302174439444348f40}{remove\+\_\+task\+\_\+item} (gint pid)
+\item 
+void \hyperlink{testing__tree_8h_a74e47f7b92a32b37fae2d8fd9af561de}{remove\+\_\+list\+\_\+item\+\_\+device} (gchar $\ast$directory, gchar $\ast$name)
+\item 
+void \hyperlink{testing__tree_8h_a7cc5d59b04420367b24800431a5cd525}{refresh\+\_\+list\+\_\+item} (\hyperlink{common_8h_a1d107d116293b1dddca4e5d3d2898d00}{Task} $\ast$task\+\_\+item, int $\ast$array\+\_\+i)
+\item 
+void \hyperlink{testing__tree_8h_aa09fc9cda4770920cf25c9a5eb84f93f}{refresh\+\_\+list\+\_\+item\+\_\+device} (\hyperlink{common_8h_a2c6d82e48dafb528d22e1ab8b09637b2}{Devices} $\ast$ref\+\_\+temp)
+\item 
+int \hyperlink{testing__tree_8h_ab17b0c0238ea9e79e36aecdd15f83ab5}{fill\+\_\+task\+\_\+item} (\hyperlink{common_8h_a1d107d116293b1dddca4e5d3d2898d00}{Task} $\ast$task\+\_\+item, Gtk\+Tree\+Iter $\ast$iter, int $\ast$array\+\_\+i)
+\item 
+int \hyperlink{testing__tree_8h_ad5083d38a0776b60c2c7a6fd231b0b59}{fill\+\_\+device\+\_\+item} (\hyperlink{common_8h_a2c6d82e48dafb528d22e1ab8b09637b2}{Devices} $\ast$f\+\_\+temp, Gtk\+Tree\+Iter $\ast$iter)
+\item 
+void \hyperlink{testing__tree_8h_a6a90baf7dc8eb415471ae40685bf6024}{change\+\_\+list\+\_\+store\+\_\+view\+\_\+devices} (Gtk\+Widget $\ast$widget)
+\item 
+void \hyperlink{testing__tree_8h_a02f2be292e8deb9c24a68a881f15db77}{change\+\_\+list\+\_\+store\+\_\+view\+\_\+process} (Gtk\+Widget $\ast$widget)
+\item 
+int \hyperlink{testing__tree_8h_a97d76ebb7ec7b1bc860b506e1734ce65}{add\+\_\+new\+\_\+task} (\hyperlink{common_8h_a1d107d116293b1dddca4e5d3d2898d00}{Task} $\ast$task\+\_\+t)
+\item 
+int \hyperlink{testing__tree_8h_a30717e1f0aef642291bcb414460b7fde}{add\+\_\+new\+\_\+dev} (\hyperlink{common_8h_a2c6d82e48dafb528d22e1ab8b09637b2}{Devices} $\ast$devices)
+\item 
+void \hyperlink{testing__tree_8h_a4aea69abc708f7068973e7ba3490cdf5}{create\+\_\+list\+\_\+store\+\_\+task} (void)
+\item 
+gint \hyperlink{testing__tree_8h_a172fd20502d6d71933e7bbaf6b25e8d9}{compare\+\_\+string\+\_\+list\+\_\+item} (Gtk\+Tree\+Model $\ast$model, Gtk\+Tree\+Iter $\ast$iter1, Gtk\+Tree\+Iter $\ast$iter2, gpointer column)
+\item 
+gint \hyperlink{testing__tree_8h_aaa807881fc558004e15e11225501608b}{compare\+\_\+int\+\_\+list\+\_\+item\+\_\+size} (Gtk\+Tree\+Model $\ast$model, Gtk\+Tree\+Iter $\ast$iter1, Gtk\+Tree\+Iter $\ast$iter2, gpointer column)
+\item 
+gint \hyperlink{testing__tree_8h_ac4c5fbc3a5e3b5cb50cee2e2731fe179}{compare\+\_\+int\+\_\+list\+\_\+item\+\_\+time} (Gtk\+Tree\+Model $\ast$model, Gtk\+Tree\+Iter $\ast$iter1, Gtk\+Tree\+Iter $\ast$iter2, gpointer column)
+\item 
+gint \hyperlink{testing__tree_8h_adf23ae6da5f78a2d628e07b39ed66f5b}{compare\+\_\+int\+\_\+list\+\_\+item} (Gtk\+Tree\+Model $\ast$model, Gtk\+Tree\+Iter $\ast$iter1, Gtk\+Tree\+Iter $\ast$iter2, gpointer column)
+\item 
+void \hyperlink{testing__tree_8h_ac525cadd1664f4de44b4d4988957fd7e}{create\+\_\+list\+\_\+store\+\_\+dev} (void)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Gtk\+Tree\+Selection $\ast$ \hyperlink{testing__tree_8h_a44d774d17dc4086e99f1118ce9851429}{selection}
+\item 
+Gtk\+Cell\+Renderer $\ast$ \hyperlink{testing__tree_8h_a4e09270b9d9a9aa72fa9331bcbfb5432}{cell\+\_\+renderer}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{testing__tree_8h_a2289f2a361b1167a71269b2d357ddc4b}{treeview\+\_\+tasks}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{testing__tree_8h_a8a7a033ac35c967fd21d2960cfa2a182}{treeview\+\_\+devices}
+\item 
+Gtk\+Tree\+Store $\ast$ \hyperlink{testing__tree_8h_a7959984fc06710670ddfecd462d00dc9}{list\+\_\+tasks}
+\item 
+Gtk\+Tree\+Store $\ast$ \hyperlink{testing__tree_8h_aa3415736cc23685f2154261f3097886f}{list\+\_\+devices}
+\end{DoxyCompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\subsubsection[{\texorpdfstring{anonymous enum}{anonymous enum}}]{\setlength{\rightskip}{0pt plus 5cm}anonymous enum}\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55b}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55b}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{C\+O\+L\+\_\+\+T\+A\+SK@{C\+O\+L\+\_\+\+T\+A\+SK}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+T\+A\+SK@{C\+O\+L\+\_\+\+T\+A\+SK}}\item[{\em 
+C\+O\+L\+\_\+\+T\+A\+SK\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba9b0c615f18eb387077e0190be79036a8}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba9b0c615f18eb387077e0190be79036a8}
+}]\index{C\+O\+L\+\_\+\+P\+ID@{C\+O\+L\+\_\+\+P\+ID}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+P\+ID@{C\+O\+L\+\_\+\+P\+ID}}\item[{\em 
+C\+O\+L\+\_\+\+P\+ID\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba5565cae2c0dd398b8d90b93b8b4f9f90}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba5565cae2c0dd398b8d90b93b8b4f9f90}
+}]\index{C\+O\+L\+\_\+\+R\+SS@{C\+O\+L\+\_\+\+R\+SS}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+R\+SS@{C\+O\+L\+\_\+\+R\+SS}}\item[{\em 
+C\+O\+L\+\_\+\+R\+SS\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba2c78151e8549eb805935469ad4469ad9}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba2c78151e8549eb805935469ad4469ad9}
+}]\index{C\+O\+L\+\_\+\+C\+PU@{C\+O\+L\+\_\+\+C\+PU}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+C\+PU@{C\+O\+L\+\_\+\+C\+PU}}\item[{\em 
+C\+O\+L\+\_\+\+C\+PU\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba7b2372c88b7c60df9f1b961f70fbf706}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba7b2372c88b7c60df9f1b961f70fbf706}
+}]\index{C\+O\+L\+\_\+\+P\+R\+IO@{C\+O\+L\+\_\+\+P\+R\+IO}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+P\+R\+IO@{C\+O\+L\+\_\+\+P\+R\+IO}}\item[{\em 
+C\+O\+L\+\_\+\+P\+R\+IO\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba9e87e53f55f4dbc43742369580127119}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba9e87e53f55f4dbc43742369580127119}
+}]\index{C\+O\+L\+\_\+\+V\+SZ@{C\+O\+L\+\_\+\+V\+SZ}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+V\+SZ@{C\+O\+L\+\_\+\+V\+SZ}}\item[{\em 
+C\+O\+L\+\_\+\+V\+SZ\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba7c3698059a751d79072adc7b20c9bdd7}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba7c3698059a751d79072adc7b20c9bdd7}
+}]\index{C\+O\+L\+\_\+\+P\+P\+ID@{C\+O\+L\+\_\+\+P\+P\+ID}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+P\+P\+ID@{C\+O\+L\+\_\+\+P\+P\+ID}}\item[{\em 
+C\+O\+L\+\_\+\+P\+P\+ID\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba6dba5044a2e4c69fe8c3dd7ecf21f49a}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba6dba5044a2e4c69fe8c3dd7ecf21f49a}
+}]\index{C\+O\+L\+\_\+\+S\+T\+A\+TE@{C\+O\+L\+\_\+\+S\+T\+A\+TE}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+S\+T\+A\+TE@{C\+O\+L\+\_\+\+S\+T\+A\+TE}}\item[{\em 
+C\+O\+L\+\_\+\+S\+T\+A\+TE\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba10bde55644127c3a9786795e2cc83968}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba10bde55644127c3a9786795e2cc83968}
+}]\index{C\+O\+L\+\_\+\+U\+N\+A\+ME@{C\+O\+L\+\_\+\+U\+N\+A\+ME}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+U\+N\+A\+ME@{C\+O\+L\+\_\+\+U\+N\+A\+ME}}\item[{\em 
+C\+O\+L\+\_\+\+U\+N\+A\+ME\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba311078c9c273e67623dce3e851552d4a}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba311078c9c273e67623dce3e851552d4a}
+}]\index{C\+O\+L\+\_\+\+D\+UR@{C\+O\+L\+\_\+\+D\+UR}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+D\+UR@{C\+O\+L\+\_\+\+D\+UR}}\item[{\em 
+C\+O\+L\+\_\+\+D\+UR\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55badbc87f76411711afc2604e6acd1fd2f8}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55badbc87f76411711afc2604e6acd1fd2f8}
+}]\index{N\+U\+M\+\_\+\+C\+O\+LS@{N\+U\+M\+\_\+\+C\+O\+LS}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!N\+U\+M\+\_\+\+C\+O\+LS@{N\+U\+M\+\_\+\+C\+O\+LS}}\item[{\em 
+N\+U\+M\+\_\+\+C\+O\+LS\hypertarget{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba8843686a2923021b5ded06faeaaf66f1}{}\label{testing__tree_8h_a06fc87d81c62e9abb8790b6e5713c55ba8843686a2923021b5ded06faeaaf66f1}
+}]\end{description}
+\end{Desc}
+\subsubsection[{\texorpdfstring{anonymous enum}{anonymous enum}}]{\setlength{\rightskip}{0pt plus 5cm}anonymous enum}\hypertarget{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7}{}\label{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{C\+O\+L\+\_\+\+D\+EV@{C\+O\+L\+\_\+\+D\+EV}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+D\+EV@{C\+O\+L\+\_\+\+D\+EV}}\item[{\em 
+C\+O\+L\+\_\+\+D\+EV\hypertarget{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7a99c6904e9242fc5012a1729035f8ba3f}{}\label{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7a99c6904e9242fc5012a1729035f8ba3f}
+}]\index{C\+O\+L\+\_\+\+D\+IR@{C\+O\+L\+\_\+\+D\+IR}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+D\+IR@{C\+O\+L\+\_\+\+D\+IR}}\item[{\em 
+C\+O\+L\+\_\+\+D\+IR\hypertarget{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7afdf433fb37c4f835e08a524b9925518d}{}\label{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7afdf433fb37c4f835e08a524b9925518d}
+}]\index{C\+O\+L\+\_\+\+T\+Y\+PE@{C\+O\+L\+\_\+\+T\+Y\+PE}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+T\+Y\+PE@{C\+O\+L\+\_\+\+T\+Y\+PE}}\item[{\em 
+C\+O\+L\+\_\+\+T\+Y\+PE\hypertarget{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7ae82b107fa2be7713a91806f3ed94c442}{}\label{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7ae82b107fa2be7713a91806f3ed94c442}
+}]\index{C\+O\+L\+\_\+\+T\+O\+T\+AL@{C\+O\+L\+\_\+\+T\+O\+T\+AL}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+T\+O\+T\+AL@{C\+O\+L\+\_\+\+T\+O\+T\+AL}}\item[{\em 
+C\+O\+L\+\_\+\+T\+O\+T\+AL\hypertarget{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7aae9e7f34f0da5cd7525d5e3a7077d248}{}\label{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7aae9e7f34f0da5cd7525d5e3a7077d248}
+}]\index{C\+O\+L\+\_\+\+A\+V\+A\+I\+L\+A\+B\+LE@{C\+O\+L\+\_\+\+A\+V\+A\+I\+L\+A\+B\+LE}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+A\+V\+A\+I\+L\+A\+B\+LE@{C\+O\+L\+\_\+\+A\+V\+A\+I\+L\+A\+B\+LE}}\item[{\em 
+C\+O\+L\+\_\+\+A\+V\+A\+I\+L\+A\+B\+LE\hypertarget{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7ae7c0da39ccf05b0b1660531b05d0ee09}{}\label{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7ae7c0da39ccf05b0b1660531b05d0ee09}
+}]\index{C\+O\+L\+\_\+\+U\+S\+ED@{C\+O\+L\+\_\+\+U\+S\+ED}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+U\+S\+ED@{C\+O\+L\+\_\+\+U\+S\+ED}}\item[{\em 
+C\+O\+L\+\_\+\+U\+S\+ED\hypertarget{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7aead54680f5a3ae13dbe2764b6f3624f2}{}\label{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7aead54680f5a3ae13dbe2764b6f3624f2}
+}]\index{C\+O\+L\+\_\+\+F\+R\+EE@{C\+O\+L\+\_\+\+F\+R\+EE}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!C\+O\+L\+\_\+\+F\+R\+EE@{C\+O\+L\+\_\+\+F\+R\+EE}}\item[{\em 
+C\+O\+L\+\_\+\+F\+R\+EE\hypertarget{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7a3790a669cc277e06d1688c6efac23e7b}{}\label{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7a3790a669cc277e06d1688c6efac23e7b}
+}]\index{N\+U\+M\+\_\+\+C\+O\+L\+S\+\_\+\+D\+EV@{N\+U\+M\+\_\+\+C\+O\+L\+S\+\_\+\+D\+EV}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!N\+U\+M\+\_\+\+C\+O\+L\+S\+\_\+\+D\+EV@{N\+U\+M\+\_\+\+C\+O\+L\+S\+\_\+\+D\+EV}}\item[{\em 
+N\+U\+M\+\_\+\+C\+O\+L\+S\+\_\+\+D\+EV\hypertarget{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7a02196a85e865b752df58efccfb4993ee}{}\label{testing__tree_8h_adf764cbdea00d65edcd07bb9953ad2b7a02196a85e865b752df58efccfb4993ee}
+}]\end{description}
+\end{Desc}
+
+
+\subsection{Function Documentation}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!add\+\_\+new\+\_\+dev@{add\+\_\+new\+\_\+dev}}
+\index{add\+\_\+new\+\_\+dev@{add\+\_\+new\+\_\+dev}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{add\+\_\+new\+\_\+dev(\+Devices $\ast$devices)}{add_new_dev(Devices *devices)}}]{\setlength{\rightskip}{0pt plus 5cm}int add\+\_\+new\+\_\+dev (
+\begin{DoxyParamCaption}
+\item[{{\bf Devices} $\ast$}]{devices}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_a30717e1f0aef642291bcb414460b7fde}{}\label{testing__tree_8h_a30717e1f0aef642291bcb414460b7fde}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!add\+\_\+new\+\_\+task@{add\+\_\+new\+\_\+task}}
+\index{add\+\_\+new\+\_\+task@{add\+\_\+new\+\_\+task}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{add\+\_\+new\+\_\+task(\+Task $\ast$task\+\_\+t)}{add_new_task(Task *task_t)}}]{\setlength{\rightskip}{0pt plus 5cm}int add\+\_\+new\+\_\+task (
+\begin{DoxyParamCaption}
+\item[{{\bf Task} $\ast$}]{task\+\_\+t}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_a97d76ebb7ec7b1bc860b506e1734ce65}{}\label{testing__tree_8h_a97d76ebb7ec7b1bc860b506e1734ce65}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!change\+\_\+list\+\_\+store\+\_\+view\+\_\+devices@{change\+\_\+list\+\_\+store\+\_\+view\+\_\+devices}}
+\index{change\+\_\+list\+\_\+store\+\_\+view\+\_\+devices@{change\+\_\+list\+\_\+store\+\_\+view\+\_\+devices}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{change\+\_\+list\+\_\+store\+\_\+view\+\_\+devices(\+Gtk\+Widget $\ast$widget)}{change_list_store_view_devices(GtkWidget *widget)}}]{\setlength{\rightskip}{0pt plus 5cm}void change\+\_\+list\+\_\+store\+\_\+view\+\_\+devices (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{widget}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_a6a90baf7dc8eb415471ae40685bf6024}{}\label{testing__tree_8h_a6a90baf7dc8eb415471ae40685bf6024}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!change\+\_\+list\+\_\+store\+\_\+view\+\_\+process@{change\+\_\+list\+\_\+store\+\_\+view\+\_\+process}}
+\index{change\+\_\+list\+\_\+store\+\_\+view\+\_\+process@{change\+\_\+list\+\_\+store\+\_\+view\+\_\+process}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{change\+\_\+list\+\_\+store\+\_\+view\+\_\+process(\+Gtk\+Widget $\ast$widget)}{change_list_store_view_process(GtkWidget *widget)}}]{\setlength{\rightskip}{0pt plus 5cm}void change\+\_\+list\+\_\+store\+\_\+view\+\_\+process (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{widget}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_a02f2be292e8deb9c24a68a881f15db77}{}\label{testing__tree_8h_a02f2be292e8deb9c24a68a881f15db77}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!compare\+\_\+int\+\_\+list\+\_\+item@{compare\+\_\+int\+\_\+list\+\_\+item}}
+\index{compare\+\_\+int\+\_\+list\+\_\+item@{compare\+\_\+int\+\_\+list\+\_\+item}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{compare\+\_\+int\+\_\+list\+\_\+item(\+Gtk\+Tree\+Model $\ast$model, Gtk\+Tree\+Iter $\ast$iter1, Gtk\+Tree\+Iter $\ast$iter2, gpointer column)}{compare_int_list_item(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter *iter2, gpointer column)}}]{\setlength{\rightskip}{0pt plus 5cm}gint compare\+\_\+int\+\_\+list\+\_\+item (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Tree\+Model $\ast$}]{model, }
+\item[{Gtk\+Tree\+Iter $\ast$}]{iter1, }
+\item[{Gtk\+Tree\+Iter $\ast$}]{iter2, }
+\item[{gpointer}]{column}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_adf23ae6da5f78a2d628e07b39ed66f5b}{}\label{testing__tree_8h_adf23ae6da5f78a2d628e07b39ed66f5b}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!compare\+\_\+int\+\_\+list\+\_\+item\+\_\+size@{compare\+\_\+int\+\_\+list\+\_\+item\+\_\+size}}
+\index{compare\+\_\+int\+\_\+list\+\_\+item\+\_\+size@{compare\+\_\+int\+\_\+list\+\_\+item\+\_\+size}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{compare\+\_\+int\+\_\+list\+\_\+item\+\_\+size(\+Gtk\+Tree\+Model $\ast$model, Gtk\+Tree\+Iter $\ast$iter1, Gtk\+Tree\+Iter $\ast$iter2, gpointer column)}{compare_int_list_item_size(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter *iter2, gpointer column)}}]{\setlength{\rightskip}{0pt plus 5cm}gint compare\+\_\+int\+\_\+list\+\_\+item\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Tree\+Model $\ast$}]{model, }
+\item[{Gtk\+Tree\+Iter $\ast$}]{iter1, }
+\item[{Gtk\+Tree\+Iter $\ast$}]{iter2, }
+\item[{gpointer}]{column}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_aaa807881fc558004e15e11225501608b}{}\label{testing__tree_8h_aaa807881fc558004e15e11225501608b}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!compare\+\_\+int\+\_\+list\+\_\+item\+\_\+time@{compare\+\_\+int\+\_\+list\+\_\+item\+\_\+time}}
+\index{compare\+\_\+int\+\_\+list\+\_\+item\+\_\+time@{compare\+\_\+int\+\_\+list\+\_\+item\+\_\+time}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{compare\+\_\+int\+\_\+list\+\_\+item\+\_\+time(\+Gtk\+Tree\+Model $\ast$model, Gtk\+Tree\+Iter $\ast$iter1, Gtk\+Tree\+Iter $\ast$iter2, gpointer column)}{compare_int_list_item_time(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter *iter2, gpointer column)}}]{\setlength{\rightskip}{0pt plus 5cm}gint compare\+\_\+int\+\_\+list\+\_\+item\+\_\+time (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Tree\+Model $\ast$}]{model, }
+\item[{Gtk\+Tree\+Iter $\ast$}]{iter1, }
+\item[{Gtk\+Tree\+Iter $\ast$}]{iter2, }
+\item[{gpointer}]{column}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_ac4c5fbc3a5e3b5cb50cee2e2731fe179}{}\label{testing__tree_8h_ac4c5fbc3a5e3b5cb50cee2e2731fe179}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!compare\+\_\+string\+\_\+list\+\_\+item@{compare\+\_\+string\+\_\+list\+\_\+item}}
+\index{compare\+\_\+string\+\_\+list\+\_\+item@{compare\+\_\+string\+\_\+list\+\_\+item}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{compare\+\_\+string\+\_\+list\+\_\+item(\+Gtk\+Tree\+Model $\ast$model, Gtk\+Tree\+Iter $\ast$iter1, Gtk\+Tree\+Iter $\ast$iter2, gpointer column)}{compare_string_list_item(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter *iter2, gpointer column)}}]{\setlength{\rightskip}{0pt plus 5cm}gint compare\+\_\+string\+\_\+list\+\_\+item (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Tree\+Model $\ast$}]{model, }
+\item[{Gtk\+Tree\+Iter $\ast$}]{iter1, }
+\item[{Gtk\+Tree\+Iter $\ast$}]{iter2, }
+\item[{gpointer}]{column}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_a172fd20502d6d71933e7bbaf6b25e8d9}{}\label{testing__tree_8h_a172fd20502d6d71933e7bbaf6b25e8d9}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!create\+\_\+list\+\_\+store\+\_\+dev@{create\+\_\+list\+\_\+store\+\_\+dev}}
+\index{create\+\_\+list\+\_\+store\+\_\+dev@{create\+\_\+list\+\_\+store\+\_\+dev}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{create\+\_\+list\+\_\+store\+\_\+dev(void)}{create_list_store_dev(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void create\+\_\+list\+\_\+store\+\_\+dev (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_ac525cadd1664f4de44b4d4988957fd7e}{}\label{testing__tree_8h_ac525cadd1664f4de44b4d4988957fd7e}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!create\+\_\+list\+\_\+store\+\_\+task@{create\+\_\+list\+\_\+store\+\_\+task}}
+\index{create\+\_\+list\+\_\+store\+\_\+task@{create\+\_\+list\+\_\+store\+\_\+task}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{create\+\_\+list\+\_\+store\+\_\+task(void)}{create_list_store_task(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void create\+\_\+list\+\_\+store\+\_\+task (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_a4aea69abc708f7068973e7ba3490cdf5}{}\label{testing__tree_8h_a4aea69abc708f7068973e7ba3490cdf5}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!delete\+\_\+old\+\_\+dev@{delete\+\_\+old\+\_\+dev}}
+\index{delete\+\_\+old\+\_\+dev@{delete\+\_\+old\+\_\+dev}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{delete\+\_\+old\+\_\+dev(\+D\+\_\+\+Collection $\ast$$\ast$array, \+\_\+\+\_\+int32\+\_\+t $\ast$dev\+\_\+num)}{delete_old_dev(D_Collection **array, __int32_t *dev_num)}}]{\setlength{\rightskip}{0pt plus 5cm}void delete\+\_\+old\+\_\+dev (
+\begin{DoxyParamCaption}
+\item[{{\bf D\+\_\+\+Collection} $\ast$$\ast$}]{array, }
+\item[{\+\_\+\+\_\+int32\+\_\+t $\ast$}]{dev\+\_\+num}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_a435572229d12e87e17245787e4609515}{}\label{testing__tree_8h_a435572229d12e87e17245787e4609515}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!delete\+\_\+old\+\_\+tasks@{delete\+\_\+old\+\_\+tasks}}
+\index{delete\+\_\+old\+\_\+tasks@{delete\+\_\+old\+\_\+tasks}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{delete\+\_\+old\+\_\+tasks(\+T\+\_\+\+Collection $\ast$$\ast$array, \+\_\+\+\_\+int32\+\_\+t $\ast$task\+\_\+num)}{delete_old_tasks(T_Collection **array, __int32_t *task_num)}}]{\setlength{\rightskip}{0pt plus 5cm}void delete\+\_\+old\+\_\+tasks (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+\_\+\+Collection} $\ast$$\ast$}]{array, }
+\item[{\+\_\+\+\_\+int32\+\_\+t $\ast$}]{task\+\_\+num}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_a7e6a9ce05e2f7828e2a60f5e1b1e35c7}{}\label{testing__tree_8h_a7e6a9ce05e2f7828e2a60f5e1b1e35c7}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!device\+\_\+check@{device\+\_\+check}}
+\index{device\+\_\+check@{device\+\_\+check}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{device\+\_\+check(\+D\+\_\+\+Collection $\ast$devices\+\_\+new, int dev\+\_\+num)}{device_check(D_Collection *devices_new, int dev_num)}}]{\setlength{\rightskip}{0pt plus 5cm}int device\+\_\+check (
+\begin{DoxyParamCaption}
+\item[{{\bf D\+\_\+\+Collection} $\ast$}]{devices\+\_\+new, }
+\item[{int}]{dev\+\_\+num}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_af1d8e7994cad0303281fe1521fbaa38e}{}\label{testing__tree_8h_af1d8e7994cad0303281fe1521fbaa38e}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!fill\+\_\+device\+\_\+item@{fill\+\_\+device\+\_\+item}}
+\index{fill\+\_\+device\+\_\+item@{fill\+\_\+device\+\_\+item}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{fill\+\_\+device\+\_\+item(\+Devices $\ast$f\+\_\+temp, Gtk\+Tree\+Iter $\ast$iter)}{fill_device_item(Devices *f_temp, GtkTreeIter *iter)}}]{\setlength{\rightskip}{0pt plus 5cm}int fill\+\_\+device\+\_\+item (
+\begin{DoxyParamCaption}
+\item[{{\bf Devices} $\ast$}]{f\+\_\+temp, }
+\item[{Gtk\+Tree\+Iter $\ast$}]{iter}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_ad5083d38a0776b60c2c7a6fd231b0b59}{}\label{testing__tree_8h_ad5083d38a0776b60c2c7a6fd231b0b59}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!fill\+\_\+task\+\_\+item@{fill\+\_\+task\+\_\+item}}
+\index{fill\+\_\+task\+\_\+item@{fill\+\_\+task\+\_\+item}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{fill\+\_\+task\+\_\+item(\+Task $\ast$task\+\_\+item, Gtk\+Tree\+Iter $\ast$iter, int $\ast$array\+\_\+i)}{fill_task_item(Task *task_item, GtkTreeIter *iter, int *array_i)}}]{\setlength{\rightskip}{0pt plus 5cm}int fill\+\_\+task\+\_\+item (
+\begin{DoxyParamCaption}
+\item[{{\bf Task} $\ast$}]{task\+\_\+item, }
+\item[{Gtk\+Tree\+Iter $\ast$}]{iter, }
+\item[{int $\ast$}]{array\+\_\+i}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_ab17b0c0238ea9e79e36aecdd15f83ab5}{}\label{testing__tree_8h_ab17b0c0238ea9e79e36aecdd15f83ab5}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!refresh\+\_\+list\+\_\+item@{refresh\+\_\+list\+\_\+item}}
+\index{refresh\+\_\+list\+\_\+item@{refresh\+\_\+list\+\_\+item}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{refresh\+\_\+list\+\_\+item(\+Task $\ast$task\+\_\+item, int $\ast$array\+\_\+i)}{refresh_list_item(Task *task_item, int *array_i)}}]{\setlength{\rightskip}{0pt plus 5cm}void refresh\+\_\+list\+\_\+item (
+\begin{DoxyParamCaption}
+\item[{{\bf Task} $\ast$}]{task\+\_\+item, }
+\item[{int $\ast$}]{array\+\_\+i}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_a7cc5d59b04420367b24800431a5cd525}{}\label{testing__tree_8h_a7cc5d59b04420367b24800431a5cd525}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!refresh\+\_\+list\+\_\+item\+\_\+device@{refresh\+\_\+list\+\_\+item\+\_\+device}}
+\index{refresh\+\_\+list\+\_\+item\+\_\+device@{refresh\+\_\+list\+\_\+item\+\_\+device}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{refresh\+\_\+list\+\_\+item\+\_\+device(\+Devices $\ast$ref\+\_\+temp)}{refresh_list_item_device(Devices *ref_temp)}}]{\setlength{\rightskip}{0pt plus 5cm}void refresh\+\_\+list\+\_\+item\+\_\+device (
+\begin{DoxyParamCaption}
+\item[{{\bf Devices} $\ast$}]{ref\+\_\+temp}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_aa09fc9cda4770920cf25c9a5eb84f93f}{}\label{testing__tree_8h_aa09fc9cda4770920cf25c9a5eb84f93f}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!remove\+\_\+list\+\_\+item\+\_\+device@{remove\+\_\+list\+\_\+item\+\_\+device}}
+\index{remove\+\_\+list\+\_\+item\+\_\+device@{remove\+\_\+list\+\_\+item\+\_\+device}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{remove\+\_\+list\+\_\+item\+\_\+device(gchar $\ast$directory, gchar $\ast$name)}{remove_list_item_device(gchar *directory, gchar *name)}}]{\setlength{\rightskip}{0pt plus 5cm}void remove\+\_\+list\+\_\+item\+\_\+device (
+\begin{DoxyParamCaption}
+\item[{gchar $\ast$}]{directory, }
+\item[{gchar $\ast$}]{name}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_a74e47f7b92a32b37fae2d8fd9af561de}{}\label{testing__tree_8h_a74e47f7b92a32b37fae2d8fd9af561de}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!remove\+\_\+task\+\_\+item@{remove\+\_\+task\+\_\+item}}
+\index{remove\+\_\+task\+\_\+item@{remove\+\_\+task\+\_\+item}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{remove\+\_\+task\+\_\+item(gint pid)}{remove_task_item(gint pid)}}]{\setlength{\rightskip}{0pt plus 5cm}void remove\+\_\+task\+\_\+item (
+\begin{DoxyParamCaption}
+\item[{gint}]{pid}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_ac8889cf14c506e302174439444348f40}{}\label{testing__tree_8h_ac8889cf14c506e302174439444348f40}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!task\+\_\+check@{task\+\_\+check}}
+\index{task\+\_\+check@{task\+\_\+check}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{task\+\_\+check(\+T\+\_\+\+Collection $\ast$tasks\+\_\+new, int task\+\_\+num)}{task_check(T_Collection *tasks_new, int task_num)}}]{\setlength{\rightskip}{0pt plus 5cm}int task\+\_\+check (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+\_\+\+Collection} $\ast$}]{tasks\+\_\+new, }
+\item[{int}]{task\+\_\+num}
+\end{DoxyParamCaption}
+)}\hypertarget{testing__tree_8h_ab68bdf130d2ca8d1fe6da6fa47b14a95}{}\label{testing__tree_8h_ab68bdf130d2ca8d1fe6da6fa47b14a95}
+
+
+\subsection{Variable Documentation}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!cell\+\_\+renderer@{cell\+\_\+renderer}}
+\index{cell\+\_\+renderer@{cell\+\_\+renderer}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{cell\+\_\+renderer}{cell_renderer}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Cell\+Renderer$\ast$ cell\+\_\+renderer}\hypertarget{testing__tree_8h_a4e09270b9d9a9aa72fa9331bcbfb5432}{}\label{testing__tree_8h_a4e09270b9d9a9aa72fa9331bcbfb5432}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!list\+\_\+devices@{list\+\_\+devices}}
+\index{list\+\_\+devices@{list\+\_\+devices}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{list\+\_\+devices}{list_devices}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Tree\+Store$\ast$ list\+\_\+devices}\hypertarget{testing__tree_8h_aa3415736cc23685f2154261f3097886f}{}\label{testing__tree_8h_aa3415736cc23685f2154261f3097886f}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!list\+\_\+tasks@{list\+\_\+tasks}}
+\index{list\+\_\+tasks@{list\+\_\+tasks}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{list\+\_\+tasks}{list_tasks}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Tree\+Store$\ast$ list\+\_\+tasks}\hypertarget{testing__tree_8h_a7959984fc06710670ddfecd462d00dc9}{}\label{testing__tree_8h_a7959984fc06710670ddfecd462d00dc9}
+treeview for devices \index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!selection@{selection}}
+\index{selection@{selection}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{selection}{selection}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Tree\+Selection$\ast$ selection}\hypertarget{testing__tree_8h_a44d774d17dc4086e99f1118ce9851429}{}\label{testing__tree_8h_a44d774d17dc4086e99f1118ce9851429}
+\index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!treeview\+\_\+devices@{treeview\+\_\+devices}}
+\index{treeview\+\_\+devices@{treeview\+\_\+devices}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{treeview\+\_\+devices}{treeview_devices}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ treeview\+\_\+devices}\hypertarget{testing__tree_8h_a8a7a033ac35c967fd21d2960cfa2a182}{}\label{testing__tree_8h_a8a7a033ac35c967fd21d2960cfa2a182}
+treeview for tasks \index{testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}!treeview\+\_\+tasks@{treeview\+\_\+tasks}}
+\index{treeview\+\_\+tasks@{treeview\+\_\+tasks}!testing\+\_\+tree.\+h@{testing\+\_\+tree.\+h}}
+\subsubsection[{\texorpdfstring{treeview\+\_\+tasks}{treeview_tasks}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ treeview\+\_\+tasks}\hypertarget{testing__tree_8h_a2289f2a361b1167a71269b2d357ddc4b}{}\label{testing__tree_8h_a2289f2a361b1167a71269b2d357ddc4b}

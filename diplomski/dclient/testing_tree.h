@@ -35,11 +35,11 @@ void remove_task_item(gint pid);
 
 void remove_list_item_device(gchar *directory, gchar *name);
 
-void refresh_list_item(Task *task_item);
+void refresh_list_item(Task *task_item, int *array_i);
 
 void refresh_list_item_device(Devices *ref_temp);
 
-int fill_task_item(Task *task_item, GtkTreeIter *iter);
+int fill_task_item(Task *task_item, GtkTreeIter *iter, int *array_i);
 
 int fill_device_item(Devices *f_temp, GtkTreeIter *iter);
 

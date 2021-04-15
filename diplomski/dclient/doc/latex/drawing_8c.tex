@@ -1,0 +1,325 @@
+\hypertarget{drawing_8c}{}\section{drawing.\+c File Reference}
+\label{drawing_8c}\index{drawing.\+c@{drawing.\+c}}
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}drawing.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}buttons.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$assert.\+h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+gboolean \hyperlink{drawing_8c_af84334aa6dff2765f9de6dc0fe0b44ad}{on\+\_\+draw\+\_\+event} (Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr)
+\item 
+void \hyperlink{drawing_8c_af16aa7e230f6b6867ad8d87ac2188220}{writing\+\_\+interrupt\+\_\+names2} (cairo\+\_\+t $\ast$cr, double font\+\_\+size, double length, int position, const gchar $\ast$name1)
+\item 
+void \hyperlink{drawing_8c_a6e486c806673c9053580a874be2be800}{writing\+\_\+seconds} (cairo\+\_\+t $\ast$cr, double width, double height, double font\+\_\+size, int i)
+\item 
+void \hyperlink{drawing_8c_ab49a2165616d04af5c1e4dbd18002acc}{draw\+\_\+frame} (cairo\+\_\+t $\ast$cr, double width, double height, double font\+\_\+size, int i)
+\item 
+void \hyperlink{drawing_8c_a7853e6c6f1dc79d102d0a4cab3ce3cda}{draw\+\_\+percentages} (cairo\+\_\+t $\ast$cr, double height, double font\+\_\+size)
+\item 
+void \hyperlink{drawing_8c_a67042c23d4937b2e2881df4c15d40250}{draw\+\_\+interrupts2} (cairo\+\_\+t $\ast$cr, int position, \hyperlink{common_8h_a9400321659cf06efa92dfce5f22a781c}{Interrupts2} $\ast$peak, double height, double font\+\_\+size, \+\_\+\+\_\+uint64\+\_\+t max\+\_\+num, double length)
+\item 
+void \hyperlink{drawing_8c_a05cfd0f9110766feb764caba60c76fda}{draw\+\_\+graph} (cairo\+\_\+t $\ast$cr, int r, double width, double height, double font\+\_\+size, double \hyperlink{main__header_8h_a04fb34a98c78bf40a69bc7d2c49547f2}{time\+\_\+step}, \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$array)
+\item 
+void \hyperlink{drawing_8c_a4000d19cb0ac7e6acde88fe5e7f80750}{draw\+\_\+graph\+\_\+net} (cairo\+\_\+t $\ast$cr, int r, int i, double width, double height, double font\+\_\+size, double \hyperlink{main__header_8h_a04fb34a98c78bf40a69bc7d2c49547f2}{time\+\_\+step}, float max\+\_\+num, \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$array)
+\item 
+void \hyperlink{drawing_8c_afb4e9c25f563e873f47305643e36e4b9}{draw\+\_\+graph\+\_\+mem} (cairo\+\_\+t $\ast$cr, int r, int index, double width, double height, double font\+\_\+size, double \hyperlink{main__header_8h_a04fb34a98c78bf40a69bc7d2c49547f2}{time\+\_\+step}, \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$array)
+\item 
+void \hyperlink{drawing_8c_a871534dcdda98fd77898d9e1d624c229}{do\+\_\+drawing\+\_\+mem} (Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr, guint \hyperlink{main__header_8h_a04fb34a98c78bf40a69bc7d2c49547f2}{time\+\_\+step}, \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$array)
+\item 
+void \hyperlink{drawing_8c_ae835e74977c91fcc81784efb18dbec79}{do\+\_\+drawing\+\_\+int2} (Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr, \hyperlink{common_8h_a76ec70ab5b7f9f59daf2ac63d0bd0e80}{I\+\_\+\+Collection2} $\ast$interrupts1)
+\item 
+void \hyperlink{drawing_8c_a7eb1a83479bd11b8a96516fddbcc4477}{do\+\_\+drawing\+\_\+net} (Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr, guint \hyperlink{main__header_8h_a04fb34a98c78bf40a69bc7d2c49547f2}{time\+\_\+step}, \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$array)
+\item 
+void \hyperlink{drawing_8c_a107c7cf9d2dbe90f7aa6010757d42675}{do\+\_\+drawing\+\_\+one\+\_\+cpu} (Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr, guint \hyperlink{main__header_8h_a04fb34a98c78bf40a69bc7d2c49547f2}{time\+\_\+step}, \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$array1, int index)
+\item 
+void \hyperlink{drawing_8c_a78612dd085c07282e9e5bc3d98627fc4}{do\+\_\+drawing\+\_\+cpu} (Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr, guint \hyperlink{main__header_8h_a04fb34a98c78bf40a69bc7d2c49547f2}{time\+\_\+step}, \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$array1)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{drawing.\+c@{drawing.\+c}!do\+\_\+drawing\+\_\+cpu@{do\+\_\+drawing\+\_\+cpu}}
+\index{do\+\_\+drawing\+\_\+cpu@{do\+\_\+drawing\+\_\+cpu}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{do\+\_\+drawing\+\_\+cpu(\+Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr, guint time\+\_\+step, Mega\+\_\+\+Data $\ast$array1)}{do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Data *array1)}}]{\setlength{\rightskip}{0pt plus 5cm}void do\+\_\+drawing\+\_\+cpu (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{widget, }
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{guint}]{time\+\_\+step, }
+\item[{{\bf Mega\+\_\+\+Data} $\ast$}]{array1}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_a78612dd085c07282e9e5bc3d98627fc4}{}\label{drawing_8c_a78612dd085c07282e9e5bc3d98627fc4}
+function \hyperlink{drawing_8c_a78612dd085c07282e9e5bc3d98627fc4}{do\+\_\+drawing\+\_\+cpu()}\+: draws the entire graph, the lines, the frame the seconds and the percentage input\+:pointer to the graph, pointer to the canvas, step between data, and pointer to the array of cpu usage output\+:none. display the cpus we want to be displayed \index{drawing.\+c@{drawing.\+c}!do\+\_\+drawing\+\_\+int2@{do\+\_\+drawing\+\_\+int2}}
+\index{do\+\_\+drawing\+\_\+int2@{do\+\_\+drawing\+\_\+int2}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{do\+\_\+drawing\+\_\+int2(\+Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr, I\+\_\+\+Collection2 $\ast$interrupts1)}{do_drawing_int2(GtkWidget *widget, cairo_t *cr, I_Collection2 *interrupts1)}}]{\setlength{\rightskip}{0pt plus 5cm}void do\+\_\+drawing\+\_\+int2 (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{widget, }
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{{\bf I\+\_\+\+Collection2} $\ast$}]{interrupts1}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_ae835e74977c91fcc81784efb18dbec79}{}\label{drawing_8c_ae835e74977c91fcc81784efb18dbec79}
+function \hyperlink{drawing_8c_ae835e74977c91fcc81784efb18dbec79}{do\+\_\+drawing\+\_\+int2()}\+: draws the entire graph from the frame to the max number of interrupts to the lines 
+\begin{DoxyParams}{Parameters}
+{\em widget} & pointer to which graph to draw on \\
+\hline
+{\em cr} & canvas \\
+\hline
+{\em interrupts1} & list of interrupts \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{drawing.\+c@{drawing.\+c}!do\+\_\+drawing\+\_\+mem@{do\+\_\+drawing\+\_\+mem}}
+\index{do\+\_\+drawing\+\_\+mem@{do\+\_\+drawing\+\_\+mem}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{do\+\_\+drawing\+\_\+mem(\+Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr, guint time\+\_\+step, Mega\+\_\+\+Data $\ast$array)}{do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Data *array)}}]{\setlength{\rightskip}{0pt plus 5cm}void do\+\_\+drawing\+\_\+mem (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{widget, }
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{guint}]{time\+\_\+step, }
+\item[{{\bf Mega\+\_\+\+Data} $\ast$}]{array}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_a871534dcdda98fd77898d9e1d624c229}{}\label{drawing_8c_a871534dcdda98fd77898d9e1d624c229}
+function \hyperlink{drawing_8c_a871534dcdda98fd77898d9e1d624c229}{do\+\_\+drawing\+\_\+mem()}\+: draws the entire graph from the frame to the percentages to the lines 
+\begin{DoxyParams}{Parameters}
+{\em widget} & pointer to which graph to draw on \\
+\hline
+{\em cr} & canvas \\
+\hline
+{\em time\+\_\+step} & \\
+\hline
+{\em array} & data array \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{drawing.\+c@{drawing.\+c}!do\+\_\+drawing\+\_\+net@{do\+\_\+drawing\+\_\+net}}
+\index{do\+\_\+drawing\+\_\+net@{do\+\_\+drawing\+\_\+net}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{do\+\_\+drawing\+\_\+net(\+Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr, guint time\+\_\+step, Mega\+\_\+\+Data $\ast$array)}{do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Data *array)}}]{\setlength{\rightskip}{0pt plus 5cm}void do\+\_\+drawing\+\_\+net (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{widget, }
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{guint}]{time\+\_\+step, }
+\item[{{\bf Mega\+\_\+\+Data} $\ast$}]{array}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_a7eb1a83479bd11b8a96516fddbcc4477}{}\label{drawing_8c_a7eb1a83479bd11b8a96516fddbcc4477}
+function \hyperlink{drawing_8c_a7eb1a83479bd11b8a96516fddbcc4477}{do\+\_\+drawing\+\_\+net()}\+: draws the entire graph, by searching the array for the biggest number 
+\begin{DoxyParams}{Parameters}
+{\em widget} & pointer to which graph to draw on \\
+\hline
+{\em cr} & canvas \\
+\hline
+{\em time\+\_\+step} & \\
+\hline
+{\em array} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{drawing.\+c@{drawing.\+c}!do\+\_\+drawing\+\_\+one\+\_\+cpu@{do\+\_\+drawing\+\_\+one\+\_\+cpu}}
+\index{do\+\_\+drawing\+\_\+one\+\_\+cpu@{do\+\_\+drawing\+\_\+one\+\_\+cpu}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{do\+\_\+drawing\+\_\+one\+\_\+cpu(\+Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr, guint time\+\_\+step, Mega\+\_\+\+Data $\ast$array1, int index)}{do_drawing_one_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Data *array1, int index)}}]{\setlength{\rightskip}{0pt plus 5cm}void do\+\_\+drawing\+\_\+one\+\_\+cpu (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{widget, }
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{guint}]{time\+\_\+step, }
+\item[{{\bf Mega\+\_\+\+Data} $\ast$}]{array1, }
+\item[{int}]{index}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_a107c7cf9d2dbe90f7aa6010757d42675}{}\label{drawing_8c_a107c7cf9d2dbe90f7aa6010757d42675}
+\index{drawing.\+c@{drawing.\+c}!draw\+\_\+frame@{draw\+\_\+frame}}
+\index{draw\+\_\+frame@{draw\+\_\+frame}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{draw\+\_\+frame(cairo\+\_\+t $\ast$cr, double width, double height, double font\+\_\+size, int i)}{draw_frame(cairo_t *cr, double width, double height, double font_size, int i)}}]{\setlength{\rightskip}{0pt plus 5cm}void draw\+\_\+frame (
+\begin{DoxyParamCaption}
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{double}]{width, }
+\item[{double}]{height, }
+\item[{double}]{font\+\_\+size, }
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_ab49a2165616d04af5c1e4dbd18002acc}{}\label{drawing_8c_ab49a2165616d04af5c1e4dbd18002acc}
+function \hyperlink{drawing_8h_ab49a2165616d04af5c1e4dbd18002acc}{draw\+\_\+frame()}\+: drawing the frame of the graph input\+: pointer to the canvas,width of the graph,height of the graph, font size and position output\+:none. \index{drawing.\+c@{drawing.\+c}!draw\+\_\+graph@{draw\+\_\+graph}}
+\index{draw\+\_\+graph@{draw\+\_\+graph}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{draw\+\_\+graph(cairo\+\_\+t $\ast$cr, int r, double width, double height, double font\+\_\+size, double time\+\_\+step, Mega\+\_\+\+Data $\ast$array)}{draw_graph(cairo_t *cr, int r, double width, double height, double font_size, double time_step, Mega_Data *array)}}]{\setlength{\rightskip}{0pt plus 5cm}void draw\+\_\+graph (
+\begin{DoxyParamCaption}
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{int}]{r, }
+\item[{double}]{width, }
+\item[{double}]{height, }
+\item[{double}]{font\+\_\+size, }
+\item[{double}]{time\+\_\+step, }
+\item[{{\bf Mega\+\_\+\+Data} $\ast$}]{array}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_a05cfd0f9110766feb764caba60c76fda}{}\label{drawing_8c_a05cfd0f9110766feb764caba60c76fda}
+function \hyperlink{drawing_8c_a05cfd0f9110766feb764caba60c76fda}{draw\+\_\+graph()}\+: draws the lines on the graph input\+: pointer to the canvas,index of the data,width,height,font size, step between data, pointer to the array of data output\+:none. \index{drawing.\+c@{drawing.\+c}!draw\+\_\+graph\+\_\+mem@{draw\+\_\+graph\+\_\+mem}}
+\index{draw\+\_\+graph\+\_\+mem@{draw\+\_\+graph\+\_\+mem}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{draw\+\_\+graph\+\_\+mem(cairo\+\_\+t $\ast$cr, int r, int index, double width, double height, double font\+\_\+size, double time\+\_\+step, Mega\+\_\+\+Data $\ast$array)}{draw_graph_mem(cairo_t *cr, int r, int index, double width, double height, double font_size, double time_step, Mega_Data *array)}}]{\setlength{\rightskip}{0pt plus 5cm}void draw\+\_\+graph\+\_\+mem (
+\begin{DoxyParamCaption}
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{int}]{r, }
+\item[{int}]{index, }
+\item[{double}]{width, }
+\item[{double}]{height, }
+\item[{double}]{font\+\_\+size, }
+\item[{double}]{time\+\_\+step, }
+\item[{{\bf Mega\+\_\+\+Data} $\ast$}]{array}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_afb4e9c25f563e873f47305643e36e4b9}{}\label{drawing_8c_afb4e9c25f563e873f47305643e36e4b9}
+function \hyperlink{drawing_8c_afb4e9c25f563e873f47305643e36e4b9}{draw\+\_\+graph\+\_\+mem()}\+: draws the lines on the graph for memory usage 
+\begin{DoxyParams}{Parameters}
+{\em cr} & canvas \\
+\hline
+{\em r} & color \\
+\hline
+{\em index} & index \\
+\hline
+{\em width} & \\
+\hline
+{\em height} & \\
+\hline
+{\em font\+\_\+size} & \\
+\hline
+{\em time\+\_\+step} & \\
+\hline
+{\em array} & data array \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{drawing.\+c@{drawing.\+c}!draw\+\_\+graph\+\_\+net@{draw\+\_\+graph\+\_\+net}}
+\index{draw\+\_\+graph\+\_\+net@{draw\+\_\+graph\+\_\+net}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{draw\+\_\+graph\+\_\+net(cairo\+\_\+t $\ast$cr, int r, int i, double width, double height, double font\+\_\+size, double time\+\_\+step, float max\+\_\+num, Mega\+\_\+\+Data $\ast$array)}{draw_graph_net(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step, float max_num, Mega_Data *array)}}]{\setlength{\rightskip}{0pt plus 5cm}void draw\+\_\+graph\+\_\+net (
+\begin{DoxyParamCaption}
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{int}]{r, }
+\item[{int}]{i, }
+\item[{double}]{width, }
+\item[{double}]{height, }
+\item[{double}]{font\+\_\+size, }
+\item[{double}]{time\+\_\+step, }
+\item[{float}]{max\+\_\+num, }
+\item[{{\bf Mega\+\_\+\+Data} $\ast$}]{array}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_a4000d19cb0ac7e6acde88fe5e7f80750}{}\label{drawing_8c_a4000d19cb0ac7e6acde88fe5e7f80750}
+function \hyperlink{drawing_8c_a4000d19cb0ac7e6acde88fe5e7f80750}{draw\+\_\+graph\+\_\+net()}\+: draws the lines on the graph for network usage
+
+
+\begin{DoxyParams}{Parameters}
+{\em cr} & canvas \\
+\hline
+{\em r} & color \\
+\hline
+{\em i} & index \\
+\hline
+{\em width} & \\
+\hline
+{\em height} & \\
+\hline
+{\em font\+\_\+size} & \\
+\hline
+{\em time\+\_\+step} & \\
+\hline
+{\em max\+\_\+num} & maximum bytes in the list \\
+\hline
+{\em array} & data array \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{drawing.\+c@{drawing.\+c}!draw\+\_\+interrupts2@{draw\+\_\+interrupts2}}
+\index{draw\+\_\+interrupts2@{draw\+\_\+interrupts2}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{draw\+\_\+interrupts2(cairo\+\_\+t $\ast$cr, int position, Interrupts2 $\ast$peak, double height, double font\+\_\+size, \+\_\+\+\_\+uint64\+\_\+t max\+\_\+num, double length)}{draw_interrupts2(cairo_t *cr, int position, Interrupts2 *peak, double height, double font_size, __uint64_t max_num, double length)}}]{\setlength{\rightskip}{0pt plus 5cm}void draw\+\_\+interrupts2 (
+\begin{DoxyParamCaption}
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{int}]{position, }
+\item[{{\bf Interrupts2} $\ast$}]{peak, }
+\item[{double}]{height, }
+\item[{double}]{font\+\_\+size, }
+\item[{\+\_\+\+\_\+uint64\+\_\+t}]{max\+\_\+num, }
+\item[{double}]{length}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_a67042c23d4937b2e2881df4c15d40250}{}\label{drawing_8c_a67042c23d4937b2e2881df4c15d40250}
+\index{drawing.\+c@{drawing.\+c}!draw\+\_\+percentages@{draw\+\_\+percentages}}
+\index{draw\+\_\+percentages@{draw\+\_\+percentages}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{draw\+\_\+percentages(cairo\+\_\+t $\ast$cr, double height, double font\+\_\+size)}{draw_percentages(cairo_t *cr, double height, double font_size)}}]{\setlength{\rightskip}{0pt plus 5cm}void draw\+\_\+percentages (
+\begin{DoxyParamCaption}
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{double}]{height, }
+\item[{double}]{font\+\_\+size}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_a7853e6c6f1dc79d102d0a4cab3ce3cda}{}\label{drawing_8c_a7853e6c6f1dc79d102d0a4cab3ce3cda}
+\hyperlink{drawing_8c_a7853e6c6f1dc79d102d0a4cab3ce3cda}{draw\+\_\+percentages()}\+: drawing the percentages of the graph 
+\begin{DoxyParams}{Parameters}
+{\em cr} & canvas \\
+\hline
+{\em height} & \\
+\hline
+{\em font\+\_\+size} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{drawing.\+c@{drawing.\+c}!on\+\_\+draw\+\_\+event@{on\+\_\+draw\+\_\+event}}
+\index{on\+\_\+draw\+\_\+event@{on\+\_\+draw\+\_\+event}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{on\+\_\+draw\+\_\+event(\+Gtk\+Widget $\ast$widget, cairo\+\_\+t $\ast$cr)}{on_draw_event(GtkWidget *widget, cairo_t *cr)}}]{\setlength{\rightskip}{0pt plus 5cm}gboolean on\+\_\+draw\+\_\+event (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{widget, }
+\item[{cairo\+\_\+t $\ast$}]{cr}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_af84334aa6dff2765f9de6dc0fe0b44ad}{}\label{drawing_8c_af84334aa6dff2765f9de6dc0fe0b44ad}
+function \hyperlink{drawing_8c_af84334aa6dff2765f9de6dc0fe0b44ad}{on\+\_\+draw\+\_\+event()}\+: creating graphs by sending the draw signal to the function we create a cairo\+\_\+t structure
+
+
+\begin{DoxyParams}{Parameters}
+{\em widget} & pointer to the graph in which to draw \\
+\hline
+{\em cr} & canvas \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if function completed 
+\end{DoxyReturn}
+\index{drawing.\+c@{drawing.\+c}!writing\+\_\+interrupt\+\_\+names2@{writing\+\_\+interrupt\+\_\+names2}}
+\index{writing\+\_\+interrupt\+\_\+names2@{writing\+\_\+interrupt\+\_\+names2}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{writing\+\_\+interrupt\+\_\+names2(cairo\+\_\+t $\ast$cr, double font\+\_\+size, double length, int position, const gchar $\ast$name1)}{writing_interrupt_names2(cairo_t *cr, double font_size, double length, int position, const gchar *name1)}}]{\setlength{\rightskip}{0pt plus 5cm}void writing\+\_\+interrupt\+\_\+names2 (
+\begin{DoxyParamCaption}
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{double}]{font\+\_\+size, }
+\item[{double}]{length, }
+\item[{int}]{position, }
+\item[{const gchar $\ast$}]{name1}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_af16aa7e230f6b6867ad8d87ac2188220}{}\label{drawing_8c_af16aa7e230f6b6867ad8d87ac2188220}
+writing\+\_\+interrupt\+\_\+names2 writes the names on the canvas depending on their length position on the canvas and font size 
+\begin{DoxyParams}{Parameters}
+{\em cr} & canvas \\
+\hline
+{\em font\+\_\+size} & \\
+\hline
+{\em length} & \\
+\hline
+{\em position} & \\
+\hline
+{\em name1} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{drawing.\+c@{drawing.\+c}!writing\+\_\+seconds@{writing\+\_\+seconds}}
+\index{writing\+\_\+seconds@{writing\+\_\+seconds}!drawing.\+c@{drawing.\+c}}
+\subsubsection[{\texorpdfstring{writing\+\_\+seconds(cairo\+\_\+t $\ast$cr, double width, double height, double font\+\_\+size, int i)}{writing_seconds(cairo_t *cr, double width, double height, double font_size, int i)}}]{\setlength{\rightskip}{0pt plus 5cm}void writing\+\_\+seconds (
+\begin{DoxyParamCaption}
+\item[{cairo\+\_\+t $\ast$}]{cr, }
+\item[{double}]{width, }
+\item[{double}]{height, }
+\item[{double}]{font\+\_\+size, }
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}\hypertarget{drawing_8c_a6e486c806673c9053580a874be2be800}{}\label{drawing_8c_a6e486c806673c9053580a874be2be800}
+function \hyperlink{drawing_8c_a6e486c806673c9053580a874be2be800}{writing\+\_\+seconds()}\+: drawing the seconds on the graphs input\+: pointer to the canvas,width of the graph,height of the graph, font size and position output\+:none. 

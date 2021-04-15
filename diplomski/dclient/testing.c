@@ -12,7 +12,7 @@
 #include <errno.h>
 
 
-int interrupts_write(I_Collection *array) {
+int interrupts_write(I_Collection2 *array) {
 
 
     FILE *fp;
@@ -23,7 +23,7 @@ int interrupts_write(I_Collection *array) {
     strcat(buffer,p_dir);
     strcat(buffer,filename);
     ssize_t size;
-
+    __uint64_t *ptr=NULL;
     if (array == NULL) {
 
         fprintf(stderr, "array is NULL failed\n");
@@ -47,18 +47,23 @@ int interrupts_write(I_Collection *array) {
     fprintf(fp,"Time: %sDelay %d\n",p,t);
 
     while(array){
-
-        fprintf(fp, "%s %" PRIu64 " %" PRIu64 " %" PRIu64 " %" PRIu64 " %s %s %s %s \n",
-                array->interrupts.irq,
-                array->interrupts.CPU0,
-                array->interrupts.CPU1,
-                array->interrupts.CPU2,
-                array->interrupts.CPU3,
-                array->interrupts.ime1,
-                array->interrupts.ime2,
-                array->interrupts.ime3,
-                array->interrupts.ime4
-        );
+        fprintf(fp, "%s: ",array->interrupts.irq);
+        ptr=array->interrupts.CPU;
+        for(int i=0;i<cpu_num;i++){
+            fprintf(fp,"%"PRIu64" ",*ptr++);
+        }
+        fprintf(fp,"%s\n",array->interrupts.name);
+//        fprintf(fp, "%s %" PRIu64 " %" PRIu64 " %" PRIu64 " %" PRIu64 " %s %s %s %s \n",
+//                array->interrupts.irq,
+//                array->interrupts.CPU0,
+//                array->interrupts.CPU1,
+//                array->interrupts.CPU2,
+//                array->interrupts.CPU3,
+//                array->interrupts.ime1,
+//                array->interrupts.ime2,
+//                array->interrupts.ime3,
+//                array->interrupts.ime4
+//        );
 
 
 
@@ -145,14 +150,18 @@ int cpu_write(Cpu_usage cpu_usage) {
     size= strlen(p);
     p[size-1]=' ';
     fprintf(fp,"Time: %sDelay %d\n",p,t);
-
-    fprintf(fp, "%s %s %s %s \n",
-            cpu_usage.percentage[0],
-            cpu_usage.percentage[1],
-            cpu_usage.percentage[2],
-            cpu_usage.percentage[3]
-
-    );
+    for(int i=0;i<cpu_num;i++){
+        fprintf(fp,"%s ",*cpu_usage.percentage);
+        cpu_usage.percentage++;
+    }
+    fprintf(fp,"\n");
+//    fprintf(fp, "%s %s %s %s \n",
+//            cpu_usage.percentage[0],
+//            cpu_usage.percentage[1],
+//            cpu_usage.percentage[2],
+//            cpu_usage.percentage[3]
+//
+//    );
 
 
 

@@ -1,0 +1,424 @@
+\hypertarget{main__header_8h}{}\section{main\+\_\+header.\+h File Reference}
+\label{main__header_8h}\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+{\ttfamily \#include $<$gtk/gtk.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}common.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}semaphore.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}error.\+h\char`\"{}}\\*
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_net_mem__list}{Net\+Mem\+\_\+list}
+\item 
+struct \hyperlink{struct_cpu___list}{Cpu\+\_\+\+List}
+\item 
+struct \hyperlink{struct_mega___data}{Mega\+\_\+\+Data}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{main__header_8h_a3b965b30176f000b28ee90e75865ee20}{L\+I\+S\+T\+\_\+\+S\+I\+ZE}~240 /$\ast$!the max size of list of cpu, network and memory usage$\ast$/
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{struct_net_mem__list}{Net\+Mem\+\_\+list} \hyperlink{main__header_8h_a8eddcf4a067a987f4c3f6fd7086222be}{Net\+Mem\+\_\+list}
+\begin{DoxyCompactList}\small\item\em main header please work \end{DoxyCompactList}\item 
+typedef struct \hyperlink{struct_cpu___list}{Cpu\+\_\+\+List} \hyperlink{main__header_8h_aff2a7bcc7cd598cf43d7ae15bf1a6594}{Cpu\+\_\+list}
+\item 
+typedef struct \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} \hyperlink{main__header_8h_a5406e9903812222c85737fb9334a522d}{Mega\+\_\+\+Data}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+gboolean \hyperlink{main__header_8h_a85dde4c9f3401f0ee086529d7057bb41}{init\+\_\+timeout} ()
+\item 
+void \hyperlink{main__header_8h_a5917e61ab67a5ace123094caa7f16501}{dec\+Refresh} ()
+\item 
+void \hyperlink{main__header_8h_aced948150abecae4ca00d888b90c80c8}{inc\+Refresh} ()
+\item 
+void \hyperlink{main__header_8h_ab905fc99a8d78c5f334d720c6f38240a}{timeout\+\_\+refresh} ()
+\item 
+int \hyperlink{main__header_8h_af1d8e7994cad0303281fe1521fbaa38e}{device\+\_\+check} (\hyperlink{common_8h_a78fbed7dbe1a9b59fa372944508fa48e}{D\+\_\+\+Collection} $\ast$devices\+\_\+new, int dev\+\_\+num)
+\item 
+int \hyperlink{main__header_8h_ab68bdf130d2ca8d1fe6da6fa47b14a95}{task\+\_\+check} (\hyperlink{common_8h_aa9f2ae5a85e60fbcbda672bc74c74e0d}{T\+\_\+\+Collection} $\ast$tasks\+\_\+new, int task\+\_\+num)
+\item 
+void \hyperlink{main__header_8h_aa1ef1322e246837e62ac66d3282a82e2}{destroy\+\_\+window} (void)
+\item 
+void \hyperlink{main__header_8h_a972bf67b003b034bf1593a03862b0359}{freeing\+Memory} (void $\ast$array, \+\_\+\+\_\+int32\+\_\+t $\ast$array\+\_\+size, int type)
+\item 
+void \hyperlink{main__header_8h_ab3f63558e824d30274893dac0341471a}{test\+\_\+strtol} (long val)
+\item 
+void \hyperlink{main__header_8h_a885823bb0982809aaeee2bf5d2d08431}{set\+\_\+record} (Gtk\+Widget $\ast$widget)
+\item 
+void \hyperlink{main__header_8h_a5edc78b4aabe103f628056a99cc3db26}{pause\+\_\+app} (Gtk\+Widget $\ast$button)
+\item 
+void \hyperlink{main__header_8h_adfca91e4388899f97db57d9d1877d27d}{activate} (Gtk\+Application $\ast$app, gpointer user\+\_\+data)
+\item 
+void \hyperlink{main__header_8h_ac3da8006dd6202bd94eae1c3e1b48ea9}{free\+\_\+mega\+\_\+data} (\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$$\ast$m\+\_\+ptr)
+\item 
+\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$ \hyperlink{main__header_8h_a75dab082da0d059329522f212a551855}{allocate\+\_\+stats} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{main__header_8h_acab8e45f378bc87ee325f53006b30c3b}{window\+\_\+graphs}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{main__header_8h_acd4f7c751a9fae56dfd55c0a696a9c21}{process\+\_\+swindow}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{main__header_8h_ac5cb814aed09dc2201164be4500c06f3}{device\+\_\+swindow}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{main__header_8h_a0c3a3c5fc9571e06d41ca52463d835be}{entry}
+\item 
+int \hyperlink{main__header_8h_aefdd831ed1cd73e50f980063361576ba}{newsockfd}
+\item 
+int \hyperlink{main__header_8h_a72e49a9324acae214edd2f2c45f78681}{newsockfd1}
+\item 
+guint \hyperlink{main__header_8h_ae1a64c1625afd8788828dca15a017ee3}{t}
+\item 
+guint \hyperlink{main__header_8h_ae0beb4483f54c44e7151d478dceea936}{refresh}
+\item 
+guint \hyperlink{main__header_8h_a04fb34a98c78bf40a69bc7d2c49547f2}{time\+\_\+step}
+\item 
+\+\_\+\+\_\+int32\+\_\+t \hyperlink{main__header_8h_af474e361f528dd09540355229b14d2d3}{dev\+\_\+num\+\_\+old}
+\item 
+\+\_\+\+\_\+int32\+\_\+t \hyperlink{main__header_8h_ada3ada20e3ead4f3054e860e1607d194}{task\+\_\+num\+\_\+old}
+\item 
+\+\_\+\+\_\+int32\+\_\+t \hyperlink{main__header_8h_a76331ca2d28d5bc24545a7526e3e7791}{list\+\_\+num\+\_\+size}
+\item 
+bool $\ast$ \hyperlink{main__header_8h_a59d775191f115d417e464f3adee98a7f}{cpu\+\_\+status}
+\item 
+bool \hyperlink{main__header_8h_ad2c7817da9f00ae261484ab9a9ab0152}{device\+\_\+all}
+\item 
+bool \hyperlink{main__header_8h_a24abc1cdb33ae6cc929ae21787c1cec9}{record}
+\item 
+\hyperlink{common_8h_a78fbed7dbe1a9b59fa372944508fa48e}{D\+\_\+\+Collection} $\ast$ \hyperlink{main__header_8h_a11a77cb9d0c7d5dafa9cc095350a8fb1}{devices\+\_\+old}
+\item 
+\hyperlink{common_8h_aa9f2ae5a85e60fbcbda672bc74c74e0d}{T\+\_\+\+Collection} $\ast$ \hyperlink{main__header_8h_abed117659696e9c0d895ea558b2715e1}{tasks\+\_\+old}
+\item 
+\hyperlink{common_8h_a76ec70ab5b7f9f59daf2ac63d0bd0e80}{I\+\_\+\+Collection2} $\ast$ \hyperlink{main__header_8h_a86e2c6d88048b7a0779773695c38edd5}{interrupts2}
+\item 
+\hyperlink{main__header_8h_aff2a7bcc7cd598cf43d7ae15bf1a6594}{Cpu\+\_\+list} $\ast$ \hyperlink{main__header_8h_a675c54634f2e2f4c1b8a25651412aa68}{cpu\+\_\+list}
+\item 
+\hyperlink{struct_net_mem__list}{Net\+Mem\+\_\+list} $\ast$ \hyperlink{main__header_8h_a208eab0423e5b6e46d93488cdb89512d}{net\+\_\+list}
+\item 
+\hyperlink{struct_net_mem__list}{Net\+Mem\+\_\+list} $\ast$ \hyperlink{main__header_8h_a070b5dabac4827f85d69f4614b14787c}{mem\+\_\+list}
+\item 
+\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$ \hyperlink{main__header_8h_aa838fc60255ab9e19e5e65777f3fa65f}{m\+\_\+data}
+\item 
+\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$ \hyperlink{main__header_8h_a2f6959eccb8e4bb6afd9eb59fad2c7d3}{m\+Data\+Head}
+\item 
+char \hyperlink{main__header_8h_ad260b3f776debd6ce96af0bdbdfe38be}{p\+\_\+dir} \mbox{[}256\mbox{]}
+\item 
+long \hyperlink{main__header_8h_ad207a8da58e8a404458d238a8b2829b7}{cpu\+\_\+num}
+\item 
+long \hyperlink{main__header_8h_a9a809541a078b73ce8d86ad27114c49f}{interrupt\+\_\+num}
+\item 
+sem\+\_\+t \hyperlink{main__header_8h_aed31b81aa802f39c562ffe39b3e546a2}{semt}
+\begin{DoxyCompactList}\small\item\em semaphore for letting the init\+\_\+timeout function finish before we change the time interval \end{DoxyCompactList}\item 
+Gtk\+Application $\ast$ \hyperlink{main__header_8h_a5973bc6d2a4fbb8dea0ee47926cbc53b}{gtk\+Application}
+\begin{DoxyCompactList}\small\item\em application \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!L\+I\+S\+T\+\_\+\+S\+I\+ZE@{L\+I\+S\+T\+\_\+\+S\+I\+ZE}}
+\index{L\+I\+S\+T\+\_\+\+S\+I\+ZE@{L\+I\+S\+T\+\_\+\+S\+I\+ZE}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{L\+I\+S\+T\+\_\+\+S\+I\+ZE}{LIST_SIZE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\+I\+S\+T\+\_\+\+S\+I\+ZE~240 /$\ast$!the max size of list of cpu, network and memory usage$\ast$/}\hypertarget{main__header_8h_a3b965b30176f000b28ee90e75865ee20}{}\label{main__header_8h_a3b965b30176f000b28ee90e75865ee20}
+
+
+\subsection{Typedef Documentation}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!Cpu\+\_\+list@{Cpu\+\_\+list}}
+\index{Cpu\+\_\+list@{Cpu\+\_\+list}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{Cpu\+\_\+list}{Cpu_list}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf Cpu\+\_\+\+List} {\bf Cpu\+\_\+list}}\hypertarget{main__header_8h_aff2a7bcc7cd598cf43d7ae15bf1a6594}{}\label{main__header_8h_aff2a7bcc7cd598cf43d7ae15bf1a6594}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!Mega\+\_\+\+Data@{Mega\+\_\+\+Data}}
+\index{Mega\+\_\+\+Data@{Mega\+\_\+\+Data}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{Mega\+\_\+\+Data}{Mega_Data}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf Mega\+\_\+\+Data} {\bf Mega\+\_\+\+Data}}\hypertarget{main__header_8h_a5406e9903812222c85737fb9334a522d}{}\label{main__header_8h_a5406e9903812222c85737fb9334a522d}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!Net\+Mem\+\_\+list@{Net\+Mem\+\_\+list}}
+\index{Net\+Mem\+\_\+list@{Net\+Mem\+\_\+list}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{Net\+Mem\+\_\+list}{NetMem_list}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf Net\+Mem\+\_\+list} {\bf Net\+Mem\+\_\+list}}\hypertarget{main__header_8h_a8eddcf4a067a987f4c3f6fd7086222be}{}\label{main__header_8h_a8eddcf4a067a987f4c3f6fd7086222be}
+
+
+main header please work 
+
+
+
+\subsection{Function Documentation}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!activate@{activate}}
+\index{activate@{activate}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{activate(\+Gtk\+Application $\ast$app, gpointer user\+\_\+data)}{activate(GtkApplication *app, gpointer user_data)}}]{\setlength{\rightskip}{0pt plus 5cm}void activate (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Application $\ast$}]{app, }
+\item[{gpointer}]{user\+\_\+data}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_adfca91e4388899f97db57d9d1877d27d}{}\label{main__header_8h_adfca91e4388899f97db57d9d1877d27d}
+\hyperlink{application_8c_adfca91e4388899f97db57d9d1877d27d}{activate()} creates the application , the main window , the cpu window, the graphs the ,labels and menu ,and list 
+\begin{DoxyParams}{Parameters}
+{\em app} & \\
+\hline
+{\em user\+\_\+data} & default \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!allocate\+\_\+stats@{allocate\+\_\+stats}}
+\index{allocate\+\_\+stats@{allocate\+\_\+stats}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{allocate\+\_\+stats()}{allocate_stats()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mega\+\_\+\+Data}$\ast$ allocate\+\_\+stats (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_a75dab082da0d059329522f212a551855}{}\label{main__header_8h_a75dab082da0d059329522f212a551855}
+\hyperlink{application_8c_a75dab082da0d059329522f212a551855}{allocate\+\_\+stats()} allocates memory used for storing data gather from server
+
+\begin{DoxyReturn}{Returns}
+pointer to struct \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} 
+\end{DoxyReturn}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!dec\+Refresh@{dec\+Refresh}}
+\index{dec\+Refresh@{dec\+Refresh}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{dec\+Refresh()}{decRefresh()}}]{\setlength{\rightskip}{0pt plus 5cm}void dec\+Refresh (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_a5917e61ab67a5ace123094caa7f16501}{}\label{main__header_8h_a5917e61ab67a5ace123094caa7f16501}
+\hyperlink{application_8c_a5917e61ab67a5ace123094caa7f16501}{dec\+Refresh()}\+: decrease the time that we want the client to request data from server
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!destroy\+\_\+window@{destroy\+\_\+window}}
+\index{destroy\+\_\+window@{destroy\+\_\+window}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{destroy\+\_\+window(void)}{destroy_window(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void destroy\+\_\+window (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_aa1ef1322e246837e62ac66d3282a82e2}{}\label{main__header_8h_aa1ef1322e246837e62ac66d3282a82e2}
+\hyperlink{application_8c_aa1ef1322e246837e62ac66d3282a82e2}{destroy\+\_\+window()} destroys window \begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!device\+\_\+check@{device\+\_\+check}}
+\index{device\+\_\+check@{device\+\_\+check}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{device\+\_\+check(\+D\+\_\+\+Collection $\ast$devices\+\_\+new, int dev\+\_\+num)}{device_check(D_Collection *devices_new, int dev_num)}}]{\setlength{\rightskip}{0pt plus 5cm}int device\+\_\+check (
+\begin{DoxyParamCaption}
+\item[{{\bf D\+\_\+\+Collection} $\ast$}]{devices\+\_\+new, }
+\item[{int}]{dev\+\_\+num}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_af1d8e7994cad0303281fe1521fbaa38e}{}\label{main__header_8h_af1d8e7994cad0303281fe1521fbaa38e}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!free\+\_\+mega\+\_\+data@{free\+\_\+mega\+\_\+data}}
+\index{free\+\_\+mega\+\_\+data@{free\+\_\+mega\+\_\+data}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{free\+\_\+mega\+\_\+data(\+Mega\+\_\+\+Data $\ast$$\ast$m\+\_\+ptr)}{free_mega_data(Mega_Data **m_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void free\+\_\+mega\+\_\+data (
+\begin{DoxyParamCaption}
+\item[{{\bf Mega\+\_\+\+Data} $\ast$$\ast$}]{m\+\_\+ptr}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_ac3da8006dd6202bd94eae1c3e1b48ea9}{}\label{main__header_8h_ac3da8006dd6202bd94eae1c3e1b48ea9}
+\hyperlink{application_8c_ac3da8006dd6202bd94eae1c3e1b48ea9}{free\+\_\+mega\+\_\+data()} frees the allocated memory for a doubly linked list of \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} structs 
+\begin{DoxyParams}{Parameters}
+{\em m\+\_\+ptr} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!freeing\+Memory@{freeing\+Memory}}
+\index{freeing\+Memory@{freeing\+Memory}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{freeing\+Memory(void $\ast$array, \+\_\+\+\_\+int32\+\_\+t $\ast$array\+\_\+size, int type)}{freeingMemory(void *array, __int32_t *array_size, int type)}}]{\setlength{\rightskip}{0pt plus 5cm}void freeing\+Memory (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{array, }
+\item[{\+\_\+\+\_\+int32\+\_\+t $\ast$}]{array\+\_\+size, }
+\item[{int}]{type}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_a972bf67b003b034bf1593a03862b0359}{}\label{main__header_8h_a972bf67b003b034bf1593a03862b0359}
+\hyperlink{application_8c_a972bf67b003b034bf1593a03862b0359}{freeing\+Memory()}\+: frees different types of memory 
+\begin{DoxyParams}{Parameters}
+{\em array} & \\
+\hline
+{\em array\+\_\+size} & \\
+\hline
+{\em type} & of the array. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void. 
+\end{DoxyReturn}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!inc\+Refresh@{inc\+Refresh}}
+\index{inc\+Refresh@{inc\+Refresh}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{inc\+Refresh()}{incRefresh()}}]{\setlength{\rightskip}{0pt plus 5cm}void inc\+Refresh (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_aced948150abecae4ca00d888b90c80c8}{}\label{main__header_8h_aced948150abecae4ca00d888b90c80c8}
+\hyperlink{application_8c_aced948150abecae4ca00d888b90c80c8}{inc\+Refresh()}\+: increments the time that we want the client to request data from server
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!init\+\_\+timeout@{init\+\_\+timeout}}
+\index{init\+\_\+timeout@{init\+\_\+timeout}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{init\+\_\+timeout()}{init_timeout()}}]{\setlength{\rightskip}{0pt plus 5cm}gboolean init\+\_\+timeout (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_a85dde4c9f3401f0ee086529d7057bb41}{}\label{main__header_8h_a85dde4c9f3401f0ee086529d7057bb41}
+\hyperlink{application_8c_a85dde4c9f3401f0ee086529d7057bb41}{init\+\_\+timeout()}\+: sends a request to server and then waits for data,after it got all the data it inputs it in the right places and checks if the list\+\_\+num\+\_\+size is bigger then the L\+I\+S\+T\+\_\+\+S\+I\+ZE if that is the case it removes the oldest element of the list and adds the newest to the begging.\+After the data has been properly handled it displays it in the lists and draws the new data on the graph.\+We check if the function is running in an infinite loop,if not we set it to run in regular intervals that we have set.
+
+\begin{DoxyReturn}{Returns}
+returns T\+R\+UE if we want to continue or F\+A\+L\+SE if we want to stop 
+\end{DoxyReturn}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!pause\+\_\+app@{pause\+\_\+app}}
+\index{pause\+\_\+app@{pause\+\_\+app}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{pause\+\_\+app(\+Gtk\+Widget $\ast$button)}{pause_app(GtkWidget *button)}}]{\setlength{\rightskip}{0pt plus 5cm}void pause\+\_\+app (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{button}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_a5edc78b4aabe103f628056a99cc3db26}{}\label{main__header_8h_a5edc78b4aabe103f628056a99cc3db26}
+\hyperlink{application_8c_a5edc78b4aabe103f628056a99cc3db26}{pause\+\_\+app()}\+: stops or restarts the client from to requesting data from server 
+\begin{DoxyParams}{Parameters}
+{\em button} & if the button is toggled it pauses the data gathering \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!set\+\_\+record@{set\+\_\+record}}
+\index{set\+\_\+record@{set\+\_\+record}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{set\+\_\+record(\+Gtk\+Widget $\ast$widget)}{set_record(GtkWidget *widget)}}]{\setlength{\rightskip}{0pt plus 5cm}void set\+\_\+record (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{widget}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_a885823bb0982809aaeee2bf5d2d08431}{}\label{main__header_8h_a885823bb0982809aaeee2bf5d2d08431}
+\hyperlink{application_8c_a885823bb0982809aaeee2bf5d2d08431}{set\+\_\+record()}\+: sets the record flag to true or false depending on if the button is clicked or not 
+\begin{DoxyParams}{Parameters}
+{\em widget} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!task\+\_\+check@{task\+\_\+check}}
+\index{task\+\_\+check@{task\+\_\+check}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{task\+\_\+check(\+T\+\_\+\+Collection $\ast$tasks\+\_\+new, int task\+\_\+num)}{task_check(T_Collection *tasks_new, int task_num)}}]{\setlength{\rightskip}{0pt plus 5cm}int task\+\_\+check (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+\_\+\+Collection} $\ast$}]{tasks\+\_\+new, }
+\item[{int}]{task\+\_\+num}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_ab68bdf130d2ca8d1fe6da6fa47b14a95}{}\label{main__header_8h_ab68bdf130d2ca8d1fe6da6fa47b14a95}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!test\+\_\+strtol@{test\+\_\+strtol}}
+\index{test\+\_\+strtol@{test\+\_\+strtol}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{test\+\_\+strtol(long val)}{test_strtol(long val)}}]{\setlength{\rightskip}{0pt plus 5cm}void test\+\_\+strtol (
+\begin{DoxyParamCaption}
+\item[{long}]{val}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_ab3f63558e824d30274893dac0341471a}{}\label{main__header_8h_ab3f63558e824d30274893dac0341471a}
+\hyperlink{application_8c_ab3f63558e824d30274893dac0341471a}{test\+\_\+strtol()} tests if strtol didnt convert properly 
+\begin{DoxyParams}{Parameters}
+{\em val} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!timeout\+\_\+refresh@{timeout\+\_\+refresh}}
+\index{timeout\+\_\+refresh@{timeout\+\_\+refresh}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{timeout\+\_\+refresh()}{timeout_refresh()}}]{\setlength{\rightskip}{0pt plus 5cm}void timeout\+\_\+refresh (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{main__header_8h_ab905fc99a8d78c5f334d720c6f38240a}{}\label{main__header_8h_ab905fc99a8d78c5f334d720c6f38240a}
+\hyperlink{application_8c_ab905fc99a8d78c5f334d720c6f38240a}{timeout\+\_\+refresh()}\+: reruns the function init\+\_\+timeout and tells the previous version to stop
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+\subsection{Variable Documentation}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!cpu\+\_\+list@{cpu\+\_\+list}}
+\index{cpu\+\_\+list@{cpu\+\_\+list}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{cpu\+\_\+list}{cpu_list}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Cpu\+\_\+list}$\ast$ cpu\+\_\+list}\hypertarget{main__header_8h_a675c54634f2e2f4c1b8a25651412aa68}{}\label{main__header_8h_a675c54634f2e2f4c1b8a25651412aa68}
+list to the interrupts \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!cpu\+\_\+num@{cpu\+\_\+num}}
+\index{cpu\+\_\+num@{cpu\+\_\+num}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{cpu\+\_\+num}{cpu_num}}]{\setlength{\rightskip}{0pt plus 5cm}long cpu\+\_\+num}\hypertarget{main__header_8h_ad207a8da58e8a404458d238a8b2829b7}{}\label{main__header_8h_ad207a8da58e8a404458d238a8b2829b7}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!cpu\+\_\+status@{cpu\+\_\+status}}
+\index{cpu\+\_\+status@{cpu\+\_\+status}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{cpu\+\_\+status}{cpu_status}}]{\setlength{\rightskip}{0pt plus 5cm}bool$\ast$ cpu\+\_\+status}\hypertarget{main__header_8h_a59d775191f115d417e464f3adee98a7f}{}\label{main__header_8h_a59d775191f115d417e464f3adee98a7f}
+the size of the lists of cpu usage network usage and memory usage cant be bigger then L\+I\+S\+T\+\_\+\+S\+I\+ZE \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!dev\+\_\+num\+\_\+old@{dev\+\_\+num\+\_\+old}}
+\index{dev\+\_\+num\+\_\+old@{dev\+\_\+num\+\_\+old}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{dev\+\_\+num\+\_\+old}{dev_num_old}}]{\setlength{\rightskip}{0pt plus 5cm}\+\_\+\+\_\+int32\+\_\+t dev\+\_\+num\+\_\+old}\hypertarget{main__header_8h_af474e361f528dd09540355229b14d2d3}{}\label{main__header_8h_af474e361f528dd09540355229b14d2d3}
+the space between the two data inputs number of devices \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!device\+\_\+all@{device\+\_\+all}}
+\index{device\+\_\+all@{device\+\_\+all}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{device\+\_\+all}{device_all}}]{\setlength{\rightskip}{0pt plus 5cm}bool device\+\_\+all}\hypertarget{main__header_8h_ad2c7817da9f00ae261484ab9a9ab0152}{}\label{main__header_8h_ad2c7817da9f00ae261484ab9a9ab0152}
+$<$bool used to check if the client wants all the devices shown \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!device\+\_\+swindow@{device\+\_\+swindow}}
+\index{device\+\_\+swindow@{device\+\_\+swindow}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{device\+\_\+swindow}{device_swindow}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ device\+\_\+swindow}\hypertarget{main__header_8h_ac5cb814aed09dc2201164be4500c06f3}{}\label{main__header_8h_ac5cb814aed09dc2201164be4500c06f3}
+$>$widget for creating the process window for editing the columns in the liststore for tasks \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!devices\+\_\+old@{devices\+\_\+old}}
+\index{devices\+\_\+old@{devices\+\_\+old}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{devices\+\_\+old}{devices_old}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf D\+\_\+\+Collection}$\ast$ devices\+\_\+old}\hypertarget{main__header_8h_a11a77cb9d0c7d5dafa9cc095350a8fb1}{}\label{main__header_8h_a11a77cb9d0c7d5dafa9cc095350a8fb1}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!entry@{entry}}
+\index{entry@{entry}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{entry}{entry}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ entry}\hypertarget{main__header_8h_a0c3a3c5fc9571e06d41ca52463d835be}{}\label{main__header_8h_a0c3a3c5fc9571e06d41ca52463d835be}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!gtk\+Application@{gtk\+Application}}
+\index{gtk\+Application@{gtk\+Application}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{gtk\+Application}{gtkApplication}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Application$\ast$ gtk\+Application}\hypertarget{main__header_8h_a5973bc6d2a4fbb8dea0ee47926cbc53b}{}\label{main__header_8h_a5973bc6d2a4fbb8dea0ee47926cbc53b}
+
+
+application 
+
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!interrupt\+\_\+num@{interrupt\+\_\+num}}
+\index{interrupt\+\_\+num@{interrupt\+\_\+num}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{interrupt\+\_\+num}{interrupt_num}}]{\setlength{\rightskip}{0pt plus 5cm}long interrupt\+\_\+num}\hypertarget{main__header_8h_a9a809541a078b73ce8d86ad27114c49f}{}\label{main__header_8h_a9a809541a078b73ce8d86ad27114c49f}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!interrupts2@{interrupts2}}
+\index{interrupts2@{interrupts2}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{interrupts2}{interrupts2}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf I\+\_\+\+Collection2}$\ast$ interrupts2}\hypertarget{main__header_8h_a86e2c6d88048b7a0779773695c38edd5}{}\label{main__header_8h_a86e2c6d88048b7a0779773695c38edd5}
+list to the tasks that we keep on client \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!list\+\_\+num\+\_\+size@{list\+\_\+num\+\_\+size}}
+\index{list\+\_\+num\+\_\+size@{list\+\_\+num\+\_\+size}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{list\+\_\+num\+\_\+size}{list_num_size}}]{\setlength{\rightskip}{0pt plus 5cm}\+\_\+\+\_\+int32\+\_\+t list\+\_\+num\+\_\+size}\hypertarget{main__header_8h_a76331ca2d28d5bc24545a7526e3e7791}{}\label{main__header_8h_a76331ca2d28d5bc24545a7526e3e7791}
+number of tasks \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!m\+\_\+data@{m\+\_\+data}}
+\index{m\+\_\+data@{m\+\_\+data}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{m\+\_\+data}{m_data}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mega\+\_\+\+Data}$\ast$ m\+\_\+data}\hypertarget{main__header_8h_aa838fc60255ab9e19e5e65777f3fa65f}{}\label{main__header_8h_aa838fc60255ab9e19e5e65777f3fa65f}
+list to the memory usage \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!m\+Data\+Head@{m\+Data\+Head}}
+\index{m\+Data\+Head@{m\+Data\+Head}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{m\+Data\+Head}{mDataHead}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mega\+\_\+\+Data}$\ast$ m\+Data\+Head}\hypertarget{main__header_8h_a2f6959eccb8e4bb6afd9eb59fad2c7d3}{}\label{main__header_8h_a2f6959eccb8e4bb6afd9eb59fad2c7d3}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!mem\+\_\+list@{mem\+\_\+list}}
+\index{mem\+\_\+list@{mem\+\_\+list}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{mem\+\_\+list}{mem_list}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Net\+Mem\+\_\+list}$\ast$ mem\+\_\+list}\hypertarget{main__header_8h_a070b5dabac4827f85d69f4614b14787c}{}\label{main__header_8h_a070b5dabac4827f85d69f4614b14787c}
+list to the network usage \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!net\+\_\+list@{net\+\_\+list}}
+\index{net\+\_\+list@{net\+\_\+list}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{net\+\_\+list}{net_list}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Net\+Mem\+\_\+list}$\ast$ net\+\_\+list}\hypertarget{main__header_8h_a208eab0423e5b6e46d93488cdb89512d}{}\label{main__header_8h_a208eab0423e5b6e46d93488cdb89512d}
+list to the cpu usage \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!newsockfd@{newsockfd}}
+\index{newsockfd@{newsockfd}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{newsockfd}{newsockfd}}]{\setlength{\rightskip}{0pt plus 5cm}int newsockfd}\hypertarget{main__header_8h_aefdd831ed1cd73e50f980063361576ba}{}\label{main__header_8h_aefdd831ed1cd73e50f980063361576ba}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!newsockfd1@{newsockfd1}}
+\index{newsockfd1@{newsockfd1}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{newsockfd1}{newsockfd1}}]{\setlength{\rightskip}{0pt plus 5cm}int newsockfd1}\hypertarget{main__header_8h_a72e49a9324acae214edd2f2c45f78681}{}\label{main__header_8h_a72e49a9324acae214edd2f2c45f78681}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!p\+\_\+dir@{p\+\_\+dir}}
+\index{p\+\_\+dir@{p\+\_\+dir}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{p\+\_\+dir}{p_dir}}]{\setlength{\rightskip}{0pt plus 5cm}char p\+\_\+dir\mbox{[}256\mbox{]}}\hypertarget{main__header_8h_ad260b3f776debd6ce96af0bdbdfe38be}{}\label{main__header_8h_ad260b3f776debd6ce96af0bdbdfe38be}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!process\+\_\+swindow@{process\+\_\+swindow}}
+\index{process\+\_\+swindow@{process\+\_\+swindow}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{process\+\_\+swindow}{process_swindow}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ process\+\_\+swindow}\hypertarget{main__header_8h_acd4f7c751a9fae56dfd55c0a696a9c21}{}\label{main__header_8h_acd4f7c751a9fae56dfd55c0a696a9c21}
+$>$widget for creating the graph buttons window \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!record@{record}}
+\index{record@{record}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{record}{record}}]{\setlength{\rightskip}{0pt plus 5cm}bool record}\hypertarget{main__header_8h_a24abc1cdb33ae6cc929ae21787c1cec9}{}\label{main__header_8h_a24abc1cdb33ae6cc929ae21787c1cec9}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!refresh@{refresh}}
+\index{refresh@{refresh}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{refresh}{refresh}}]{\setlength{\rightskip}{0pt plus 5cm}guint refresh}\hypertarget{main__header_8h_ae0beb4483f54c44e7151d478dceea936}{}\label{main__header_8h_ae0beb4483f54c44e7151d478dceea936}
+time interval for when the client requests data again \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!semt@{semt}}
+\index{semt@{semt}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{semt}{semt}}]{\setlength{\rightskip}{0pt plus 5cm}sem\+\_\+t semt}\hypertarget{main__header_8h_aed31b81aa802f39c562ffe39b3e546a2}{}\label{main__header_8h_aed31b81aa802f39c562ffe39b3e546a2}
+
+
+semaphore for letting the init\+\_\+timeout function finish before we change the time interval 
+
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!t@{t}}
+\index{t@{t}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{t}{t}}]{\setlength{\rightskip}{0pt plus 5cm}guint t}\hypertarget{main__header_8h_ae1a64c1625afd8788828dca15a017ee3}{}\label{main__header_8h_ae1a64c1625afd8788828dca15a017ee3}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!task\+\_\+num\+\_\+old@{task\+\_\+num\+\_\+old}}
+\index{task\+\_\+num\+\_\+old@{task\+\_\+num\+\_\+old}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{task\+\_\+num\+\_\+old}{task_num_old}}]{\setlength{\rightskip}{0pt plus 5cm}\+\_\+\+\_\+int32\+\_\+t task\+\_\+num\+\_\+old}\hypertarget{main__header_8h_ada3ada20e3ead4f3054e860e1607d194}{}\label{main__header_8h_ada3ada20e3ead4f3054e860e1607d194}
+\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!tasks\+\_\+old@{tasks\+\_\+old}}
+\index{tasks\+\_\+old@{tasks\+\_\+old}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{tasks\+\_\+old}{tasks_old}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf T\+\_\+\+Collection}$\ast$ tasks\+\_\+old}\hypertarget{main__header_8h_abed117659696e9c0d895ea558b2715e1}{}\label{main__header_8h_abed117659696e9c0d895ea558b2715e1}
+list to the devices that we keep on client \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!time\+\_\+step@{time\+\_\+step}}
+\index{time\+\_\+step@{time\+\_\+step}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{time\+\_\+step}{time_step}}]{\setlength{\rightskip}{0pt plus 5cm}guint time\+\_\+step}\hypertarget{main__header_8h_a04fb34a98c78bf40a69bc7d2c49547f2}{}\label{main__header_8h_a04fb34a98c78bf40a69bc7d2c49547f2}
+if the function init\+\_\+timeout is in a loop this value is bigger then 0 \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!window\+\_\+graphs@{window\+\_\+graphs}}
+\index{window\+\_\+graphs@{window\+\_\+graphs}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
+\subsubsection[{\texorpdfstring{window\+\_\+graphs}{window_graphs}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ window\+\_\+graphs}\hypertarget{main__header_8h_acab8e45f378bc87ee325f53006b30c3b}{}\label{main__header_8h_acab8e45f378bc87ee325f53006b30c3b}

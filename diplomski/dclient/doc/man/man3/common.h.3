@@ -1,0 +1,192 @@
+.TH "common.h" 3 "Wed Apr 14 2021" "Version 1.1" "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+common.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdbool\&.h>\fP
+.br
+\fC#include <time\&.h>\fP
+.br
+\fC#include <cairo\&.h>\fP
+.br
+\fC#include <gtk/gtk\&.h>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBDevice_Collection\fP"
+.br
+.ti -1c
+.RI "struct \fBTask_Collection\fP"
+.br
+.ti -1c
+.RI "struct \fBInterrupt_Collection\fP"
+.br
+.ti -1c
+.RI "struct \fBInterrupt_Collection2\fP"
+.br
+.ti -1c
+.RI "union \fBUnification\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBCPU_USAGE\fP   1"
+.br
+.ti -1c
+.RI "#define \fBNETWORK\fP   2"
+.br
+.ti -1c
+.RI "#define \fBMEMORY\fP   3"
+.br
+.ti -1c
+.RI "#define \fBTASK\fP   4"
+.br
+.ti -1c
+.RI "#define \fBDEVICES\fP   5"
+.br
+.ti -1c
+.RI "#define \fBINTERRUPTS\fP   6"
+.br
+.ti -1c
+.RI "#define \fBTEXT\fP   7"
+.br
+.ti -1c
+.RI "#define \fBCPU_PACK\fP   8"
+.br
+.ti -1c
+.RI "#define \fBINT_PACK\fP   9"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBTask\fP \fBTask\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBNetwork\fP \fBNetwork\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBCpu_usage\fP \fBCpu_usage\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBMemory_usage\fP \fBMemory_usage\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBInterrupts_send\fP \fBInterrupts_send\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBInterrupts2\fP \fBInterrupts2\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBInterrupts\fP \fBInterrupts\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBDevices\fP \fBDevices\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBDevice_Collection\fP \fBD_Collection\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBTask_Collection\fP \fBT_Collection\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBInterrupt_Collection\fP \fBI_Collection\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBInterrupt_Collection2\fP \fBI_Collection2\fP"
+.br
+.ti -1c
+.RI "typedef union \fBUnification\fP \fBUnification\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBData\fP \fBData\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "struct \fB__attribute__\fP ((__packed__)) tm1"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "PangoFontDescription * \fBfontdesc\fP"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define CPU_PACK   8"
+
+.SS "#define CPU_USAGE   1"
+defines what type of data we are sending 
+.SS "#define DEVICES   5"
+
+.SS "#define INT_PACK   9"
+
+.SS "#define INTERRUPTS   6"
+
+.SS "#define MEMORY   3"
+
+.SS "#define NETWORK   2"
+
+.SS "#define TASK   4"
+
+.SS "#define TEXT   7"
+
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBCpu_usage\fP \fBCpu_usage\fP"
+
+.SS "typedef struct \fBDevice_Collection\fP \fBD_Collection\fP"
+
+.SS "typedef struct \fBData\fP \fBData\fP"
+
+.SS "typedef struct \fBDevices\fP \fBDevices\fP"
+
+.SS "typedef struct \fBInterrupt_Collection\fP \fBI_Collection\fP"
+
+.SS "typedef struct \fBInterrupt_Collection2\fP \fBI_Collection2\fP"
+
+.SS "typedef struct \fBInterrupts\fP \fBInterrupts\fP"
+structure that contains the information of a interrupt type 
+.SS "typedef struct \fBInterrupts2\fP \fBInterrupts2\fP"
+
+.SS "typedef struct \fBInterrupts_send\fP \fBInterrupts_send\fP"
+
+.SS "typedef struct \fBMemory_usage\fP \fBMemory_usage\fP"
+
+.SS "typedef struct \fBNetwork\fP \fBNetwork\fP"
+
+.SS "typedef struct \fBTask_Collection\fP \fBT_Collection\fP"
+doubly linked list for tasks 
+.SS "typedef struct \fBTask\fP \fBTask\fP"
+<structure that contains task details 
+.SS "typedef union \fBUnification\fP \fBUnification\fP"
+
+.SH "Function Documentation"
+.PP 
+.SS "struct __attribute__ ((__packed__))"
+structure that contains all the network usage
+.PP
+structure that contains information about memory usage
+.PP
+the structure we use to send data structure that contains cpu usage of all the different cpus 
+.SH "Variable Documentation"
+.PP 
+.SS "PangoFontDescription* fontdesc"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

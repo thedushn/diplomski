@@ -298,7 +298,7 @@ ssize_t test_recv(int socket) {
  * */
 int
 data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *memory_usage, T_Collection **task_array,
-              D_Collection **devices_array, __int32_t *task_num, __int32_t *dev_num) {
+              D_Collection **devices_array, __int32_t *task_num, __int32_t *dev_num, I_Collection2 **interrupts_p) {
 
 
     int flag = MSG_WAITALL;
@@ -407,12 +407,12 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
                 strcpy(temp_interrupts2->interrupts.irq,data.unification.interrupts_send.irq);
                 temp_interrupts2->interrupts.total=data.unification.interrupts_send.total;
 
-                temp_interrupts2->next=interrupts2;
-                interrupts2= temp_interrupts2;
+                temp_interrupts2->next=(*interrupts_p);
+                (*interrupts_p)= temp_interrupts2;
 
-                interrupts2->interrupts.CPU=calloc(cpu_num,sizeof(interrupts2->interrupts.CPU));
-                if(interrupts2->interrupts.CPU==NULL){
-                    free(interrupts2->interrupts.CPU);
+                (*interrupts_p)->interrupts.CPU=calloc(cpu_num,sizeof(interrupts2->interrupts.CPU));
+                if((*interrupts_p)->interrupts.CPU==NULL){
+                    free((*interrupts_p)->interrupts.CPU);
                     free(temp_interrupts2);
                     printf("calloc error %d \n", errno);
                     return 1;
@@ -456,7 +456,7 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
                 break;
             case INT_PACK:
 
-                scan_numbers(interrupts2->interrupts.CPU,data.unification.data_pack,&cpu_number);
+                scan_numbers((*interrupts_p)->interrupts.CPU,data.unification.data_pack,&cpu_number);
 
                 break;
 

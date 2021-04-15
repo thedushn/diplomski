@@ -1,0 +1,109 @@
+\hypertarget{functions_8c}{}\section{functions.\+c File Reference}
+\label{functions_8c}\index{functions.\+c@{functions.\+c}}
+{\ttfamily \#include \char`\"{}functions.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$memory.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include $<$netdb.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}sys/socket.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}main\+\_\+header.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{functions_8c_a674a443e84d9072113bf84e14d7946b4}{scan\+\_\+numbers} (\+\_\+\+\_\+uint64\+\_\+t $\ast$C\+PU, char $\ast$ptr, int $\ast$cpu\+\_\+index)
+\item 
+void \hyperlink{functions_8c_ae4165a70438e135ce7896f1f044ee361}{device\+\_\+task\+\_\+commands} (char $\ast$signal, char $\ast$task\+\_\+id)
+\item 
+int \hyperlink{functions_8c_a9edcf5904352d1a0ec6303270df431b8}{connection} (char $\ast$argv1, char $\ast$argv2)
+\item 
+void \hyperlink{functions_8c_a82e91c4e6127d541ce076b9a2382a6f9}{input\+\_\+command} ()
+\item 
+int \hyperlink{functions_8c_af592d7092738995139d8154eeeb55b4e}{command\+\_\+sender} (char $\ast$text)
+\item 
+ssize\+\_\+t \hyperlink{functions_8c_a57f5288a1b079dd1e4ef90df07efc0db}{test\+\_\+send} (int socket)
+\item 
+ssize\+\_\+t \hyperlink{functions_8c_af2c1d9e94b5a8d796e66e44f20ee5d87}{test\+\_\+recv} (int socket)
+\item 
+int \hyperlink{functions_8c_ac35d50bbc970779ec3c227b7e59337e5}{data\+\_\+transfer} (int socket, \hyperlink{common_8h_a4a9a98b1a6bf2fff8ce1c5f990f61823}{Cpu\+\_\+usage} $\ast$cpu\+\_\+usage, \hyperlink{common_8h_a5e783e42eddc16b9eb807fe441e845e9}{Network} $\ast$network, \hyperlink{common_8h_ad1aed56b78add859fe08c0de057dee80}{Memory\+\_\+usage} $\ast$memory\+\_\+usage, \hyperlink{common_8h_aa9f2ae5a85e60fbcbda672bc74c74e0d}{T\+\_\+\+Collection} $\ast$$\ast$task\+\_\+array, \hyperlink{common_8h_a78fbed7dbe1a9b59fa372944508fa48e}{D\+\_\+\+Collection} $\ast$$\ast$devices\+\_\+array, \+\_\+\+\_\+int32\+\_\+t $\ast$task\+\_\+num, \+\_\+\+\_\+int32\+\_\+t $\ast$dev\+\_\+num, \hyperlink{common_8h_a76ec70ab5b7f9f59daf2ac63d0bd0e80}{I\+\_\+\+Collection2} $\ast$$\ast$interrupts\+\_\+p)
+\item 
+long \hyperlink{functions_8c_aebfb93b3bbf8ad5866d51cf1da72e85c}{receive\+\_\+number\+\_\+cpu} (int socket)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{functions.\+c@{functions.\+c}!command\+\_\+sender@{command\+\_\+sender}}
+\index{command\+\_\+sender@{command\+\_\+sender}!functions.\+c@{functions.\+c}}
+\subsubsection[{\texorpdfstring{command\+\_\+sender(char $\ast$text)}{command_sender(char *text)}}]{\setlength{\rightskip}{0pt plus 5cm}int command\+\_\+sender (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{text}
+\end{DoxyParamCaption}
+)}\hypertarget{functions_8c_af592d7092738995139d8154eeeb55b4e}{}\label{functions_8c_af592d7092738995139d8154eeeb55b4e}
+function \hyperlink{functions_8c_af592d7092738995139d8154eeeb55b4e}{command\+\_\+sender()}\+: prepares a text command to be sent and sends it to server input\+: none output\+:return non zero value if something is wrong \index{functions.\+c@{functions.\+c}!connection@{connection}}
+\index{connection@{connection}!functions.\+c@{functions.\+c}}
+\subsubsection[{\texorpdfstring{connection(char $\ast$argv1, char $\ast$argv2)}{connection(char *argv1, char *argv2)}}]{\setlength{\rightskip}{0pt plus 5cm}int connection (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{argv1, }
+\item[{char $\ast$}]{argv2}
+\end{DoxyParamCaption}
+)}\hypertarget{functions_8c_a9edcf5904352d1a0ec6303270df431b8}{}\label{functions_8c_a9edcf5904352d1a0ec6303270df431b8}
+function \hyperlink{functions_8c_a9edcf5904352d1a0ec6303270df431b8}{connection()}\+: establishes a connection with the server input\+: port number and IP address output\+:return non zero value if something is wrong \index{functions.\+c@{functions.\+c}!data\+\_\+transfer@{data\+\_\+transfer}}
+\index{data\+\_\+transfer@{data\+\_\+transfer}!functions.\+c@{functions.\+c}}
+\subsubsection[{\texorpdfstring{data\+\_\+transfer(int socket, Cpu\+\_\+usage $\ast$cpu\+\_\+usage, Network $\ast$network, Memory\+\_\+usage $\ast$memory\+\_\+usage, T\+\_\+\+Collection $\ast$$\ast$task\+\_\+array, D\+\_\+\+Collection $\ast$$\ast$devices\+\_\+array, \+\_\+\+\_\+int32\+\_\+t $\ast$task\+\_\+num, \+\_\+\+\_\+int32\+\_\+t $\ast$dev\+\_\+num, I\+\_\+\+Collection2 $\ast$$\ast$interrupts\+\_\+p)}{data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *memory_usage, T_Collection **task_array, D_Collection **devices_array, __int32_t *task_num, __int32_t *dev_num, I_Collection2 **interrupts_p)}}]{\setlength{\rightskip}{0pt plus 5cm}int data\+\_\+transfer (
+\begin{DoxyParamCaption}
+\item[{int}]{socket, }
+\item[{{\bf Cpu\+\_\+usage} $\ast$}]{cpu\+\_\+usage, }
+\item[{{\bf Network} $\ast$}]{network, }
+\item[{{\bf Memory\+\_\+usage} $\ast$}]{memory\+\_\+usage, }
+\item[{{\bf T\+\_\+\+Collection} $\ast$$\ast$}]{task\+\_\+array, }
+\item[{{\bf D\+\_\+\+Collection} $\ast$$\ast$}]{devices\+\_\+array, }
+\item[{\+\_\+\+\_\+int32\+\_\+t $\ast$}]{task\+\_\+num, }
+\item[{\+\_\+\+\_\+int32\+\_\+t $\ast$}]{dev\+\_\+num, }
+\item[{{\bf I\+\_\+\+Collection2} $\ast$$\ast$}]{interrupts\+\_\+p}
+\end{DoxyParamCaption}
+)}\hypertarget{functions_8c_ac35d50bbc970779ec3c227b7e59337e5}{}\label{functions_8c_ac35d50bbc970779ec3c227b7e59337e5}
+function \hyperlink{functions_8c_ac35d50bbc970779ec3c227b7e59337e5}{data\+\_\+transfer()}\+: receives T\+CP packets from the server and handles them depending on the type of file they are input\+: socket,pointer cpu usage structure, pointer to network usage structure, double pointer to a Task doubly linked list,double pointer to a Device doubly linked list, tasks number and devices number output\+:return non zero value if something is wrong \index{functions.\+c@{functions.\+c}!device\+\_\+task\+\_\+commands@{device\+\_\+task\+\_\+commands}}
+\index{device\+\_\+task\+\_\+commands@{device\+\_\+task\+\_\+commands}!functions.\+c@{functions.\+c}}
+\subsubsection[{\texorpdfstring{device\+\_\+task\+\_\+commands(char $\ast$signal, char $\ast$task\+\_\+id)}{device_task_commands(char *signal, char *task_id)}}]{\setlength{\rightskip}{0pt plus 5cm}void device\+\_\+task\+\_\+commands (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{signal, }
+\item[{char $\ast$}]{task\+\_\+id}
+\end{DoxyParamCaption}
+)}\hypertarget{functions_8c_ae4165a70438e135ce7896f1f044ee361}{}\label{functions_8c_ae4165a70438e135ce7896f1f044ee361}
+function \hyperlink{functions_8c_ae4165a70438e135ce7896f1f044ee361}{device\+\_\+task\+\_\+commands()}\+: sends command to server about what type of devices it wants to see input\+:pointer to signal and to task id output\+:none. \index{functions.\+c@{functions.\+c}!input\+\_\+command@{input\+\_\+command}}
+\index{input\+\_\+command@{input\+\_\+command}!functions.\+c@{functions.\+c}}
+\subsubsection[{\texorpdfstring{input\+\_\+command()}{input_command()}}]{\setlength{\rightskip}{0pt plus 5cm}void input\+\_\+command (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{functions_8c_a82e91c4e6127d541ce076b9a2382a6f9}{}\label{functions_8c_a82e91c4e6127d541ce076b9a2382a6f9}
+function \hyperlink{functions_8c_a82e91c4e6127d541ce076b9a2382a6f9}{input\+\_\+command()}\+: takes what we have typed in the entry widget and sends it to the server input\+: none output\+:none \index{functions.\+c@{functions.\+c}!receive\+\_\+number\+\_\+cpu@{receive\+\_\+number\+\_\+cpu}}
+\index{receive\+\_\+number\+\_\+cpu@{receive\+\_\+number\+\_\+cpu}!functions.\+c@{functions.\+c}}
+\subsubsection[{\texorpdfstring{receive\+\_\+number\+\_\+cpu(int socket)}{receive_number_cpu(int socket)}}]{\setlength{\rightskip}{0pt plus 5cm}long receive\+\_\+number\+\_\+cpu (
+\begin{DoxyParamCaption}
+\item[{int}]{socket}
+\end{DoxyParamCaption}
+)}\hypertarget{functions_8c_aebfb93b3bbf8ad5866d51cf1da72e85c}{}\label{functions_8c_aebfb93b3bbf8ad5866d51cf1da72e85c}
+\index{functions.\+c@{functions.\+c}!scan\+\_\+numbers@{scan\+\_\+numbers}}
+\index{scan\+\_\+numbers@{scan\+\_\+numbers}!functions.\+c@{functions.\+c}}
+\subsubsection[{\texorpdfstring{scan\+\_\+numbers(\+\_\+\+\_\+uint64\+\_\+t $\ast$\+C\+P\+U, char $\ast$ptr, int $\ast$cpu\+\_\+index)}{scan_numbers(__uint64_t *CPU, char *ptr, int *cpu_index)}}]{\setlength{\rightskip}{0pt plus 5cm}bool scan\+\_\+numbers (
+\begin{DoxyParamCaption}
+\item[{\+\_\+\+\_\+uint64\+\_\+t $\ast$}]{C\+PU, }
+\item[{char $\ast$}]{ptr, }
+\item[{int $\ast$}]{cpu\+\_\+index}
+\end{DoxyParamCaption}
+)}\hypertarget{functions_8c_a674a443e84d9072113bf84e14d7946b4}{}\label{functions_8c_a674a443e84d9072113bf84e14d7946b4}
+\index{functions.\+c@{functions.\+c}!test\+\_\+recv@{test\+\_\+recv}}
+\index{test\+\_\+recv@{test\+\_\+recv}!functions.\+c@{functions.\+c}}
+\subsubsection[{\texorpdfstring{test\+\_\+recv(int socket)}{test_recv(int socket)}}]{\setlength{\rightskip}{0pt plus 5cm}ssize\+\_\+t test\+\_\+recv (
+\begin{DoxyParamCaption}
+\item[{int}]{socket}
+\end{DoxyParamCaption}
+)}\hypertarget{functions_8c_af2c1d9e94b5a8d796e66e44f20ee5d87}{}\label{functions_8c_af2c1d9e94b5a8d796e66e44f20ee5d87}
+function \hyperlink{functions_8c_a57f5288a1b079dd1e4ef90df07efc0db}{test\+\_\+send()}\+: tests if the client can send T\+CP packets input\+: socket output\+:return non zero value if something is wrong \index{functions.\+c@{functions.\+c}!test\+\_\+send@{test\+\_\+send}}
+\index{test\+\_\+send@{test\+\_\+send}!functions.\+c@{functions.\+c}}
+\subsubsection[{\texorpdfstring{test\+\_\+send(int socket)}{test_send(int socket)}}]{\setlength{\rightskip}{0pt plus 5cm}ssize\+\_\+t test\+\_\+send (
+\begin{DoxyParamCaption}
+\item[{int}]{socket}
+\end{DoxyParamCaption}
+)}\hypertarget{functions_8c_a57f5288a1b079dd1e4ef90df07efc0db}{}\label{functions_8c_a57f5288a1b079dd1e4ef90df07efc0db}
+function \hyperlink{functions_8c_a57f5288a1b079dd1e4ef90df07efc0db}{test\+\_\+send()}\+: tests if the server can send T\+CP packets input\+: socket output\+:return non zero value if something is wrong 

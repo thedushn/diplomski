@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     hash_network  = NULL;
     net_hash_size = 0;
     cpu_Number=0;
-    Thread_pack thr_p[2];
+
 
     printf("%ld\n",sysconf(_SC_NPROCESSORS_ONLN)) ;
 
@@ -72,11 +72,6 @@ int main(int argc, char *argv[]) {
 
 
 
-
-
-
-
-
     connection(argv[1],&socket_send,&socket_command);
 
     cpu_Number=cpu_number();
@@ -97,11 +92,13 @@ int main(int argc, char *argv[]) {
        free_cpu_memory();
        return -1;
    }
-   thr_p[0].socket=socket_send;
+    thr_p_main[0].socket=socket_send;
 
     pthread_mutex_init(&mutex_send,NULL);
+
+
     thread_break = true;
-    if ((ret=pthread_create(&thr_p[1].thread_id, NULL, &sending, &thr_p)) != 0) {/*creating thread for sending data to client*/
+    if ((ret=pthread_create(&thr_p_main[0].thread_id, NULL, &sending, &thr_p_main[0])) != 0) {/*creating thread for sending data to client*/
 
         printf("ERROR: Return Code from pthread_create() is %d\n", ret);
 
@@ -111,10 +108,9 @@ int main(int argc, char *argv[]) {
         return -1;
 
     }
-
     /*creating thread for receiving commands from client*/
 
-    if ((ret = pthread_create(&thr_p[0].thread_id, NULL, accept_command, &socket_command)) != 0) {
+    if ((ret = pthread_create(&thr_p_main[1].thread_id, NULL, accept_command, &socket_command)) != 0) {
 
         printf("ERROR: Return Code from pthread_create() is %d\n", ret);
 
@@ -124,9 +120,12 @@ int main(int argc, char *argv[]) {
         return -1;
 
     }
-    void *status=NULL;
 
-    if((ret= pthread_join(thr_p[0].thread_id, &status))){
+
+
+
+
+    if((ret= pthread_join(thr_p_main[0].thread_id, NULL))){
 
         strerror_r(ret,buffer,sizeof(buffer));
         fprintf(stderr,"error = %d (%s)\n",ret,buffer);
@@ -137,7 +136,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    if((ret= pthread_join(thr_p[1].thread_id, &status))){
+    if((ret= pthread_join(thr_p_main[1].thread_id, NULL ))){
 
         strerror_r(ret,buffer,sizeof(buffer));
         fprintf(stderr,"error = %d (%s)\n",ret,buffer);
@@ -172,6 +171,7 @@ int main(int argc, char *argv[]) {
     close(socket_send);
     free_cpu_memory();
     printf("we exited");
+    fflush(stdout);
 
     return 0;
 }

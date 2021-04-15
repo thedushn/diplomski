@@ -23,6 +23,8 @@
 #include "devices.h"
 #include "network_bandwith.h"
 
+#define handle_error_en(en, msg) \
+        do { errno = en; perror(msg); exit(EXIT_FAILURE); } while (0)
 
 
 /*
@@ -233,7 +235,12 @@ void *accept_command(void *socket) {
     char        *text1;
     ssize_t     ret;
     int         g;
-
+   int s = pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+    if (s != 0)
+        handle_error_en(s, "pthread_setcancelstate");
+   s= pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,NULL);
+    if (s != 0)
+        handle_error_en(s, "pthread_setcanceltype");
     while (1) {
 
         memset(buffer,0,sizeof(buffer));
@@ -249,7 +256,7 @@ void *accept_command(void *socket) {
             thread_break = false;
             pthread_mutex_unlock(&mutex_send);
             ret=-100;
-            pthread_exit(&ret);
+            pthread_exit(NULL);
         }
 
 
@@ -458,8 +465,8 @@ void *sending(void *socket) {
 
 
         if (thread_break == false) {
-
-
+            printf("%d\n",__LINE__);
+            fflush(stdout);
             break;
 
         }
@@ -482,8 +489,18 @@ void *sending(void *socket) {
     pthread_mutex_destroy(&mutex_jiff);
 
     clean_interrupts2();
-    pthread_cancel(thr_pack.thread_id);
-    pthread_exit(&thr_pack.ret_val);
+//    printf("%d\n",__LINE__);
+//    fflush(stdout);
+//  int  s =  pthread_cancel(thr_p_main[1].thread_id);
+//    printf("%d\n",__LINE__);
+//    fflush(stdout);
+//    if (s != 0)
+//        handle_error_en(s, "pthread_cancel");
+//    printf("%d\n",__LINE__);
+//    fflush(stdout);
+
+    pthread_exit(NULL);
+    printf("%d\n",__LINE__);
 }
 
 int connection(char *port, int *socket_send, int *socket_command){

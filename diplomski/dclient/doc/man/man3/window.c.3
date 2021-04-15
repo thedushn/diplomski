@@ -1,0 +1,60 @@
+.TH "window.c" 3 "Wed Apr 14 2021" "Version 1.1" "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+window.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'window\&.h'\fP
+.br
+\fC#include 'testing_tree\&.h'\fP
+.br
+\fC#include 'buttons\&.h'\fP
+.br
+\fC#include 'testing\&.h'\fP
+.br
+\fC#include 'drawing\&.h'\fP
+.br
+\fC#include 'functions\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "GtkWidget * \fBcpu_window\fP (int cpu_number, GtkWidget **graph_list)"
+.br
+.ti -1c
+.RI "GtkWidget * \fBmain_window\fP (GtkWidget *dev_swindow, GtkWidget *\fBprocess_swindow\fP)"
+.br
+.ti -1c
+.RI "void \fBswap_change\fP (\fBMemory_usage\fP *memory_usage)"
+.br
+.ti -1c
+.RI "void \fBmemory_change\fP (\fBMemory_usage\fP *memory_usage)"
+.br
+.ti -1c
+.RI "void \fBcpu_change\fP (\fBCpu_usage\fP *cpu_usage)"
+.br
+.ti -1c
+.RI "void \fBnetwork_change\fP (\fBNetwork\fP *network)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void cpu_change (\fBCpu_usage\fP * cpu_usage)"
+
+.SS "GtkWidget* cpu_window (int cpu_number, GtkWidget ** graph_list)"
+
+.SS "GtkWidget* main_window (GtkWidget * dev_swindow, GtkWidget * process_swindow)"
+
+.SS "void memory_change (\fBMemory_usage\fP * memory_usage)"
+
+.SS "void network_change (\fBNetwork\fP * network)"
+function \fBnetwork_change()\fP: inputs network usage into list and displays it textually in window input: pointer to Network usage output: none 
+.SS "void swap_change (\fBMemory_usage\fP * memory_usage)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

@@ -10,28 +10,36 @@
 
 
 GtkWidget *graph1;/*graph for cpu usage*/
-GtkWidget *graph_net;/*graph for network usage*/
-GtkWidget *graph_mem;/*graph for memory usage*/
+GtkWidget *graphNet;/*graph for network usage*/
+GtkWidget *graphMem;/*graph for memory usage*/
 GtkWidget *graph_inttrp;/*graph for interrupts */
 GtkWidget *graph_write;/*graph for interrupts */
-
+GtkWidget *cpuGraphs;
 GtkWidget *viewport;
 GtkAdjustment *adj;
 GtkWidget *interrupts_swindow;
 
 
 
-void cpu_change(Cpu_usage cpu_usage);
+GtkWidget *label_rec;   /*GtkWidget where we input received data*/
+GtkWidget *label_trans; /*GtkWidget where we input transmitted data*/
+GtkWidget *label_cpu0;  /*GtkWidget where we input cpu data*/
+GtkWidget *label_mem;   /*GtkWidget where we input memory data*/
+GtkWidget *label_swap;  /*GtkWidget where we input swap memory data*/
 
-void memory_change(Memory_usage *memory_usage);
+GtkWidget* CPU_WINDOW;
 
-void swap_change(Memory_usage *memory_usage);
+void cpu_change(Cpu_usage *cpu_usage);
+
+void memoryChange(Memory_usage *memoryUsage);
+
+void swap_change(Memory_usage *memoryUsage);
 
 void network_change(Network *network);
 
 GtkWidget *main_window(GtkWidget *des_swindow, GtkWidget *proc_swindow);
 
-
+GtkWidget *cpuWindow(int cpuNumber, GtkWidget **graphList);
 
 
 

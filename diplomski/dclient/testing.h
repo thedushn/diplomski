@@ -9,7 +9,7 @@
 #include "common.h"
 #include "main_header.h"
 
-int interrupts_write(I_Collection *array);
+int interrupts_write(I_Collection2 *array);
 
 int cpu_write(Cpu_usage cpu_usage);
 int netw_write(unsigned long transmited, unsigned long received);

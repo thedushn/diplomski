@@ -116,6 +116,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/application.c">
+			<Option target="client"/>
+		</Unit>
 		<Unit filename="/home/dushn/Diplomski/diplomski/dclient/buttons.c">
 			<Option target="client"/>
 		</Unit>

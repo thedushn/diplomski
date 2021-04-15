@@ -1,0 +1,133 @@
+.TH "window.h" 3 "Wed Apr 14 2021" "Version 1.1" "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+window.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'main_header\&.h'\fP
+.br
+\fC#include 'common\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBcpu_change\fP (\fBCpu_usage\fP *cpu_usage)"
+.br
+.ti -1c
+.RI "void \fBmemory_change\fP (\fBMemory_usage\fP *memory_usage)"
+.br
+.ti -1c
+.RI "void \fBswap_change\fP (\fBMemory_usage\fP *memory_usage)"
+.br
+.ti -1c
+.RI "void \fBnetwork_change\fP (\fBNetwork\fP *network)"
+.br
+.ti -1c
+.RI "GtkWidget * \fBmain_window\fP (GtkWidget *des_swindow, GtkWidget *proc_swindow)"
+.br
+.ti -1c
+.RI "GtkWidget * \fBcpu_window\fP (int cpu_number, GtkWidget **graph_list)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "GtkWidget * \fBgraph1\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBgraph_net\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBgraph_mem\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBgraph_inttrp\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBgraph_write\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBcpu_graphs\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBviewport\fP"
+.br
+.ti -1c
+.RI "GtkAdjustment * \fBadj\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBinterrupts_swindow\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBlabel_rec\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBlabel_trans\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBlabel_cpu0\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBlabel_mem\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBlabel_swap\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBCPU_WINDOW\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void cpu_change (\fBCpu_usage\fP * cpu_usage)"
+
+.SS "GtkWidget* cpu_window (int cpu_number, GtkWidget ** graph_list)"
+
+.SS "GtkWidget* main_window (GtkWidget * des_swindow, GtkWidget * proc_swindow)"
+
+.SS "void memory_change (\fBMemory_usage\fP * memory_usage)"
+
+.SS "void network_change (\fBNetwork\fP * network)"
+function \fBnetwork_change()\fP: inputs network usage into list and displays it textually in window input: pointer to Network usage output: none 
+.SS "void swap_change (\fBMemory_usage\fP * memory_usage)"
+
+.SH "Variable Documentation"
+.PP 
+.SS "GtkAdjustment* adj"
+
+.SS "GtkWidget* cpu_graphs"
+
+.SS "GtkWidget* CPU_WINDOW"
+
+.SS "GtkWidget* graph1"
+
+.SS "GtkWidget* graph_inttrp"
+
+.SS "GtkWidget* graph_mem"
+
+.SS "GtkWidget* graph_net"
+
+.SS "GtkWidget* graph_write"
+
+.SS "GtkWidget* interrupts_swindow"
+
+.SS "GtkWidget* label_cpu0"
+
+.SS "GtkWidget* label_mem"
+
+.SS "GtkWidget* label_rec"
+
+.SS "GtkWidget* label_swap"
+
+.SS "GtkWidget* label_trans"
+
+.SS "GtkWidget* viewport"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

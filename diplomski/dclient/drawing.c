@@ -11,52 +11,73 @@
 #include <inttypes.h>
 #include <errno.h>
 #include "drawing.h"
+#include "buttons.h"
 #include <assert.h>
-/*
+/**
  * function on_draw_event(): creating graphs by sending the draw signal to the function we create a cairo_t structure
  *
- * input:pointer to the graph ,and pointer to cairo_t on which to draw on
- * output:if successful return true
+ * @param  widget pointer to the graph in which to draw
+ * @param  cr     canvas
+ * @return true if function completed
  * */
 gboolean on_draw_event(GtkWidget *widget, cairo_t *cr) {
 
 
     if (widget == graph1) {/*depending on which graph we want to draw on*/
 
-        do_drawing_cpu(widget, cr, time_step, cpu_list);
-    } else if (widget == graph_net) {
+        do_drawing_cpu(widget, cr, time_step, m_data);
+    } else if (widget == graphNet) {
 
-        do_drawing_net(widget, cr, time_step, net_list);
-    } else if (widget == graph_mem) {
+        do_drawing_net(widget, cr, time_step, m_data);
+    } else if (widget == graphMem) {
 
-        do_drawing_mem(widget, cr, time_step, mem_list);
-    } else {
+        do_drawing_mem(widget, cr, time_step, m_data);
+    } else if (widget == graph_inttrp){
             //TODO set size to the proper amount of interrupts
-        gtk_widget_set_size_request(widget,50*interrupt_num+100,gtk_widget_get_allocated_height(interrupts_swindow));
+        gtk_widget_set_size_request(widget,(int)50*interrupt_num+100,gtk_widget_get_allocated_height(interrupts_swindow));
        // assert(interrupts);
        // do_drawing_int(widget, cr, interrupts);
-        do_drawing_int2(widget, cr, interrupts2);
+        do_drawing_int2(widget, cr, m_data->interrupts_list);
 
 
 
 
 
+
+    }else{
+        if(closed_cpu_window) {
+            for (int i = 0; i < cpu_num; i++) {
+                if (widget == &cpuGraphs[i]) {
+                    do_drawing_one_cpu(widget, cr, time_step, m_data,i);
+                }
+            }
+        }
 
     }
+
 
 
     return TRUE;
 
 }
+/** writing_interrupt_names2 writes the names on the canvas depending on their length position on the canvas and
+ * font size
+ * @param cr canvas
+ * @param font_size
+ * @param length
+ * @param position
+ * @param name1
+ * @return void
+ * */
 void writing_interrupt_names2(cairo_t *cr, double font_size, double length, int position, const gchar *name1) {
-    PangoLayout *layout;
 
+    PangoLayout *layout;
 
 
     cairo_move_to(cr, 5 * font_size + 5 * length * position, 0);
 
     layout  = gtk_widget_create_pango_layout (graph_inttrp, name1 );
-    printf("Width %d \n",pango_layout_get_width(layout));
+    //printf("Width %d \n",pango_layout_get_width(layout));
     pango_layout_set_font_description (layout, fontdesc);
     pango_layout_set_width (layout,
                             (int)(5*font_size*1000));
@@ -76,7 +97,7 @@ void writing_interrupt_names2(cairo_t *cr, double font_size, double length, int 
 
 
 
-/*
+/**
  * function writing_seconds(): drawing the seconds on the graphs
  * input: pointer to the canvas,width of the graph,height of the graph, font size and position
  * output:none.
@@ -140,10 +161,12 @@ void draw_frame(cairo_t *cr, double width, double height, double font_size, int 
 
 
 }
-/*
- * function draw_percentages(): drawing the percentages of the graph
- * input: pointer to the canvas,width of the graph,height of the graph, font size
- * output:none.
+/**
+ * draw_percentages(): drawing the percentages of the graph
+ * @param cr canvas
+ * @param height
+ * @param font_size
+ * @return void
  * */
 void draw_percentages(cairo_t *cr, double height, double font_size) {
 
@@ -164,8 +187,8 @@ void draw_percentages(cairo_t *cr, double height, double font_size) {
 
 
 }
-void draw_interrupts2(cairo_t *cr, int position, Interrupts2 *peak, double height, double font_size, __int64_t max_num,
-                     double length) {
+void draw_interrupts2(cairo_t *cr, int position, Interrupts2 *peak, double height, double font_size, __uint64_t max_num,
+                      double length) {
 
     double percentage;
 
@@ -173,7 +196,7 @@ void draw_interrupts2(cairo_t *cr, int position, Interrupts2 *peak, double heigh
     cairo_set_line_width(cr, 1);
 
     for(int i=0;i<cpu_num;i++){
-        percentage = ((height - font_size) / max_num) * peak->CPU[i];
+        percentage = ((height - font_size) / (double)max_num) * (double)peak->CPU[i];
 
         cairo_rectangle(cr, (int)(cpu_num+1) * font_size + length * ((int)(cpu_num+1)*position+i), height - font_size, length - 1, -percentage);
        // cairo_set_source_rgb(cr, 0, 0, 0);
@@ -221,16 +244,16 @@ void draw_interrupts2(cairo_t *cr, int position, Interrupts2 *peak, double heigh
 
 }
 
-/*
+/**
  * function draw_graph(): draws the lines on the graph
  * input: pointer to the canvas,index of the data,width,height,font size, step between
  * data, pointer to the array of data
  * output:none.
  * */
 void
-draw_graph(cairo_t *cr, int r, double width, double height, double font_size, double time_step, Cpu_list *array) {
+draw_graph(cairo_t *cr, int r, double width, double height, double font_size, double time_step, Mega_Data *array) {
 
-    Cpu_list *temp = array;
+    Mega_Data *temp = array;
     double prev = height - font_size; //zero
     double step = 0;
 
@@ -263,7 +286,7 @@ draw_graph(cairo_t *cr, int r, double width, double height, double font_size, do
         gfloat peak;
         double percentage;
 
-        peak = temp->data[r];
+        peak = temp->cpu_stats[r];
         temp = temp->next;
 
 
@@ -299,17 +322,26 @@ draw_graph(cairo_t *cr, int r, double width, double height, double font_size, do
 
 
 }
-/*
- * function draw_graph_net_mem(): draws the lines on the graph for memory usage or network usage
- * input: pointer to the canvas,index of the data,type of graph,width,height,font size, step between
- * data,max number for (network usage), pointer to the array of data
- * output:none.
+/**
+ * function draw_graph_net(): draws the lines on the graph for network usage
+ *
+ *
+ *  @param  cr canvas
+ *  @param  r  color
+ *  @param  i index
+ *  @param  width
+ *  @param  height
+ *  @param  font_size
+ *  @param  time_step
+ *  @param  max_num  maximum bytes in the list
+ *  @param  array data array
+ *  @return void
  * */
 void
-draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step,
-                   float max_num, NetMem_list *array) {
+draw_graph_net(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step,
+                   float max_num, Mega_Data *array) {
 
-    NetMem_list *temp;
+    Mega_Data *temp;
     double prev = height - font_size; //zero
     double step = 0;
 
@@ -335,22 +367,19 @@ draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, doubl
         gfloat peak;
         double percentage;
 
-        peak = temp->data[r];
+        peak = temp->net_stats[r];
         temp = temp->next;
 
 
         cairo_move_to(cr, i * font_size, prev);
 
 
-        if (i==5) {/*if its network usage we move the graph by 5 so we can have space for the data/s stat on the right*/
+
 
 
             percentage = ((height - font_size) / max_num) * peak;
-           // step = (width - 5 * font_size - 5 * font_size) / time_step;
-        } else {/*if its memory usage we move the graph by 3 so we can have space for the percentage number on the right*/
-            percentage = ((height - font_size) / 100) * peak;
-          //  step = (width - 3 * font_size - 3 * font_size) / time_step;
-        }
+            // step = (width - 5 * font_size - 5 * font_size) / time_step;
+
         step = (width - i * font_size - i * font_size) / time_step;
 
         prev = height - font_size - percentage;
@@ -367,8 +396,88 @@ draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, doubl
 
     }
 
+    /* the last line always touches the floor*/
+    cairo_line_to(cr, i * font_size, height - font_size);
 
-    cairo_line_to(cr, i * font_size, height - font_size);/* the last line always touches the floor*/
+    cairo_stroke(cr);
+
+
+    cairo_translate(cr, -step * g, 0);  /*return to the start of the graph*/
+
+
+
+}
+/**
+ * function draw_graph_mem(): draws the lines on the graph for memory usage
+ *  @param  cr canvas
+ *  @param  r  color
+ *  @param  index index
+ *  @param  width
+ *  @param  height
+ *  @param  font_size
+ *  @param  time_step
+ *  @param  array data array
+ *  @return void
+ * */
+void
+draw_graph_mem(cairo_t *cr, int r, int index, double width, double height, double font_size, double time_step,
+               Mega_Data *array) {
+
+    Mega_Data *temp;
+    double prev = height - font_size; //zero
+    double step = 0;
+
+
+
+
+
+    __int32_t g = (__int32_t) time_step;
+    if (list_num_size < time_step) {
+        g = list_num_size;
+    }
+
+
+
+    if (r == 0) {
+        cairo_set_source_rgb(cr, 1, 0, 0);//rgb
+    } else {
+        cairo_set_source_rgb(cr, 0, 1, 0);
+    }
+    temp=array;
+    for (__int32_t j = 0; j < g; j++) {
+
+        gfloat peak;
+        double percentage;
+
+        peak = temp->mem_stats[r];
+        temp = temp->next;
+
+
+        cairo_move_to(cr, index * font_size, prev);
+
+
+
+            percentage = ((height - font_size) / 100) * peak;
+            //  step = (width - 3 * font_size - 3 * font_size) / time_step;
+
+        step = (width - index * font_size - index * font_size) / time_step;
+
+        prev = height - font_size - percentage;
+
+        if (percentage == height) {
+            percentage = height - 1;
+        }
+
+
+        cairo_line_to(cr, step + index * font_size, height - font_size - percentage);
+
+        cairo_translate(cr, step, 0);
+
+
+    }
+
+
+    cairo_line_to(cr, index * font_size, height - font_size);/* the last line always touches the floor*/
 
     cairo_stroke(cr);
 
@@ -379,15 +488,19 @@ draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, doubl
 
 }
 
-/*
- * function do_drawing_mem(): draws the entire graph from the frame to the percetages to the lines
- * input:pointer to the graph, pointer to the canvas,step between data and the pointer to the array of data
- * output:none.
+
+/**
+ * function do_drawing_mem(): draws the entire graph from the frame to the percentages to the lines
+ * @param   widget pointer to which graph to draw on
+ * @param   cr canvas
+ *  @param  time_step
+ *  @param  array data array
+ *  @return void
  * */
-void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list *array) {
+void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Data *array) {
     double width, height;
-    height = (double) gtk_widget_get_allocated_height(widget);
-    width = (double) gtk_widget_get_allocated_width(widget);
+    height  = (double) gtk_widget_get_allocated_height(widget);
+    width   = (double) gtk_widget_get_allocated_width(widget);
 
 
     cairo_surface_t *graph_surface;
@@ -418,8 +531,8 @@ void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
     writing_seconds(cr, width, height, font_size, 3);
 
 
-    draw_graph_net_mem(cr, 0, 3, width, height, font_size, time_step, 0, array);
-    draw_graph_net_mem(cr, 1, 3, width, height, font_size, time_step, 0, array);
+    draw_graph_mem(cr, 0, 3, width, height, font_size, time_step, array);
+    draw_graph_mem(cr, 1, 3, width, height, font_size, time_step,  array);
 
     if (graph_surface != NULL) {
         cairo_set_source_surface(cr, graph_surface, 0.0, 0.0);
@@ -429,13 +542,20 @@ void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
 
 
 }
+/**
+ * function do_drawing_int2(): draws the entire graph from the frame to the max number of interrupts to the lines
+ * @param   widget pointer to which graph to draw on
+ * @param   cr canvas
+ * @param  interrupts1 list of interrupts
+ * @return void
+ * */
 void do_drawing_int2(GtkWidget *widget, cairo_t *cr, I_Collection2 *interrupts1) {
 
 
     double width, height;
 
     gchar name[3];
-    __int64_t max_num = 0;
+    __uint64_t max_num = 0;
     __uint64_t *p      = NULL;
 
 
@@ -480,13 +600,13 @@ void do_drawing_int2(GtkWidget *widget, cairo_t *cr, I_Collection2 *interrupts1)
 
     max_num = max_num * 5 / 4;
     cairo_move_to(cr, 0, font_size);
-    sprintf(num, "%"PRIi64, max_num);
+    sprintf(num, "%"PRIu64, max_num);
     cairo_show_text(cr, num);
     for (int i = 1; i <= 3; i++) {
 
 
         cairo_move_to(cr, 0, (height - font_size) / 4 * (4 - i));
-        sprintf(num, "%"PRIi64, (max_num / 4 * i));
+        sprintf(num, "%"PRIu64, (max_num / 4 * i));
         cairo_show_text(cr, num);
 
 
@@ -523,12 +643,15 @@ void do_drawing_int2(GtkWidget *widget, cairo_t *cr, I_Collection2 *interrupts1)
 
 }
 
-/*
+/**
  * function do_drawing_net(): draws the entire graph, by searching the array for the biggest number
- * input:pointer to the graph, pointer to the canvas, step between data, and pointer to the array of network usage
- * output:none.
+ * @param   widget pointer to which graph to draw on
+ * @param   cr canvas
+ * @param  time_step
+ * @param  array
+ * @return void
  * */
-void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list *array) {
+void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Data *array) {
 
     double width, height;
 
@@ -549,7 +672,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
     width = (double) gtk_widget_get_allocated_width(widget);
 
 
-    NetMem_list *temp;
+    Mega_Data *temp;
 
 
     cairo_surface_t *graph_surface;
@@ -576,11 +699,11 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
     if (list_num_size < time_step) {/*how many elements do we have in an array*/
         g = list_num_size;
     }
-    for (int j = 0; j <= 1; j++) {/*seaching for the highest number in network usage*/
+    for (int j = 0; j <= 1; j++) {/*searching for the highest number in network usage*/
         temp = array;
         for (int i = 0; i < g; i++) {
 
-            peak = temp->data[j];// kb
+            peak = temp->net_stats[j];// kb
             if (max_num <= peak) {
 
                 max_num = peak;
@@ -646,8 +769,8 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
     cairo_show_text(cr, track);
 
 
-    draw_graph_net_mem(cr, 0, 5, width, height, font_size, time_step, max_num, array);
-    draw_graph_net_mem(cr, 1, 5, width, height, font_size, time_step, max_num, array);
+    draw_graph_net(cr, 0, 5, width, height, font_size, time_step, max_num, array);
+    draw_graph_net(cr, 1, 5, width, height, font_size, time_step, max_num, array);
 
 
     if (graph_surface != NULL) {
@@ -658,12 +781,59 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
 
 
 }
+void do_drawing_one_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Data *array1, int index) {
+
+    double width, height;
+    double font_size = 10;
+
+
+    height = (double) gtk_widget_get_allocated_height(widget);
+    width = (double) gtk_widget_get_allocated_width(widget);
+
+
+    cairo_surface_t *graph_surface;
+    graph_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, (int) width, (int) height);
+
+    cairo_set_line_width(cr, 1);
+
+
+    cairo_set_font_size(cr, font_size);
+
+    cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+    cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
+
+
+    draw_frame(cr, width, height, font_size, 3);
+    draw_percentages(cr, height, font_size);
+
+
+    //for(__int32_t i=0;i<cpu_num;i++){/*draws the lines*/
+
+        if((cpu_status[index])==true){/*display the cpus we want to be displayed*/
+            draw_graph(cr, index, width, height, font_size, time_step, array1);
+        }
+
+
+
+   // }
+
+    writing_seconds(cr, width, height, font_size, 3);
+
+    if (graph_surface != NULL) {
+        cairo_set_source_surface(cr, graph_surface, 0.0, 0.0);
+        cairo_paint(cr);
+        cairo_surface_destroy(graph_surface);
+
+
+    }
+
+}
 /**
  * function do_drawing_cpu(): draws the entire graph, the lines, the frame the seconds and the percentage
  * input:pointer to the graph, pointer to the canvas, step between data, and pointer to the array of cpu usage
  * output:none.
  * */
-void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *array1) {
+void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Data *array1) {
 
     double width, height;
     double font_size = 10;
@@ -691,7 +861,7 @@ void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *a
 
     for(__int32_t i=0;i<cpu_num;i++){/*draws the lines*/
 
-        if((*temp_bool)==true){/*display the cpus we want to be displayed*/
+        if((*temp_bool)==true){/**display the cpus we want to be displayed*/
             draw_graph(cr, i, width, height, font_size, time_step, array1);
         }
         temp_bool++;

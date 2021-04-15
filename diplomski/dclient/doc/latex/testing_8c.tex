@@ -1,0 +1,108 @@
+\hypertarget{testing_8c}{}\section{testing.\+c File Reference}
+\label{testing_8c}\index{testing.\+c@{testing.\+c}}
+{\ttfamily \#include \char`\"{}testing.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}main\+\_\+header.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$inttypes.\+h$>$}\\*
+{\ttfamily \#include $<$memory.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{testing_8c_a5b70c441596e352704d9e5bb1c657390}{interrupts\+\_\+write} (\hyperlink{common_8h_a76ec70ab5b7f9f59daf2ac63d0bd0e80}{I\+\_\+\+Collection2} $\ast$array)
+\item 
+int \hyperlink{testing_8c_a6494f5e787132288853585700edc3ee8}{memory\+\_\+write} (\hyperlink{common_8h_ad1aed56b78add859fe08c0de057dee80}{Memory\+\_\+usage} $\ast$memory\+\_\+usage)
+\item 
+int \hyperlink{testing_8c_a400979ad1d232dd72171acf1f3adac17}{cpu\+\_\+write} (\hyperlink{common_8h_a4a9a98b1a6bf2fff8ce1c5f990f61823}{Cpu\+\_\+usage} cpu\+\_\+usage)
+\item 
+int \hyperlink{testing_8c_ae4accef2c4c7c343475c09a341cb5150}{cpu\+\_\+read} (\hyperlink{main__header_8h_aff2a7bcc7cd598cf43d7ae15bf1a6594}{Cpu\+\_\+list} $\ast$$\ast$array)
+\item 
+int \hyperlink{testing_8c_a9adf11ae277f2138538617b80fb161f9}{task\+\_\+write} (\hyperlink{common_8h_aa9f2ae5a85e60fbcbda672bc74c74e0d}{T\+\_\+\+Collection} $\ast$array)
+\item 
+int \hyperlink{testing_8c_a9831c00ee417419f69814342e49e7b35}{device\+\_\+write} (\hyperlink{common_8h_a78fbed7dbe1a9b59fa372944508fa48e}{D\+\_\+\+Collection} $\ast$array)
+\item 
+int \hyperlink{testing_8c_ad5ea68ca2ca8cb25ab19c89dc804c127}{netw\+\_\+write} (uint64\+\_\+t transmited, uint64\+\_\+t received)
+\item 
+int \hyperlink{testing_8c_a57effbfd1987248551d8704e48d905a3}{netw\+\_\+calculate} (float $\ast$transmited, float $\ast$received)
+\item 
+int \hyperlink{testing_8c_a777dee61502d7659318c2150c21b0c18}{ifstat\+\_\+calculate} (float $\ast$received\+\_\+kb, float $\ast$transmitted\+\_\+kb)
+\item 
+int \hyperlink{testing_8c_a00c6b82efa8ea6a875a3f040348be9d6}{task\+\_\+sort} (\hyperlink{common_8h_aa9f2ae5a85e60fbcbda672bc74c74e0d}{T\+\_\+\+Collection} $\ast$$\ast$array, int number)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{testing.\+c@{testing.\+c}!cpu\+\_\+read@{cpu\+\_\+read}}
+\index{cpu\+\_\+read@{cpu\+\_\+read}!testing.\+c@{testing.\+c}}
+\subsubsection[{\texorpdfstring{cpu\+\_\+read(\+Cpu\+\_\+list $\ast$$\ast$array)}{cpu_read(Cpu_list **array)}}]{\setlength{\rightskip}{0pt plus 5cm}int cpu\+\_\+read (
+\begin{DoxyParamCaption}
+\item[{{\bf Cpu\+\_\+list} $\ast$$\ast$}]{array}
+\end{DoxyParamCaption}
+)}\hypertarget{testing_8c_ae4accef2c4c7c343475c09a341cb5150}{}\label{testing_8c_ae4accef2c4c7c343475c09a341cb5150}
+\index{testing.\+c@{testing.\+c}!cpu\+\_\+write@{cpu\+\_\+write}}
+\index{cpu\+\_\+write@{cpu\+\_\+write}!testing.\+c@{testing.\+c}}
+\subsubsection[{\texorpdfstring{cpu\+\_\+write(\+Cpu\+\_\+usage cpu\+\_\+usage)}{cpu_write(Cpu_usage cpu_usage)}}]{\setlength{\rightskip}{0pt plus 5cm}int cpu\+\_\+write (
+\begin{DoxyParamCaption}
+\item[{{\bf Cpu\+\_\+usage}}]{cpu\+\_\+usage}
+\end{DoxyParamCaption}
+)}\hypertarget{testing_8c_a400979ad1d232dd72171acf1f3adac17}{}\label{testing_8c_a400979ad1d232dd72171acf1f3adac17}
+\index{testing.\+c@{testing.\+c}!device\+\_\+write@{device\+\_\+write}}
+\index{device\+\_\+write@{device\+\_\+write}!testing.\+c@{testing.\+c}}
+\subsubsection[{\texorpdfstring{device\+\_\+write(\+D\+\_\+\+Collection $\ast$array)}{device_write(D_Collection *array)}}]{\setlength{\rightskip}{0pt plus 5cm}int device\+\_\+write (
+\begin{DoxyParamCaption}
+\item[{{\bf D\+\_\+\+Collection} $\ast$}]{array}
+\end{DoxyParamCaption}
+)}\hypertarget{testing_8c_a9831c00ee417419f69814342e49e7b35}{}\label{testing_8c_a9831c00ee417419f69814342e49e7b35}
+\index{testing.\+c@{testing.\+c}!ifstat\+\_\+calculate@{ifstat\+\_\+calculate}}
+\index{ifstat\+\_\+calculate@{ifstat\+\_\+calculate}!testing.\+c@{testing.\+c}}
+\subsubsection[{\texorpdfstring{ifstat\+\_\+calculate(float $\ast$received\+\_\+kb, float $\ast$transmitted\+\_\+kb)}{ifstat_calculate(float *received_kb, float *transmitted_kb)}}]{\setlength{\rightskip}{0pt plus 5cm}int ifstat\+\_\+calculate (
+\begin{DoxyParamCaption}
+\item[{float $\ast$}]{received\+\_\+kb, }
+\item[{float $\ast$}]{transmitted\+\_\+kb}
+\end{DoxyParamCaption}
+)}\hypertarget{testing_8c_a777dee61502d7659318c2150c21b0c18}{}\label{testing_8c_a777dee61502d7659318c2150c21b0c18}
+\index{testing.\+c@{testing.\+c}!interrupts\+\_\+write@{interrupts\+\_\+write}}
+\index{interrupts\+\_\+write@{interrupts\+\_\+write}!testing.\+c@{testing.\+c}}
+\subsubsection[{\texorpdfstring{interrupts\+\_\+write(\+I\+\_\+\+Collection2 $\ast$array)}{interrupts_write(I_Collection2 *array)}}]{\setlength{\rightskip}{0pt plus 5cm}int interrupts\+\_\+write (
+\begin{DoxyParamCaption}
+\item[{{\bf I\+\_\+\+Collection2} $\ast$}]{array}
+\end{DoxyParamCaption}
+)}\hypertarget{testing_8c_a5b70c441596e352704d9e5bb1c657390}{}\label{testing_8c_a5b70c441596e352704d9e5bb1c657390}
+\index{testing.\+c@{testing.\+c}!memory\+\_\+write@{memory\+\_\+write}}
+\index{memory\+\_\+write@{memory\+\_\+write}!testing.\+c@{testing.\+c}}
+\subsubsection[{\texorpdfstring{memory\+\_\+write(\+Memory\+\_\+usage $\ast$memory\+\_\+usage)}{memory_write(Memory_usage *memory_usage)}}]{\setlength{\rightskip}{0pt plus 5cm}int memory\+\_\+write (
+\begin{DoxyParamCaption}
+\item[{{\bf Memory\+\_\+usage} $\ast$}]{memory\+\_\+usage}
+\end{DoxyParamCaption}
+)}\hypertarget{testing_8c_a6494f5e787132288853585700edc3ee8}{}\label{testing_8c_a6494f5e787132288853585700edc3ee8}
+\index{testing.\+c@{testing.\+c}!netw\+\_\+calculate@{netw\+\_\+calculate}}
+\index{netw\+\_\+calculate@{netw\+\_\+calculate}!testing.\+c@{testing.\+c}}
+\subsubsection[{\texorpdfstring{netw\+\_\+calculate(float $\ast$transmited, float $\ast$received)}{netw_calculate(float *transmited, float *received)}}]{\setlength{\rightskip}{0pt plus 5cm}int netw\+\_\+calculate (
+\begin{DoxyParamCaption}
+\item[{float $\ast$}]{transmited, }
+\item[{float $\ast$}]{received}
+\end{DoxyParamCaption}
+)}\hypertarget{testing_8c_a57effbfd1987248551d8704e48d905a3}{}\label{testing_8c_a57effbfd1987248551d8704e48d905a3}
+\index{testing.\+c@{testing.\+c}!netw\+\_\+write@{netw\+\_\+write}}
+\index{netw\+\_\+write@{netw\+\_\+write}!testing.\+c@{testing.\+c}}
+\subsubsection[{\texorpdfstring{netw\+\_\+write(uint64\+\_\+t transmited, uint64\+\_\+t received)}{netw_write(uint64_t transmited, uint64_t received)}}]{\setlength{\rightskip}{0pt plus 5cm}int netw\+\_\+write (
+\begin{DoxyParamCaption}
+\item[{uint64\+\_\+t}]{transmited, }
+\item[{uint64\+\_\+t}]{received}
+\end{DoxyParamCaption}
+)}\hypertarget{testing_8c_ad5ea68ca2ca8cb25ab19c89dc804c127}{}\label{testing_8c_ad5ea68ca2ca8cb25ab19c89dc804c127}
+\index{testing.\+c@{testing.\+c}!task\+\_\+sort@{task\+\_\+sort}}
+\index{task\+\_\+sort@{task\+\_\+sort}!testing.\+c@{testing.\+c}}
+\subsubsection[{\texorpdfstring{task\+\_\+sort(\+T\+\_\+\+Collection $\ast$$\ast$array, int number)}{task_sort(T_Collection **array, int number)}}]{\setlength{\rightskip}{0pt plus 5cm}int task\+\_\+sort (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+\_\+\+Collection} $\ast$$\ast$}]{array, }
+\item[{int}]{number}
+\end{DoxyParamCaption}
+)}\hypertarget{testing_8c_a00c6b82efa8ea6a875a3f040348be9d6}{}\label{testing_8c_a00c6b82efa8ea6a875a3f040348be9d6}
+\index{testing.\+c@{testing.\+c}!task\+\_\+write@{task\+\_\+write}}
+\index{task\+\_\+write@{task\+\_\+write}!testing.\+c@{testing.\+c}}
+\subsubsection[{\texorpdfstring{task\+\_\+write(\+T\+\_\+\+Collection $\ast$array)}{task_write(T_Collection *array)}}]{\setlength{\rightskip}{0pt plus 5cm}int task\+\_\+write (
+\begin{DoxyParamCaption}
+\item[{{\bf T\+\_\+\+Collection} $\ast$}]{array}
+\end{DoxyParamCaption}
+)}\hypertarget{testing_8c_a9adf11ae277f2138538617b80fb161f9}{}\label{testing_8c_a9adf11ae277f2138538617b80fb161f9}

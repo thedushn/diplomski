@@ -1,0 +1,37 @@
+\hypertarget{main_8c}{}\section{main.\+c File Reference}
+\label{main_8c}\index{main.\+c@{main.\+c}}
+{\ttfamily \#include \char`\"{}drawing.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}testing\+\_\+tree.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}buttons.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}functions.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}main\+\_\+header.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$fontconfig/fontconfig.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{main_8c_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{main.\+c@{main.\+c}!main@{main}}
+\index{main@{main}!main.\+c@{main.\+c}}
+\subsubsection[{\texorpdfstring{main(int argc, char $\ast$argv[])}{main(int argc, char *argv[])}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{main_8c_a0ddf1224851353fc92bfbff6f499fa97}{}\label{main_8c_a0ddf1224851353fc92bfbff6f499fa97}
+\hyperlink{main_8c_a0ddf1224851353fc92bfbff6f499fa97}{main()}\+: creates a T\+PC socket and tries to connect to the server,if that was successful it initializes the window and starts to request for data from the server;
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & number of arguments port number and IP address \\
+\hline
+{\em argv} & strings that should be port number and IP address \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns a non zero value if something goes wrong 
+\end{DoxyReturn}

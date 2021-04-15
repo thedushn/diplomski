@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.7)
 project(dclient C)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -pthread  -Wall ")
-set(CMAKE_L_FLAGS "${CMAKE_C_FLAGS}  -pthread  -Wall ")
+
 set(CMAKE_C_STANDARD 11)
 
 find_package(PkgConfig REQUIRED)
@@ -15,7 +15,7 @@ add_executable(client main.c drawing.c
         window.c window.h
         testing_tree.c testing_tree.h
         main_header.h
-        testing.c testing.h)
+        testing.c testing.h application.c)
 
 include_directories(${GTK3_INCLUDE_DIRS})
 

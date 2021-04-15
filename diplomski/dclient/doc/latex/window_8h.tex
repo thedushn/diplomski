@@ -1,0 +1,147 @@
+\hypertarget{window_8h}{}\section{window.\+h File Reference}
+\label{window_8h}\index{window.\+h@{window.\+h}}
+{\ttfamily \#include \char`\"{}main\+\_\+header.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}common.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{window_8h_a3dcf1eb9379e3dfc0d6d96a93650a893}{cpu\+\_\+change} (\hyperlink{common_8h_a4a9a98b1a6bf2fff8ce1c5f990f61823}{Cpu\+\_\+usage} $\ast$cpu\+\_\+usage)
+\item 
+void \hyperlink{window_8h_a4a9307b1c73292ad31e4d7eb7e977481}{memory\+Change} (\hyperlink{common_8h_ad1aed56b78add859fe08c0de057dee80}{Memory\+\_\+usage} $\ast$memory\+Usage)
+\item 
+void \hyperlink{window_8h_ac87fca07cb90eaf8e4cd8d5bd19e56c3}{swap\+\_\+change} (\hyperlink{common_8h_ad1aed56b78add859fe08c0de057dee80}{Memory\+\_\+usage} $\ast$memory\+Usage)
+\item 
+void \hyperlink{window_8h_a942f896ef79d0a9f7e2f815496441921}{network\+\_\+change} (\hyperlink{common_8h_a5e783e42eddc16b9eb807fe441e845e9}{Network} $\ast$network)
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_aa0a0db4216e3ba5f425993b0179768e8}{main\+\_\+window} (Gtk\+Widget $\ast$des\+\_\+swindow, Gtk\+Widget $\ast$proc\+\_\+swindow)
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_aebf173aec73c09609b5464bc6de9bd14}{cpu\+Window} (int cpu\+Number, Gtk\+Widget $\ast$$\ast$graph\+List)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_a7c3ffc5c45d4e4c534ede05ab20f38cd}{graph1}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_a59a3d18bf8e0eb631da325c937ee5e10}{graph\+Net}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_a4c839f96e247e1577cff6f6d34b9c0a4}{graph\+Mem}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_a39fece5ddbe944a91411d3c8b7bd9e54}{graph\+\_\+inttrp}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_ac7e399bdb2e2d652fb0931deba2c1b8e}{graph\+\_\+write}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_a4a342b5c60d2381af34e34be5af76af4}{cpu\+Graphs}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_a55e1e49497148cbcaa5a061c2bd8adb5}{viewport}
+\item 
+Gtk\+Adjustment $\ast$ \hyperlink{window_8h_abf0183c92edcaa75cb5a031529a7332c}{adj}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_a018742c1efd3c26197e0557009795aa9}{interrupts\+\_\+swindow}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_a6a5a4701d4f27c5ce39f15c55fbcc2c7}{label\+\_\+rec}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_a011b82a76bbfabd95d353652716b3350}{label\+\_\+trans}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_afbe2d2c62d72c70b8aecf5e52cff36a7}{label\+\_\+cpu0}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_a4c49fc642e2a086eac97e0978dc3bd40}{label\+\_\+mem}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_a16dd7915fb70619a8bded3f167c5d1d1}{label\+\_\+swap}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{window_8h_aca4c4aa894124903b49081f2396ca71b}{C\+P\+U\+\_\+\+W\+I\+N\+D\+OW}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{window.\+h@{window.\+h}!cpu\+\_\+change@{cpu\+\_\+change}}
+\index{cpu\+\_\+change@{cpu\+\_\+change}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{cpu\+\_\+change(\+Cpu\+\_\+usage $\ast$cpu\+\_\+usage)}{cpu_change(Cpu_usage *cpu_usage)}}]{\setlength{\rightskip}{0pt plus 5cm}void cpu\+\_\+change (
+\begin{DoxyParamCaption}
+\item[{{\bf Cpu\+\_\+usage} $\ast$}]{cpu\+\_\+usage}
+\end{DoxyParamCaption}
+)}\hypertarget{window_8h_a3dcf1eb9379e3dfc0d6d96a93650a893}{}\label{window_8h_a3dcf1eb9379e3dfc0d6d96a93650a893}
+\index{window.\+h@{window.\+h}!cpu\+Window@{cpu\+Window}}
+\index{cpu\+Window@{cpu\+Window}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{cpu\+Window(int cpu\+Number, Gtk\+Widget $\ast$$\ast$graph\+List)}{cpuWindow(int cpuNumber, GtkWidget **graphList)}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ cpu\+Window (
+\begin{DoxyParamCaption}
+\item[{int}]{cpu\+Number, }
+\item[{Gtk\+Widget $\ast$$\ast$}]{graph\+List}
+\end{DoxyParamCaption}
+)}\hypertarget{window_8h_aebf173aec73c09609b5464bc6de9bd14}{}\label{window_8h_aebf173aec73c09609b5464bc6de9bd14}
+\index{window.\+h@{window.\+h}!main\+\_\+window@{main\+\_\+window}}
+\index{main\+\_\+window@{main\+\_\+window}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{main\+\_\+window(\+Gtk\+Widget $\ast$des\+\_\+swindow, Gtk\+Widget $\ast$proc\+\_\+swindow)}{main_window(GtkWidget *des_swindow, GtkWidget *proc_swindow)}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ main\+\_\+window (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{des\+\_\+swindow, }
+\item[{Gtk\+Widget $\ast$}]{proc\+\_\+swindow}
+\end{DoxyParamCaption}
+)}\hypertarget{window_8h_aa0a0db4216e3ba5f425993b0179768e8}{}\label{window_8h_aa0a0db4216e3ba5f425993b0179768e8}
+\index{window.\+h@{window.\+h}!memory\+Change@{memory\+Change}}
+\index{memory\+Change@{memory\+Change}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{memory\+Change(\+Memory\+\_\+usage $\ast$memory\+Usage)}{memoryChange(Memory_usage *memoryUsage)}}]{\setlength{\rightskip}{0pt plus 5cm}void memory\+Change (
+\begin{DoxyParamCaption}
+\item[{{\bf Memory\+\_\+usage} $\ast$}]{memory\+Usage}
+\end{DoxyParamCaption}
+)}\hypertarget{window_8h_a4a9307b1c73292ad31e4d7eb7e977481}{}\label{window_8h_a4a9307b1c73292ad31e4d7eb7e977481}
+\index{window.\+h@{window.\+h}!network\+\_\+change@{network\+\_\+change}}
+\index{network\+\_\+change@{network\+\_\+change}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{network\+\_\+change(\+Network $\ast$network)}{network_change(Network *network)}}]{\setlength{\rightskip}{0pt plus 5cm}void network\+\_\+change (
+\begin{DoxyParamCaption}
+\item[{{\bf Network} $\ast$}]{network}
+\end{DoxyParamCaption}
+)}\hypertarget{window_8h_a942f896ef79d0a9f7e2f815496441921}{}\label{window_8h_a942f896ef79d0a9f7e2f815496441921}
+function \hyperlink{window_8c_a942f896ef79d0a9f7e2f815496441921}{network\+\_\+change()}\+: inputs network usage into list and displays it textually in window input\+: pointer to Network usage output\+: none \index{window.\+h@{window.\+h}!swap\+\_\+change@{swap\+\_\+change}}
+\index{swap\+\_\+change@{swap\+\_\+change}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{swap\+\_\+change(\+Memory\+\_\+usage $\ast$memory\+Usage)}{swap_change(Memory_usage *memoryUsage)}}]{\setlength{\rightskip}{0pt plus 5cm}void swap\+\_\+change (
+\begin{DoxyParamCaption}
+\item[{{\bf Memory\+\_\+usage} $\ast$}]{memory\+Usage}
+\end{DoxyParamCaption}
+)}\hypertarget{window_8h_ac87fca07cb90eaf8e4cd8d5bd19e56c3}{}\label{window_8h_ac87fca07cb90eaf8e4cd8d5bd19e56c3}
+
+
+\subsection{Variable Documentation}
+\index{window.\+h@{window.\+h}!adj@{adj}}
+\index{adj@{adj}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{adj}{adj}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Adjustment$\ast$ adj}\hypertarget{window_8h_abf0183c92edcaa75cb5a031529a7332c}{}\label{window_8h_abf0183c92edcaa75cb5a031529a7332c}
+\index{window.\+h@{window.\+h}!C\+P\+U\+\_\+\+W\+I\+N\+D\+OW@{C\+P\+U\+\_\+\+W\+I\+N\+D\+OW}}
+\index{C\+P\+U\+\_\+\+W\+I\+N\+D\+OW@{C\+P\+U\+\_\+\+W\+I\+N\+D\+OW}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{C\+P\+U\+\_\+\+W\+I\+N\+D\+OW}{CPU_WINDOW}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ C\+P\+U\+\_\+\+W\+I\+N\+D\+OW}\hypertarget{window_8h_aca4c4aa894124903b49081f2396ca71b}{}\label{window_8h_aca4c4aa894124903b49081f2396ca71b}
+\index{window.\+h@{window.\+h}!cpu\+Graphs@{cpu\+Graphs}}
+\index{cpu\+Graphs@{cpu\+Graphs}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{cpu\+Graphs}{cpuGraphs}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ cpu\+Graphs}\hypertarget{window_8h_a4a342b5c60d2381af34e34be5af76af4}{}\label{window_8h_a4a342b5c60d2381af34e34be5af76af4}
+\index{window.\+h@{window.\+h}!graph1@{graph1}}
+\index{graph1@{graph1}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{graph1}{graph1}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ graph1}\hypertarget{window_8h_a7c3ffc5c45d4e4c534ede05ab20f38cd}{}\label{window_8h_a7c3ffc5c45d4e4c534ede05ab20f38cd}
+\index{window.\+h@{window.\+h}!graph\+\_\+inttrp@{graph\+\_\+inttrp}}
+\index{graph\+\_\+inttrp@{graph\+\_\+inttrp}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{graph\+\_\+inttrp}{graph_inttrp}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ graph\+\_\+inttrp}\hypertarget{window_8h_a39fece5ddbe944a91411d3c8b7bd9e54}{}\label{window_8h_a39fece5ddbe944a91411d3c8b7bd9e54}
+\index{window.\+h@{window.\+h}!graph\+\_\+write@{graph\+\_\+write}}
+\index{graph\+\_\+write@{graph\+\_\+write}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{graph\+\_\+write}{graph_write}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ graph\+\_\+write}\hypertarget{window_8h_ac7e399bdb2e2d652fb0931deba2c1b8e}{}\label{window_8h_ac7e399bdb2e2d652fb0931deba2c1b8e}
+\index{window.\+h@{window.\+h}!graph\+Mem@{graph\+Mem}}
+\index{graph\+Mem@{graph\+Mem}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{graph\+Mem}{graphMem}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ graph\+Mem}\hypertarget{window_8h_a4c839f96e247e1577cff6f6d34b9c0a4}{}\label{window_8h_a4c839f96e247e1577cff6f6d34b9c0a4}
+\index{window.\+h@{window.\+h}!graph\+Net@{graph\+Net}}
+\index{graph\+Net@{graph\+Net}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{graph\+Net}{graphNet}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ graph\+Net}\hypertarget{window_8h_a59a3d18bf8e0eb631da325c937ee5e10}{}\label{window_8h_a59a3d18bf8e0eb631da325c937ee5e10}
+\index{window.\+h@{window.\+h}!interrupts\+\_\+swindow@{interrupts\+\_\+swindow}}
+\index{interrupts\+\_\+swindow@{interrupts\+\_\+swindow}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{interrupts\+\_\+swindow}{interrupts_swindow}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ interrupts\+\_\+swindow}\hypertarget{window_8h_a018742c1efd3c26197e0557009795aa9}{}\label{window_8h_a018742c1efd3c26197e0557009795aa9}
+\index{window.\+h@{window.\+h}!label\+\_\+cpu0@{label\+\_\+cpu0}}
+\index{label\+\_\+cpu0@{label\+\_\+cpu0}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{label\+\_\+cpu0}{label_cpu0}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ label\+\_\+cpu0}\hypertarget{window_8h_afbe2d2c62d72c70b8aecf5e52cff36a7}{}\label{window_8h_afbe2d2c62d72c70b8aecf5e52cff36a7}
+\index{window.\+h@{window.\+h}!label\+\_\+mem@{label\+\_\+mem}}
+\index{label\+\_\+mem@{label\+\_\+mem}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{label\+\_\+mem}{label_mem}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ label\+\_\+mem}\hypertarget{window_8h_a4c49fc642e2a086eac97e0978dc3bd40}{}\label{window_8h_a4c49fc642e2a086eac97e0978dc3bd40}
+\index{window.\+h@{window.\+h}!label\+\_\+rec@{label\+\_\+rec}}
+\index{label\+\_\+rec@{label\+\_\+rec}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{label\+\_\+rec}{label_rec}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ label\+\_\+rec}\hypertarget{window_8h_a6a5a4701d4f27c5ce39f15c55fbcc2c7}{}\label{window_8h_a6a5a4701d4f27c5ce39f15c55fbcc2c7}
+\index{window.\+h@{window.\+h}!label\+\_\+swap@{label\+\_\+swap}}
+\index{label\+\_\+swap@{label\+\_\+swap}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{label\+\_\+swap}{label_swap}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ label\+\_\+swap}\hypertarget{window_8h_a16dd7915fb70619a8bded3f167c5d1d1}{}\label{window_8h_a16dd7915fb70619a8bded3f167c5d1d1}
+\index{window.\+h@{window.\+h}!label\+\_\+trans@{label\+\_\+trans}}
+\index{label\+\_\+trans@{label\+\_\+trans}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{label\+\_\+trans}{label_trans}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ label\+\_\+trans}\hypertarget{window_8h_a011b82a76bbfabd95d353652716b3350}{}\label{window_8h_a011b82a76bbfabd95d353652716b3350}
+\index{window.\+h@{window.\+h}!viewport@{viewport}}
+\index{viewport@{viewport}!window.\+h@{window.\+h}}
+\subsubsection[{\texorpdfstring{viewport}{viewport}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ viewport}\hypertarget{window_8h_a55e1e49497148cbcaa5a061c2bd8adb5}{}\label{window_8h_a55e1e49497148cbcaa5a061c2bd8adb5}

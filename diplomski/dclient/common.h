@@ -12,6 +12,7 @@
 #include <cairo.h>
 #include <gtk/gtk.h>
 
+
 /*!defines what type of data we are sending */
 #define CPU_USAGE   1
 #define NETWORK     2
@@ -69,10 +70,10 @@ struct __attribute__((__packed__))Network {
 };
 
 typedef struct Cpu_usage Cpu_usage;
-struct __attribute__((__packed__)) Cpu_usage {/**structure that contains cpu usage of all the different cpus */
+struct __attribute__((__packed__)) Cpu_usage {/**structure that contains cpu usage of all the cpus */
 
 
-    char percentage[4][16];
+    char (*percentage)[16];
 
 
 
@@ -117,7 +118,7 @@ struct __attribute__((__packed__)) Interrupts2 {
 
 };
 
-/*!<structure that contains the information of a interrupt type*/
+/**structure that contains the information of a interrupt type*/
 typedef struct Interrupts Interrupts;
 struct __attribute__((__packed__)) Interrupts {
 
@@ -207,6 +208,8 @@ struct __attribute__((__packed__)) Data{
     Unification unification;
 
 };
+
+
 
 
 PangoFontDescription *fontdesc;

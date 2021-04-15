@@ -7,7 +7,8 @@
 
 #include <gtk/gtk.h>
 #include "common.h"
-
+#include "semaphore.h"
+#include "error.h"
 //!main header please work
 
 typedef  struct  NetMem_list NetMem_list;/*!structure for creating linked list for memory usage and network usage */
@@ -22,9 +23,23 @@ struct NetMem_list{
 typedef struct Cpu_List Cpu_list;/*!structure for creating linked list for cpu usage */
 struct Cpu_List {
 
-    float     data[4];
+    float     *data;
     Cpu_list *next;
 };
+
+typedef struct Mega_Data Mega_Data;
+struct Mega_Data{
+    float           *cpu_stats;
+    float           *mem_stats;
+    float           *net_stats;
+    T_Collection    *task_list;
+    D_Collection    *device_list;
+    I_Collection2   *interrupts_list;
+    Mega_Data *next;
+    Mega_Data *prev;
+};
+
+
 
 GtkWidget *window_graphs;   /*!>widget for creating the graph buttons window*/
 GtkWidget *process_swindow; /*!>widget for creating the process window for editing the columns in the liststore for tasks*/
@@ -49,24 +64,26 @@ bool device_all;/**<<bool used to check if the client wants all the devices show
 bool record;
 D_Collection *devices_old;/*!list to the devices that we keep on client */
 T_Collection *tasks_old;/*!list to the tasks that we keep on client */
-I_Collection *interrupts;/*!list to the interrupts  */
+
 I_Collection2 *interrupts2;/*!list to the interrupts  */
 Cpu_list *cpu_list;/*!list to the cpu usage  */
 NetMem_list *net_list;/*!list to the network usage  */
 NetMem_list *mem_list;/*!list to the memory usage  */
+Mega_Data *m_data;
+Mega_Data *mDataHead;
 char p_dir[256];
 long cpu_num;
 long interrupt_num;
-
+sem_t semt;//!<semaphore for letting the init_timeout function finish before we change the time interval
 #define LIST_SIZE 240 /*!the max size of list of cpu, network and memory usage*/
 
-
+GtkApplication *gtkApplication;//!< application
 
 gboolean init_timeout();
 
-void dec_refresh();
+void decRefresh();
 
-void inc_refresh();
+void incRefresh();
 
 void timeout_refresh();
 
@@ -76,13 +93,18 @@ int task_check(T_Collection *tasks_new, int task_num);
 
 void destroy_window(void);
 
-void freeing_memory(void *array, __int32_t *array_size, int type);
+void freeingMemory(void *array, __int32_t *array_size, int type);
 
 void test_strtol(long val);
 
 void set_record(GtkWidget *widget);
 
 void pause_app(GtkWidget *button);
+
+void activate (GtkApplication *app,gpointer  user_data);
+void  free_mega_data(Mega_Data **m_ptr);
+
+Mega_Data *allocate_stats();
 
 
 

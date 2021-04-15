@@ -56,7 +56,7 @@ void * send_network(void *socket){
 
     if (thr_p.ret_val < 0) {
         printf("Error sending data\n return = %d %s\n", (int)  thr_p.ret_val,__FUNCTION__ );
-       // printf("Error sending data\n return = %d\n", (int) thr_p.ret_val);
+       // printf("Error sending data\n return = %d\n", (int) thr_p_main.ret_val);
 
         pthread_exit(&thr_p.ret_val);
 

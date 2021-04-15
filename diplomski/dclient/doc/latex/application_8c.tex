@@ -1,0 +1,260 @@
+\hypertarget{application_8c}{}\section{application.\+c File Reference}
+\label{application_8c}\index{application.\+c@{application.\+c}}
+{\ttfamily \#include \char`\"{}main\+\_\+header.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}testing\+\_\+tree.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}buttons.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$semaphore.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}errno.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}functions.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}window.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}drawing.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}testing.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{application_8c_adfca91e4388899f97db57d9d1877d27d}{activate} (Gtk\+Application $\ast$app, gpointer user\+\_\+data)
+\item 
+void \hyperlink{application_8c_a885823bb0982809aaeee2bf5d2d08431}{set\+\_\+record} (Gtk\+Widget $\ast$widget)
+\item 
+void \hyperlink{application_8c_aa1ef1322e246837e62ac66d3282a82e2}{destroy\+\_\+window} (void)
+\item 
+void \hyperlink{application_8c_ab3f63558e824d30274893dac0341471a}{test\+\_\+strtol} (long val)
+\item 
+void \hyperlink{application_8c_aced948150abecae4ca00d888b90c80c8}{inc\+Refresh} ()
+\item 
+void \hyperlink{application_8c_a5917e61ab67a5ace123094caa7f16501}{dec\+Refresh} ()
+\item 
+void \hyperlink{application_8c_a5edc78b4aabe103f628056a99cc3db26}{pause\+\_\+app} (Gtk\+Widget $\ast$button)
+\item 
+void \hyperlink{application_8c_ab905fc99a8d78c5f334d720c6f38240a}{timeout\+\_\+refresh} ()
+\item 
+void \hyperlink{application_8c_a972bf67b003b034bf1593a03862b0359}{freeing\+Memory} (void $\ast$array, \+\_\+\+\_\+int32\+\_\+t $\ast$array\+\_\+size, int type)
+\item 
+void \hyperlink{application_8c_a9f05b51e2646ff2cb7d1c958c1b61127}{free\+\_\+one\+\_\+mega\+\_\+data} (\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$m\+\_\+ptr)
+\item 
+void \hyperlink{application_8c_ac3da8006dd6202bd94eae1c3e1b48ea9}{free\+\_\+mega\+\_\+data} (\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$$\ast$m\+\_\+ptr)
+\item 
+\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$ \hyperlink{application_8c_a75dab082da0d059329522f212a551855}{allocate\+\_\+stats} ()
+\item 
+gboolean \hyperlink{application_8c_a85dde4c9f3401f0ee086529d7057bb41}{init\+\_\+timeout} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Gtk\+Widget $\ast$ \hyperlink{application_8c_a3d346c08cf2d67c388caabffb412b293}{window}
+\begin{DoxyCompactList}\small\item\em main window \end{DoxyCompactList}\item 
+bool \hyperlink{application_8c_a66cb4fe10631ecd1f2a3c3433f07ea2e}{flag\+Timeout} =true
+\begin{DoxyCompactList}\small\item\em flag for letting the init\+\_\+timeout function know what to do \end{DoxyCompactList}\item 
+bool \hyperlink{application_8c_a73503a76232804af8a32caf4ea83ebda}{writing} =true
+\begin{DoxyCompactList}\small\item\em is recording being done \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{application.\+c@{application.\+c}!activate@{activate}}
+\index{activate@{activate}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{activate(\+Gtk\+Application $\ast$app, gpointer user\+\_\+data)}{activate(GtkApplication *app, gpointer user_data)}}]{\setlength{\rightskip}{0pt plus 5cm}void activate (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Application $\ast$}]{app, }
+\item[{gpointer}]{user\+\_\+data}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_adfca91e4388899f97db57d9d1877d27d}{}\label{application_8c_adfca91e4388899f97db57d9d1877d27d}
+\hyperlink{application_8c_adfca91e4388899f97db57d9d1877d27d}{activate()} creates the application , the main window , the cpu window, the graphs the ,labels and menu ,and list 
+\begin{DoxyParams}{Parameters}
+{\em app} & \\
+\hline
+{\em user\+\_\+data} & default \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!allocate\+\_\+stats@{allocate\+\_\+stats}}
+\index{allocate\+\_\+stats@{allocate\+\_\+stats}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{allocate\+\_\+stats()}{allocate_stats()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mega\+\_\+\+Data}$\ast$ allocate\+\_\+stats (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_a75dab082da0d059329522f212a551855}{}\label{application_8c_a75dab082da0d059329522f212a551855}
+\hyperlink{application_8c_a75dab082da0d059329522f212a551855}{allocate\+\_\+stats()} allocates memory used for storing data gather from server
+
+\begin{DoxyReturn}{Returns}
+pointer to struct \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!dec\+Refresh@{dec\+Refresh}}
+\index{dec\+Refresh@{dec\+Refresh}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{dec\+Refresh()}{decRefresh()}}]{\setlength{\rightskip}{0pt plus 5cm}void dec\+Refresh (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_a5917e61ab67a5ace123094caa7f16501}{}\label{application_8c_a5917e61ab67a5ace123094caa7f16501}
+\hyperlink{application_8c_a5917e61ab67a5ace123094caa7f16501}{dec\+Refresh()}\+: decrease the time that we want the client to request data from server
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!destroy\+\_\+window@{destroy\+\_\+window}}
+\index{destroy\+\_\+window@{destroy\+\_\+window}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{destroy\+\_\+window(void)}{destroy_window(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void destroy\+\_\+window (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_aa1ef1322e246837e62ac66d3282a82e2}{}\label{application_8c_aa1ef1322e246837e62ac66d3282a82e2}
+\hyperlink{application_8c_aa1ef1322e246837e62ac66d3282a82e2}{destroy\+\_\+window()} destroys window \begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!free\+\_\+mega\+\_\+data@{free\+\_\+mega\+\_\+data}}
+\index{free\+\_\+mega\+\_\+data@{free\+\_\+mega\+\_\+data}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{free\+\_\+mega\+\_\+data(\+Mega\+\_\+\+Data $\ast$$\ast$m\+\_\+ptr)}{free_mega_data(Mega_Data **m_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void free\+\_\+mega\+\_\+data (
+\begin{DoxyParamCaption}
+\item[{{\bf Mega\+\_\+\+Data} $\ast$$\ast$}]{m\+\_\+ptr}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_ac3da8006dd6202bd94eae1c3e1b48ea9}{}\label{application_8c_ac3da8006dd6202bd94eae1c3e1b48ea9}
+\hyperlink{application_8c_ac3da8006dd6202bd94eae1c3e1b48ea9}{free\+\_\+mega\+\_\+data()} frees the allocated memory for a doubly linked list of \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} structs 
+\begin{DoxyParams}{Parameters}
+{\em m\+\_\+ptr} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!free\+\_\+one\+\_\+mega\+\_\+data@{free\+\_\+one\+\_\+mega\+\_\+data}}
+\index{free\+\_\+one\+\_\+mega\+\_\+data@{free\+\_\+one\+\_\+mega\+\_\+data}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{free\+\_\+one\+\_\+mega\+\_\+data(\+Mega\+\_\+\+Data $\ast$m\+\_\+ptr)}{free_one_mega_data(Mega_Data *m_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void free\+\_\+one\+\_\+mega\+\_\+data (
+\begin{DoxyParamCaption}
+\item[{{\bf Mega\+\_\+\+Data} $\ast$}]{m\+\_\+ptr}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_a9f05b51e2646ff2cb7d1c958c1b61127}{}\label{application_8c_a9f05b51e2646ff2cb7d1c958c1b61127}
+\hyperlink{application_8c_a9f05b51e2646ff2cb7d1c958c1b61127}{free\+\_\+one\+\_\+mega\+\_\+data()} frees the allocated memory of one element of a list of \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} structs 
+\begin{DoxyParams}{Parameters}
+{\em m\+\_\+ptr} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!freeing\+Memory@{freeing\+Memory}}
+\index{freeing\+Memory@{freeing\+Memory}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{freeing\+Memory(void $\ast$array, \+\_\+\+\_\+int32\+\_\+t $\ast$array\+\_\+size, int type)}{freeingMemory(void *array, __int32_t *array_size, int type)}}]{\setlength{\rightskip}{0pt plus 5cm}void freeing\+Memory (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{array, }
+\item[{\+\_\+\+\_\+int32\+\_\+t $\ast$}]{array\+\_\+size, }
+\item[{int}]{type}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_a972bf67b003b034bf1593a03862b0359}{}\label{application_8c_a972bf67b003b034bf1593a03862b0359}
+\hyperlink{application_8c_a972bf67b003b034bf1593a03862b0359}{freeing\+Memory()}\+: frees different types of memory 
+\begin{DoxyParams}{Parameters}
+{\em array} & \\
+\hline
+{\em array\+\_\+size} & \\
+\hline
+{\em type} & of the array. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void. 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!inc\+Refresh@{inc\+Refresh}}
+\index{inc\+Refresh@{inc\+Refresh}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{inc\+Refresh()}{incRefresh()}}]{\setlength{\rightskip}{0pt plus 5cm}void inc\+Refresh (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_aced948150abecae4ca00d888b90c80c8}{}\label{application_8c_aced948150abecae4ca00d888b90c80c8}
+\hyperlink{application_8c_aced948150abecae4ca00d888b90c80c8}{inc\+Refresh()}\+: increments the time that we want the client to request data from server
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!init\+\_\+timeout@{init\+\_\+timeout}}
+\index{init\+\_\+timeout@{init\+\_\+timeout}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{init\+\_\+timeout()}{init_timeout()}}]{\setlength{\rightskip}{0pt plus 5cm}gboolean init\+\_\+timeout (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_a85dde4c9f3401f0ee086529d7057bb41}{}\label{application_8c_a85dde4c9f3401f0ee086529d7057bb41}
+\hyperlink{application_8c_a85dde4c9f3401f0ee086529d7057bb41}{init\+\_\+timeout()}\+: sends a request to server and then waits for data,after it got all the data it inputs it in the right places and checks if the list\+\_\+num\+\_\+size is bigger then the L\+I\+S\+T\+\_\+\+S\+I\+ZE if that is the case it removes the oldest element of the list and adds the newest to the begging.\+After the data has been properly handled it displays it in the lists and draws the new data on the graph.\+We check if the function is running in an infinite loop,if not we set it to run in regular intervals that we have set.
+
+\begin{DoxyReturn}{Returns}
+returns T\+R\+UE if we want to continue or F\+A\+L\+SE if we want to stop 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!pause\+\_\+app@{pause\+\_\+app}}
+\index{pause\+\_\+app@{pause\+\_\+app}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{pause\+\_\+app(\+Gtk\+Widget $\ast$button)}{pause_app(GtkWidget *button)}}]{\setlength{\rightskip}{0pt plus 5cm}void pause\+\_\+app (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{button}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_a5edc78b4aabe103f628056a99cc3db26}{}\label{application_8c_a5edc78b4aabe103f628056a99cc3db26}
+\hyperlink{application_8c_a5edc78b4aabe103f628056a99cc3db26}{pause\+\_\+app()}\+: stops or restarts the client from to requesting data from server 
+\begin{DoxyParams}{Parameters}
+{\em button} & if the button is toggled it pauses the data gathering \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!set\+\_\+record@{set\+\_\+record}}
+\index{set\+\_\+record@{set\+\_\+record}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{set\+\_\+record(\+Gtk\+Widget $\ast$widget)}{set_record(GtkWidget *widget)}}]{\setlength{\rightskip}{0pt plus 5cm}void set\+\_\+record (
+\begin{DoxyParamCaption}
+\item[{Gtk\+Widget $\ast$}]{widget}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_a885823bb0982809aaeee2bf5d2d08431}{}\label{application_8c_a885823bb0982809aaeee2bf5d2d08431}
+\hyperlink{application_8c_a885823bb0982809aaeee2bf5d2d08431}{set\+\_\+record()}\+: sets the record flag to true or false depending on if the button is clicked or not 
+\begin{DoxyParams}{Parameters}
+{\em widget} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!test\+\_\+strtol@{test\+\_\+strtol}}
+\index{test\+\_\+strtol@{test\+\_\+strtol}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{test\+\_\+strtol(long val)}{test_strtol(long val)}}]{\setlength{\rightskip}{0pt plus 5cm}void test\+\_\+strtol (
+\begin{DoxyParamCaption}
+\item[{long}]{val}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_ab3f63558e824d30274893dac0341471a}{}\label{application_8c_ab3f63558e824d30274893dac0341471a}
+\hyperlink{application_8c_ab3f63558e824d30274893dac0341471a}{test\+\_\+strtol()} tests if strtol didnt convert properly 
+\begin{DoxyParams}{Parameters}
+{\em val} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{application.\+c@{application.\+c}!timeout\+\_\+refresh@{timeout\+\_\+refresh}}
+\index{timeout\+\_\+refresh@{timeout\+\_\+refresh}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{timeout\+\_\+refresh()}{timeout_refresh()}}]{\setlength{\rightskip}{0pt plus 5cm}void timeout\+\_\+refresh (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{application_8c_ab905fc99a8d78c5f334d720c6f38240a}{}\label{application_8c_ab905fc99a8d78c5f334d720c6f38240a}
+\hyperlink{application_8c_ab905fc99a8d78c5f334d720c6f38240a}{timeout\+\_\+refresh()}\+: reruns the function init\+\_\+timeout and tells the previous version to stop
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+\subsection{Variable Documentation}
+\index{application.\+c@{application.\+c}!flag\+Timeout@{flag\+Timeout}}
+\index{flag\+Timeout@{flag\+Timeout}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{flag\+Timeout}{flagTimeout}}]{\setlength{\rightskip}{0pt plus 5cm}bool flag\+Timeout =true}\hypertarget{application_8c_a66cb4fe10631ecd1f2a3c3433f07ea2e}{}\label{application_8c_a66cb4fe10631ecd1f2a3c3433f07ea2e}
+
+
+flag for letting the init\+\_\+timeout function know what to do 
+
+\index{application.\+c@{application.\+c}!window@{window}}
+\index{window@{window}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{window}{window}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ window}\hypertarget{application_8c_a3d346c08cf2d67c388caabffb412b293}{}\label{application_8c_a3d346c08cf2d67c388caabffb412b293}
+
+
+main window 
+
+\index{application.\+c@{application.\+c}!writing@{writing}}
+\index{writing@{writing}!application.\+c@{application.\+c}}
+\subsubsection[{\texorpdfstring{writing}{writing}}]{\setlength{\rightskip}{0pt plus 5cm}bool writing =true}\hypertarget{application_8c_a73503a76232804af8a32caf4ea83ebda}{}\label{application_8c_a73503a76232804af8a32caf4ea83ebda}
+
+
+is recording being done 
+

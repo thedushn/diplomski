@@ -5,18 +5,40 @@
 #include "window.h"
 #include "testing_tree.h"
 #include "buttons.h"
-#include "testing.h"
+
+#include "drawing.h"
+#include "functions.h"
 
 
-GtkWidget *label_rec;   /*GtkWidget where we input received data*/
-GtkWidget *label_trans; /*GtkWidget where we input transmitted data*/
-GtkWidget *label_cpu0;  /*GtkWidget where we input cpu data*/
-GtkWidget *label_mem;   /*GtkWidget where we input memory data*/
-GtkWidget *label_swap;  /*GtkWidget where we input swap memory data*/
+/**
+ * cpuWindow() creates a window that contains graphs of all the individual cpu stats
+ * @param cpuNumber number of cpus
+ * @param graphList double pointer to the list of graphs
+ * @return a pointer to the window we created
+ * */
+GtkWidget *cpuWindow(int cpuNumber, GtkWidget **graphList){
+    GtkWidget *graphP;
+    graphP=malloc((size_t)cpuNumber * sizeof(GtkWidget));
+    GtkWidget *window1 = gtk_window_new(GTK_WINDOW_TOPLEVEL); /*creates the window*/
+    gtk_window_set_position(GTK_WINDOW(window1), GTK_WIN_POS_CENTER);
+    gtk_window_set_default_size(GTK_WINDOW(window1), 800, 400);
+    GtkWidget  *vbox            = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
+    for(int i=0; i < cpuNumber; i++){
+        graphP[i]=*gtk_drawing_area_new();
+        gtk_box_pack_start(GTK_BOX(vbox), &graphP[i], 1, TRUE, 0);
+        g_signal_connect_data((GObject *) &graphP[i], "draw", G_CALLBACK(on_draw_event), NULL, NULL, 0);
+    }
+    gtk_container_add(GTK_CONTAINER(window1), vbox);
+    *graphList=graphP;
 
-/*
- * function main_window(): creates the main window and all the components in it
+    gtk_widget_show_all(window1);
+    gtk_window_set_title(GTK_WINDOW(window1), "CPU_monitor");
+    return window1;
+}
+
+/**
+ *  main_window(): creates the main window and all the components in it
  * input:pointer to the device window, pointer to the process window;
  * output: main window
  * */
@@ -37,9 +59,9 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     GtkWidget *file_system;
     GtkWidget *process_menu;
     GtkWidget *filemenu3;
-    GtkWidget *process_item;
+    GtkWidget *processItem;
 
-    GtkWidget *record;
+    GtkWidget *recordL;
 
 
     GtkWidget *vbox;
@@ -90,11 +112,11 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     devices_menu     = gtk_menu_item_new_with_label("devices");
     process_menu     = gtk_menu_item_new_with_label("Process Manager");
 
-    process_item     = gtk_menu_item_new_with_label("Processes");
+    processItem     = gtk_menu_item_new_with_label("Processes");
     increase_refresh = gtk_menu_item_new_with_label("+250");
     decrease_refresh = gtk_menu_item_new_with_label("-250");
     file_system      = gtk_menu_item_new_with_label("file_systems");
-    record           = gtk_menu_item_new_with_label("record");
+    recordL           = gtk_menu_item_new_with_label("record");
 
     quit = gtk_menu_item_new_with_label("Quit");
 
@@ -103,7 +125,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), increase_refresh);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), decrease_refresh);
-    gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), record);
+    gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), recordL);
 
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu), quit);
 
@@ -115,7 +137,7 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(devices_menu), filemenu2);
     gtk_menu_item_set_submenu(GTK_MENU_ITEM(process_menu), filemenu3);
     gtk_menu_shell_append(GTK_MENU_SHELL(filemenu2), file_system);
-    gtk_menu_shell_append(GTK_MENU_SHELL(filemenu3), process_item);
+    gtk_menu_shell_append(GTK_MENU_SHELL(filemenu3), processItem);
 
 
     gtk_menu_shell_append(GTK_MENU_SHELL(menubar), devices_menu);
@@ -123,13 +145,13 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
     g_signal_connect(quit, "activate", G_CALLBACK(destroy_window), NULL);
 
-    g_signal_connect(increase_refresh, "activate", G_CALLBACK(inc_refresh), NULL);
-    g_signal_connect(decrease_refresh, "activate", G_CALLBACK(dec_refresh), NULL);
+    g_signal_connect(increase_refresh, "activate", G_CALLBACK(incRefresh), NULL);
+    g_signal_connect(decrease_refresh, "activate", G_CALLBACK(decRefresh), NULL);
     g_signal_connect(file_system, "activate", G_CALLBACK(device_window), NULL);
-    g_signal_connect(record, "activate", G_CALLBACK(record_window), NULL);
+    g_signal_connect(recordL, "activate", G_CALLBACK(recordWindow), NULL);
 
 
-    g_signal_connect(process_item, "activate", G_CALLBACK(process_window), NULL);
+    g_signal_connect(processItem, "activate", G_CALLBACK(process_window), NULL);
 
 
     treeview_tasks = gtk_tree_view_new();
@@ -160,8 +182,8 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
 
     graph1      = gtk_drawing_area_new(); /*creating graphs*/
-    graph_net      = gtk_drawing_area_new();
-    graph_mem      = gtk_drawing_area_new();
+    graphNet      = gtk_drawing_area_new();
+    graphMem      = gtk_drawing_area_new();
     graph_inttrp      = gtk_drawing_area_new();
 
     frame1      = gtk_frame_new(NULL);
@@ -223,12 +245,12 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
     gtk_box_pack_start(GTK_BOX(hbox2), label_swap, 0, FALSE, 1);
 
 
-    gtk_container_add(GTK_CONTAINER(frame2), graph_net);
+    gtk_container_add(GTK_CONTAINER(frame2), graphNet);
     gtk_box_pack_start(GTK_BOX(hbox1), frame2, 1, TRUE, 0);
 
 
     gtk_box_pack_start(GTK_BOX(vbox), hbox3, 1, TRUE, 0);
-    gtk_container_add(GTK_CONTAINER(frame3), graph_mem);
+    gtk_container_add(GTK_CONTAINER(frame3), graphMem);
 
     //gtk_container_add(GTK_CONTAINER(frame4), graph_inttrp);
 
@@ -252,134 +274,136 @@ GtkWidget *main_window(GtkWidget *dev_swindow, GtkWidget *process_swindow) {
 
 
 
-/*
- * function swap_change(): inputs swap usage into list and displays it textually in window
- * input:pointer to memory usage
- * output: none
+/**
+ * swap_change(): inputs swap usage into list and displays it textually in window
+ * @param memoryUsage pointer to memory usage
+ * @returns void
  * */
-void swap_change(Memory_usage *memory_usage) {
+void swap_change(Memory_usage *memoryUsage) {
 
 
-    gchar *swap_total, *swap_used;
+    gchar *swapTotal, *swapUsed;
 
-    float f;
-    f = (float) atof(memory_usage->swap_percentage);
+//    float f;
+//    f = (float) atof(memoryUsage->swap_percentage);
 
+    //TODO check strtof
+    m_data->mem_stats[1]=(float) strtof(memoryUsage->swap_percentage, NULL);
 
-    mem_list->data[1]=f;
-
-    swap_used  = g_format_size_full((guint64) memory_usage->swap_used, G_FORMAT_SIZE_IEC_UNITS);
-    swap_total = g_format_size_full((guint64) memory_usage->swap_total, G_FORMAT_SIZE_IEC_UNITS);
-
-
+    swapUsed  = g_format_size_full((guint64) memoryUsage->swap_used, G_FORMAT_SIZE_IEC_UNITS);
+    swapTotal = g_format_size_full((guint64) memoryUsage->swap_total, G_FORMAT_SIZE_IEC_UNITS);
 
 
-    gchar *swap_usage_text = g_strdup_printf(("SWAP: %0.2f%% (%s) %s"), f, swap_used, swap_total);
-    gtk_label_set_text(GTK_LABEL (label_swap), swap_usage_text);
 
-    g_free(swap_usage_text);
-    g_free(swap_total);
-    g_free(swap_used);
+
+    gchar *swapUsageText = g_strdup_printf(("SWAP: %0.2f%% (%s) %s"), m_data->mem_stats [1], swapUsed, swapTotal);
+    gtk_label_set_text(GTK_LABEL (label_swap), swapUsageText);
+
+    g_free(swapUsageText);
+    g_free(swapTotal);
+    g_free(swapUsed);
 
 }
-/*
- * function memory_change(): inputs memory usage into list and displays it textually in window
- * input:pointer to memory usage
- * output: none
+/**
+ * memory_change(): inputs memory usage into list and displays it textually in window
+ * @param memoryUsage pointer to memory usage
+ * @return void
  * */
-void memory_change(Memory_usage *memory_usage) {
+void memoryChange(Memory_usage *memoryUsage) {
 
 
-    gchar *used, *total, *memory_usage_text1;
+    gchar *used, *total, *memoryUsageText1;
 
     //float f = 0;
-   // (float) atof(memory_usage->memory_percentage);
+   // (float) atof(memoryUsage->memory_percentage);
 
-    mem_list->data[0]   = (float) strtof(memory_usage->memory_percentage,NULL);
-
-
-    used                = g_format_size_full((guint64) memory_usage->memory_used, G_FORMAT_SIZE_IEC_UNITS);
-
-    total               = g_format_size_full((guint64) memory_usage->memory_total, G_FORMAT_SIZE_IEC_UNITS);
+    m_data->mem_stats [0]   = (float) strtof(memoryUsage->memory_percentage, NULL);
 
 
-    memory_usage_text1  = g_strdup_printf(("Memory: %0.2f%%(%s)%s"), mem_list->data[0], used, total);
-    gtk_label_set_text(GTK_LABEL (label_mem), memory_usage_text1);
+    used                = g_format_size_full((guint64) memoryUsage->memory_used, G_FORMAT_SIZE_IEC_UNITS);
 
-    g_free(memory_usage_text1);
+    total               = g_format_size_full((guint64) memoryUsage->memory_total, G_FORMAT_SIZE_IEC_UNITS);
+
+
+    memoryUsageText1  = g_strdup_printf(("Memory: %0.2f%%(%s)%s"), m_data->mem_stats [0], used, total);
+    gtk_label_set_text(GTK_LABEL (label_mem), memoryUsageText1);
+
+    g_free(memoryUsageText1);
     g_free(total);
     g_free(used);
 
 }
-/*
+/**
  * function cpu_change(): inputs cpu usage into list and displays it textually in window
- * input:   structure of  cpu_usage usage
- * output: none
+ * @param cpu_usage pointer to structure of  cpu_usage usage
+ * @return void
  * */
-void cpu_change(Cpu_usage cpu_usage) {
+void cpu_change(Cpu_usage *cpu_usage) {
 
 
 
-    gchar  *cpu0_usage_text =NULL;
-    gchar  *temp_char       =NULL;
+    gchar  *cpu0UsageText =NULL;
+    gchar  *temp_char     =NULL;
 
     for(int i=0;i<cpu_num;i++){
 
      // sscanf (cpu_usage.percentage[i],"%f",&cpu_list->data[i] ) ;
-        cpu_list->data[i]= strtof (cpu_usage.percentage[i],NULL) ;
+        m_data->cpu_stats[i]= strtof (cpu_usage->percentage[i],NULL) ;
 
        }
 
     for(int i=0;i<cpu_num;i++){
         gchar *p;
         if(i==0){
-            cpu0_usage_text=g_strdup_printf("CPU%d: %.4s%% ",i,cpu_usage.percentage[i]);
+            cpu0UsageText=g_strdup_printf("CPU%d: %.4s%% ", i, cpu_usage->percentage[i]);
 
         }else{
-           p=cpu0_usage_text;
-            temp_char=g_strdup_printf("CPU%d: %.4s%% ",i,cpu_usage.percentage[i]);
-            cpu0_usage_text=  g_strconcat(temp_char,p,NULL);
+           p=cpu0UsageText;
+            temp_char=g_strdup_printf("CPU%d: %.4s%% ",i,cpu_usage->percentage[i]);
+            cpu0UsageText=  g_strconcat(temp_char, p, NULL);
+            g_free(p);
+            g_free(temp_char);
         }
 
-        g_free(temp_char);
 
+      //  printf("%s\n",cpu_usage->percentage[i]);
     }
 
 
 
 
-    gtk_label_set_text(GTK_LABEL (label_cpu0), cpu0_usage_text);
+    gtk_label_set_text(GTK_LABEL (label_cpu0), cpu0UsageText);
 
-    g_free(cpu0_usage_text);
+    g_free(cpu0UsageText);
 
 
 
 }
 /**
- * function network_change(): inputs network usage into list and displays it textually in window
- * input:   pointer to  Network usage
- * output: none
+ *network_change(): inputs network usage into list and displays it textually in window
+ * @param network   pointer to  Network usage
+ * @return void
  * */
 void network_change(Network *network) {
 
 
-    net_list->data[0] = (float) network->received_bytes / 1024;
-    net_list->data[1] = (float) network->transmited_bytes / 1024;
+    m_data->net_stats[0] = (float) network->received_bytes / 1024;
+    m_data->net_stats[1] = (float) network->transmited_bytes / 1024;
 
 
-    gchar *rec_bytes = g_format_size_full(network->received_bytes, G_FORMAT_SIZE_IEC_UNITS);
-    gchar *rec_tr_bytes = g_format_size_full(network->transmited_bytes, G_FORMAT_SIZE_IEC_UNITS);
+    gchar *recBytes = g_format_size_full(network->received_bytes, G_FORMAT_SIZE_IEC_UNITS);
+    gchar *trBytes = g_format_size_full(network->transmited_bytes, G_FORMAT_SIZE_IEC_UNITS);
 
-    gchar *network_usage_received_text = g_strdup_printf("RECEIVED:  %s/s", rec_bytes);
-    gchar *network_usage_transmitted_text = g_strdup_printf("TRANSMITTED: %s/s", rec_tr_bytes);
-    gtk_label_set_text(GTK_LABEL (label_rec), network_usage_received_text);
+    gchar *networkUsageReceivedText      = g_strdup_printf("RECEIVED:  %s/s", recBytes);
+    gchar *networkUsageTransmittedText   = g_strdup_printf("TRANSMITTED: %s/s", trBytes);
+    gtk_label_set_text(GTK_LABEL (label_rec), networkUsageReceivedText);
 
 
-    gtk_label_set_text(GTK_LABEL (label_trans), network_usage_transmitted_text);
-    g_free(rec_bytes);
-    g_free(rec_tr_bytes);
-    g_free(network_usage_received_text);
-    g_free(network_usage_transmitted_text);
+    gtk_label_set_text(GTK_LABEL (label_trans), networkUsageTransmittedText);
+    g_free(recBytes);
+    g_free(trBytes);
+    g_free(networkUsageReceivedText);
+    g_free(networkUsageTransmittedText);
 
 }
 

@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/home/dushn/Diplomski/diplomski/dclient/application.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/application.c.o"
   "/home/dushn/Diplomski/diplomski/dclient/buttons.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/buttons.c.o"
   "/home/dushn/Diplomski/diplomski/dclient/drawing.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/drawing.c.o"
   "/home/dushn/Diplomski/diplomski/dclient/functions.c" "/home/dushn/Diplomski/diplomski/dclient/cmake-build-debug/CMakeFiles/client.dir/functions.c.o"

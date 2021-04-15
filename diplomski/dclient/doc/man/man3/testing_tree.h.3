@@ -1,0 +1,222 @@
+.TH "testing_tree.h" 3 "Wed Apr 14 2021" "Version 1.1" "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+testing_tree.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'string\&.h'\fP
+.br
+\fC#include <gtk/gtk\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include 'common\&.h'\fP
+.br
+
+.SS "Enumerations"
+
+.in +1c
+.ti -1c
+.RI "enum { \fBCOL_TASK\fP = 0, \fBCOL_PID\fP, \fBCOL_RSS\fP, \fBCOL_CPU\fP, \fBCOL_PRIO\fP, \fBCOL_VSZ\fP, \fBCOL_PPID\fP, \fBCOL_STATE\fP, \fBCOL_UNAME\fP, \fBCOL_DUR\fP, \fBNUM_COLS\fP }"
+.br
+.ti -1c
+.RI "enum { \fBCOL_DEV\fP = 0, \fBCOL_DIR\fP, \fBCOL_TYPE\fP, \fBCOL_TOTAL\fP, \fBCOL_AVAILABLE\fP, \fBCOL_USED\fP, \fBCOL_FREE\fP, \fBNUM_COLS_DEV\fP }"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBtask_check\fP (\fBT_Collection\fP *tasks_new, int task_num)"
+.br
+.ti -1c
+.RI "int \fBdevice_check\fP (\fBD_Collection\fP *devices_new, int dev_num)"
+.br
+.ti -1c
+.RI "void \fBdelete_old_dev\fP (\fBD_Collection\fP **array, __int32_t *dev_num)"
+.br
+.ti -1c
+.RI "void \fBdelete_old_tasks\fP (\fBT_Collection\fP **array, __int32_t *task_num)"
+.br
+.ti -1c
+.RI "void \fBremove_task_item\fP (gint pid)"
+.br
+.ti -1c
+.RI "void \fBremove_list_item_device\fP (gchar *directory, gchar *name)"
+.br
+.ti -1c
+.RI "void \fBrefresh_list_item\fP (\fBTask\fP *task_item, int *array_i)"
+.br
+.ti -1c
+.RI "void \fBrefresh_list_item_device\fP (\fBDevices\fP *ref_temp)"
+.br
+.ti -1c
+.RI "int \fBfill_task_item\fP (\fBTask\fP *task_item, GtkTreeIter *iter, int *array_i)"
+.br
+.ti -1c
+.RI "int \fBfill_device_item\fP (\fBDevices\fP *f_temp, GtkTreeIter *iter)"
+.br
+.ti -1c
+.RI "void \fBchange_list_store_view_devices\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBchange_list_store_view_process\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "int \fBadd_new_task\fP (\fBTask\fP *task_t)"
+.br
+.ti -1c
+.RI "int \fBadd_new_dev\fP (\fBDevices\fP *devices)"
+.br
+.ti -1c
+.RI "void \fBcreate_list_store_task\fP (void)"
+.br
+.ti -1c
+.RI "gint \fBcompare_string_list_item\fP (GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter *iter2, gpointer column)"
+.br
+.ti -1c
+.RI "gint \fBcompare_int_list_item_size\fP (GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter *iter2, gpointer column)"
+.br
+.ti -1c
+.RI "gint \fBcompare_int_list_item_time\fP (GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter *iter2, gpointer column)"
+.br
+.ti -1c
+.RI "gint \fBcompare_int_list_item\fP (GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter *iter2, gpointer column)"
+.br
+.ti -1c
+.RI "void \fBcreate_list_store_dev\fP (void)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "GtkTreeSelection * \fBselection\fP"
+.br
+.ti -1c
+.RI "GtkCellRenderer * \fBcell_renderer\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBtreeview_tasks\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBtreeview_devices\fP"
+.br
+.ti -1c
+.RI "GtkTreeStore * \fBlist_tasks\fP"
+.br
+.ti -1c
+.RI "GtkTreeStore * \fBlist_devices\fP"
+.br
+.in -1c
+.SH "Enumeration Type Documentation"
+.PP 
+.SS "anonymous enum"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fICOL_TASK \fP\fP
+.TP
+\fB\fICOL_PID \fP\fP
+.TP
+\fB\fICOL_RSS \fP\fP
+.TP
+\fB\fICOL_CPU \fP\fP
+.TP
+\fB\fICOL_PRIO \fP\fP
+.TP
+\fB\fICOL_VSZ \fP\fP
+.TP
+\fB\fICOL_PPID \fP\fP
+.TP
+\fB\fICOL_STATE \fP\fP
+.TP
+\fB\fICOL_UNAME \fP\fP
+.TP
+\fB\fICOL_DUR \fP\fP
+.TP
+\fB\fINUM_COLS \fP\fP
+.SS "anonymous enum"
+
+.PP
+\fBEnumerator\fP
+.in +1c
+.TP
+\fB\fICOL_DEV \fP\fP
+.TP
+\fB\fICOL_DIR \fP\fP
+.TP
+\fB\fICOL_TYPE \fP\fP
+.TP
+\fB\fICOL_TOTAL \fP\fP
+.TP
+\fB\fICOL_AVAILABLE \fP\fP
+.TP
+\fB\fICOL_USED \fP\fP
+.TP
+\fB\fICOL_FREE \fP\fP
+.TP
+\fB\fINUM_COLS_DEV \fP\fP
+.SH "Function Documentation"
+.PP 
+.SS "int add_new_dev (\fBDevices\fP * devices)"
+
+.SS "int add_new_task (\fBTask\fP * task_t)"
+
+.SS "void change_list_store_view_devices (GtkWidget * widget)"
+
+.SS "void change_list_store_view_process (GtkWidget * widget)"
+
+.SS "gint compare_int_list_item (GtkTreeModel * model, GtkTreeIter * iter1, GtkTreeIter * iter2, gpointer column)"
+
+.SS "gint compare_int_list_item_size (GtkTreeModel * model, GtkTreeIter * iter1, GtkTreeIter * iter2, gpointer column)"
+
+.SS "gint compare_int_list_item_time (GtkTreeModel * model, GtkTreeIter * iter1, GtkTreeIter * iter2, gpointer column)"
+
+.SS "gint compare_string_list_item (GtkTreeModel * model, GtkTreeIter * iter1, GtkTreeIter * iter2, gpointer column)"
+
+.SS "void create_list_store_dev (void)"
+
+.SS "void create_list_store_task (void)"
+
+.SS "void delete_old_dev (\fBD_Collection\fP ** array, __int32_t * dev_num)"
+
+.SS "void delete_old_tasks (\fBT_Collection\fP ** array, __int32_t * task_num)"
+
+.SS "int device_check (\fBD_Collection\fP * devices_new, int dev_num)"
+
+.SS "int fill_device_item (\fBDevices\fP * f_temp, GtkTreeIter * iter)"
+
+.SS "int fill_task_item (\fBTask\fP * task_item, GtkTreeIter * iter, int * array_i)"
+
+.SS "void refresh_list_item (\fBTask\fP * task_item, int * array_i)"
+
+.SS "void refresh_list_item_device (\fBDevices\fP * ref_temp)"
+
+.SS "void remove_list_item_device (gchar * directory, gchar * name)"
+
+.SS "void remove_task_item (gint pid)"
+
+.SS "int task_check (\fBT_Collection\fP * tasks_new, int task_num)"
+
+.SH "Variable Documentation"
+.PP 
+.SS "GtkCellRenderer* cell_renderer"
+
+.SS "GtkTreeStore* list_devices"
+
+.SS "GtkTreeStore* list_tasks"
+treeview for devices 
+.SS "GtkTreeSelection* selection"
+
+.SS "GtkWidget* treeview_devices"
+treeview for tasks 
+.SS "GtkWidget* treeview_tasks"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

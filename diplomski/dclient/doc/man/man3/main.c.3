@@ -1,0 +1,146 @@
+.TH "main.c" 3 "Wed Apr 14 2021" "Version 1.1" "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+main.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'drawing\&.h'\fP
+.br
+\fC#include 'testing_tree\&.h'\fP
+.br
+\fC#include 'buttons\&.h'\fP
+.br
+\fC#include <errno\&.h>\fP
+.br
+\fC#include 'functions\&.h'\fP
+.br
+\fC#include 'testing\&.h'\fP
+.br
+\fC#include <semaphore\&.h>\fP
+.br
+\fC#include <asm/errno\&.h>\fP
+.br
+\fC#include <inttypes\&.h>\fP
+.br
+\fC#include <fontconfig/fontconfig\&.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBset_record\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBinc_refresh\fP ()"
+.br
+.ti -1c
+.RI "void \fBdec_refresh\fP ()"
+.br
+.ti -1c
+.RI "void \fBpause_app\fP (GtkWidget *button)"
+.br
+.ti -1c
+.RI "void \fBtimeout_refresh\fP ()"
+.br
+.ti -1c
+.RI "void \fBfreeing_memory\fP (void *array, __int32_t *array_size, int type)"
+.br
+.ti -1c
+.RI "void \fBfree_one_mega_data\fP (\fBMega_Data\fP *m_ptr)"
+.br
+.ti -1c
+.RI "void \fBfree_mega_data\fP (\fBMega_Data\fP **m_ptr)"
+.br
+.ti -1c
+.RI "gboolean \fBinit_timeout\fP ()"
+.br
+.ti -1c
+.RI "void \fBdestroy_window\fP (void)"
+.br
+.ti -1c
+.RI "void \fBtest_strtol\fP (long val)"
+.br
+.ti -1c
+.RI "int \fBmain\fP (int argc, char *argv[])"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "GtkWidget * \fBwindow\fP"
+.br
+.RI "\fImain window \fP"
+.ti -1c
+.RI "GtkApplication * \fBapp\fP"
+.br
+.RI "\fIapplication \fP"
+.ti -1c
+.RI "sem_t \fBsemt\fP"
+.br
+.RI "\fIsemaphore for letting the init_timeout function finish before we change the time interval \fP"
+.ti -1c
+.RI "bool \fBflag_timeout\fP =true"
+.br
+.RI "\fIflag for letting the init_timeout function know what to do \fP"
+.ti -1c
+.RI "bool \fBwriting\fP =true"
+.br
+.RI "\fIis recording being done \fP"
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void dec_refresh ()"
+function \fBdec_refresh()\fP: decrease the time that we want the client to request data from server input : none\&. output : none\&. 
+.SS "void destroy_window (void)"
+
+.SS "void free_mega_data (\fBMega_Data\fP ** m_ptr)"
+
+.SS "void free_one_mega_data (\fBMega_Data\fP * m_ptr)"
+
+.SS "void freeing_memory (void * array, __int32_t * array_size, int type)"
+function \fBfreeing_memory()\fP: frees different types of memory input : void pointer to an array, pointer to the size of the array and the type of the array\&. output : none\&. 
+.SS "void inc_refresh ()"
+function \fBinc_refresh()\fP: increments the time that we want the client to request data from server input : none\&. output : none\&. 
+.SS "gboolean init_timeout ()"
+function \fBinit_timeout()\fP: sends a request to server and then waits for data,after it got all the data it inputs it in the right places and checks if the list_num_size is bigger then the LIST_SIZE if that is the case it removes the oldest element of the list and adds the newest to the begging\&.After the data has been properly handled it displays it in the lists and draws the new data on the graph\&.We check if the function is running in an infinite loop,if not we set it to run in regular intervals that we have set\&. input : none output : returns TRUE if we want to continue or FALSE if we want to stop; 
+.SS "int main (int argc, char * argv[])"
+function \fBmain()\fP: creates a TPC socket and tries to connect to the server,if that was successful it initializes the window and starts to request for data from the server;
+.PP
+input : port number and IP address output : returns a non zero value if something goes wrong 
+.SS "void pause_app (GtkWidget * button)"
+
+.SS "void set_record (GtkWidget * widget)"
+function \fBset_record()\fP: sets the record flag to true or false depending on if the button is clicked or not input : widget\&. output : none\&. 
+.SS "void test_strtol (long val)"
+
+.SS "void timeout_refresh ()"
+function \fBtimeout_refresh()\fP: reruns the function init_timeout and tells the previous version to stop input : none\&. output : none\&. 
+.SH "Variable Documentation"
+.PP 
+.SS "GtkApplication* app"
+
+.PP
+application 
+.SS "bool flag_timeout =true"
+
+.PP
+flag for letting the init_timeout function know what to do 
+.SS "sem_t semt"
+
+.PP
+semaphore for letting the init_timeout function finish before we change the time interval 
+.SS "GtkWidget* window"
+
+.PP
+main window 
+.SS "bool writing =true"
+
+.PP
+is recording being done 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

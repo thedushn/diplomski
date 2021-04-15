@@ -351,7 +351,7 @@ int cpu_percentage(char *array) {
     }
 
     strcpy(array,buffer);
-    printf("buffer %s\n",buffer);
+  //  printf("buffer %s\n",buffer);
 
     return 0;
 }

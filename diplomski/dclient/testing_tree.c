@@ -285,6 +285,11 @@ int refresh_task_data(T_Collection *tasks_new,int task_num){
     T_Collection *tasks_old_rem = tasks_old;
     T_Collection *tasks_new_rem = tasks_new;
 
+    float cpu_user_tmp;
+    float cpu_system_tmp;
+    float cpu_user_tmp_new;
+    float cpu_system_tmp_new;
+    int array[10]={0};
 
     for (i = 0; i < task_num_old; i++) {
 
@@ -296,36 +301,40 @@ int refresh_task_data(T_Collection *tasks_new,int task_num){
             Task *new_tmp = &tasks_new->task;
 
 
-            float cpu_user_tmp;
-            float cpu_system_tmp;
-            float cpu_user_tmp_new;
-            float cpu_system_tmp_new;
-
-            cpu_system_tmp     = (float) strtod(tmp->cpu_system, NULL);
-            cpu_system_tmp_new = (float) strtod(new_tmp->cpu_system, NULL);
-            cpu_user_tmp       = (float) strtod(tmp->cpu_user, NULL);
-            cpu_user_tmp_new   = (float) strtod(new_tmp->cpu_system, NULL);
 
 
-            if (new_tmp->pid == tmp->pid) {
 
-                if ((gint) tmp->ppid != (gint) new_tmp->ppid || strcmp(tmp->state, new_tmp->state) != 0
-                    || cpu_system_tmp != cpu_system_tmp_new
-                    || cpu_user_tmp != cpu_user_tmp_new
-                    || (unsigned int) tmp->rss != (unsigned int) new_tmp->rss
-                    || (unsigned int) tmp->prio != (unsigned int) new_tmp->prio
-                    || tmp->duration.tm_hour != new_tmp->duration.tm_hour
-                    || tmp->duration.tm_min != new_tmp->duration.tm_min
-                    || tmp->duration.tm_sec != new_tmp->duration.tm_sec
+
+
+            if ((array[1]=(new_tmp->pid == tmp->pid))) {
+
+                cpu_system_tmp     = (float) strtod(tmp->cpu_system, NULL);
+                cpu_system_tmp_new = (float) strtod(new_tmp->cpu_system, NULL);
+                cpu_user_tmp       = (float) strtod(tmp->cpu_user, NULL);
+                cpu_user_tmp_new   = (float) strtod(new_tmp->cpu_system, NULL);
+
+                if (    (array[0]=(strcmp(tmp->name , new_tmp->name)!=0))
+                    ||  (array[2]=(tmp->rss !=  new_tmp->rss))
+
+                    ||  (array[3]=((cpu_user_tmp != cpu_user_tmp_new)||(cpu_system_tmp != cpu_system_tmp_new)))
+                    ||  (array[4]=(tmp->prio !=  new_tmp->prio))
+                    ||  (array[5]=(tmp->vsz  !=  new_tmp->vsz))
+                    ||  (array[6]=(tmp->ppid !=  new_tmp->ppid))
+                    ||  (array[7]=strcmp(tmp->state, new_tmp->state)) != 0
+                    ||  (array[8]=(strcmp(tmp->uid_name , new_tmp->uid_name)!=0))
+                    ||  (array[9]=(
+                                (tmp->duration.tm_hour  != new_tmp->duration.tm_hour)
+                            ||  (tmp->duration.tm_min   != new_tmp->duration.tm_min)
+                            ||  (tmp->duration.tm_sec   != new_tmp->duration.tm_sec)))
+
+
+
                         ) {
+                    //array[9]=1;//time always goes forward;
                     tmp->ppid = new_tmp->ppid;
                     strcpy(tmp->state, new_tmp->state);
-
-                    memset(tmp->cpu_system, 0, sizeof(tmp->cpu_system));
-                    memset(tmp->cpu_user, 0, sizeof(tmp->cpu_user));
-                    sprintf(tmp->cpu_user, "%f", cpu_user_tmp_new);
-                    sprintf(tmp->cpu_system, "%f", cpu_system_tmp_new);
-
+                  //  printf("Name: %s %d\n",new_tmp->name,array[9]);
+                    //TODO change to strcmp;
                     memset(tmp->cpu_system, 0, sizeof(tmp->cpu_system));
                     memset(tmp->cpu_user, 0, sizeof(tmp->cpu_user));
                     strcpy(tmp->cpu_user, new_tmp->cpu_user);
@@ -338,7 +347,8 @@ int refresh_task_data(T_Collection *tasks_new,int task_num){
                     tmp->duration.tm_min = new_tmp->duration.tm_min;
                     tmp->duration.tm_sec = new_tmp->duration.tm_sec;
 
-                    refresh_list_item(tmp);
+                    refresh_list_item(tmp, array);
+                  //  printf("%d %d %d %d\n",array[0],array[1],array[2],array[3]);
                 }
 
                 tmp->checked = TRUE;
@@ -600,10 +610,13 @@ void create_list_store_dev(void) {
  * */
 int add_new_task(Task *task_t) {
     GtkTreeIter iter;
-
+    int array[10];
     gtk_tree_store_append(GTK_TREE_STORE(list_tasks), &iter, NULL);
+    for(int i=0;i<10;i++){
+        array[i]=1;
+    }
 
-    if(fill_task_item(task_t, &iter)!=0){
+    if(fill_task_item(task_t, &iter, array) != 0){
         return -1;
     }
 
@@ -889,61 +902,143 @@ void change_list_store_view_process(GtkWidget *widget) {
  * input:pointer to the information , and pointer to the item we added
  * output:return a non zero value if something went wrong
  * */
-int fill_task_item(Task *task_item, GtkTreeIter *iter) {
+int fill_task_item(Task *task_item, GtkTreeIter *iter, int *array_i) {
 
-    if (iter != NULL) {/*if the item was added to the list*/
-        Task *task = task_item;
-        gchar cpu[16], value[16];
-        char *rss, *vsz;
-        char *prio;
+    float cpu_user = 0;
+    float cpu_system = 0;
 
-        char *duration;
-        float cpu_user = 0;
-        float cpu_system = 0;
-        cpu_user = (float) strtod(task->cpu_user,NULL);
-        cpu_system = (float) strtod(task->cpu_system,NULL);
+    gchar cpu[16]={0};
+    gchar value[16]={0};
+    char *ppid=NULL;
+    char *state=NULL;
+    char *uname=NULL;
+    char *duration=NULL;
+    char *name=NULL;
+    char *pid=NULL;
+    char *rss=NULL;
+    char *vsz=NULL;
+    char *prio=NULL;
+    if (iter != NULL) {
+        for(int i=0;i<10;i++){
+       if((*array_i)) {
+           switch(i){
 
-        rss = g_format_size_full(task->rss, G_FORMAT_SIZE_IEC_UNITS);
-        vsz = g_format_size_full(task->vsz, G_FORMAT_SIZE_IEC_UNITS);
+               case COL_TASK:
+                   name   = g_strdup_printf("%s", task_item->name);
+                   gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_TASK, name, -1);
+                   free(name);
+                   break;
+               case COL_PID:
+                   pid = g_strdup_printf("%i", task_item->pid);
+                   gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_PID, pid, -1);
+                   free(pid);
+                   break;
+               case COL_RSS:
+                   rss = g_format_size_full(task_item->rss, G_FORMAT_SIZE_IEC_UNITS);
+                   gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_RSS, rss, -1);
+                   free(rss);
+                   break;
+               case COL_CPU:
+                   cpu_user = (float) strtod(task_item->cpu_user,NULL);
+                   cpu_system = (float) strtod(task_item->cpu_system,NULL);
+                   g_snprintf(value, 14, "%.f", cpu_user + cpu_system);
+                   g_snprintf(cpu, 16, ("%s%%"), value);
+                   gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_CPU, cpu, -1);
+                   break;
+               case COL_PRIO:
+                   prio = g_strdup_printf("%hi", task_item->prio);
+                   gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_PRIO, prio, -1);
+                   free(prio);
+                   break;
+               case COL_VSZ:
+                   vsz = g_format_size_full(task_item->vsz, G_FORMAT_SIZE_IEC_UNITS);
+                   gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_VSZ, vsz, -1);
+                   free(vsz);
+                   break;
+               case COL_PPID:
+                   ppid = g_strdup_printf("%i", task_item->ppid);
+                   gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_PPID, ppid, -1);
+                   free(ppid);
+                   break;
+               case COL_STATE:
+                   state = g_strdup_printf("%s", task_item->state);
+                   gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_STATE, state, -1);
+                   free(state);
+                   break;
+               case COL_UNAME:
+                   uname = g_strdup_printf("%s", task_item->uid_name);
+                   gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_UNAME, uname, -1);
+                   free(uname);
+                   break;
+               case COL_DUR:
+                   duration = g_strdup_printf("%d:%d:%d", task_item->duration.tm_hour, task_item->duration.tm_min, task_item->duration.tm_sec);
+                   gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_DUR, duration, -1);
+                   free(duration);
+                   break;
 
-        g_snprintf(value, 14, "%.f", cpu_user + cpu_system);
+               default:
+                   break;
 
-        g_snprintf(cpu, 16, ("%s%%"), value);
-        char *pid = g_strdup_printf("%i", task->pid);
-        char *ppid = g_strdup_printf("%i", task->ppid);
-        char *state = g_strdup_printf("%s", task->state);
-
-        char *name = g_strdup_printf("%s", task->name);
-        char *uname = g_strdup_printf("%s", task->uid_name);
-        prio = g_strdup_printf("%hi", task->prio);
+           }
+       // printf("index %d ",*(array_i));
+       }
+        array_i++;
 
 
-        duration = g_strdup_printf("%d:%d:%d", task->duration.tm_hour, task->duration.tm_min, task->duration.tm_sec);
-
-
-        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_TASK, name, -1);
-        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_PID, pid, -1);
-        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_PPID, ppid, -1);
-        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_STATE, state, -1);
-        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_VSZ, vsz, -1);
-        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_RSS, rss, -1);
-        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_CPU, cpu, -1);
-        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_UNAME, uname, -1);
-        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_PRIO, prio, -1);
-        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_DUR, duration, -1);
-
-
-        free(pid);
-        free(ppid);
-        free(state);
-        free(name);
-        free(uname);
-        free(rss);
-        free(vsz);
-        free(prio);
-
-        free(duration);
+        }
     }
+
+   // printf("\n ");
+//    if (iter != NULL) {/*if the item was added to the list*/
+//        Task *task = task_item;
+//        gchar cpu[16], value[16];
+//        char *rss, *vsz;
+//        char *prio;
+//
+//        char *duration;
+//
+//
+//        rss = g_format_size_full(task->rss, G_FORMAT_SIZE_IEC_UNITS);
+//        vsz = g_format_size_full(task->vsz, G_FORMAT_SIZE_IEC_UNITS);
+//
+//
+//
+//        g_snprintf(cpu, 16, ("%s%%"), value);
+//        char *pid = g_strdup_printf("%i", task->pid);
+//        char *ppid = g_strdup_printf("%i", task->ppid);
+//        char *state = g_strdup_printf("%s", task->state);
+//
+//
+//        char *uname = g_strdup_printf("%s", task->uid_name);
+//        prio = g_strdup_printf("%hi", task->prio);
+//
+//
+//        duration = g_strdup_printf("%d:%d:%d", task->duration.tm_hour, task->duration.tm_min, task->duration.tm_sec);
+//
+//
+//        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_TASK, name, -1);
+//        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_PID, pid, -1);
+//        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_PPID, ppid, -1);
+//        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_STATE, state, -1);
+//        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_VSZ, vsz, -1);
+//        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_RSS, rss, -1);
+//        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_CPU, cpu, -1);
+//        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_UNAME, uname, -1);
+//        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_PRIO, prio, -1);
+//        gtk_tree_store_set(GTK_TREE_STORE(list_tasks), iter, COL_DUR, duration, -1);
+//
+//
+//        free(pid);
+//        free(ppid);
+//        free(state);
+//        free(name);
+//        free(uname);
+//        free(rss);
+//        free(vsz);
+//        free(prio);
+//
+//        free(duration);
+//    }
     else{
 
        return -1;
@@ -1041,7 +1136,7 @@ void refresh_list_item_device(Devices *ref_temp) {
  * input: poiter to the task
  * output:none
  * */
-void refresh_list_item(Task *task_item) {
+void refresh_list_item(Task *task_item, int *array_i) {
     GtkTreeIter iter;
     gboolean valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(list_tasks), &iter);
     Task *task = task_item;
@@ -1052,7 +1147,7 @@ void refresh_list_item(Task *task_item) {
 
         if (task->pid == atoi(str_data)) {
             g_free(str_data);
-            fill_task_item(task_item, &iter);
+            fill_task_item(task_item, &iter, array_i);
             break;
         }
 

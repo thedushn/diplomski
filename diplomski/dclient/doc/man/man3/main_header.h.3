@@ -1,0 +1,261 @@
+.TH "main_header.h" 3 "Wed Apr 14 2021" "Version 1.1" "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+main_header.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <gtk/gtk\&.h>\fP
+.br
+\fC#include 'common\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBNetMem_list\fP"
+.br
+.ti -1c
+.RI "struct \fBCpu_List\fP"
+.br
+.ti -1c
+.RI "struct \fBMega_Data\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBLIST_SIZE\fP   240 /*!the max size of list of cpu, network and memory usage*/"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBNetMem_list\fP \fBNetMem_list\fP"
+.br
+.RI "\fImain header please work \fP"
+.ti -1c
+.RI "typedef struct \fBCpu_List\fP \fBCpu_list\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBMega_Data\fP \fBMega_Data\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "gboolean \fBinit_timeout\fP ()"
+.br
+.ti -1c
+.RI "void \fBdec_refresh\fP ()"
+.br
+.ti -1c
+.RI "void \fBinc_refresh\fP ()"
+.br
+.ti -1c
+.RI "void \fBtimeout_refresh\fP ()"
+.br
+.ti -1c
+.RI "int \fBdevice_check\fP (\fBD_Collection\fP *devices_new, int dev_num)"
+.br
+.ti -1c
+.RI "int \fBtask_check\fP (\fBT_Collection\fP *tasks_new, int task_num)"
+.br
+.ti -1c
+.RI "void \fBdestroy_window\fP (void)"
+.br
+.ti -1c
+.RI "void \fBfreeing_memory\fP (void *array, __int32_t *array_size, int type)"
+.br
+.ti -1c
+.RI "void \fBtest_strtol\fP (long val)"
+.br
+.ti -1c
+.RI "void \fBset_record\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBpause_app\fP (GtkWidget *button)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "GtkWidget * \fBwindow_graphs\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBprocess_swindow\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBdevice_swindow\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBentry\fP"
+.br
+.ti -1c
+.RI "int \fBnewsockfd\fP"
+.br
+.ti -1c
+.RI "int \fBnewsockfd1\fP"
+.br
+.ti -1c
+.RI "guint \fBt\fP"
+.br
+.ti -1c
+.RI "guint \fBrefresh\fP"
+.br
+.ti -1c
+.RI "guint \fBtime_step\fP"
+.br
+.ti -1c
+.RI "__int32_t \fBdev_num_old\fP"
+.br
+.ti -1c
+.RI "__int32_t \fBtask_num_old\fP"
+.br
+.ti -1c
+.RI "__int32_t \fBlist_num_size\fP"
+.br
+.ti -1c
+.RI "bool * \fBcpu_status\fP"
+.br
+.ti -1c
+.RI "bool \fBdevice_all\fP"
+.br
+.ti -1c
+.RI "bool \fBrecord\fP"
+.br
+.ti -1c
+.RI "\fBD_Collection\fP * \fBdevices_old\fP"
+.br
+.ti -1c
+.RI "\fBT_Collection\fP * \fBtasks_old\fP"
+.br
+.ti -1c
+.RI "\fBI_Collection\fP * \fBinterrupts\fP"
+.br
+.ti -1c
+.RI "\fBI_Collection2\fP * \fBinterrupts2\fP"
+.br
+.ti -1c
+.RI "\fBCpu_list\fP * \fBcpu_list\fP"
+.br
+.ti -1c
+.RI "\fBNetMem_list\fP * \fBnet_list\fP"
+.br
+.ti -1c
+.RI "\fBNetMem_list\fP * \fBmem_list\fP"
+.br
+.ti -1c
+.RI "\fBMega_Data\fP * \fBm_data\fP"
+.br
+.ti -1c
+.RI "char \fBp_dir\fP [256]"
+.br
+.ti -1c
+.RI "long \fBcpu_num\fP"
+.br
+.ti -1c
+.RI "long \fBinterrupt_num\fP"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define LIST_SIZE   240 /*!the max size of list of cpu, network and memory usage*/"
+
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBCpu_List\fP \fBCpu_list\fP"
+
+.SS "typedef struct \fBMega_Data\fP \fBMega_Data\fP"
+
+.SS "typedef struct \fBNetMem_list\fP \fBNetMem_list\fP"
+
+.PP
+main header please work 
+.SH "Function Documentation"
+.PP 
+.SS "void dec_refresh ()"
+function \fBdec_refresh()\fP: decrease the time that we want the client to request data from server input : none\&. output : none\&. 
+.SS "void destroy_window (void)"
+
+.SS "int device_check (\fBD_Collection\fP * devices_new, int dev_num)"
+
+.SS "void freeing_memory (void * array, __int32_t * array_size, int type)"
+function \fBfreeing_memory()\fP: frees different types of memory input : void pointer to an array, pointer to the size of the array and the type of the array\&. output : none\&. 
+.SS "void inc_refresh ()"
+function \fBinc_refresh()\fP: increments the time that we want the client to request data from server input : none\&. output : none\&. 
+.SS "gboolean init_timeout ()"
+function \fBinit_timeout()\fP: sends a request to server and then waits for data,after it got all the data it inputs it in the right places and checks if the list_num_size is bigger then the LIST_SIZE if that is the case it removes the oldest element of the list and adds the newest to the begging\&.After the data has been properly handled it displays it in the lists and draws the new data on the graph\&.We check if the function is running in an infinite loop,if not we set it to run in regular intervals that we have set\&. input : none output : returns TRUE if we want to continue or FALSE if we want to stop; 
+.SS "void pause_app (GtkWidget * button)"
+
+.SS "void set_record (GtkWidget * widget)"
+function \fBset_record()\fP: sets the record flag to true or false depending on if the button is clicked or not input : widget\&. output : none\&. 
+.SS "int task_check (\fBT_Collection\fP * tasks_new, int task_num)"
+
+.SS "void test_strtol (long val)"
+
+.SS "void timeout_refresh ()"
+function \fBtimeout_refresh()\fP: reruns the function init_timeout and tells the previous version to stop input : none\&. output : none\&. 
+.SH "Variable Documentation"
+.PP 
+.SS "\fBCpu_list\fP* cpu_list"
+list to the interrupts 
+.SS "long cpu_num"
+
+.SS "bool* cpu_status"
+the size of the lists of cpu usage network usage and memory usage cant be bigger then LIST_SIZE 
+.SS "__int32_t dev_num_old"
+the space between the two data inputs number of devices 
+.SS "bool device_all"
+<bool used to check if the client wants all the devices shown 
+.SS "GtkWidget* device_swindow"
+>widget for creating the process window for editing the columns in the liststore for tasks 
+.SS "\fBD_Collection\fP* devices_old"
+
+.SS "GtkWidget* entry"
+
+.SS "long interrupt_num"
+
+.SS "\fBI_Collection\fP* interrupts"
+list to the tasks that we keep on client 
+.SS "\fBI_Collection2\fP* interrupts2"
+list to the interrupts 
+.SS "__int32_t list_num_size"
+number of tasks 
+.SS "\fBMega_Data\fP* m_data"
+list to the memory usage 
+.SS "\fBNetMem_list\fP* mem_list"
+list to the network usage 
+.SS "\fBNetMem_list\fP* net_list"
+list to the cpu usage 
+.SS "int newsockfd"
+
+.SS "int newsockfd1"
+
+.SS "char p_dir[256]"
+
+.SS "GtkWidget* process_swindow"
+>widget for creating the graph buttons window 
+.SS "bool record"
+
+.SS "guint refresh"
+time interval for when the client requests data again 
+.SS "guint t"
+
+.SS "__int32_t task_num_old"
+
+.SS "\fBT_Collection\fP* tasks_old"
+list to the devices that we keep on client 
+.SS "guint time_step"
+if the function init_timeout is in a loop this value is bigger then 0 
+.SS "GtkWidget* window_graphs"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

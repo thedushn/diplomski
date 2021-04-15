@@ -5,19 +5,19 @@
 #include "functions.h"
 
 
-/*
- * function process_window(): create a window with buttons that represent columns in the task list
+/**
+ * process_window(): create a window with buttons that represent columns in the task list
  * when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on
  * the columns visibility
- * input:none.
- * output:none.
+ *
+ * @return void
  * */
 void process_window() {
 
     GList               *array;
     GList               *temp;
     GtkTreeViewColumn   *column;
-    gint                column_id;
+    gint                columnId;
     GtkWidget           *box2;
 
 
@@ -53,8 +53,8 @@ void process_window() {
     while(temp!=NULL) {
 
         column = GTK_TREE_VIEW_COLUMN(temp->data);
-        column_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column), "column-id"));
-        switch (column_id) {
+        columnId = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column), "column-id"));
+        switch (columnId) {
 
             case COL_CPU:
 
@@ -233,11 +233,10 @@ void process_window() {
 //
 //
 //}
-/** function record_window() creates a window that holds the record button
- * input : none
- * otput : none
+/** record_window() creates a window that holds the record button
+ *
  * */
-void record_window(){
+void recordWindow(){
 
     GtkWidget *box2;
     if(rec_window !=NULL){
@@ -286,7 +285,7 @@ void record_window(){
 
 
 }
-/*
+/**
  * function device_window(): create a window with buttons that represent columns in the device list
  * when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on
  * the columns visibility
@@ -430,7 +429,7 @@ void device_window() {
 }
 
 
-/*
+/**
  * function close_window_toggled(): when the graph window is closed we set the button graph to not be clicked
  * input:none.
  * output:none.
@@ -442,8 +441,8 @@ void close_window_toggled() {
                                  FALSE);
 
 
-};
-/*
+}
+/**
  * function close_window(): closes a widget
  * input:pointer to a widget.
  * output:none.
@@ -452,11 +451,16 @@ void close_window(GtkWidget *widget) {
 
 
     gtk_widget_hide(widget);
+
+
+   if(widget==CPU_WINDOW){
+       closed_cpu_window=!closed_cpu_window;
+   }
     gtk_widget_destroyed(widget,&widget);
 
 
 
-};
+}
 
 /*
  * function graph_button_clicked(): opens a window containing buttons that are connected to the displaying of cpu stats
@@ -536,10 +540,10 @@ void show_all(GtkWidget *widget) {
 };
 
 
-/*
- * function graph_clicked(): draws specific cpus depending on which button is pressed
- * input:pointer to a widget.
- * output:none.
+/**
+ * graph_clicked(): draws specific cpus depending on which button is pressed
+ * @param widget is a pointer to a button that when toggled shows graph of the cpu
+ * @return void
  * */
 
 void graph_clicked(GtkWidget *widget) {
@@ -555,6 +559,9 @@ void graph_clicked(GtkWidget *widget) {
             if(temp_widget->priv==widget->priv){
                 (*temp_bool)=true;
                 gtk_widget_queue_draw(graph1);
+                gtk_widget_show(&cpuGraphs[i]);
+                gtk_widget_queue_draw(&cpuGraphs[i]);
+
             }
 
             temp_bool++;
@@ -570,6 +577,8 @@ void graph_clicked(GtkWidget *widget) {
 
                 (*temp_bool)=false;
                 gtk_widget_queue_draw(graph1);
+                gtk_widget_hide(&cpuGraphs[i]);
+              //  gtk_widget_queue_draw(&cpu_graphs[i]);
             }
 
             temp_bool++;
@@ -579,7 +588,7 @@ void graph_clicked(GtkWidget *widget) {
 
     }
 
-};
+}
 
 
 /*
@@ -604,7 +613,7 @@ void show_hide(GtkWidget *button, GtkWidget *window) {
     }
 
 
-};
+}
 /*
  * function handle_task_menu(): gets the selected task and send it a signal
  * input:pointer to a button that is being pressed and pointer to the signal that we want to send
@@ -655,12 +664,12 @@ void handle_task_prio(GtkWidget *widget, char *signal) {
     }
 }
 /*
- * function create_taskpopup(): creates a popup menu
+ * function createTask_pop_up(): creates a popup menu
  * input:none.
  * output: return a pop_up_menu.
  * */
-GtkWidget *create_taskpopup(void) {
-    GtkWidget *taskpopup;
+GtkWidget *createTask_pop_up(void) {
+    GtkWidget *taskwidget;
 
 
     GtkWidget *menu_item;
@@ -668,26 +677,26 @@ GtkWidget *create_taskpopup(void) {
     GtkWidget *menu_priority;
 
 
-    taskpopup = gtk_menu_new();
+    taskwidget = gtk_menu_new();
 
     menu_item = gtk_menu_item_new_with_mnemonic(("Stop"));
     gtk_widget_show(menu_item);
-    gtk_container_add(GTK_CONTAINER (taskpopup), menu_item);
+    gtk_container_add(GTK_CONTAINER (taskwidget), menu_item);
     g_signal_connect ((gpointer) menu_item, "activate", G_CALLBACK(handle_task_menu), "STOP");
 
     menu_item = gtk_menu_item_new_with_mnemonic(("Continue"));
     gtk_widget_show(menu_item);
-    gtk_container_add(GTK_CONTAINER (taskpopup), menu_item);
+    gtk_container_add(GTK_CONTAINER (taskwidget), menu_item);
     g_signal_connect ((gpointer) menu_item, "activate", G_CALLBACK(handle_task_menu), "CONT");
 
     menu_item = gtk_menu_item_new_with_mnemonic(("Term"));
     gtk_widget_show(menu_item);
-    gtk_container_add(GTK_CONTAINER (taskpopup), menu_item);
+    gtk_container_add(GTK_CONTAINER (taskwidget), menu_item);
     g_signal_connect ((gpointer) menu_item, "activate", G_CALLBACK(handle_task_menu), "TERM");
 
     menu_item = gtk_menu_item_new_with_mnemonic(("Kill"));
     gtk_widget_show(menu_item);
-    gtk_container_add(GTK_CONTAINER (taskpopup), menu_item);
+    gtk_container_add(GTK_CONTAINER (taskwidget), menu_item);
     g_signal_connect ((gpointer) menu_item, "activate", G_CALLBACK(handle_task_menu), "KILL");
 
     menu_priority = gtk_menu_new();
@@ -719,12 +728,12 @@ GtkWidget *create_taskpopup(void) {
 
     menu_item = gtk_menu_item_new_with_label(("Priority"));
     gtk_menu_item_set_submenu(GTK_MENU_ITEM (menu_item), menu_priority);
-    gtk_container_add(GTK_CONTAINER (taskpopup), menu_item);
+    gtk_container_add(GTK_CONTAINER (taskwidget), menu_item);
 
 
-    gtk_widget_show_all(taskpopup);
+    gtk_widget_show_all(taskwidget);
 
-    return taskpopup;
+    return taskwidget;
 }
 /**
  * function on_treeview_tasks_button_press_event(): reacts to a right click on a task in the list and then creates a pop
@@ -739,7 +748,7 @@ gboolean on_treeview_tasks_button_press_event(GtkButton *button, GdkEventButton 
         GdkEventButton *mouseevent = event;
 
         if (task_popup == NULL)
-            task_popup = create_taskpopup();
+            task_popup = createTask_pop_up();
 
         gtk_menu_popup(GTK_MENU(task_popup), NULL, NULL, NULL, NULL, mouseevent->button, mouseevent->time);
 

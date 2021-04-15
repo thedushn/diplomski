@@ -17,7 +17,7 @@ void device_task_commands(char *signal, char *task_id);
 
 int
 data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *memory_usage, T_Collection **task_array,
-              D_Collection **devices_array, __int32_t *task_num, __int32_t *dev_num);
+              D_Collection **devices_array, __int32_t *task_num, __int32_t *dev_num, I_Collection2 **interrupts_p);
 int command_sender(char *text);
 
 void input_command();

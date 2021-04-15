@@ -7,14 +7,14 @@
 
 
 #include <gtk/gtk.h>
-
+#include <stdbool.h>
 
 
 GtkWidget *dev_window;/*window that contains the list of devices */
 GtkWidget *proc_window;/*window that contains the list of tasks */
 GtkWidget *rec_window;/*window that contains the button for recording */
 GtkWidget *wr_window;/*window that contains the button for writing */
-
+bool closed_cpu_window;
 GtkWidget *task_popup;
 
 GtkWidget *button_inc;/*button that when pressed increments the time delay by 250 */
@@ -53,7 +53,7 @@ GtkWidget *cpu_buttons;/*array of buttons that when true let the graph display c
 
 gboolean on_treeview_tasks_button_press_event(GtkButton *button, GdkEventButton *event);
 
-GtkWidget *create_taskpopup(void);
+GtkWidget *createTask_pop_up(void);
 
 void handle_task_menu(GtkWidget *widget, char *signal);
 
@@ -64,6 +64,7 @@ void graph_button_clicked(GtkWidget *widget);
 void close_window_toggled();
 
 void close_window(GtkWidget *widget);
+void close_window_v1(GtkWidget *widget);
 
 void show_hide(GtkWidget *button, GtkWidget *window);
 
@@ -71,7 +72,7 @@ void device_window();
 
 void process_window();
 
-void record_window();
+void recordWindow();
 
 void graph_clicked(GtkWidget *widget);
 
