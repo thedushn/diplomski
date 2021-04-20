@@ -27,7 +27,7 @@ void \hyperlink{buttons_8h_afaa98283beeb172a49cf86153e04ec04}{device\+\_\+window
 \item 
 void \hyperlink{buttons_8h_aad30ab19357e49aef209f7d17f0ece8f}{process\+\_\+window} ()
 \item 
-void \hyperlink{buttons_8h_ad6b26ac41f779ea0f331518a4395df2d}{record\+\_\+window} ()
+void \hyperlink{buttons_8h_a939a2e1eb10ab1bc9214ffaef81c71ae}{record\+Window} ()
 \item 
 void \hyperlink{buttons_8h_ad5417bf2e527352cd0a78ca62663ee5a}{graph\+\_\+clicked} (Gtk\+Widget $\ast$widget)
 \item 
@@ -112,14 +112,19 @@ Gtk\+Widget $\ast$ \hyperlink{buttons_8h_a43b4eb0d838e96bf1167b1347f8689a3}{cpu\
 \item[{Gtk\+Widget $\ast$}]{widget}
 \end{DoxyParamCaption}
 )}\hypertarget{buttons_8h_a770d96b4e5ab9b448e945d246a2e1bfc}{}\label{buttons_8h_a770d96b4e5ab9b448e945d246a2e1bfc}
-function \hyperlink{buttons_8c_a770d96b4e5ab9b448e945d246a2e1bfc}{close\+\_\+window()}\+: closes a widget input\+:pointer to a widget. output\+:none. \index{buttons.\+h@{buttons.\+h}!close\+\_\+window\+\_\+toggled@{close\+\_\+window\+\_\+toggled}}
+\hyperlink{buttons_8c_a770d96b4e5ab9b448e945d246a2e1bfc}{close\+\_\+window()}\+: closes a widget 
+\begin{DoxyParams}{Parameters}
+{\em widget} & is a pointer to a window. \\
+\hline
+\end{DoxyParams}
+\index{buttons.\+h@{buttons.\+h}!close\+\_\+window\+\_\+toggled@{close\+\_\+window\+\_\+toggled}}
 \index{close\+\_\+window\+\_\+toggled@{close\+\_\+window\+\_\+toggled}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{close\+\_\+window\+\_\+toggled()}{close_window_toggled()}}]{\setlength{\rightskip}{0pt plus 5cm}void close\+\_\+window\+\_\+toggled (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{buttons_8h_a8eeca6e9b21332d334fa0fc3a7b7de03}{}\label{buttons_8h_a8eeca6e9b21332d334fa0fc3a7b7de03}
-function \hyperlink{buttons_8c_a8eeca6e9b21332d334fa0fc3a7b7de03}{close\+\_\+window\+\_\+toggled()}\+: when the graph window is closed we set the button graph to not be clicked input\+:none. output\+:none. \index{buttons.\+h@{buttons.\+h}!close\+\_\+window\+\_\+v1@{close\+\_\+window\+\_\+v1}}
+\hyperlink{buttons_8c_a8eeca6e9b21332d334fa0fc3a7b7de03}{close\+\_\+window\+\_\+toggled()}\+: when the graph window is closed we set the button graph to not be clicked \index{buttons.\+h@{buttons.\+h}!close\+\_\+window\+\_\+v1@{close\+\_\+window\+\_\+v1}}
 \index{close\+\_\+window\+\_\+v1@{close\+\_\+window\+\_\+v1}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{close\+\_\+window\+\_\+v1(\+Gtk\+Widget $\ast$widget)}{close_window_v1(GtkWidget *widget)}}]{\setlength{\rightskip}{0pt plus 5cm}void close\+\_\+window\+\_\+v1 (
 \begin{DoxyParamCaption}
@@ -140,13 +145,18 @@ function \hyperlink{buttons_8c_a8eeca6e9b21332d334fa0fc3a7b7de03}{close\+\_\+win
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{buttons_8h_afaa98283beeb172a49cf86153e04ec04}{}\label{buttons_8h_afaa98283beeb172a49cf86153e04ec04}
-function \hyperlink{buttons_8c_afaa98283beeb172a49cf86153e04ec04}{device\+\_\+window()}\+: create a window with buttons that represent columns in the device list when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on the columns visibility input\+:none. output\+:none. \index{buttons.\+h@{buttons.\+h}!graph\+\_\+button\+\_\+clicked@{graph\+\_\+button\+\_\+clicked}}
+\hyperlink{buttons_8c_afaa98283beeb172a49cf86153e04ec04}{device\+\_\+window()}\+: create a window with buttons that represent columns in the device list when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on the columns visibility \index{buttons.\+h@{buttons.\+h}!graph\+\_\+button\+\_\+clicked@{graph\+\_\+button\+\_\+clicked}}
 \index{graph\+\_\+button\+\_\+clicked@{graph\+\_\+button\+\_\+clicked}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{graph\+\_\+button\+\_\+clicked(\+Gtk\+Widget $\ast$widget)}{graph_button_clicked(GtkWidget *widget)}}]{\setlength{\rightskip}{0pt plus 5cm}void graph\+\_\+button\+\_\+clicked (
 \begin{DoxyParamCaption}
 \item[{Gtk\+Widget $\ast$}]{widget}
 \end{DoxyParamCaption}
 )}\hypertarget{buttons_8h_ad181ed44ae7e96bd148cfc4031eeb656}{}\label{buttons_8h_ad181ed44ae7e96bd148cfc4031eeb656}
+\hyperlink{buttons_8c_ad181ed44ae7e96bd148cfc4031eeb656}{graph\+\_\+button\+\_\+clicked()}\+: opens a window containing buttons that are connected to the displaying of cpu stats 
+\begin{DoxyParams}{Parameters}
+{\em widget} & points a button if its tooggled it open or closes a window \\
+\hline
+\end{DoxyParams}
 \index{buttons.\+h@{buttons.\+h}!graph\+\_\+clicked@{graph\+\_\+clicked}}
 \index{graph\+\_\+clicked@{graph\+\_\+clicked}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{graph\+\_\+clicked(\+Gtk\+Widget $\ast$widget)}{graph_clicked(GtkWidget *widget)}}]{\setlength{\rightskip}{0pt plus 5cm}void graph\+\_\+clicked (
@@ -154,6 +164,14 @@ function \hyperlink{buttons_8c_afaa98283beeb172a49cf86153e04ec04}{device\+\_\+wi
 \item[{Gtk\+Widget $\ast$}]{widget}
 \end{DoxyParamCaption}
 )}\hypertarget{buttons_8h_ad5417bf2e527352cd0a78ca62663ee5a}{}\label{buttons_8h_ad5417bf2e527352cd0a78ca62663ee5a}
+\hyperlink{buttons_8c_ad5417bf2e527352cd0a78ca62663ee5a}{graph\+\_\+clicked()}\+: draws specific cpus depending on which button is pressed 
+\begin{DoxyParams}{Parameters}
+{\em widget} & is a pointer to a button that when toggled shows graph of the cpu \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
 \index{buttons.\+h@{buttons.\+h}!handle\+\_\+task\+\_\+menu@{handle\+\_\+task\+\_\+menu}}
 \index{handle\+\_\+task\+\_\+menu@{handle\+\_\+task\+\_\+menu}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{handle\+\_\+task\+\_\+menu(\+Gtk\+Widget $\ast$widget, char $\ast$signal)}{handle_task_menu(GtkWidget *widget, char *signal)}}]{\setlength{\rightskip}{0pt plus 5cm}void handle\+\_\+task\+\_\+menu (
@@ -162,6 +180,13 @@ function \hyperlink{buttons_8c_afaa98283beeb172a49cf86153e04ec04}{device\+\_\+wi
 \item[{char $\ast$}]{signal}
 \end{DoxyParamCaption}
 )}\hypertarget{buttons_8h_a36edf36b7ed5a1d7616e421cb9462b8f}{}\label{buttons_8h_a36edf36b7ed5a1d7616e421cb9462b8f}
+\hyperlink{buttons_8c_a36edf36b7ed5a1d7616e421cb9462b8f}{handle\+\_\+task\+\_\+menu()}\+: gets the selected task and send it a signal 
+\begin{DoxyParams}{Parameters}
+{\em widget} & pointer to a button that is being pressed \\
+\hline
+{\em signal} & pointer to the signal that we want to send output\+:none. \\
+\hline
+\end{DoxyParams}
 \index{buttons.\+h@{buttons.\+h}!handle\+\_\+task\+\_\+prio@{handle\+\_\+task\+\_\+prio}}
 \index{handle\+\_\+task\+\_\+prio@{handle\+\_\+task\+\_\+prio}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{handle\+\_\+task\+\_\+prio(\+Gtk\+Widget $\ast$widget, char $\ast$signal)}{handle_task_prio(GtkWidget *widget, char *signal)}}]{\setlength{\rightskip}{0pt plus 5cm}void handle\+\_\+task\+\_\+prio (
@@ -170,7 +195,7 @@ function \hyperlink{buttons_8c_afaa98283beeb172a49cf86153e04ec04}{device\+\_\+wi
 \item[{char $\ast$}]{signal}
 \end{DoxyParamCaption}
 )}\hypertarget{buttons_8h_a5298134744eb95b0373bae553d185bf7}{}\label{buttons_8h_a5298134744eb95b0373bae553d185bf7}
-\index{buttons.\+h@{buttons.\+h}!on\+\_\+treeview\+\_\+tasks\+\_\+button\+\_\+press\+\_\+event@{on\+\_\+treeview\+\_\+tasks\+\_\+button\+\_\+press\+\_\+event}}
+\hyperlink{buttons_8c_a5298134744eb95b0373bae553d185bf7}{handle\+\_\+task\+\_\+prio()}\+: gets the selected task and send it a signal input\+:pointer to a button that is being pressed and pointer to the signal that we want to send output\+:none. \index{buttons.\+h@{buttons.\+h}!on\+\_\+treeview\+\_\+tasks\+\_\+button\+\_\+press\+\_\+event@{on\+\_\+treeview\+\_\+tasks\+\_\+button\+\_\+press\+\_\+event}}
 \index{on\+\_\+treeview\+\_\+tasks\+\_\+button\+\_\+press\+\_\+event@{on\+\_\+treeview\+\_\+tasks\+\_\+button\+\_\+press\+\_\+event}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{on\+\_\+treeview\+\_\+tasks\+\_\+button\+\_\+press\+\_\+event(\+Gtk\+Button $\ast$button, Gdk\+Event\+Button $\ast$event)}{on_treeview_tasks_button_press_event(GtkButton *button, GdkEventButton *event)}}]{\setlength{\rightskip}{0pt plus 5cm}gboolean on\+\_\+treeview\+\_\+tasks\+\_\+button\+\_\+press\+\_\+event (
 \begin{DoxyParamCaption}
@@ -185,20 +210,30 @@ function \hyperlink{buttons_8c_a52a3b1d74708119e28c5bf25f08db710}{on\+\_\+treevi
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{buttons_8h_aad30ab19357e49aef209f7d17f0ece8f}{}\label{buttons_8h_aad30ab19357e49aef209f7d17f0ece8f}
-function \hyperlink{buttons_8c_aad30ab19357e49aef209f7d17f0ece8f}{process\+\_\+window()}\+: create a window with buttons that represent columns in the task list when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on the columns visibility input\+:none. output\+:none. \index{buttons.\+h@{buttons.\+h}!record\+\_\+window@{record\+\_\+window}}
-\index{record\+\_\+window@{record\+\_\+window}!buttons.\+h@{buttons.\+h}}
-\subsubsection[{\texorpdfstring{record\+\_\+window()}{record_window()}}]{\setlength{\rightskip}{0pt plus 5cm}void record\+\_\+window (
+\hyperlink{buttons_8c_aad30ab19357e49aef209f7d17f0ece8f}{process\+\_\+window()}\+: create a window with buttons that represent columns in the task list when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on the columns visibility
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{buttons.\+h@{buttons.\+h}!record\+Window@{record\+Window}}
+\index{record\+Window@{record\+Window}!buttons.\+h@{buttons.\+h}}
+\subsubsection[{\texorpdfstring{record\+Window()}{recordWindow()}}]{\setlength{\rightskip}{0pt plus 5cm}void record\+Window (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)}\hypertarget{buttons_8h_ad6b26ac41f779ea0f331518a4395df2d}{}\label{buttons_8h_ad6b26ac41f779ea0f331518a4395df2d}
-function \hyperlink{buttons_8c_ad6b26ac41f779ea0f331518a4395df2d}{record\+\_\+window()} creates a window that holds the record button input \+: none otput \+: none \index{buttons.\+h@{buttons.\+h}!show\+\_\+all@{show\+\_\+all}}
+)}\hypertarget{buttons_8h_a939a2e1eb10ab1bc9214ffaef81c71ae}{}\label{buttons_8h_a939a2e1eb10ab1bc9214ffaef81c71ae}
+record\+\_\+window() creates a window that holds the record button \index{buttons.\+h@{buttons.\+h}!show\+\_\+all@{show\+\_\+all}}
 \index{show\+\_\+all@{show\+\_\+all}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{show\+\_\+all(\+Gtk\+Widget $\ast$widget)}{show_all(GtkWidget *widget)}}]{\setlength{\rightskip}{0pt plus 5cm}void show\+\_\+all (
 \begin{DoxyParamCaption}
 \item[{Gtk\+Widget $\ast$}]{widget}
 \end{DoxyParamCaption}
 )}\hypertarget{buttons_8h_aa93e77cbafdf616c637182c48db42c91}{}\label{buttons_8h_aa93e77cbafdf616c637182c48db42c91}
+function \hyperlink{buttons_8c_aa93e77cbafdf616c637182c48db42c91}{show\+\_\+all()}\+: sends command to server about what type of devices it wants to see 
+\begin{DoxyParams}{Parameters}
+{\em widget} & pointer to button \\
+\hline
+\end{DoxyParams}
 \index{buttons.\+h@{buttons.\+h}!show\+\_\+hide@{show\+\_\+hide}}
 \index{show\+\_\+hide@{show\+\_\+hide}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{show\+\_\+hide(\+Gtk\+Widget $\ast$button, Gtk\+Widget $\ast$window)}{show_hide(GtkWidget *button, GtkWidget *window)}}]{\setlength{\rightskip}{0pt plus 5cm}void show\+\_\+hide (
@@ -207,6 +242,13 @@ function \hyperlink{buttons_8c_ad6b26ac41f779ea0f331518a4395df2d}{record\+\_\+wi
 \item[{Gtk\+Widget $\ast$}]{window}
 \end{DoxyParamCaption}
 )}\hypertarget{buttons_8h_aa62b2006edbe70015a79c1457f4a3729}{}\label{buttons_8h_aa62b2006edbe70015a79c1457f4a3729}
+function \hyperlink{buttons_8c_aa62b2006edbe70015a79c1457f4a3729}{show\+\_\+hide()}\+: shows or hides a window depending if the button is pressed or not 
+\begin{DoxyParams}{Parameters}
+{\em button} & is pointer to a button that is being pressed \\
+\hline
+{\em window} & pointer to window that is connected to that button \\
+\hline
+\end{DoxyParams}
 \index{buttons.\+h@{buttons.\+h}!write\+\_\+window@{write\+\_\+window}}
 \index{write\+\_\+window@{write\+\_\+window}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{write\+\_\+window()}{write_window()}}]{\setlength{\rightskip}{0pt plus 5cm}void write\+\_\+window (
@@ -253,7 +295,7 @@ function \hyperlink{buttons_8c_ad6b26ac41f779ea0f331518a4395df2d}{record\+\_\+wi
 \index{buttons.\+h@{buttons.\+h}!button\+\_\+inc@{button\+\_\+inc}}
 \index{button\+\_\+inc@{button\+\_\+inc}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{button\+\_\+inc}{button_inc}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ button\+\_\+inc}\hypertarget{buttons_8h_ac7f477644644db7c1bf97c54e9311ad5}{}\label{buttons_8h_ac7f477644644db7c1bf97c54e9311ad5}
-\index{buttons.\+h@{buttons.\+h}!button\+\_\+pause@{button\+\_\+pause}}
+button that when pressed increments the time delay by 250 \index{buttons.\+h@{buttons.\+h}!button\+\_\+pause@{button\+\_\+pause}}
 \index{button\+\_\+pause@{button\+\_\+pause}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{button\+\_\+pause}{button_pause}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ button\+\_\+pause}\hypertarget{buttons_8h_a8d2eb35113e5ea855e606c35b6b6b0c3}{}\label{buttons_8h_a8d2eb35113e5ea855e606c35b6b6b0c3}
 \index{buttons.\+h@{buttons.\+h}!button\+\_\+proc@{button\+\_\+proc}}
@@ -301,15 +343,16 @@ function \hyperlink{buttons_8c_ad6b26ac41f779ea0f331518a4395df2d}{record\+\_\+wi
 \index{buttons.\+h@{buttons.\+h}!dev\+\_\+window@{dev\+\_\+window}}
 \index{dev\+\_\+window@{dev\+\_\+window}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{dev\+\_\+window}{dev_window}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ dev\+\_\+window}\hypertarget{buttons_8h_a41c6a084c0d9b0da365d7c175744b6ba}{}\label{buttons_8h_a41c6a084c0d9b0da365d7c175744b6ba}
-\index{buttons.\+h@{buttons.\+h}!proc\+\_\+window@{proc\+\_\+window}}
+window that contains the list of devices \index{buttons.\+h@{buttons.\+h}!proc\+\_\+window@{proc\+\_\+window}}
 \index{proc\+\_\+window@{proc\+\_\+window}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{proc\+\_\+window}{proc_window}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ proc\+\_\+window}\hypertarget{buttons_8h_aae95deb72fa9d56c77939b3595f48a9e}{}\label{buttons_8h_aae95deb72fa9d56c77939b3595f48a9e}
-\index{buttons.\+h@{buttons.\+h}!rec\+\_\+window@{rec\+\_\+window}}
+window that contains the list of tasks \index{buttons.\+h@{buttons.\+h}!rec\+\_\+window@{rec\+\_\+window}}
 \index{rec\+\_\+window@{rec\+\_\+window}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{rec\+\_\+window}{rec_window}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ rec\+\_\+window}\hypertarget{buttons_8h_a8aa9cacf2ce514167c80d83185d8a9a9}{}\label{buttons_8h_a8aa9cacf2ce514167c80d83185d8a9a9}
-\index{buttons.\+h@{buttons.\+h}!task\+\_\+popup@{task\+\_\+popup}}
+window that contains the button for recording \index{buttons.\+h@{buttons.\+h}!task\+\_\+popup@{task\+\_\+popup}}
 \index{task\+\_\+popup@{task\+\_\+popup}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{task\+\_\+popup}{task_popup}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ task\+\_\+popup}\hypertarget{buttons_8h_a47d6ebb03716ec9cc1388e72b2c069d9}{}\label{buttons_8h_a47d6ebb03716ec9cc1388e72b2c069d9}
 \index{buttons.\+h@{buttons.\+h}!wr\+\_\+window@{wr\+\_\+window}}
 \index{wr\+\_\+window@{wr\+\_\+window}!buttons.\+h@{buttons.\+h}}
 \subsubsection[{\texorpdfstring{wr\+\_\+window}{wr_window}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ wr\+\_\+window}\hypertarget{buttons_8h_aa3b00ecfc6c29f286ab306b301c3f638}{}\label{buttons_8h_aa3b00ecfc6c29f286ab306b301c3f638}
+window that contains the button for writing 

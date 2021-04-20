@@ -10,21 +10,20 @@
 
 #include "buttons.h"
 #include "main_header.h"
+int refresh_devices_data(D_Collection *devices_new, D_Collection *dev_old) {
 
-int refresh_devices_data(D_Collection *devices_new, __int32_t device_num) {
 
-
-    D_Collection *rem_new=devices_new;
-    D_Collection *rem_old=devices_old;
-
-    for (__int32_t i = 0; i < dev_num_old; i++)   /*refreshing data*/
+    D_Collection    *rem_new;
+    Devices         *tmp;
+    Devices *new_tmp;
+    while(dev_old)  /*refreshing data*/
     {
-        Devices *tmp = &rem_old->devices;
+        tmp = &dev_old->devices;
 
         tmp->checked = FALSE;
-
-        for (__int32_t j = 0; j < device_num; j++) {
-            Devices *new_tmp = &devices_new->devices;
+        rem_new=devices_new;
+        while(rem_new) {
+            new_tmp  = &rem_new->devices;
 
             if (strcmp(new_tmp->directory, tmp->directory) == 0
                 && strcmp(new_tmp->name, tmp->name) == 0
@@ -35,17 +34,15 @@ int refresh_devices_data(D_Collection *devices_new, __int32_t device_num) {
             {
 
 
-                if ((gint) tmp->avail != (gint) new_tmp->avail //if there is a difference
-                    || tmp->used != new_tmp->used ||
-
-                    (unsigned int) tmp->used != (unsigned int) new_tmp->used ||
-                    (unsigned int) tmp->free != (unsigned int) new_tmp->free ||
-                    (unsigned int) tmp->total != (unsigned int) new_tmp->total) {
+                if (    tmp->avail  !=  new_tmp->avail //if there is a difference
+                        ||  tmp->used   !=  new_tmp->used ||
+                        tmp->free   !=  new_tmp->free ||
+                        tmp->total  !=  new_tmp->total) {
                     tmp->avail = new_tmp->avail;
 
-                    tmp->used = new_tmp->used;
-                    tmp->total = new_tmp->total;
-                    tmp->free = new_tmp->free;
+                    tmp->used   = new_tmp->used;
+                    tmp->total  = new_tmp->total;
+                    tmp->free   = new_tmp->free;
 
                     refresh_list_item_device(tmp);
 
@@ -59,66 +56,75 @@ int refresh_devices_data(D_Collection *devices_new, __int32_t device_num) {
             } else
                 tmp->checked = FALSE;
 
-            devices_new = devices_new->next;
+            rem_new = rem_new->next;
         }
-        devices_new = rem_new;
-        rem_old = rem_old->next;
+
+        dev_old = dev_old->next;
 
     }
     return 0;
 }
-void delete_old_dev(D_Collection **array,__int32_t *dev_num){
 
-    __int32_t i=0;
+void delete_old_dev(D_Collection **array){
+
+
     D_Collection *rem_old = (*array);
+    D_Collection *dtemp;
+    Devices      *tmp   ;
+    while (rem_old) {
 
-    while (i < *dev_num) {
+        tmp  = &rem_old->devices;
 
-        Devices *tmp = &(*array)->devices;
-        D_Collection *dtemp;
 
         if (!tmp->checked)//element of the array that does not exist in the new array anymore
         {
             remove_list_item_device(tmp->directory, tmp->name);
-            if (i == 0) {
-                dtemp = (*array);
-                if ((*array)->next != NULL) {
-                    (*array) = (*array)->next;
-                    (*array)->prev=NULL;
+            if (NULL==rem_old->prev) {
+                dtemp = rem_old;
+                if (rem_old->next != NULL) {
+                    rem_old = rem_old->next;
+                    rem_old->prev=NULL;
                 }
 
 
                 free(dtemp);
-                rem_old = (*array); //setting the first node
+
+                (*array)= rem_old; //setting the first node
             } else {
 
-                dtemp=(*array); // the one that we don't want anymore
-                (*array)->next->prev=(*array)->prev; //remember the last prev
-                (*array)->prev->next=(*array)->next;
+                dtemp=rem_old; // the one that we don't want anymore
+                if(rem_old->next){
+                    rem_old->next->prev=rem_old->prev; //remember the last prev
+
+                }
+                rem_old->prev->next=rem_old->next;
+
                 free(dtemp);
-                (*array) = rem_old;
+
+                rem_old=(*array);
             }
 
-            i=0;
-            (*dev_num)--;
+
 
 
         } else {
 
 
-            i++;
-            (*array) = (*array)->next;
+
+            rem_old = rem_old->next;
 
 
         }
 
     }
-    (*array) = rem_old;
-}
-int insert_new_devices(D_Collection **array,D_Collection *devices_new,__int32_t dev_num,__int32_t *old_number){
 
-    for (__int32_t i = 0; i < dev_num; i++) { /*  check for unchecked new devices for inserting*/
-        D_Collection *new_tmp;
+}
+
+int insert_new_devices(D_Collection **array, D_Collection *devices_new){
+    D_Collection *new_tmp;
+
+    while(devices_new) { /*  check for unchecked new devices for inserting*/
+
 
         if (!devices_new->devices.checked) {
 
@@ -146,7 +152,7 @@ int insert_new_devices(D_Collection **array,D_Collection *devices_new,__int32_t 
 
 
 
-            (*old_number)++;
+
         }
 
         devices_new = devices_new->next;
@@ -156,28 +162,28 @@ int insert_new_devices(D_Collection **array,D_Collection *devices_new,__int32_t 
     return 0;
 }
 
-/*
+
+/**
  * function device_check(): uses the old list of devices and compares them to the new list if their are any differences
  * the list is changed, if items from the old list don't exist on the new list they are removed
  * input  : pointer to the list of devices , and number of elements in the list
  * output : returns a non zero value if something goes wrong
  * */
-int device_check(D_Collection *devices_new, int dev_num) {
+int device_check(D_Collection *devices_new, D_Collection **dev_old) {
 
 
-
-
-
-    refresh_devices_data(devices_new, dev_num);
+    refresh_devices_data(devices_new, *dev_old);
+   // refresh_devices_data(devices_new, dev_num);
     //  check for unchecked old-devices for deleting
 
 
-    delete_old_dev(&devices_old,&dev_num_old);
+   // delete_old_dev(&devices_old,&dev_num_old);
+    delete_old_dev(dev_old);
 
 
 
-    insert_new_devices(&devices_old,devices_new,dev_num,&dev_num_old);
-
+   // insert_new_devices(&devices_old,devices_new,dev_num,&dev_num_old);
+    insert_new_devices(dev_old, devices_new);
 
 
 
@@ -186,12 +192,11 @@ int device_check(D_Collection *devices_new, int dev_num) {
     return 0;
 
 }
+int insert_new_tasks(T_Collection **array, T_Collection *tasks_new){
+    T_Collection *new_tmp;
 
-int insert_new_tasks(T_Collection **array,T_Collection *tasks_new,__int32_t task_num,__int32_t *old_number){
+    while(tasks_new) { /*  check for unchecked new tasks for inserting*/
 
-
-    for (__int32_t i = 0; i < task_num; i++) { /*  check for unchecked new tasks for inserting*/
-        T_Collection *new_tmp;
 
 
         if (!tasks_new->task.checked) {
@@ -221,7 +226,7 @@ int insert_new_tasks(T_Collection **array,T_Collection *tasks_new,__int32_t task
 
 
 
-            (*old_number)++;
+
         }
 
         tasks_new=tasks_new->next;
@@ -229,127 +234,127 @@ int insert_new_tasks(T_Collection **array,T_Collection *tasks_new,__int32_t task
     }
     return 0;
 }
-void delete_old_tasks(T_Collection **array,__int32_t *task_num){
-    __int32_t i=0;
+
+void delete_old_tasks(T_Collection **array){
+
     /*tasks */
 
-    T_Collection *rem_task_old = (*array);
+    T_Collection *rem_old = (*array);
+    T_Collection *t_temp;
+    Task *tmp;
 
-    while (i < *task_num) {
+    while (rem_old) {
 
-        Task *tmp = &(*array)->task;
-        T_Collection *t_temp;
+        tmp = &rem_old->task;
+
         if (!tmp->checked) {
 
             remove_task_item((gint) tmp->pid);
-            if (i == 0) {
-                t_temp = (*array);
-                if ((*array)->next != NULL) {
-                    (*array) = (*array)->next;
-                    (*array)->prev=NULL;
+            if (NULL==rem_old->prev) {
+                t_temp = rem_old;
+                if (rem_old->next != NULL) {
+                    rem_old = rem_old->next;
+                    rem_old->prev=NULL;
                 }
 
 
-
-
                 free(t_temp);
-                rem_task_old = (*array);//becomes new head
+
+                (*array)= rem_old; //setting the first node
             } else {
 
-                t_temp=(*array); // the one that we don't want anymore
-                (*array)->next->prev=(*array)->prev; //remember the last prev
-                (*array)->prev->next=(*array)->next;
+                t_temp=rem_old; // the one that we don't want anymore
+                if(rem_old->next){
+                    rem_old->next->prev=rem_old->prev; //remember the last prev
+
+                }
+                rem_old->prev->next=rem_old->next;
+
                 free(t_temp);
-                (*array) = rem_task_old;
+
+                rem_old=(*array);
 
 
             }
 
-            i=0;
-            (*task_num)--;
-        } else {
-            i++;
 
-            (*array) = (*array)->next;
+        } else {
+            rem_old = rem_old->next;
 
         }
 
     }
 
-    (*array) = rem_task_old;
+
 }
-int refresh_task_data(T_Collection *tasks_new,int task_num){
-    __int32_t i,j;
+
+int refresh_task_data(T_Collection *tasks_new, T_Collection *task_old){
+
     /*tasks */
 
-    T_Collection *tasks_old_rem = tasks_old;
-    T_Collection *tasks_new_rem = tasks_new;
 
-    float cpu_user_tmp;
-    float cpu_system_tmp;
-    float cpu_user_tmp_new;
-    float cpu_system_tmp_new;
+    T_Collection *tasks_new_rem;
+    Task *tmp;
+    Task *new_tmp;
     int array[10]={0};
 
-    for (i = 0; i < task_num_old; i++) {
+    while(task_old) {
 
-        Task *tmp = &tasks_old_rem->task;
+        tmp = &task_old->task;
 
         tmp->checked = FALSE;
+        tasks_new_rem = tasks_new;
+        while(tasks_new_rem) {
+            new_tmp = &tasks_new_rem->task;
 
-        for (j = 0; j < task_num; j++) {
-            Task *new_tmp = &tasks_new->task;
 
-
-
+            memset(array,0,sizeof(array));
 
 
 
 
             if ((array[1]=(new_tmp->pid == tmp->pid))) {
 
-                cpu_system_tmp     = (float) strtod(tmp->cpu_system, NULL);
-                cpu_system_tmp_new = (float) strtod(new_tmp->cpu_system, NULL);
-                cpu_user_tmp       = (float) strtod(tmp->cpu_user, NULL);
-                cpu_user_tmp_new   = (float) strtod(new_tmp->cpu_system, NULL);
-
-                if (    (array[0]=(strcmp(tmp->name , new_tmp->name)!=0))
-                    ||  (array[2]=(tmp->rss !=  new_tmp->rss))
-
-                    ||  (array[3]=((cpu_user_tmp != cpu_user_tmp_new)||(cpu_system_tmp != cpu_system_tmp_new)))
-                    ||  (array[4]=(tmp->prio !=  new_tmp->prio))
-                    ||  (array[5]=(tmp->vsz  !=  new_tmp->vsz))
-                    ||  (array[6]=(tmp->ppid !=  new_tmp->ppid))
-                    ||  (array[7]=strcmp(tmp->state, new_tmp->state)) != 0
-                    ||  (array[8]=(strcmp(tmp->uid_name , new_tmp->uid_name)!=0))
-                    ||  (array[9]=(
-                                (tmp->duration.tm_hour  != new_tmp->duration.tm_hour)
-                            ||  (tmp->duration.tm_min   != new_tmp->duration.tm_min)
-                            ||  (tmp->duration.tm_sec   != new_tmp->duration.tm_sec)))
+                array[0]=(strcmp(tmp->name , new_tmp->name)!=0);
+                array[2]=(tmp->rss !=  new_tmp->rss);
+                array[3]= (strcmp(tmp->cpu_system,new_tmp->cpu_system)!=0||strcmp(tmp->cpu_user,new_tmp->cpu_user)!=0);
+                array[4]=(tmp->prio !=  new_tmp->prio);
+                array[5]=(tmp->vsz  !=  new_tmp->vsz);
+                array[6]=(tmp->ppid !=  new_tmp->ppid);
+                array[7]=strcmp(tmp->state, new_tmp->state);
+                array[8]=(strcmp(tmp->uid_name , new_tmp->uid_name)!=0);
+                array[9]=(
+                        (tmp->duration.tm_hour      != new_tmp->duration.tm_hour)
+                        ||  (tmp->duration.tm_min   != new_tmp->duration.tm_min)
+                        ||  (tmp->duration.tm_sec   != new_tmp->duration.tm_sec));
 
 
 
-                        ) {
-                    //array[9]=1;//time always goes forward;
-                    tmp->ppid = new_tmp->ppid;
-                    strcpy(tmp->state, new_tmp->state);
-                  //  printf("Name: %s %d\n",new_tmp->name,array[9]);
-                    //TODO change to strcmp;
-                    memset(tmp->cpu_system, 0, sizeof(tmp->cpu_system));
-                    memset(tmp->cpu_user, 0, sizeof(tmp->cpu_user));
-                    strcpy(tmp->cpu_user, new_tmp->cpu_user);
-                    strcpy(tmp->cpu_system, new_tmp->cpu_system);
+                tmp->ppid = new_tmp->ppid;
+                strcpy(tmp->state, new_tmp->state);
 
 
-                    tmp->rss = new_tmp->rss;
-                    tmp->prio = new_tmp->prio;
-                    tmp->duration.tm_hour = new_tmp->duration.tm_hour;
-                    tmp->duration.tm_min = new_tmp->duration.tm_min;
-                    tmp->duration.tm_sec = new_tmp->duration.tm_sec;
 
-                    refresh_list_item(tmp, array);
-                  //  printf("%d %d %d %d\n",array[0],array[1],array[2],array[3]);
-                }
+
+
+
+
+
+                memset(tmp->cpu_system, 0, sizeof(tmp->cpu_system));
+                memset(tmp->cpu_user, 0, sizeof(tmp->cpu_user));
+                strcpy(tmp->cpu_user, new_tmp->cpu_user);
+                strcpy(tmp->cpu_system, new_tmp->cpu_system);
+
+
+                tmp->rss = new_tmp->rss;
+                tmp->prio = new_tmp->prio;
+                tmp->duration.tm_hour = new_tmp->duration.tm_hour;
+                tmp->duration.tm_min = new_tmp->duration.tm_min;
+                tmp->duration.tm_sec = new_tmp->duration.tm_sec;
+
+                refresh_list_item(tmp, array);
+
+
 
                 tmp->checked = TRUE;
 
@@ -361,39 +366,37 @@ int refresh_task_data(T_Collection *tasks_new,int task_num){
             } else
                 tmp->checked = FALSE;
 
-            tasks_new=tasks_new->next;
+            tasks_new_rem=tasks_new_rem->next;
 
         }
-        tasks_new=tasks_new_rem;
-        tasks_old_rem = tasks_old_rem->next;
+
+        task_old = task_old->next;
 
     }
     return 0;
 }
-/*
+
+/**
  * function task_check(): uses the old list of tasks and compares them to the new list if their are any differences
  * the list is changed, if items from the old list don't exist on the new list they are removed
  * input  : pointer to the list of task , and number of elements in the list
  * output : returns a non zero value if something goes wrong
  * */
-int task_check(T_Collection *tasks_new, int task_num) {
+int task_check(T_Collection *tasks_new, T_Collection **task_old) {
 
 
+    refresh_task_data(tasks_new, *task_old);
 
+    delete_old_tasks(task_old);
 
-    refresh_task_data(tasks_new,task_num);
-
-    delete_old_tasks(&tasks_old,&task_num_old);
-
-    insert_new_tasks(&tasks_old,tasks_new,task_num,&task_num_old);
-
+    insert_new_tasks(task_old, tasks_new);
 
 
 
 
     return 0;
 }
-/*
+/**
  * function create_list_store_task(): makes a list_tasks for tasks , with columns which when clicked sort the list using
  * their specific sorting function ,the columns have their special id so they can be recorded and removed from the list
  * the columns have names so we know what the text under them is representing

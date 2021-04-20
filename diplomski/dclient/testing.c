@@ -44,7 +44,7 @@ int interrupts_write(I_Collection2 *array) {
     p=ctime(&clk);
     size= strlen(p);
     p[size-1]=' ';
-    fprintf(fp,"Time: %sDelay %d\n",p,t);
+    fprintf(fp,"Time: %sDelay %d\n",p,confy.delay);
 
     while(array){
         fprintf(fp, "%s: ",array->interrupts.irq);
@@ -108,7 +108,7 @@ int memory_write(Memory_usage *memory_usage){
     p=ctime(&clk);
     size= strlen(p);
     p[size-1]=' ';
-    fprintf(fp,"Time: %sDelay %d\n",p,t);
+    fprintf(fp,"Time: %sDelay %d\n",p,confy.delay);
 
     fprintf(fp,"total memory %" PRIu64 " memory_used %" PRIu64 " memory_free %" PRIu64 " swap_total %" PRIu64 "   "
                     "swap_used %" PRIu64 "\n",
@@ -149,7 +149,7 @@ int cpu_write(Cpu_usage cpu_usage) {
     p=ctime(&clk);
     size= strlen(p);
     p[size-1]=' ';
-    fprintf(fp,"Time: %sDelay %d\n",p,t);
+    fprintf(fp,"Time: %sDelay %d\n",p,confy.delay);
     for(int i=0;i<cpu_num;i++){
         fprintf(fp,"%s ",*cpu_usage.percentage);
         cpu_usage.percentage++;
@@ -267,7 +267,7 @@ int task_write(T_Collection *array){
     p=ctime(&clk);
     size= strlen(p);
     p[size-1]=' ';
-    fprintf(fp,"Time: %sDelay %d\n",p,t);
+    fprintf(fp,"Time: %sDelay %d\n",p,confy.delay);
 
     while(array!=NULL){
         fprintf(fp,
@@ -333,7 +333,7 @@ int device_write(D_Collection *array){
     p=ctime(&clk);
     size= strlen(p);
     p[size-1]=' ';
-    fprintf(fp,"Time: %sDelay %d\n",p,t);
+    fprintf(fp,"Time: %sDelay %d\n",p,confy.delay);
 
     while(array!=NULL){
         fprintf(fp,
@@ -384,7 +384,7 @@ int netw_write(uint64_t transmited, uint64_t received) {
     p=ctime(&clk);
     size= strlen(p);
     p[size-1]=' ';
-    fprintf(fp,"Time: %sDelay %d\n",p,t);
+    fprintf(fp,"Time: %sDelay %d\n",p,confy.delay);
 
     fprintf(fp,"Transmited %"PRIu64"  Received %"PRIu64"\n",transmited,received);
 

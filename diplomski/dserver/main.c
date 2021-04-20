@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
 
     printf("%ld\n",sysconf(_SC_NPROCESSORS_ONLN)) ;
 
+    fflush(stdout);
 
 
 
@@ -51,7 +52,7 @@ int main(int argc, char *argv[]) {
     int socket_send     = 0;
     int socket_command  = 0;  // listen on sock_fd, new connection on socket_send
     int ret                ;
-
+    long test;
     char buffer[BUFFER_SIZE];
 
 
@@ -63,6 +64,14 @@ int main(int argc, char *argv[]) {
         printf("no port provided");
         return -1;
     }
+    test= strtol(argv[1], NULL, 10);
+
+
+    if ((errno == ERANGE && (test == LONG_MAX || test == LONG_MIN))
+                || (errno != 0 )) {
+                perror("strtol");
+                return 0;
+    }
 
 
 
@@ -73,7 +82,8 @@ int main(int argc, char *argv[]) {
 
 
     connection(argv[1],&socket_send,&socket_command);
-
+    printf("connection established\n");
+    fflush(stdout);
     cpu_Number=cpu_number();
     send_cpu_num(socket_send,cpu_Number);
 

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['devices_5',['devices',['../union__Unification.html#af46be7c8513027957494f77b12124267',1,'_Unification']]]
+  ['device_5fcollection',['Device_Collection',['../struct_device___collection.html',1,'']]]
 ];

@@ -75,10 +75,10 @@ void device_task_commands(char *signal, char *task_id) {
 
 
     if (signal != NULL && task_id != NULL) {
-        sprintf(buffer, "%d %s %s", device_all, signal, task_id);
+        sprintf(buffer, "%d %s %s", confy.fileS, signal, task_id);
 
     } else {
-        sprintf(buffer, "%d", device_all);
+        sprintf(buffer, "%d", confy.fileS);
     }
 
     ret = (int) send(newsockfd1, &buffer, sizeof(buffer), 0);
@@ -270,9 +270,11 @@ ssize_t test_recv(int socket) {
 
     memset(data.unification.conformation,0,sizeof(data.unification.conformation));
     strcpy(data.unification.conformation,"everything came");
-
+    printf("entered %s\n",__func__ );
+    fflush(stdout);
     ret = send(socket, &data, sizeof(Data), MSG_WAITALL);
-
+    printf("entered %s\n",__func__ );
+    fflush(stdout);
 
     if (ret < 0) {
 
@@ -308,14 +310,9 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
     interrupt_num=0;
    // I_Collection *temp_i=NULL;
     I_Collection2 *temp_i2=NULL;
-//    while(interrupts){
-//        temp_i=interrupts;
-//        interrupts=interrupts->next;
-//        free(temp_i);
-//        temp_i=NULL;
-//
-//    }
-//    interrupts=NULL;
+
+    printf("entered %s\n",__func__ );
+    fflush(stdout);
     while(interrupts2){
         temp_i2=interrupts2;
         if(temp_i2->interrupts.CPU){

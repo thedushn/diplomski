@@ -255,7 +255,7 @@ void recordWindow(){
     button_rec = gtk_check_button_new_with_label("Record");
 
 
-    if (record == true) {
+    if (confy.record == true) {
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_rec), TRUE);
     }
 
@@ -286,11 +286,10 @@ void recordWindow(){
 
 }
 /**
- * function device_window(): create a window with buttons that represent columns in the device list
+ * device_window(): create a window with buttons that represent columns in the device list
  * when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on
  * the columns visibility
- * input:none.
- * output:none.
+ *
  * */
 void device_window() {
 
@@ -380,7 +379,7 @@ void device_window() {
             temp=temp->next;
         }
 
-        if (device_all == TRUE) {
+        if (confy.fileS == TRUE) {
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_all), TRUE);
         }
 
@@ -430,9 +429,8 @@ void device_window() {
 
 
 /**
- * function close_window_toggled(): when the graph window is closed we set the button graph to not be clicked
- * input:none.
- * output:none.
+ * close_window_toggled(): when the graph window is closed we set the button graph to not be clicked
+ *
  * */
 void close_window_toggled() {
 
@@ -443,9 +441,9 @@ void close_window_toggled() {
 
 }
 /**
- * function close_window(): closes a widget
- * input:pointer to a widget.
- * output:none.
+ * close_window(): closes a widget
+ * @param widget is a pointer to a window.
+ *
  * */
 void close_window(GtkWidget *widget) {
 
@@ -462,10 +460,9 @@ void close_window(GtkWidget *widget) {
 
 }
 
-/*
- * function graph_button_clicked(): opens a window containing buttons that are connected to the displaying of cpu stats
- * input:pointer to a widget.
- * output:none.
+/**
+ *graph_button_clicked(): opens a window containing buttons that are connected to the displaying of cpu stats
+ * @param widget points a button if its tooggled it open or closes a window
  * */
 void graph_button_clicked(GtkWidget *widget) {
 
@@ -514,22 +511,21 @@ void graph_button_clicked(GtkWidget *widget) {
     }
 };
 
-/*
+/**
  * function show_all(): sends command to server about what type of devices it wants to see
- * input:pointer to a widget.
- * output:none.
+ * @param widget pointer to button
  * */
 void show_all(GtkWidget *widget) {
 
     char *proxy = NULL;
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
-        device_all = TRUE;
+        confy.fileS = TRUE;
 
         device_task_commands(proxy, proxy);
 
     } else {
-        device_all = FALSE;
+        confy.fileS = FALSE;
         device_task_commands(proxy, proxy);
     }
 
@@ -591,10 +587,11 @@ void graph_clicked(GtkWidget *widget) {
 }
 
 
-/*
+/**
  * function show_hide(): shows or hides a window depending if the button is pressed or not
- * input:pointer to a button that is being pressed and pointer to window that is connected to that button
- * output:none.
+ * @param button is  pointer to a button that is being pressed
+ * @param window pointer to window that is connected to that button
+ *
  * */
 
 void show_hide(GtkWidget *button, GtkWidget *window) {
@@ -614,9 +611,10 @@ void show_hide(GtkWidget *button, GtkWidget *window) {
 
 
 }
-/*
- * function handle_task_menu(): gets the selected task and send it a signal
- * input:pointer to a button that is being pressed and pointer to the signal that we want to send
+/**
+ *  handle_task_menu(): gets the selected task and send it a signal
+ * @param widget pointer to a button that is being pressed
+ * @param signal pointer to the signal that we want to send
  * output:none.
  * */
 
@@ -639,8 +637,8 @@ void handle_task_menu(GtkWidget *widget, char *signal) {
         }
     }
 }
-/*
- * function handle_task_prio(): gets the selected task and send it a signal
+/**
+ * handle_task_prio(): gets the selected task and send it a signal
  * input:pointer to a button that is being pressed and pointer to the signal that we want to send
  * output:none.
  * */

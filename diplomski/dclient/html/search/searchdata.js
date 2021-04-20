@@ -1,21 +1,24 @@
 var indexSectionsWithContent =
 {
-  0: "_dt",
-  1: "_",
-  2: "dt"
+  0: "cdimntu",
+  1: "cdimntu",
+  2: "m",
+  3: "m"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "variables"
+  2: "files",
+  3: "functions"
 };
 
 var indexSectionLabels =
 {
   0: "All",
-  1: "Classes",
-  2: "Variables"
+  1: "Data Structures",
+  2: "Files",
+  3: "Functions"
 };
 

@@ -10,14 +10,14 @@
 #include <stdbool.h>
 
 
-GtkWidget *dev_window;/*window that contains the list of devices */
-GtkWidget *proc_window;/*window that contains the list of tasks */
-GtkWidget *rec_window;/*window that contains the button for recording */
-GtkWidget *wr_window;/*window that contains the button for writing */
+GtkWidget *dev_window;/**<window that contains the list of devices */
+GtkWidget *proc_window;/**<window that contains the list of tasks */
+GtkWidget *rec_window;/**<window that contains the button for recording */
+GtkWidget *wr_window;/**<window that contains the button for writing */
 bool closed_cpu_window;
 GtkWidget *task_popup;
 
-GtkWidget *button_inc;/*button that when pressed increments the time delay by 250 */
+GtkWidget *button_inc;/**<button that when pressed increments the time delay by 250 */
 GtkWidget *button_dec;/*button that when pressed decreases the time delay by 250 */
 
 

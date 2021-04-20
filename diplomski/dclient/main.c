@@ -13,6 +13,29 @@
 
 
 
+#include <glib.h>
+#include <pango/pangocairo.h>
+
+static void
+list_fonts ()
+{
+    int i;
+    PangoFontFamily ** families;
+    int n_families;
+    PangoFontMap * fontmap;
+
+    fontmap = pango_cairo_font_map_get_default();
+    pango_font_map_list_families (fontmap, & families, & n_families);
+    printf ("There are %d families\n", n_families);
+    for (i = 0; i < n_families; i++) {
+        PangoFontFamily * family = families[i];
+        const char * family_name;
+
+        family_name = pango_font_family_get_name (family);
+        printf ("Family %d: %s\n", i, family_name);
+    }
+    g_free (families);
+}
 
 /**
  *main(): creates a TPC socket and tries to connect to the server,if that was successful
@@ -23,21 +46,25 @@
  * @return returns a non zero value if something goes wrong
  * */
 int main(int argc, char *argv[]) {
-
+    list_fonts ();
         m_data=NULL;
         list_num_size   = 0;
-        t               = 1000; /*what delay we want when asking for data*/
+      //  t               = 1000; /*what delay we want when asking for data*/
         refresh         = 0;
         time_step       = 0;    /*space between data*/
-        device_all      = false;
-        record          = false;
+     //   confy.fileS=  device_all      = false;
+       // confy.record=  record          = false;
         newsockfd       = 0;
         newsockfd1      = 0;
         fontdesc        = NULL;
-        closed_cpu_window=true;
+        closed_cpu_window=false;
+      //  confy.width=800;
+     //   confy.height=400;
+        //  strcpy (confy.font,"Arial 8");
+        //   strcpy (confy.name,"System resource monitor");
 
 
-
+    read_config();
 
     if (argc < 3) {
 
@@ -68,7 +95,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-
+    printf("connection established\n");
     if(!(cpu_num=receive_number_cpu(newsockfd))){
         printf("cpu number failed\n");
         close(newsockfd);
@@ -77,7 +104,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    fontdesc = pango_font_description_from_string ("Arial 8");
+    fontdesc = pango_font_description_from_string (confy.font);
 
 
     cpu_status=calloc((size_t)cpu_num,sizeof(bool));
@@ -112,15 +139,16 @@ int main(int argc, char *argv[]) {
 
 
 
-    time_step = 60000 / t;
+    time_step = 60000 / confy.delay;
 
 
 
-    sem_init(&semt,0,1);
+
 
 
     g_signal_connect (gtkApplication, "activate", G_CALLBACK (activate), NULL);
     g_application_run (G_APPLICATION (gtkApplication), 0, NULL);
+
 
 
 
@@ -152,7 +180,7 @@ int main(int argc, char *argv[]) {
 
 
 
-    sem_destroy(&semt);
+
 
 
 

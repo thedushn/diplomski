@@ -34,7 +34,7 @@ void \hyperlink{application_8c_a9f05b51e2646ff2cb7d1c958c1b61127}{free\+\_\+one\
 \item 
 void \hyperlink{application_8c_ac3da8006dd6202bd94eae1c3e1b48ea9}{free\+\_\+mega\+\_\+data} (\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$$\ast$m\+\_\+ptr)
 \item 
-\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$ \hyperlink{application_8c_a75dab082da0d059329522f212a551855}{allocate\+\_\+stats} ()
+void \hyperlink{application_8c_a666b77983ac7e88b4b39c9666b400817}{allocate\+\_\+stats} (\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$$\ast$n\+\_\+ptr)
 \item 
 gboolean \hyperlink{application_8c_a85dde4c9f3401f0ee086529d7057bb41}{init\+\_\+timeout} ()
 \end{DoxyCompactItemize}
@@ -58,7 +58,7 @@ bool \hyperlink{application_8c_a73503a76232804af8a32caf4ea83ebda}{writing} =true
 \item[{gpointer}]{user\+\_\+data}
 \end{DoxyParamCaption}
 )}\hypertarget{application_8c_adfca91e4388899f97db57d9d1877d27d}{}\label{application_8c_adfca91e4388899f97db57d9d1877d27d}
-\hyperlink{application_8c_adfca91e4388899f97db57d9d1877d27d}{activate()} creates the application , the main window , the cpu window, the graphs the ,labels and menu ,and list 
+\hyperlink{main__header_8h_adfca91e4388899f97db57d9d1877d27d}{activate()} creates the application , the main window , the cpu window, the graphs, the labels and menu ,and lists 
 \begin{DoxyParams}{Parameters}
 {\em app} & \\
 \hline
@@ -70,12 +70,12 @@ void
 \end{DoxyReturn}
 \index{application.\+c@{application.\+c}!allocate\+\_\+stats@{allocate\+\_\+stats}}
 \index{allocate\+\_\+stats@{allocate\+\_\+stats}!application.\+c@{application.\+c}}
-\subsubsection[{\texorpdfstring{allocate\+\_\+stats()}{allocate_stats()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mega\+\_\+\+Data}$\ast$ allocate\+\_\+stats (
+\subsubsection[{\texorpdfstring{allocate\+\_\+stats(\+Mega\+\_\+\+Data $\ast$$\ast$n\+\_\+ptr)}{allocate_stats(Mega_Data **n_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void allocate\+\_\+stats (
 \begin{DoxyParamCaption}
-{}
+\item[{{\bf Mega\+\_\+\+Data} $\ast$$\ast$}]{n\+\_\+ptr}
 \end{DoxyParamCaption}
-)}\hypertarget{application_8c_a75dab082da0d059329522f212a551855}{}\label{application_8c_a75dab082da0d059329522f212a551855}
-\hyperlink{application_8c_a75dab082da0d059329522f212a551855}{allocate\+\_\+stats()} allocates memory used for storing data gather from server
+)}\hypertarget{application_8c_a666b77983ac7e88b4b39c9666b400817}{}\label{application_8c_a666b77983ac7e88b4b39c9666b400817}
+\hyperlink{main__header_8h_a666b77983ac7e88b4b39c9666b400817}{allocate\+\_\+stats()} allocates memory used for storing data gather from server
 
 \begin{DoxyReturn}{Returns}
 pointer to struct \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} 
@@ -99,7 +99,7 @@ void
 \item[{void}]{}
 \end{DoxyParamCaption}
 )}\hypertarget{application_8c_aa1ef1322e246837e62ac66d3282a82e2}{}\label{application_8c_aa1ef1322e246837e62ac66d3282a82e2}
-\hyperlink{application_8c_aa1ef1322e246837e62ac66d3282a82e2}{destroy\+\_\+window()} destroys window \begin{DoxyReturn}{Returns}
+\hyperlink{main__header_8h_aa1ef1322e246837e62ac66d3282a82e2}{destroy\+\_\+window()} destroys window \begin{DoxyReturn}{Returns}
 void 
 \end{DoxyReturn}
 \index{application.\+c@{application.\+c}!free\+\_\+mega\+\_\+data@{free\+\_\+mega\+\_\+data}}
@@ -160,7 +160,7 @@ void.
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{application_8c_aced948150abecae4ca00d888b90c80c8}{}\label{application_8c_aced948150abecae4ca00d888b90c80c8}
-\hyperlink{application_8c_aced948150abecae4ca00d888b90c80c8}{inc\+Refresh()}\+: increments the time that we want the client to request data from server
+\hyperlink{main__header_8h_aced948150abecae4ca00d888b90c80c8}{inc\+Refresh()}\+: increments the time that we want the client to request data from server
 
 \begin{DoxyReturn}{Returns}
 void 
@@ -172,7 +172,7 @@ void
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{application_8c_a85dde4c9f3401f0ee086529d7057bb41}{}\label{application_8c_a85dde4c9f3401f0ee086529d7057bb41}
-\hyperlink{application_8c_a85dde4c9f3401f0ee086529d7057bb41}{init\+\_\+timeout()}\+: sends a request to server and then waits for data,after it got all the data it inputs it in the right places and checks if the list\+\_\+num\+\_\+size is bigger then the L\+I\+S\+T\+\_\+\+S\+I\+ZE if that is the case it removes the oldest element of the list and adds the newest to the begging.\+After the data has been properly handled it displays it in the lists and draws the new data on the graph.\+We check if the function is running in an infinite loop,if not we set it to run in regular intervals that we have set.
+\hyperlink{main__header_8h_a85dde4c9f3401f0ee086529d7057bb41}{init\+\_\+timeout()}\+: sends a request to server and then waits for data,after it got all the data it inputs it in the right places and checks if the list\+\_\+num\+\_\+size is bigger then the L\+I\+S\+T\+\_\+\+S\+I\+ZE if that is the case it removes the oldest element of the list and adds the newest to the begging.\+After the data has been properly handled it displays it in the lists and draws the new data on the graph.\+We check if the function is running in an infinite loop,if not we set it to run in regular intervals that we have set.
 
 \begin{DoxyReturn}{Returns}
 returns T\+R\+UE if we want to continue or F\+A\+L\+SE if we want to stop 
@@ -199,7 +199,7 @@ void
 \item[{Gtk\+Widget $\ast$}]{widget}
 \end{DoxyParamCaption}
 )}\hypertarget{application_8c_a885823bb0982809aaeee2bf5d2d08431}{}\label{application_8c_a885823bb0982809aaeee2bf5d2d08431}
-\hyperlink{application_8c_a885823bb0982809aaeee2bf5d2d08431}{set\+\_\+record()}\+: sets the record flag to true or false depending on if the button is clicked or not 
+\hyperlink{main__header_8h_a885823bb0982809aaeee2bf5d2d08431}{set\+\_\+record()}\+: sets the record flag to true or false depending on if the button is clicked or not 
 \begin{DoxyParams}{Parameters}
 {\em widget} & \\
 \hline
@@ -214,7 +214,7 @@ void
 \item[{long}]{val}
 \end{DoxyParamCaption}
 )}\hypertarget{application_8c_ab3f63558e824d30274893dac0341471a}{}\label{application_8c_ab3f63558e824d30274893dac0341471a}
-\hyperlink{application_8c_ab3f63558e824d30274893dac0341471a}{test\+\_\+strtol()} tests if strtol didnt convert properly 
+\hyperlink{main__header_8h_ab3f63558e824d30274893dac0341471a}{test\+\_\+strtol()} tests if strtol didnt convert properly 
 \begin{DoxyParams}{Parameters}
 {\em val} & \\
 \hline

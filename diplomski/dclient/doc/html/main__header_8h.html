@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Client: main_header.h File Reference</title>
+<title>My Project: main_header.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Client
-   &#160;<span id="projectnumber">1.2</span>
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -150,8 +149,8 @@ Functions</h2></td></tr>
 <tr class="separator:adfca91e4388899f97db57d9d1877d27d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3da8006dd6202bd94eae1c3e1b48ea9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main__header_8h.html#ac3da8006dd6202bd94eae1c3e1b48ea9">free_mega_data</a> (<a class="el" href="struct_mega___data.html">Mega_Data</a> **m_ptr)</td></tr>
 <tr class="separator:ac3da8006dd6202bd94eae1c3e1b48ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75dab082da0d059329522f212a551855"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_mega___data.html">Mega_Data</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main__header_8h.html#a75dab082da0d059329522f212a551855">allocate_stats</a> ()</td></tr>
-<tr class="separator:a75dab082da0d059329522f212a551855"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a666b77983ac7e88b4b39c9666b400817"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main__header_8h.html#a666b77983ac7e88b4b39c9666b400817">allocate_stats</a> (<a class="el" href="struct_mega___data.html">Mega_Data</a> **n_ptr)</td></tr>
+<tr class="separator:a666b77983ac7e88b4b39c9666b400817"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -207,9 +206,6 @@ Variables</h2></td></tr>
 <tr class="separator:ad207a8da58e8a404458d238a8b2829b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a809541a078b73ce8d86ad27114c49f"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main__header_8h.html#a9a809541a078b73ce8d86ad27114c49f">interrupt_num</a></td></tr>
 <tr class="separator:a9a809541a078b73ce8d86ad27114c49f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed31b81aa802f39c562ffe39b3e546a2"><td class="memItemLeft" align="right" valign="top">sem_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main__header_8h.html#aed31b81aa802f39c562ffe39b3e546a2">semt</a></td></tr>
-<tr class="memdesc:aed31b81aa802f39c562ffe39b3e546a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">semaphore for letting the init_timeout function finish before we change the time interval  <a href="#aed31b81aa802f39c562ffe39b3e546a2">More...</a><br /></td></tr>
-<tr class="separator:aed31b81aa802f39c562ffe39b3e546a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5973bc6d2a4fbb8dea0ee47926cbc53b"><td class="memItemLeft" align="right" valign="top">GtkApplication *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main__header_8h.html#a5973bc6d2a4fbb8dea0ee47926cbc53b">gtkApplication</a></td></tr>
 <tr class="memdesc:a5973bc6d2a4fbb8dea0ee47926cbc53b"><td class="mdescLeft">&#160;</td><td class="mdescRight">application  <a href="#a5973bc6d2a4fbb8dea0ee47926cbc53b">More...</a><br /></td></tr>
 <tr class="separator:a5973bc6d2a4fbb8dea0ee47926cbc53b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -290,7 +286,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="application_8c.html#adfca91e4388899f97db57d9d1877d27d">activate()</a> creates the application , the main window , the cpu window, the graphs the ,labels and menu ,and list </p><dl class="params"><dt>Parameters</dt><dd>
+<p><a class="el" href="main__header_8h.html#adfca91e4388899f97db57d9d1877d27d">activate()</a> creates the application , the main window , the cpu window, the graphs, the labels and menu ,and lists </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">app</td><td></td></tr>
     <tr><td class="paramname">user_data</td><td>default </td></tr>
@@ -301,19 +297,20 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a75dab082da0d059329522f212a551855"></a>
+<a class="anchor" id="a666b77983ac7e88b4b39c9666b400817"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="struct_mega___data.html">Mega_Data</a>* allocate_stats </td>
+          <td class="memname">void allocate_stats </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_mega___data.html">Mega_Data</a> **&#160;</td>
+          <td class="paramname"><em>n_ptr</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="application_8c.html#a75dab082da0d059329522f212a551855">allocate_stats()</a> allocates memory used for storing data gather from server</p>
+<p><a class="el" href="main__header_8h.html#a666b77983ac7e88b4b39c9666b400817">allocate_stats()</a> allocates memory used for storing data gather from server</p>
 <dl class="section return"><dt>Returns</dt><dd>pointer to struct <a class="el" href="struct_mega___data.html">Mega_Data</a> </dd></dl>
 
 </div>
@@ -348,7 +345,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="application_8c.html#aa1ef1322e246837e62ac66d3282a82e2">destroy_window()</a> destroys window </p><dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+<p><a class="el" href="main__header_8h.html#aa1ef1322e246837e62ac66d3282a82e2">destroy_window()</a> destroys window </p><dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -454,7 +451,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="application_8c.html#aced948150abecae4ca00d888b90c80c8">incRefresh()</a>: increments the time that we want the client to request data from server</p>
+<p><a class="el" href="main__header_8h.html#aced948150abecae4ca00d888b90c80c8">incRefresh()</a>: increments the time that we want the client to request data from server</p>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
@@ -471,7 +468,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="application_8c.html#a85dde4c9f3401f0ee086529d7057bb41">init_timeout()</a>: sends a request to server and then waits for data,after it got all the data it inputs it in the right places and checks if the list_num_size is bigger then the LIST_SIZE if that is the case it removes the oldest element of the list and adds the newest to the begging.After the data has been properly handled it displays it in the lists and draws the new data on the graph.We check if the function is running in an infinite loop,if not we set it to run in regular intervals that we have set.</p>
+<p><a class="el" href="main__header_8h.html#a85dde4c9f3401f0ee086529d7057bb41">init_timeout()</a>: sends a request to server and then waits for data,after it got all the data it inputs it in the right places and checks if the list_num_size is bigger then the LIST_SIZE if that is the case it removes the oldest element of the list and adds the newest to the begging.After the data has been properly handled it displays it in the lists and draws the new data on the graph.We check if the function is running in an infinite loop,if not we set it to run in regular intervals that we have set.</p>
 <dl class="section return"><dt>Returns</dt><dd>returns TRUE if we want to continue or FALSE if we want to stop </dd></dl>
 
 </div>
@@ -512,7 +509,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="application_8c.html#a885823bb0982809aaeee2bf5d2d08431">set_record()</a>: sets the record flag to true or false depending on if the button is clicked or not </p><dl class="params"><dt>Parameters</dt><dd>
+<p><a class="el" href="main__header_8h.html#a885823bb0982809aaeee2bf5d2d08431">set_record()</a>: sets the record flag to true or false depending on if the button is clicked or not </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">widget</td><td></td></tr>
   </table>
@@ -561,7 +558,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="application_8c.html#ab3f63558e824d30274893dac0341471a">test_strtol()</a> tests if strtol didnt convert properly </p><dl class="params"><dt>Parameters</dt><dd>
+<p><a class="el" href="main__header_8h.html#ab3f63558e824d30274893dac0341471a">test_strtol()</a> tests if strtol didnt convert properly </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">val</td><td></td></tr>
   </table>
@@ -864,20 +861,6 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>time interval for when the client requests data again </p>
-
-</div>
-</div>
-<a class="anchor" id="aed31b81aa802f39c562ffe39b3e546a2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">sem_t semt</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>semaphore for letting the init_timeout function finish before we change the time interval </p>
 
 </div>
 </div>

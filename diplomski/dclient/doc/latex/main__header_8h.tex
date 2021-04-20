@@ -56,7 +56,7 @@ void \hyperlink{main__header_8h_adfca91e4388899f97db57d9d1877d27d}{activate} (Gt
 \item 
 void \hyperlink{main__header_8h_ac3da8006dd6202bd94eae1c3e1b48ea9}{free\+\_\+mega\+\_\+data} (\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$$\ast$m\+\_\+ptr)
 \item 
-\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$ \hyperlink{main__header_8h_a75dab082da0d059329522f212a551855}{allocate\+\_\+stats} ()
+void \hyperlink{main__header_8h_a666b77983ac7e88b4b39c9666b400817}{allocate\+\_\+stats} (\hyperlink{struct_mega___data}{Mega\+\_\+\+Data} $\ast$$\ast$n\+\_\+ptr)
 \end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -113,8 +113,6 @@ long \hyperlink{main__header_8h_ad207a8da58e8a404458d238a8b2829b7}{cpu\+\_\+num}
 \item 
 long \hyperlink{main__header_8h_a9a809541a078b73ce8d86ad27114c49f}{interrupt\+\_\+num}
 \item 
-sem\+\_\+t \hyperlink{main__header_8h_aed31b81aa802f39c562ffe39b3e546a2}{semt}
-\begin{DoxyCompactList}\small\item\em semaphore for letting the init\+\_\+timeout function finish before we change the time interval \end{DoxyCompactList}\item 
 Gtk\+Application $\ast$ \hyperlink{main__header_8h_a5973bc6d2a4fbb8dea0ee47926cbc53b}{gtk\+Application}
 \begin{DoxyCompactList}\small\item\em application \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -150,7 +148,7 @@ main header please work
 \item[{gpointer}]{user\+\_\+data}
 \end{DoxyParamCaption}
 )}\hypertarget{main__header_8h_adfca91e4388899f97db57d9d1877d27d}{}\label{main__header_8h_adfca91e4388899f97db57d9d1877d27d}
-\hyperlink{application_8c_adfca91e4388899f97db57d9d1877d27d}{activate()} creates the application , the main window , the cpu window, the graphs the ,labels and menu ,and list 
+\hyperlink{main__header_8h_adfca91e4388899f97db57d9d1877d27d}{activate()} creates the application , the main window , the cpu window, the graphs, the labels and menu ,and lists 
 \begin{DoxyParams}{Parameters}
 {\em app} & \\
 \hline
@@ -162,12 +160,12 @@ void
 \end{DoxyReturn}
 \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!allocate\+\_\+stats@{allocate\+\_\+stats}}
 \index{allocate\+\_\+stats@{allocate\+\_\+stats}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
-\subsubsection[{\texorpdfstring{allocate\+\_\+stats()}{allocate_stats()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mega\+\_\+\+Data}$\ast$ allocate\+\_\+stats (
+\subsubsection[{\texorpdfstring{allocate\+\_\+stats(\+Mega\+\_\+\+Data $\ast$$\ast$n\+\_\+ptr)}{allocate_stats(Mega_Data **n_ptr)}}]{\setlength{\rightskip}{0pt plus 5cm}void allocate\+\_\+stats (
 \begin{DoxyParamCaption}
-{}
+\item[{{\bf Mega\+\_\+\+Data} $\ast$$\ast$}]{n\+\_\+ptr}
 \end{DoxyParamCaption}
-)}\hypertarget{main__header_8h_a75dab082da0d059329522f212a551855}{}\label{main__header_8h_a75dab082da0d059329522f212a551855}
-\hyperlink{application_8c_a75dab082da0d059329522f212a551855}{allocate\+\_\+stats()} allocates memory used for storing data gather from server
+)}\hypertarget{main__header_8h_a666b77983ac7e88b4b39c9666b400817}{}\label{main__header_8h_a666b77983ac7e88b4b39c9666b400817}
+\hyperlink{main__header_8h_a666b77983ac7e88b4b39c9666b400817}{allocate\+\_\+stats()} allocates memory used for storing data gather from server
 
 \begin{DoxyReturn}{Returns}
 pointer to struct \hyperlink{struct_mega___data}{Mega\+\_\+\+Data} 
@@ -191,7 +189,7 @@ void
 \item[{void}]{}
 \end{DoxyParamCaption}
 )}\hypertarget{main__header_8h_aa1ef1322e246837e62ac66d3282a82e2}{}\label{main__header_8h_aa1ef1322e246837e62ac66d3282a82e2}
-\hyperlink{application_8c_aa1ef1322e246837e62ac66d3282a82e2}{destroy\+\_\+window()} destroys window \begin{DoxyReturn}{Returns}
+\hyperlink{main__header_8h_aa1ef1322e246837e62ac66d3282a82e2}{destroy\+\_\+window()} destroys window \begin{DoxyReturn}{Returns}
 void 
 \end{DoxyReturn}
 \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!device\+\_\+check@{device\+\_\+check}}
@@ -245,7 +243,7 @@ void.
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{main__header_8h_aced948150abecae4ca00d888b90c80c8}{}\label{main__header_8h_aced948150abecae4ca00d888b90c80c8}
-\hyperlink{application_8c_aced948150abecae4ca00d888b90c80c8}{inc\+Refresh()}\+: increments the time that we want the client to request data from server
+\hyperlink{main__header_8h_aced948150abecae4ca00d888b90c80c8}{inc\+Refresh()}\+: increments the time that we want the client to request data from server
 
 \begin{DoxyReturn}{Returns}
 void 
@@ -257,7 +255,7 @@ void
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{main__header_8h_a85dde4c9f3401f0ee086529d7057bb41}{}\label{main__header_8h_a85dde4c9f3401f0ee086529d7057bb41}
-\hyperlink{application_8c_a85dde4c9f3401f0ee086529d7057bb41}{init\+\_\+timeout()}\+: sends a request to server and then waits for data,after it got all the data it inputs it in the right places and checks if the list\+\_\+num\+\_\+size is bigger then the L\+I\+S\+T\+\_\+\+S\+I\+ZE if that is the case it removes the oldest element of the list and adds the newest to the begging.\+After the data has been properly handled it displays it in the lists and draws the new data on the graph.\+We check if the function is running in an infinite loop,if not we set it to run in regular intervals that we have set.
+\hyperlink{main__header_8h_a85dde4c9f3401f0ee086529d7057bb41}{init\+\_\+timeout()}\+: sends a request to server and then waits for data,after it got all the data it inputs it in the right places and checks if the list\+\_\+num\+\_\+size is bigger then the L\+I\+S\+T\+\_\+\+S\+I\+ZE if that is the case it removes the oldest element of the list and adds the newest to the begging.\+After the data has been properly handled it displays it in the lists and draws the new data on the graph.\+We check if the function is running in an infinite loop,if not we set it to run in regular intervals that we have set.
 
 \begin{DoxyReturn}{Returns}
 returns T\+R\+UE if we want to continue or F\+A\+L\+SE if we want to stop 
@@ -284,7 +282,7 @@ void
 \item[{Gtk\+Widget $\ast$}]{widget}
 \end{DoxyParamCaption}
 )}\hypertarget{main__header_8h_a885823bb0982809aaeee2bf5d2d08431}{}\label{main__header_8h_a885823bb0982809aaeee2bf5d2d08431}
-\hyperlink{application_8c_a885823bb0982809aaeee2bf5d2d08431}{set\+\_\+record()}\+: sets the record flag to true or false depending on if the button is clicked or not 
+\hyperlink{main__header_8h_a885823bb0982809aaeee2bf5d2d08431}{set\+\_\+record()}\+: sets the record flag to true or false depending on if the button is clicked or not 
 \begin{DoxyParams}{Parameters}
 {\em widget} & \\
 \hline
@@ -307,7 +305,7 @@ void
 \item[{long}]{val}
 \end{DoxyParamCaption}
 )}\hypertarget{main__header_8h_ab3f63558e824d30274893dac0341471a}{}\label{main__header_8h_ab3f63558e824d30274893dac0341471a}
-\hyperlink{application_8c_ab3f63558e824d30274893dac0341471a}{test\+\_\+strtol()} tests if strtol didnt convert properly 
+\hyperlink{main__header_8h_ab3f63558e824d30274893dac0341471a}{test\+\_\+strtol()} tests if strtol didnt convert properly 
 \begin{DoxyParams}{Parameters}
 {\em val} & \\
 \hline
@@ -400,14 +398,7 @@ $>$widget for creating the graph buttons window \index{main\+\_\+header.\+h@{mai
 \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!refresh@{refresh}}
 \index{refresh@{refresh}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
 \subsubsection[{\texorpdfstring{refresh}{refresh}}]{\setlength{\rightskip}{0pt plus 5cm}guint refresh}\hypertarget{main__header_8h_ae0beb4483f54c44e7151d478dceea936}{}\label{main__header_8h_ae0beb4483f54c44e7151d478dceea936}
-time interval for when the client requests data again \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!semt@{semt}}
-\index{semt@{semt}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
-\subsubsection[{\texorpdfstring{semt}{semt}}]{\setlength{\rightskip}{0pt plus 5cm}sem\+\_\+t semt}\hypertarget{main__header_8h_aed31b81aa802f39c562ffe39b3e546a2}{}\label{main__header_8h_aed31b81aa802f39c562ffe39b3e546a2}
-
-
-semaphore for letting the init\+\_\+timeout function finish before we change the time interval 
-
-\index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!t@{t}}
+time interval for when the client requests data again \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!t@{t}}
 \index{t@{t}!main\+\_\+header.\+h@{main\+\_\+header.\+h}}
 \subsubsection[{\texorpdfstring{t}{t}}]{\setlength{\rightskip}{0pt plus 5cm}guint t}\hypertarget{main__header_8h_ae1a64c1625afd8788828dca15a017ee3}{}\label{main__header_8h_ae1a64c1625afd8788828dca15a017ee3}
 \index{main\+\_\+header.\+h@{main\+\_\+header.\+h}!task\+\_\+num\+\_\+old@{task\+\_\+num\+\_\+old}}

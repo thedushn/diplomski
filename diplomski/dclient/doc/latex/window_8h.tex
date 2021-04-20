@@ -60,6 +60,14 @@ Gtk\+Widget $\ast$ \hyperlink{window_8h_aca4c4aa894124903b49081f2396ca71b}{C\+P\
 \item[{{\bf Cpu\+\_\+usage} $\ast$}]{cpu\+\_\+usage}
 \end{DoxyParamCaption}
 )}\hypertarget{window_8h_a3dcf1eb9379e3dfc0d6d96a93650a893}{}\label{window_8h_a3dcf1eb9379e3dfc0d6d96a93650a893}
+function \hyperlink{window_8c_a3dcf1eb9379e3dfc0d6d96a93650a893}{cpu\+\_\+change()}\+: inputs cpu usage into list and displays it textually in window 
+\begin{DoxyParams}{Parameters}
+{\em cpu\+\_\+usage} & pointer to structure of cpu\+\_\+usage usage \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
 \index{window.\+h@{window.\+h}!cpu\+Window@{cpu\+Window}}
 \index{cpu\+Window@{cpu\+Window}!window.\+h@{window.\+h}}
 \subsubsection[{\texorpdfstring{cpu\+Window(int cpu\+Number, Gtk\+Widget $\ast$$\ast$graph\+List)}{cpuWindow(int cpuNumber, GtkWidget **graphList)}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ cpu\+Window (
@@ -68,21 +76,39 @@ Gtk\+Widget $\ast$ \hyperlink{window_8h_aca4c4aa894124903b49081f2396ca71b}{C\+P\
 \item[{Gtk\+Widget $\ast$$\ast$}]{graph\+List}
 \end{DoxyParamCaption}
 )}\hypertarget{window_8h_aebf173aec73c09609b5464bc6de9bd14}{}\label{window_8h_aebf173aec73c09609b5464bc6de9bd14}
+\hyperlink{window_8c_aebf173aec73c09609b5464bc6de9bd14}{cpu\+Window()} creates a window that contains graphs of all the individual cpu stats 
+\begin{DoxyParams}{Parameters}
+{\em cpu\+Number} & number of cpus \\
+\hline
+{\em graph\+List} & double pointer to the list of graphs \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer to the window we created 
+\end{DoxyReturn}
 \index{window.\+h@{window.\+h}!main\+\_\+window@{main\+\_\+window}}
 \index{main\+\_\+window@{main\+\_\+window}!window.\+h@{window.\+h}}
 \subsubsection[{\texorpdfstring{main\+\_\+window(\+Gtk\+Widget $\ast$des\+\_\+swindow, Gtk\+Widget $\ast$proc\+\_\+swindow)}{main_window(GtkWidget *des_swindow, GtkWidget *proc_swindow)}}]{\setlength{\rightskip}{0pt plus 5cm}Gtk\+Widget$\ast$ main\+\_\+window (
 \begin{DoxyParamCaption}
-\item[{Gtk\+Widget $\ast$}]{des\+\_\+swindow, }
-\item[{Gtk\+Widget $\ast$}]{proc\+\_\+swindow}
+\item[{Gtk\+Widget $\ast$}]{dev\+\_\+swindow, }
+\item[{Gtk\+Widget $\ast$}]{process\+\_\+swindow}
 \end{DoxyParamCaption}
 )}\hypertarget{window_8h_aa0a0db4216e3ba5f425993b0179768e8}{}\label{window_8h_aa0a0db4216e3ba5f425993b0179768e8}
-\index{window.\+h@{window.\+h}!memory\+Change@{memory\+Change}}
+\hyperlink{window_8c_a8810b465cdf9b06e5b08cba2f90cdffb}{main\+\_\+window()}\+: creates the main window and all the components in it input\+:pointer to the device window, pointer to the process window; output\+: main window \index{window.\+h@{window.\+h}!memory\+Change@{memory\+Change}}
 \index{memory\+Change@{memory\+Change}!window.\+h@{window.\+h}}
 \subsubsection[{\texorpdfstring{memory\+Change(\+Memory\+\_\+usage $\ast$memory\+Usage)}{memoryChange(Memory_usage *memoryUsage)}}]{\setlength{\rightskip}{0pt plus 5cm}void memory\+Change (
 \begin{DoxyParamCaption}
 \item[{{\bf Memory\+\_\+usage} $\ast$}]{memory\+Usage}
 \end{DoxyParamCaption}
 )}\hypertarget{window_8h_a4a9307b1c73292ad31e4d7eb7e977481}{}\label{window_8h_a4a9307b1c73292ad31e4d7eb7e977481}
+memory\+\_\+change()\+: inputs memory usage into list and displays it textually in window 
+\begin{DoxyParams}{Parameters}
+{\em memory\+Usage} & pointer to memory usage \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
 \index{window.\+h@{window.\+h}!network\+\_\+change@{network\+\_\+change}}
 \index{network\+\_\+change@{network\+\_\+change}!window.\+h@{window.\+h}}
 \subsubsection[{\texorpdfstring{network\+\_\+change(\+Network $\ast$network)}{network_change(Network *network)}}]{\setlength{\rightskip}{0pt plus 5cm}void network\+\_\+change (
@@ -90,13 +116,29 @@ Gtk\+Widget $\ast$ \hyperlink{window_8h_aca4c4aa894124903b49081f2396ca71b}{C\+P\
 \item[{{\bf Network} $\ast$}]{network}
 \end{DoxyParamCaption}
 )}\hypertarget{window_8h_a942f896ef79d0a9f7e2f815496441921}{}\label{window_8h_a942f896ef79d0a9f7e2f815496441921}
-function \hyperlink{window_8c_a942f896ef79d0a9f7e2f815496441921}{network\+\_\+change()}\+: inputs network usage into list and displays it textually in window input\+: pointer to Network usage output\+: none \index{window.\+h@{window.\+h}!swap\+\_\+change@{swap\+\_\+change}}
+\hyperlink{window_8c_a942f896ef79d0a9f7e2f815496441921}{network\+\_\+change()}\+: inputs network usage into list and displays it textually in window 
+\begin{DoxyParams}{Parameters}
+{\em network} & pointer to Network usage \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\index{window.\+h@{window.\+h}!swap\+\_\+change@{swap\+\_\+change}}
 \index{swap\+\_\+change@{swap\+\_\+change}!window.\+h@{window.\+h}}
 \subsubsection[{\texorpdfstring{swap\+\_\+change(\+Memory\+\_\+usage $\ast$memory\+Usage)}{swap_change(Memory_usage *memoryUsage)}}]{\setlength{\rightskip}{0pt plus 5cm}void swap\+\_\+change (
 \begin{DoxyParamCaption}
 \item[{{\bf Memory\+\_\+usage} $\ast$}]{memory\+Usage}
 \end{DoxyParamCaption}
 )}\hypertarget{window_8h_ac87fca07cb90eaf8e4cd8d5bd19e56c3}{}\label{window_8h_ac87fca07cb90eaf8e4cd8d5bd19e56c3}
+\hyperlink{window_8c_ac87fca07cb90eaf8e4cd8d5bd19e56c3}{swap\+\_\+change()}\+: inputs swap usage into list and displays it textually in window 
+\begin{DoxyParams}{Parameters}
+{\em memory\+Usage} & pointer to memory usage \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
 
 
 \subsection{Variable Documentation}

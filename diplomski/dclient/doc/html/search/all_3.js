@@ -35,7 +35,7 @@ var searchData=
   ['connection',['connection',['../functions_8c.html#a9edcf5904352d1a0ec6303270df431b8',1,'connection(char *argv1, char *argv2):&#160;functions.c'],['../functions_8h.html#a9edcf5904352d1a0ec6303270df431b8',1,'connection(char *argv1, char *argv2):&#160;functions.c']]],
   ['cpu_5fbuttons',['cpu_buttons',['../buttons_8h.html#a43b4eb0d838e96bf1167b1347f8689a3',1,'buttons.h']]],
   ['cpu_5fchange',['cpu_change',['../window_8c.html#a3dcf1eb9379e3dfc0d6d96a93650a893',1,'cpu_change(Cpu_usage *cpu_usage):&#160;window.c'],['../window_8h.html#a3dcf1eb9379e3dfc0d6d96a93650a893',1,'cpu_change(Cpu_usage *cpu_usage):&#160;window.c']]],
-  ['cpu_5flist',['Cpu_List',['../struct_cpu___list.html',1,'Cpu_List'],['../main__header_8h.html#aff2a7bcc7cd598cf43d7ae15bf1a6594',1,'Cpu_list():&#160;main_header.h'],['../main__header_8h.html#a675c54634f2e2f4c1b8a25651412aa68',1,'cpu_list():&#160;main_header.h']]],
+  ['cpu_5flist',['Cpu_List',['../struct_cpu___list.html',1,'Cpu_List'],['../main__header_8h.html#a675c54634f2e2f4c1b8a25651412aa68',1,'cpu_list():&#160;main_header.h'],['../main__header_8h.html#aff2a7bcc7cd598cf43d7ae15bf1a6594',1,'Cpu_list():&#160;main_header.h']]],
   ['cpu_5fnum',['cpu_num',['../main__header_8h.html#ad207a8da58e8a404458d238a8b2829b7',1,'main_header.h']]],
   ['cpu_5fpack',['CPU_PACK',['../common_8h.html#a1455df81b7812e15181e0a86566b3fe6',1,'common.h']]],
   ['cpu_5fread',['cpu_read',['../testing_8c.html#ae4accef2c4c7c343475c09a341cb5150',1,'cpu_read(Cpu_list **array):&#160;testing.c'],['../testing_8h.html#ae4accef2c4c7c343475c09a341cb5150',1,'cpu_read(Cpu_list **array):&#160;testing.c']]],

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Client: buttons.c File Reference</title>
+<title>My Project: buttons.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Client
-   &#160;<span id="projectnumber">1.2</span>
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -96,8 +95,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Functions</h2></td></tr>
 <tr class="memitem:aad30ab19357e49aef209f7d17f0ece8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buttons_8c.html#aad30ab19357e49aef209f7d17f0ece8f">process_window</a> ()</td></tr>
 <tr class="separator:aad30ab19357e49aef209f7d17f0ece8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6b26ac41f779ea0f331518a4395df2d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buttons_8c.html#ad6b26ac41f779ea0f331518a4395df2d">record_window</a> ()</td></tr>
-<tr class="separator:ad6b26ac41f779ea0f331518a4395df2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a939a2e1eb10ab1bc9214ffaef81c71ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buttons_8c.html#a939a2e1eb10ab1bc9214ffaef81c71ae">recordWindow</a> ()</td></tr>
+<tr class="separator:a939a2e1eb10ab1bc9214ffaef81c71ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afaa98283beeb172a49cf86153e04ec04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buttons_8c.html#afaa98283beeb172a49cf86153e04ec04">device_window</a> ()</td></tr>
 <tr class="separator:afaa98283beeb172a49cf86153e04ec04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8eeca6e9b21332d334fa0fc3a7b7de03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="buttons_8c.html#a8eeca6e9b21332d334fa0fc3a7b7de03">close_window_toggled</a> ()</td></tr>
@@ -135,7 +134,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>function <a class="el" href="buttons_8c.html#a770d96b4e5ab9b448e945d246a2e1bfc">close_window()</a>: closes a widget input:pointer to a widget. output:none. </p>
+<p><a class="el" href="buttons_8c.html#a770d96b4e5ab9b448e945d246a2e1bfc">close_window()</a>: closes a widget </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">widget</td><td>is a pointer to a window. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -151,7 +155,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>function <a class="el" href="buttons_8c.html#a8eeca6e9b21332d334fa0fc3a7b7de03">close_window_toggled()</a>: when the graph window is closed we set the button graph to not be clicked input:none. output:none. </p>
+<p><a class="el" href="buttons_8c.html#a8eeca6e9b21332d334fa0fc3a7b7de03">close_window_toggled()</a>: when the graph window is closed we set the button graph to not be clicked </p>
 
 </div>
 </div>
@@ -183,7 +187,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>function <a class="el" href="buttons_8c.html#afaa98283beeb172a49cf86153e04ec04">device_window()</a>: create a window with buttons that represent columns in the device list when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on the columns visibility input:none. output:none. </p>
+<p><a class="el" href="buttons_8c.html#afaa98283beeb172a49cf86153e04ec04">device_window()</a>: create a window with buttons that represent columns in the device list when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on the columns visibility </p>
 
 </div>
 </div>
@@ -200,6 +204,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p><a class="el" href="buttons_8c.html#ad181ed44ae7e96bd148cfc4031eeb656">graph_button_clicked()</a>: opens a window containing buttons that are connected to the displaying of cpu stats </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">widget</td><td>points a button if its tooggled it open or closes a window </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -216,6 +226,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p><a class="el" href="buttons_8c.html#ad5417bf2e527352cd0a78ca62663ee5a">graph_clicked()</a>: draws specific cpus depending on which button is pressed </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">widget</td><td>is a pointer to a button that when toggled shows graph of the cpu </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -242,6 +259,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p><a class="el" href="buttons_8c.html#a36edf36b7ed5a1d7616e421cb9462b8f">handle_task_menu()</a>: gets the selected task and send it a signal </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">widget</td><td>pointer to a button that is being pressed </td></tr>
+    <tr><td class="paramname">signal</td><td>pointer to the signal that we want to send output:none. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -268,6 +292,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p><a class="el" href="buttons_8c.html#a5298134744eb95b0373bae553d185bf7">handle_task_prio()</a>: gets the selected task and send it a signal input:pointer to a button that is being pressed and pointer to the signal that we want to send output:none. </p>
 
 </div>
 </div>
@@ -310,23 +335,24 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>function <a class="el" href="buttons_8c.html#aad30ab19357e49aef209f7d17f0ece8f">process_window()</a>: create a window with buttons that represent columns in the task list when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on the columns visibility input:none. output:none. </p>
+<p><a class="el" href="buttons_8c.html#aad30ab19357e49aef209f7d17f0ece8f">process_window()</a>: create a window with buttons that represent columns in the task list when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on the columns visibility</p>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ad6b26ac41f779ea0f331518a4395df2d"></a>
+<a class="anchor" id="a939a2e1eb10ab1bc9214ffaef81c71ae"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void record_window </td>
+          <td class="memname">void recordWindow </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>function <a class="el" href="buttons_8c.html#ad6b26ac41f779ea0f331518a4395df2d">record_window()</a> creates a window that holds the record button input : none otput : none </p>
+<p>record_window() creates a window that holds the record button </p>
 
 </div>
 </div>
@@ -343,6 +369,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>function <a class="el" href="buttons_8c.html#aa93e77cbafdf616c637182c48db42c91">show_all()</a>: sends command to server about what type of devices it wants to see </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">widget</td><td>pointer to button </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -369,6 +401,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>function <a class="el" href="buttons_8c.html#aa62b2006edbe70015a79c1457f4a3729">show_hide()</a>: shows or hides a window depending if the button is pressed or not </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">button</td><td>is pointer to a button that is being pressed </td></tr>
+    <tr><td class="paramname">window</td><td>pointer to window that is connected to that button </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

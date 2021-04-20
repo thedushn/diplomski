@@ -73,9 +73,11 @@ ssize_t test_send(int socket) {
     Data data;
 
     memset(&data, 0, sizeof(Data));
-
+    printf("entered test send\n");
+    fflush(stdout);
     ret = recv(socket, &data, sizeof(Data), 0);
-
+    printf("received test send\n");
+    fflush(stdout);
     if (ret < 0) {
 
         printf("error receiving data\n %d", (int) ret);
@@ -329,7 +331,8 @@ void *sending(void *socket) {
     pthread_cond_init(&cpu_cond,NULL);
     int return_value;
     char buffer[128];
-
+    printf("entered sending\n");
+    fflush(stdout);
 
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr,PTHREAD_CREATE_JOINABLE);
@@ -347,7 +350,8 @@ void *sending(void *socket) {
 
 
 
-
+        printf("inside the transfer \n");
+        fflush(stdout);
 
         if ((return_value=pthread_create(&thr_pack_m[0].thread_id, &attr, send_memory,&thr_pack_m[0])) != 0) {/*if the server fails to create the thread we tell the other threads to exit*/
 

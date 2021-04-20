@@ -18,13 +18,7 @@ GtkWidget *window; //!< main window
 bool flagTimeout=true;//!<flag for letting the init_timeout function know what to do
 
 bool writing=true; //!<is recording being done
-/**
- * activate() creates the application , the main window ,
- * the cpu window, the graphs the ,labels and menu ,and list
- * @param app
- * @param user_data default
- * @return void
- * */
+
 void
 activate (GtkApplication *app,
           gpointer        user_data)
@@ -66,15 +60,20 @@ activate (GtkApplication *app,
 
 
     window = gtk_application_window_new (app);
-    gtk_window_set_title(GTK_WINDOW(window), "System resource monitor");
+    gtk_window_set_title(GTK_WINDOW(window), confy.name);
+    g_signal_connect(G_OBJECT(window), "destroy",
+                     G_CALLBACK(destroy_window), NULL);
 
-    CPU_WINDOW= cpuWindow((int) cpu_num, &cpuGraphs);
-    g_signal_connect(G_OBJECT(CPU_WINDOW), "destroy",
-                     G_CALLBACK(close_window), CPU_WINDOW);
+    if(closed_cpu_window){
+        CPU_WINDOW= cpuWindow((int) cpu_num, &cpuGraphs);
+        g_signal_connect(G_OBJECT(CPU_WINDOW), "destroy",
+                         G_CALLBACK(close_window), CPU_WINDOW);
+    }
 
 
-    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-    gtk_window_set_default_size(GTK_WINDOW(window), 800, 400);
+
+    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_MOUSE);
+    gtk_window_set_default_size(GTK_WINDOW(window),(gint) confy.width, (gint) confy.height);
 
 
     device_swindow = gtk_scrolled_window_new(NULL, NULL);
@@ -142,6 +141,7 @@ activate (GtkApplication *app,
 
 
     g_signal_connect(quit, "activate", G_CALLBACK(destroy_window), NULL);
+
 
     g_signal_connect(increaseRefresh, "activate", G_CALLBACK(incRefresh), NULL);
     g_signal_connect(decrease_refresh, "activate", G_CALLBACK(decRefresh), NULL);
@@ -296,75 +296,79 @@ activate (GtkApplication *app,
     g_signal_connect_swapped ((gpointer) treeview_tasks, "button-press-event",
                               G_CALLBACK(on_treeview_tasks_button_press_event),
                               NULL);
-
+    printf("entered infitine loop\n");
+    fflush(stdout);
     init_timeout();  /*starting the infinite loop for asking for data and drawing it*/
 
 }
-/**
- *set_record(): sets the record flag to true or false depending on if the button is clicked or not
- * @param widget
- * @return void
- * */
+
 void set_record(GtkWidget *widget){
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
 
-        record = true;
-        sem_post(&semt);
+        confy.record = true;
+
 
 
     } else {
-        sem_wait(&semt);
-        record = false;
-        sem_post(&semt);
+
+        confy.record = false;
+
     }
 
 
 }
-/**
- * destroy_window() destroys window
- * @return void
- *
- * */
+
 void destroy_window(void) {
 
-    sem_wait(&semt);
+    printf("HI %s \n",__func__);
+    fflush(stdout);
+//    GtkWidget *windo;
+//    GtkWidget *button;
+//    GtkWidget *button_box;
+//
+//    windo= gtk_application_window_new (gtkApplication);
+//    gtk_window_set_title (GTK_WINDOW (windo), "Window");
+//    gtk_window_set_default_size (GTK_WINDOW (windo), 200, 200);
+//    gtk_window_set_position(GTK_WINDOW(windo), GTK_WIN_POS_CENTER);
+//    button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+//    gtk_container_add (GTK_CONTAINER (windo), button_box);
+//
+//    button = gtk_button_new_with_label ("Hello World");
+//  //  g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
+//    g_signal_connect_swapped (button, "clicked", G_CALLBACK (gtk_widget_destroy), windo);
+//    gtk_container_add (GTK_CONTAINER (button_box), button);
+//
+//    gtk_widget_show_all (windo);
+
+
     g_application_quit(G_APPLICATION(gtkApplication));
-    sem_post(&semt);
+
 }
-/**
- * test_strtol() tests if strtol didnt convert properly
- * @param val
- * @return void
- *
- * */
+
 void test_strtol(long val) {
 
 
     if ((errno == ERANGE && (val == LONG_MAX || val == LONG_MIN))
         || (errno != 0 )) {
         perror("strtol");
-        sem_wait(&semt);
+
 
         g_application_quit(G_APPLICATION(gtkApplication));
 
-        sem_post(&semt);
+
     }
 
 
 }
-/**
- * incRefresh(): increments the time that we want the client to request data from server
- *
- * @return void
- * */
+
 void incRefresh() {
 
-    if (t >= 10000) {
+    if (confy.delay >= 10000) {
 
-        t = 10000;
+        confy.delay = 10000;
     } else {
-        t += 250;
+        confy.delay += 250;
     }
 
     timeout_refresh();
@@ -372,35 +376,27 @@ void incRefresh() {
 
 }
 
-/**
- * decRefresh(): decrease the time that we want the client to request data from server
 
- * @return void
- * */
 void decRefresh() {
 
 
-    if (t <= 250) {
-        t = 250;
+    if (confy.delay <= 250) {
+        confy.delay = 250;
 
 
     } else {
-        t -= 250;
+        confy.delay -= 250;
     }
 
     timeout_refresh();
 
 }
-/**
- * pause_app(): stops or restarts the client from to requesting data from server
- * @param button if the button is toggled it pauses the data gathering
- * @return void
- * */
+
 void pause_app(GtkWidget *button) {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (button))) {
 
-        sem_wait(&semt);
+
         if(refresh>0)
             if (!g_source_remove(refresh)) {
                 g_critical ("Unable to remove source");
@@ -408,7 +404,7 @@ void pause_app(GtkWidget *button) {
             }
 
         refresh = 0;
-        sem_post(&semt);
+
 
 
 
@@ -421,15 +417,11 @@ void pause_app(GtkWidget *button) {
 
 
 
-/**
- * timeout_refresh(): reruns the function init_timeout and tells the previous version to stop
- *
- * @return void
- * */
+
 void timeout_refresh() {
 
 
-    sem_wait(&semt);
+
     if(refresh>0)
         if (!g_source_remove(refresh)) {
             g_critical ("Unable to remove source");
@@ -438,7 +430,7 @@ void timeout_refresh() {
 
     refresh = 0;
     flagTimeout=false;
-    sem_post(&semt);
+
     init_timeout();
 
 }
@@ -446,13 +438,6 @@ void timeout_refresh() {
 
 
 
-/**
- * freeingMemory(): frees different types of memory
- * @param array
- * @param array_size
- * @param type of the array.
- * @return  void.
- * */
 
 
 void freeingMemory(void *array, __int32_t *array_size, int type){
@@ -559,11 +544,7 @@ void freeingMemory(void *array, __int32_t *array_size, int type){
     }
 
 }
-/**
- * free_one_mega_data() frees the allocated memory of one element of a list of Mega_Data structs
- * @param m_ptr
- * @return void
- * */
+
 void  free_one_mega_data(Mega_Data *m_ptr){
     Mega_Data       *temp_ptr;
     T_Collection    *temp_task;
@@ -615,11 +596,108 @@ void  free_one_mega_data(Mega_Data *m_ptr){
     }
 
 }
-/**
- * free_mega_data() frees the allocated memory for a doubly linked list of Mega_Data structs
- * @param m_ptr
- * @return void
- * */
+
+int read_config(){
+
+    FILE *fp;
+    char *filename = "config.txt";
+    char buffer[1024];
+    int i=0;
+    char *p;
+    if ((fp = fopen(filename, "r")) == NULL)
+        return 1;
+
+    while((fgets(buffer,1024,fp))!=NULL){
+
+        if(strncmp(buffer,"APPLICATION_NAME:",17)==0){
+            p=&buffer[17];
+            while(*p==' '){
+                p++;
+            }
+           while(*p!='\n'){
+               confy.name[i++]=*p++;
+           }
+
+
+            continue;
+        }
+        if(strncmp(buffer,"WINDOW_SIZE:",11)==0){
+
+           sscanf( buffer,"WINDOW_SIZE: %d %d",&confy.width,&confy.height);
+
+            continue;
+        }
+        if(strncmp(buffer,"DELAY:",6)==0){
+
+            sscanf( buffer,"DELAY: %d",&confy.delay);
+
+            continue;
+        }
+        if(strncmp(buffer,"RECORD:",7)==0){
+
+            p=&buffer[7];
+
+            while(*p==' '){
+                p++;
+            }
+            if(strncmp(p,"FALSE",5)==0 ||strncmp(p,"false",4)==0){
+                confy.record=false;
+
+            }else if(strncmp(p,"TRUE",4)==0 || strncmp(p,"true",4)==0){
+                confy.record=true;
+
+            }
+
+
+
+
+            continue;
+        }
+        if(strncmp(buffer,"FILE_SYSTEMS:",13)==0){
+
+            p=&buffer[13];
+
+            while(*p==' '){
+                p++;
+            }
+            if(strncmp(p,"FALSE",5)==0){
+                confy.fileS=false;
+
+            }else if(strncmp(p,"TRUE",4)==0){
+                confy.fileS=true;
+
+            }
+
+            continue;
+
+        }
+        if(strncmp(buffer,"FONT:",5)==0){
+
+            p=&buffer[5];
+
+            while(*p==' '){
+                p++;
+            }
+            i=0;
+            while(*p!='\n' && i<256){
+                confy.font[i++]=*p++;
+            }
+
+
+
+
+
+            continue;
+
+        }
+
+
+
+    }
+
+return 0;
+
+}
 void  free_mega_data(Mega_Data **m_ptr){
     Mega_Data       *temp_ptr;
     T_Collection    *temp_task;
@@ -668,25 +746,26 @@ void  free_mega_data(Mega_Data **m_ptr){
     }
     (*m_ptr)=NULL;
 }
-/**
- * allocate_stats() allocates memory used for storing data gather from server
- *
- * @returns pointer to struct  Mega_Data
- * */
-Mega_Data *allocate_stats(){
+
+void allocate_stats(Mega_Data **n_ptr) {
     Mega_Data *ptr;
+
     ptr=(Mega_Data*) calloc(1,sizeof(Mega_Data));
     if(ptr==NULL){
         printf("calloc error %d \n", errno);
         free(ptr);
-        return NULL;
+        *n_ptr=NULL;
+        return ;
     }
-    ptr->cpu_stats=calloc(cpu_num,sizeof(ptr->cpu_stats));
+    *n_ptr=ptr;
+    ptr->cpu_stats=calloc((size_t)cpu_num,sizeof(ptr->cpu_stats));
     if(ptr->cpu_stats==NULL){
         printf("calloc error %d \n", errno);
         free(ptr->cpu_stats);
+        ptr->cpu_stats=NULL;
         free(ptr);
-        return NULL;
+        ptr=NULL;
+        return ;
     }
 
 
@@ -694,18 +773,25 @@ Mega_Data *allocate_stats(){
     if(ptr->net_stats==NULL){
         printf("calloc error %d \n", errno);
         free(ptr->net_stats);
+        ptr->net_stats=NULL;
         free(ptr->cpu_stats);
+        ptr->cpu_stats=NULL;
         free(ptr);
-        return NULL;
+        ptr=NULL;
+        return ;
     }
     ptr->mem_stats=calloc(2,sizeof(ptr->mem_stats));
     if(ptr->mem_stats==NULL){
         printf("calloc error %d \n", errno);
         free(ptr->mem_stats);
+        ptr->net_stats=NULL;
         free(ptr->net_stats);
+        ptr->net_stats=NULL;
         free(ptr->cpu_stats);
+        ptr->cpu_stats=NULL;
         free(ptr);
-        return NULL;
+        ptr=NULL;
+        return ;
     }
     ptr->next=m_data;
     if(m_data!=NULL){
@@ -716,17 +802,9 @@ Mega_Data *allocate_stats(){
     }
     m_data=ptr;
 
-    return ptr;
+
 }
-/**
- * init_timeout(): sends a request to server and then waits for data,after it got all the data it inputs it in
- * the right places and checks if the list_num_size is bigger then the LIST_SIZE if that is the case it removes the
- * oldest element of the list and adds the newest to the begging.After the data has been properly handled it displays it
- * in the lists and draws the new data on the graph.We check if the function is running in an infinite loop,if not we
- * set it to run in regular intervals that we have set.
- *
- * @return  returns TRUE if we want to continue or FALSE if we want to stop
- * */
+
 
 gboolean init_timeout() {
 
@@ -743,8 +821,6 @@ gboolean init_timeout() {
 
     Mega_Data       *temp_mega  ;
 
-    sem_wait(&semt);
-
 
 
 
@@ -756,11 +832,11 @@ gboolean init_timeout() {
 
 
         g_application_quit(G_APPLICATION(gtkApplication));
-        sem_post(&semt);
+
         return FALSE;
     }
 
-    cpu_usage.percentage=calloc(cpu_num,sizeof(char[16]));
+    cpu_usage.percentage=calloc((size_t)cpu_num,sizeof(char[16]));
     if(cpu_usage.percentage==NULL){
         printf("calloc error %d \n", errno);
         free(cpu_usage.percentage);
@@ -769,13 +845,13 @@ gboolean init_timeout() {
 
         g_application_quit(G_APPLICATION(gtkApplication));
 
-        sem_post(&semt);
+
         return FALSE;
     }
 
 
 
-    temp_mega=allocate_stats();
+    allocate_stats(&temp_mega);
     if(temp_mega==NULL){
         printf("calloc error %d \n", errno);
         free(temp_mega);
@@ -788,7 +864,7 @@ gboolean init_timeout() {
 
         g_application_quit(G_APPLICATION(gtkApplication));
 
-        sem_post(&semt);
+
 
         return FALSE;
 
@@ -809,14 +885,14 @@ gboolean init_timeout() {
 
 
         g_application_quit(G_APPLICATION(gtkApplication));
-        sem_post(&semt);
+
 
         return FALSE;
     }
 
 
 
-    if((device_check(temp_mega->device_list, dev_num))!=0){
+    if((device_check(temp_mega->device_list, &devices_old))!=0){
 
 
         free(cpu_usage.percentage);
@@ -827,13 +903,13 @@ gboolean init_timeout() {
 
         g_application_quit(G_APPLICATION(gtkApplication));
 
-        sem_post(&semt);
+
         return FALSE;
 
     }
 
 
-    if(( task_check(temp_mega->task_list, task_num))!=0){
+    if(( task_check(temp_mega->task_list, &tasks_old))!=0){
         free(cpu_usage.percentage);
 
 
@@ -842,7 +918,7 @@ gboolean init_timeout() {
 
         g_application_quit(G_APPLICATION(gtkApplication));
 
-        sem_post(&semt);
+
 
         return FALSE;
 
@@ -867,7 +943,7 @@ gboolean init_timeout() {
 
     }
 
-    if(record){
+    if(confy.record){
 
 
         if(writing==true){//beginning
@@ -928,7 +1004,7 @@ gboolean init_timeout() {
     free(cpu_usage.percentage);
 
 
-    time_step = 60000 / t;
+    time_step = 60000 / confy.delay;
 
     gtk_widget_queue_draw(graph1);
     gtk_widget_queue_draw(graphNet);
@@ -947,10 +1023,10 @@ gboolean init_timeout() {
     if (refresh == 0){
 
 
-        refresh = g_timeout_add(t, (GSourceFunc) init_timeout, NULL);
+        refresh = g_timeout_add(confy.delay, (GSourceFunc) init_timeout, NULL);
 
     }
-    sem_post(&semt);
+
     if(flagTimeout== false){
 
         flagTimeout=true;

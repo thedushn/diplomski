@@ -14,22 +14,29 @@
 
 
 
-GtkTreeSelection *selection; /*so we know which task we clicked*/
+GtkTreeSelection *selection; /*!so we know which task we clicked*/
 GtkCellRenderer *cell_renderer;
 GtkWidget *treeview_tasks; /*!treeview for tasks*/
 GtkWidget *treeview_devices;/*!treeview for devices*/
 
-GtkTreeStore *list_tasks; /*liststore for tasks*/
-GtkTreeStore *list_devices; /*liststore for devices*/
+GtkTreeStore *list_tasks; /*!liststore for tasks*/
+GtkTreeStore *list_devices; /*!liststore for devices*/
 
+int insert_new_devices(D_Collection **array, D_Collection *devices_new);
 
-int task_check(T_Collection *tasks_new, int task_num);
+int insert_new_tasks(T_Collection **array, T_Collection *tasks_new);
 
-int device_check(D_Collection *devices_new, int dev_num);
+int task_check(T_Collection *tasks_new, T_Collection **task_old);
 
-void delete_old_dev(D_Collection **array,__int32_t *dev_num);
+int device_check(D_Collection *devices_new, D_Collection **dev_old);
 
-void delete_old_tasks(T_Collection **array,__int32_t *task_num);
+int refresh_devices_data(D_Collection *devices_new, D_Collection *dev_old);
+
+int refresh_task_data(T_Collection *tasks_new, T_Collection *task_old);
+
+void delete_old_dev(D_Collection **array);
+
+void delete_old_tasks(T_Collection **array);
 
 void remove_task_item(gint pid);
 
@@ -42,7 +49,6 @@ void refresh_list_item_device(Devices *ref_temp);
 int fill_task_item(Task *task_item, GtkTreeIter *iter, int *array_i);
 
 int fill_device_item(Devices *f_temp, GtkTreeIter *iter);
-
 
 void change_list_store_view_devices(GtkWidget *widget);
 
@@ -80,7 +86,7 @@ enum {/* task column id for sorting and for setting visibility*/
     NUM_COLS
 };
 
-enum {/*device column id for sorting and for setting visibility*/
+enum {/*!device column id for sorting and for setting visibility*/
 
     COL_DEV = 0,
     COL_DIR,
