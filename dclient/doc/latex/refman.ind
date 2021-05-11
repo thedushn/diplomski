@@ -1,0 +1,1018 @@
+\begin{theindex}
+
+  \item {\+\_\+\+\_\+attribute\+\_\+\+\_\+}
+    \subitem {common.\+h}, \hyperpage{19}
+
+  \indexspace
+
+  \item {add\+\_\+new\+\_\+dev}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {add\+\_\+new\+\_\+task}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {adj}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {gtkApplication}
+    \subitem {main.\+c}, \hyperpage{28}
+
+  \indexspace
+
+  \item {button\+\_\+dec}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+dev}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+device\+\_\+all}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+device\+\_\+avail}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+device\+\_\+devices}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+device\+\_\+directory}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+device\+\_\+free}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+device\+\_\+total}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+device\+\_\+type}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+device\+\_\+used}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+graph}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+inc}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+pause}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+proc}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+process\+\_\+cpu}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+process\+\_\+duration}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+process\+\_\+pid}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+process\+\_\+ppid}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+process\+\_\+prio}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+process\+\_\+rss}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {button\+\_\+process\+\_\+state}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {button\+\_\+process\+\_\+task}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {button\+\_\+process\+\_\+user}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {button\+\_\+process\+\_\+vm\+\_\+size}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {button\+\_\+rec}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {buttons.\+c}, \hyperpage{11}
+    \subitem {close\+\_\+window}, \hyperpage{11}
+    \subitem {close\+\_\+window\+\_\+toggled}, \hyperpage{11}
+    \subitem {create\+Task\+\_\+pop\+\_\+up}, \hyperpage{11}
+    \subitem {device\+\_\+window}, \hyperpage{12}
+    \subitem {graph\+\_\+button\+\_\+clicked}, \hyperpage{12}
+    \subitem {graph\+\_\+clicked}, \hyperpage{12}
+    \subitem {handle\+\_\+task\+\_\+menu}, \hyperpage{12}
+    \subitem {handle\+\_\+task\+\_\+prio}, \hyperpage{12}
+    \subitem {on\+\_\+treeview\+\_\+tasks\+\_\+button\+\_\+press\+\_\+event}, 
+		\hyperpage{12}
+    \subitem {process\+\_\+window}, \hyperpage{12}
+    \subitem {record\+\_\+window}, \hyperpage{12}
+    \subitem {show\+\_\+all}, \hyperpage{12}
+    \subitem {show\+\_\+hide}, \hyperpage{12}
+  \item {buttons.\+h}, \hyperpage{12}
+    \subitem {button\+\_\+dec}, \hyperpage{15}
+    \subitem {button\+\_\+dev}, \hyperpage{15}
+    \subitem {button\+\_\+device\+\_\+all}, \hyperpage{15}
+    \subitem {button\+\_\+device\+\_\+avail}, \hyperpage{15}
+    \subitem {button\+\_\+device\+\_\+devices}, \hyperpage{15}
+    \subitem {button\+\_\+device\+\_\+directory}, \hyperpage{15}
+    \subitem {button\+\_\+device\+\_\+free}, \hyperpage{15}
+    \subitem {button\+\_\+device\+\_\+total}, \hyperpage{15}
+    \subitem {button\+\_\+device\+\_\+type}, \hyperpage{15}
+    \subitem {button\+\_\+device\+\_\+used}, \hyperpage{15}
+    \subitem {button\+\_\+graph}, \hyperpage{15}
+    \subitem {button\+\_\+inc}, \hyperpage{15}
+    \subitem {button\+\_\+pause}, \hyperpage{15}
+    \subitem {button\+\_\+proc}, \hyperpage{15}
+    \subitem {button\+\_\+process\+\_\+cpu}, \hyperpage{15}
+    \subitem {button\+\_\+process\+\_\+duration}, \hyperpage{15}
+    \subitem {button\+\_\+process\+\_\+pid}, \hyperpage{15}
+    \subitem {button\+\_\+process\+\_\+ppid}, \hyperpage{15}
+    \subitem {button\+\_\+process\+\_\+prio}, \hyperpage{15}
+    \subitem {button\+\_\+process\+\_\+rss}, \hyperpage{15}
+    \subitem {button\+\_\+process\+\_\+state}, \hyperpage{16}
+    \subitem {button\+\_\+process\+\_\+task}, \hyperpage{16}
+    \subitem {button\+\_\+process\+\_\+user}, \hyperpage{16}
+    \subitem {button\+\_\+process\+\_\+vm\+\_\+size}, \hyperpage{16}
+    \subitem {button\+\_\+rec}, \hyperpage{16}
+    \subitem {close\+\_\+window}, \hyperpage{14}
+    \subitem {close\+\_\+window\+\_\+toggled}, \hyperpage{14}
+    \subitem {close\+\_\+window\+\_\+v1}, \hyperpage{14}
+    \subitem {closed\+\_\+cpu\+\_\+window}, \hyperpage{16}
+    \subitem {cpu\+\_\+buttons}, \hyperpage{16}
+    \subitem {create\+Task\+\_\+pop\+\_\+up}, \hyperpage{14}
+    \subitem {dev\+\_\+window}, \hyperpage{16}
+    \subitem {device\+\_\+window}, \hyperpage{14}
+    \subitem {graph\+\_\+button\+\_\+clicked}, \hyperpage{14}
+    \subitem {graph\+\_\+clicked}, \hyperpage{14}
+    \subitem {handle\+\_\+task\+\_\+menu}, \hyperpage{14}
+    \subitem {handle\+\_\+task\+\_\+prio}, \hyperpage{14}
+    \subitem {on\+\_\+treeview\+\_\+tasks\+\_\+button\+\_\+press\+\_\+event}, 
+		\hyperpage{14}
+    \subitem {proc\+\_\+window}, \hyperpage{16}
+    \subitem {process\+\_\+window}, \hyperpage{14}
+    \subitem {rec\+\_\+window}, \hyperpage{16}
+    \subitem {record\+\_\+window}, \hyperpage{14}
+    \subitem {show\+\_\+all}, \hyperpage{14}
+    \subitem {show\+\_\+hide}, \hyperpage{15}
+    \subitem {task\+\_\+popup}, \hyperpage{16}
+    \subitem {wr\+\_\+window}, \hyperpage{16}
+    \subitem {write\+\_\+window}, \hyperpage{15}
+
+  \indexspace
+
+  \item {C\+O\+L\+\_\+\+A\+V\+A\+I\+L\+A\+B\+LE}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+C\+PU}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+D\+EV}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+D\+IR}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+D\+UR}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+F\+R\+EE}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+P\+ID}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+P\+P\+ID}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+P\+R\+IO}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+R\+SS}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+S\+T\+A\+TE}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+T\+A\+SK}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+T\+O\+T\+AL}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+T\+Y\+PE}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+U\+N\+A\+ME}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+U\+S\+ED}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+O\+L\+\_\+\+V\+SZ}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {C\+P\+U\+\_\+\+P\+A\+CK}
+    \subitem {common.\+h}, \hyperpage{17}
+  \item {C\+P\+U\+\_\+\+U\+S\+A\+GE}
+    \subitem {common.\+h}, \hyperpage{17}
+  \item {C\+P\+U\+\_\+\+W\+I\+N\+D\+OW}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {cell\+\_\+renderer}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {change\+\_\+list\+\_\+store\+\_\+view\+\_\+devices}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {change\+\_\+list\+\_\+store\+\_\+view\+\_\+process}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {checking\+\_\+interrupt\+\_\+names}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {close\+\_\+window}
+    \subitem {buttons.\+c}, \hyperpage{11}
+    \subitem {buttons.\+h}, \hyperpage{14}
+  \item {close\+\_\+window\+\_\+toggled}
+    \subitem {buttons.\+c}, \hyperpage{11}
+    \subitem {buttons.\+h}, \hyperpage{14}
+  \item {close\+\_\+window\+\_\+v1}
+    \subitem {buttons.\+h}, \hyperpage{14}
+  \item {closed\+\_\+cpu\+\_\+window}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {command\+\_\+sender}
+    \subitem {functions.\+c}, \hyperpage{24}
+    \subitem {functions.\+h}, \hyperpage{25}
+  \item {common.\+h}, \hyperpage{16}
+    \subitem {\+\_\+\+\_\+attribute\+\_\+\+\_\+}, \hyperpage{19}
+    \subitem {C\+P\+U\+\_\+\+P\+A\+CK}, \hyperpage{17}
+    \subitem {C\+P\+U\+\_\+\+U\+S\+A\+GE}, \hyperpage{17}
+    \subitem {Cpu\+\_\+usage}, \hyperpage{18}
+    \subitem {D\+\_\+\+Collection}, \hyperpage{18}
+    \subitem {D\+E\+V\+I\+C\+ES}, \hyperpage{17}
+    \subitem {Data}, \hyperpage{18}
+    \subitem {Devices}, \hyperpage{18}
+    \subitem {fontdesc}, \hyperpage{19}
+    \subitem {I\+\_\+\+Collection}, \hyperpage{18}
+    \subitem {I\+\_\+\+Collection2}, \hyperpage{18}
+    \subitem {I\+N\+T\+\_\+\+P\+A\+CK}, \hyperpage{18}
+    \subitem {I\+N\+T\+E\+R\+R\+U\+P\+TS}, \hyperpage{18}
+    \subitem {Interrupts}, \hyperpage{18}
+    \subitem {Interrupts2}, \hyperpage{18}
+    \subitem {Interrupts\+\_\+send}, \hyperpage{18}
+    \subitem {M\+E\+M\+O\+RY}, \hyperpage{18}
+    \subitem {Memory\+\_\+usage}, \hyperpage{18}
+    \subitem {N\+E\+T\+W\+O\+RK}, \hyperpage{18}
+    \subitem {Network}, \hyperpage{18}
+    \subitem {T\+\_\+\+Collection}, \hyperpage{18}
+    \subitem {T\+A\+SK}, \hyperpage{18}
+    \subitem {T\+E\+XT}, \hyperpage{18}
+    \subitem {Task}, \hyperpage{18}
+    \subitem {Unification}, \hyperpage{19}
+  \item {compare\+\_\+int\+\_\+list\+\_\+item}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {compare\+\_\+int\+\_\+list\+\_\+item\+\_\+size}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {compare\+\_\+int\+\_\+list\+\_\+item\+\_\+time}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {compare\+\_\+string\+\_\+list\+\_\+item}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {conformation}
+    \subitem {Unification}, \hyperpage{10}
+  \item {connection}
+    \subitem {functions.\+c}, \hyperpage{24}
+    \subitem {functions.\+h}, \hyperpage{25}
+  \item {Cpu\+\_\+\+List}, \hyperpage{5}
+    \subitem {data}, \hyperpage{5}
+    \subitem {next}, \hyperpage{5}
+  \item {cpu\+\_\+buttons}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {cpu\+\_\+change}
+    \subitem {window.\+c}, \hyperpage{40}
+    \subitem {window.\+h}, \hyperpage{41}
+  \item {cpu\+\_\+graphs}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {Cpu\+\_\+list}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{30}
+  \item {cpu\+\_\+list}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{31}
+  \item {cpu\+\_\+num}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{31}
+  \item {cpu\+\_\+read}
+    \subitem {testing.\+c}, \hyperpage{34}
+    \subitem {testing.\+h}, \hyperpage{35}
+  \item {cpu\+\_\+stats}
+    \subitem {Mega\+\_\+\+Data}, \hyperpage{8}
+  \item {cpu\+\_\+status}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+  \item {Cpu\+\_\+usage}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {cpu\+\_\+window}
+    \subitem {window.\+c}, \hyperpage{40}
+    \subitem {window.\+h}, \hyperpage{41}
+  \item {cpu\+\_\+write}
+    \subitem {testing.\+c}, \hyperpage{34}
+    \subitem {testing.\+h}, \hyperpage{35}
+  \item {create\+\_\+list\+\_\+store\+\_\+dev}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {create\+\_\+list\+\_\+store\+\_\+task}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {create\+Task\+\_\+pop\+\_\+up}
+    \subitem {buttons.\+c}, \hyperpage{11}
+    \subitem {buttons.\+h}, \hyperpage{14}
+
+  \indexspace
+
+  \item {D\+\_\+\+Collection}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {D\+E\+V\+I\+C\+ES}
+    \subitem {common.\+h}, \hyperpage{17}
+  \item {Data}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {data}
+    \subitem {Cpu\+\_\+\+List}, \hyperpage{5}
+    \subitem {Net\+Mem\+\_\+list}, \hyperpage{8}
+  \item {data\+\_\+pack}
+    \subitem {Unification}, \hyperpage{10}
+  \item {data\+\_\+transfer}
+    \subitem {functions.\+c}, \hyperpage{24}
+    \subitem {functions.\+h}, \hyperpage{25}
+  \item {dec\+\_\+refresh}
+    \subitem {main.\+c}, \hyperpage{27}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{30}
+  \item {delete\+\_\+old\+\_\+dev}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {delete\+\_\+old\+\_\+tasks}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {destroy\+\_\+window}
+    \subitem {main.\+c}, \hyperpage{27}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{30}
+  \item {dev\+\_\+num\+\_\+old}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+  \item {dev\+\_\+window}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {Device\+\_\+\+Collection}, \hyperpage{5}
+    \subitem {devices}, \hyperpage{6}
+    \subitem {next}, \hyperpage{6}
+    \subitem {prev}, \hyperpage{6}
+  \item {device\+\_\+all}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+  \item {device\+\_\+check}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{31}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {device\+\_\+list}
+    \subitem {Mega\+\_\+\+Data}, \hyperpage{8}
+  \item {device\+\_\+swindow}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+  \item {device\+\_\+task\+\_\+commands}
+    \subitem {functions.\+c}, \hyperpage{24}
+    \subitem {functions.\+h}, \hyperpage{25}
+  \item {device\+\_\+window}
+    \subitem {buttons.\+c}, \hyperpage{12}
+    \subitem {buttons.\+h}, \hyperpage{14}
+  \item {device\+\_\+write}
+    \subitem {testing.\+c}, \hyperpage{34}
+    \subitem {testing.\+h}, \hyperpage{35}
+  \item {Devices}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {devices}
+    \subitem {Device\+\_\+\+Collection}, \hyperpage{6}
+    \subitem {Unification}, \hyperpage{10}
+  \item {devices\+\_\+old}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+  \item {do\+\_\+drawing\+\_\+cpu}
+    \subitem {drawing.\+c}, \hyperpage{20}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {do\+\_\+drawing\+\_\+cpu2}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {do\+\_\+drawing\+\_\+int}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {do\+\_\+drawing\+\_\+int2}
+    \subitem {drawing.\+c}, \hyperpage{20}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {do\+\_\+drawing\+\_\+mem}
+    \subitem {drawing.\+c}, \hyperpage{20}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {do\+\_\+drawing\+\_\+net}
+    \subitem {drawing.\+c}, \hyperpage{20}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {do\+\_\+drawing\+\_\+one\+\_\+cpu}
+    \subitem {drawing.\+c}, \hyperpage{20}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {draw\+\_\+frame}
+    \subitem {drawing.\+c}, \hyperpage{20}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {draw\+\_\+graph}
+    \subitem {drawing.\+c}, \hyperpage{20}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {draw\+\_\+graph\+\_\+mem}
+    \subitem {drawing.\+c}, \hyperpage{20}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {draw\+\_\+graph\+\_\+net}
+    \subitem {drawing.\+c}, \hyperpage{20}
+    \subitem {drawing.\+h}, \hyperpage{22}
+  \item {draw\+\_\+interrupts}
+    \subitem {drawing.\+h}, \hyperpage{23}
+  \item {draw\+\_\+interrupts2}
+    \subitem {drawing.\+c}, \hyperpage{20}
+  \item {draw\+\_\+percentages}
+    \subitem {drawing.\+c}, \hyperpage{21}
+    \subitem {drawing.\+h}, \hyperpage{23}
+  \item {drawing.\+c}, \hyperpage{19}
+    \subitem {do\+\_\+drawing\+\_\+cpu}, \hyperpage{20}
+    \subitem {do\+\_\+drawing\+\_\+int2}, \hyperpage{20}
+    \subitem {do\+\_\+drawing\+\_\+mem}, \hyperpage{20}
+    \subitem {do\+\_\+drawing\+\_\+net}, \hyperpage{20}
+    \subitem {do\+\_\+drawing\+\_\+one\+\_\+cpu}, \hyperpage{20}
+    \subitem {draw\+\_\+frame}, \hyperpage{20}
+    \subitem {draw\+\_\+graph}, \hyperpage{20}
+    \subitem {draw\+\_\+graph\+\_\+mem}, \hyperpage{20}
+    \subitem {draw\+\_\+graph\+\_\+net}, \hyperpage{20}
+    \subitem {draw\+\_\+interrupts2}, \hyperpage{20}
+    \subitem {draw\+\_\+percentages}, \hyperpage{21}
+    \subitem {on\+\_\+draw\+\_\+event}, \hyperpage{21}
+    \subitem {writing\+\_\+interrupt\+\_\+names2}, \hyperpage{21}
+    \subitem {writing\+\_\+seconds}, \hyperpage{21}
+  \item {drawing.\+h}, \hyperpage{21}
+    \subitem {checking\+\_\+interrupt\+\_\+names}, \hyperpage{22}
+    \subitem {do\+\_\+drawing\+\_\+cpu}, \hyperpage{22}
+    \subitem {do\+\_\+drawing\+\_\+cpu2}, \hyperpage{22}
+    \subitem {do\+\_\+drawing\+\_\+int}, \hyperpage{22}
+    \subitem {do\+\_\+drawing\+\_\+int2}, \hyperpage{22}
+    \subitem {do\+\_\+drawing\+\_\+mem}, \hyperpage{22}
+    \subitem {do\+\_\+drawing\+\_\+net}, \hyperpage{22}
+    \subitem {do\+\_\+drawing\+\_\+one\+\_\+cpu}, \hyperpage{22}
+    \subitem {draw\+\_\+frame}, \hyperpage{22}
+    \subitem {draw\+\_\+graph}, \hyperpage{22}
+    \subitem {draw\+\_\+graph\+\_\+mem}, \hyperpage{22}
+    \subitem {draw\+\_\+graph\+\_\+net}, \hyperpage{22}
+    \subitem {draw\+\_\+interrupts}, \hyperpage{23}
+    \subitem {draw\+\_\+percentages}, \hyperpage{23}
+    \subitem {on\+\_\+draw\+\_\+event}, \hyperpage{23}
+    \subitem {on\+\_\+draw\+\_\+event2}, \hyperpage{23}
+    \subitem {writing\+\_\+interrupt\+\_\+names}, \hyperpage{23}
+    \subitem {writing\+\_\+interrupt\+\_\+names2}, \hyperpage{23}
+    \subitem {writing\+\_\+seconds}, \hyperpage{23}
+
+  \indexspace
+
+  \item {entry}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+
+  \indexspace
+
+  \item {fill\+\_\+device\+\_\+item}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {fill\+\_\+task\+\_\+item}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {flag\+\_\+timeout}
+    \subitem {main.\+c}, \hyperpage{28}
+  \item {fontdesc}
+    \subitem {common.\+h}, \hyperpage{19}
+  \item {free\+\_\+mega\+\_\+data}
+    \subitem {main.\+c}, \hyperpage{27}
+  \item {free\+\_\+one\+\_\+mega\+\_\+data}
+    \subitem {main.\+c}, \hyperpage{27}
+  \item {freeing\+\_\+memory}
+    \subitem {main.\+c}, \hyperpage{27}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{31}
+  \item {functions.\+c}, \hyperpage{23}
+    \subitem {command\+\_\+sender}, \hyperpage{24}
+    \subitem {connection}, \hyperpage{24}
+    \subitem {data\+\_\+transfer}, \hyperpage{24}
+    \subitem {device\+\_\+task\+\_\+commands}, \hyperpage{24}
+    \subitem {input\+\_\+command}, \hyperpage{24}
+    \subitem {receive\+\_\+number\+\_\+cpu}, \hyperpage{24}
+    \subitem {scan\+\_\+numbers}, \hyperpage{24}
+    \subitem {test\+\_\+recv}, \hyperpage{24}
+    \subitem {test\+\_\+send}, \hyperpage{24}
+  \item {functions.\+h}, \hyperpage{25}
+    \subitem {command\+\_\+sender}, \hyperpage{25}
+    \subitem {connection}, \hyperpage{25}
+    \subitem {data\+\_\+transfer}, \hyperpage{25}
+    \subitem {device\+\_\+task\+\_\+commands}, \hyperpage{25}
+    \subitem {input\+\_\+command}, \hyperpage{25}
+    \subitem {receive\+\_\+number\+\_\+cpu}, \hyperpage{26}
+    \subitem {test\+\_\+recv}, \hyperpage{26}
+    \subitem {test\+\_\+send}, \hyperpage{26}
+
+  \indexspace
+
+  \item {graph1}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {graph\+\_\+button\+\_\+clicked}
+    \subitem {buttons.\+c}, \hyperpage{12}
+    \subitem {buttons.\+h}, \hyperpage{14}
+  \item {graph\+\_\+clicked}
+    \subitem {buttons.\+c}, \hyperpage{12}
+    \subitem {buttons.\+h}, \hyperpage{14}
+  \item {graph\+\_\+inttrp}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {graph\+\_\+mem}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {graph\+\_\+net}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {graph\+\_\+write}
+    \subitem {window.\+h}, \hyperpage{42}
+
+  \indexspace
+
+  \item {handle\+\_\+task\+\_\+menu}
+    \subitem {buttons.\+c}, \hyperpage{12}
+    \subitem {buttons.\+h}, \hyperpage{14}
+  \item {handle\+\_\+task\+\_\+prio}
+    \subitem {buttons.\+c}, \hyperpage{12}
+    \subitem {buttons.\+h}, \hyperpage{14}
+
+  \indexspace
+
+  \item {I\+\_\+\+Collection}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {I\+\_\+\+Collection2}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {I\+N\+T\+\_\+\+P\+A\+CK}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {I\+N\+T\+E\+R\+R\+U\+P\+TS}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {ifstat\+\_\+calculate}
+    \subitem {testing.\+c}, \hyperpage{34}
+    \subitem {testing.\+h}, \hyperpage{35}
+  \item {inc\+\_\+refresh}
+    \subitem {main.\+c}, \hyperpage{27}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{31}
+  \item {init\+\_\+timeout}
+    \subitem {main.\+c}, \hyperpage{27}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{31}
+  \item {input\+\_\+command}
+    \subitem {functions.\+c}, \hyperpage{24}
+    \subitem {functions.\+h}, \hyperpage{25}
+  \item {insert\+\_\+new\+\_\+devices}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+  \item {insert\+\_\+new\+\_\+tasks}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{36}
+  \item {Interrupt\+\_\+\+Collection}, \hyperpage{6}
+    \subitem {interrupts}, \hyperpage{6}
+    \subitem {next}, \hyperpage{6}
+    \subitem {prev}, \hyperpage{6}
+  \item {Interrupt\+\_\+\+Collection2}, \hyperpage{7}
+    \subitem {interrupts}, \hyperpage{7}
+    \subitem {next}, \hyperpage{7}
+    \subitem {prev}, \hyperpage{7}
+  \item {interrupt\+\_\+num}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+  \item {Interrupts}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {interrupts}
+    \subitem {Interrupt\+\_\+\+Collection}, \hyperpage{6}
+    \subitem {Interrupt\+\_\+\+Collection2}, \hyperpage{7}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+    \subitem {Unification}, \hyperpage{10}
+  \item {Interrupts2}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {interrupts2}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+  \item {interrupts\+\_\+list}
+    \subitem {Mega\+\_\+\+Data}, \hyperpage{8}
+  \item {Interrupts\+\_\+send}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {interrupts\+\_\+send}
+    \subitem {Unification}, \hyperpage{10}
+  \item {interrupts\+\_\+swindow}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {interrupts\+\_\+write}
+    \subitem {testing.\+c}, \hyperpage{34}
+    \subitem {testing.\+h}, \hyperpage{35}
+
+  \indexspace
+
+  \item {L\+I\+S\+T\+\_\+\+S\+I\+ZE}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{30}
+  \item {label\+\_\+cpu0}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {label\+\_\+mem}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {label\+\_\+rec}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {label\+\_\+swap}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {label\+\_\+trans}
+    \subitem {window.\+h}, \hyperpage{42}
+  \item {list\+\_\+devices}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {list\+\_\+num\+\_\+size}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+  \item {list\+\_\+tasks}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+
+  \indexspace
+
+  \item {m\+\_\+data}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+  \item {M\+E\+M\+O\+RY}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {main}
+    \subitem {main.\+c}, \hyperpage{27}
+  \item {main.\+c}, \hyperpage{26}
+    \subitem {gtkApplication}, \hyperpage{28}
+    \subitem {dec\+\_\+refresh}, \hyperpage{27}
+    \subitem {destroy\+\_\+window}, \hyperpage{27}
+    \subitem {flag\+\_\+timeout}, \hyperpage{28}
+    \subitem {free\+\_\+mega\+\_\+data}, \hyperpage{27}
+    \subitem {free\+\_\+one\+\_\+mega\+\_\+data}, \hyperpage{27}
+    \subitem {freeing\+\_\+memory}, \hyperpage{27}
+    \subitem {inc\+\_\+refresh}, \hyperpage{27}
+    \subitem {init\+\_\+timeout}, \hyperpage{27}
+    \subitem {main}, \hyperpage{27}
+    \subitem {pause\+\_\+gtkApplication}, \hyperpage{28}
+    \subitem {semt}, \hyperpage{28}
+    \subitem {set\+\_\+record}, \hyperpage{28}
+    \subitem {test\+\_\+strtol}, \hyperpage{28}
+    \subitem {timeout\+\_\+refresh}, \hyperpage{28}
+    \subitem {window}, \hyperpage{28}
+    \subitem {writing}, \hyperpage{28}
+  \item {main\+\_\+header.\+h}, \hyperpage{29}
+    \subitem {Cpu\+\_\+list}, \hyperpage{30}
+    \subitem {cpu\+\_\+list}, \hyperpage{31}
+    \subitem {cpu\+\_\+num}, \hyperpage{31}
+    \subitem {cpu\+\_\+status}, \hyperpage{32}
+    \subitem {dec\+\_\+refresh}, \hyperpage{30}
+    \subitem {destroy\+\_\+window}, \hyperpage{30}
+    \subitem {dev\+\_\+num\+\_\+old}, \hyperpage{32}
+    \subitem {device\+\_\+all}, \hyperpage{32}
+    \subitem {device\+\_\+check}, \hyperpage{31}
+    \subitem {device\+\_\+swindow}, \hyperpage{32}
+    \subitem {devices\+\_\+old}, \hyperpage{32}
+    \subitem {entry}, \hyperpage{32}
+    \subitem {freeing\+\_\+memory}, \hyperpage{31}
+    \subitem {inc\+\_\+refresh}, \hyperpage{31}
+    \subitem {init\+\_\+timeout}, \hyperpage{31}
+    \subitem {interrupt\+\_\+num}, \hyperpage{32}
+    \subitem {interrupts}, \hyperpage{32}
+    \subitem {interrupts2}, \hyperpage{32}
+    \subitem {L\+I\+S\+T\+\_\+\+S\+I\+ZE}, \hyperpage{30}
+    \subitem {list\+\_\+num\+\_\+size}, \hyperpage{32}
+    \subitem {m\+\_\+data}, \hyperpage{32}
+    \subitem {Mega\+\_\+\+Data}, \hyperpage{30}
+    \subitem {mem\+\_\+list}, \hyperpage{32}
+    \subitem {net\+\_\+list}, \hyperpage{33}
+    \subitem {Net\+Mem\+\_\+list}, \hyperpage{30}
+    \subitem {newsockfd}, \hyperpage{33}
+    \subitem {newsockfd1}, \hyperpage{33}
+    \subitem {p\+\_\+dir}, \hyperpage{33}
+    \subitem {pause\+\_\+gtkApplication}, \hyperpage{31}
+    \subitem {process\+\_\+swindow}, \hyperpage{33}
+    \subitem {record}, \hyperpage{33}
+    \subitem {refresh}, \hyperpage{33}
+    \subitem {set\+\_\+record}, \hyperpage{31}
+    \subitem {t}, \hyperpage{33}
+    \subitem {task\+\_\+check}, \hyperpage{31}
+    \subitem {task\+\_\+num\+\_\+old}, \hyperpage{33}
+    \subitem {tasks\+\_\+old}, \hyperpage{33}
+    \subitem {test\+\_\+strtol}, \hyperpage{31}
+    \subitem {time\+\_\+step}, \hyperpage{33}
+    \subitem {timeout\+\_\+refresh}, \hyperpage{31}
+    \subitem {window\+\_\+graphs}, \hyperpage{33}
+  \item {main\+\_\+window}
+    \subitem {window.\+c}, \hyperpage{40}
+    \subitem {window.\+h}, \hyperpage{41}
+  \item {Mega\+\_\+\+Data}, \hyperpage{7}
+    \subitem {cpu\+\_\+stats}, \hyperpage{8}
+    \subitem {device\+\_\+list}, \hyperpage{8}
+    \subitem {interrupts\+\_\+list}, \hyperpage{8}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{30}
+    \subitem {mem\+\_\+stats}, \hyperpage{8}
+    \subitem {net\+\_\+stats}, \hyperpage{8}
+    \subitem {next}, \hyperpage{8}
+    \subitem {task\+\_\+list}, \hyperpage{8}
+  \item {mem\+\_\+list}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{32}
+  \item {mem\+\_\+stats}
+    \subitem {Mega\+\_\+\+Data}, \hyperpage{8}
+  \item {memory\+\_\+change}
+    \subitem {window.\+c}, \hyperpage{40}
+    \subitem {window.\+h}, \hyperpage{41}
+  \item {Memory\+\_\+usage}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {memory\+\_\+usage}
+    \subitem {Unification}, \hyperpage{10}
+  \item {memory\+\_\+write}
+    \subitem {testing.\+c}, \hyperpage{34}
+    \subitem {testing.\+h}, \hyperpage{35}
+
+  \indexspace
+
+  \item {N\+E\+T\+W\+O\+RK}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {N\+U\+M\+\_\+\+C\+O\+L\+S\+\_\+\+D\+EV}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {N\+U\+M\+\_\+\+C\+O\+LS}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{38}
+  \item {net\+\_\+list}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {net\+\_\+stats}
+    \subitem {Mega\+\_\+\+Data}, \hyperpage{8}
+  \item {Net\+Mem\+\_\+list}, \hyperpage{8}
+    \subitem {data}, \hyperpage{8}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{30}
+    \subitem {next}, \hyperpage{8}
+  \item {netw\+\_\+calculate}
+    \subitem {testing.\+c}, \hyperpage{34}
+    \subitem {testing.\+h}, \hyperpage{35}
+  \item {netw\+\_\+write}
+    \subitem {testing.\+c}, \hyperpage{34}
+    \subitem {testing.\+h}, \hyperpage{35}
+  \item {Network}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {network}
+    \subitem {Unification}, \hyperpage{10}
+  \item {network\+\_\+change}
+    \subitem {window.\+c}, \hyperpage{40}
+    \subitem {window.\+h}, \hyperpage{41}
+  \item {newsockfd}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {newsockfd1}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {next}
+    \subitem {Cpu\+\_\+\+List}, \hyperpage{5}
+    \subitem {Device\+\_\+\+Collection}, \hyperpage{6}
+    \subitem {Interrupt\+\_\+\+Collection}, \hyperpage{6}
+    \subitem {Interrupt\+\_\+\+Collection2}, \hyperpage{7}
+    \subitem {Mega\+\_\+\+Data}, \hyperpage{8}
+    \subitem {Net\+Mem\+\_\+list}, \hyperpage{8}
+    \subitem {Task\+\_\+\+Collection}, \hyperpage{9}
+
+  \indexspace
+
+  \item {on\+\_\+draw\+\_\+event}
+    \subitem {drawing.\+c}, \hyperpage{21}
+    \subitem {drawing.\+h}, \hyperpage{23}
+  \item {on\+\_\+draw\+\_\+event2}
+    \subitem {drawing.\+h}, \hyperpage{23}
+  \item {on\+\_\+treeview\+\_\+tasks\+\_\+button\+\_\+press\+\_\+event}
+    \subitem {buttons.\+c}, \hyperpage{12}
+    \subitem {buttons.\+h}, \hyperpage{14}
+
+  \indexspace
+
+  \item {p\+\_\+dir}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {pause\+\_\+gtkApplication}
+    \subitem {main.\+c}, \hyperpage{28}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{31}
+  \item {prev}
+    \subitem {Device\+\_\+\+Collection}, \hyperpage{6}
+    \subitem {Interrupt\+\_\+\+Collection}, \hyperpage{6}
+    \subitem {Interrupt\+\_\+\+Collection2}, \hyperpage{7}
+    \subitem {Task\+\_\+\+Collection}, \hyperpage{9}
+  \item {proc\+\_\+window}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {process\+\_\+swindow}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {process\+\_\+window}
+    \subitem {buttons.\+c}, \hyperpage{12}
+    \subitem {buttons.\+h}, \hyperpage{14}
+
+  \indexspace
+
+  \item {rec\+\_\+window}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {receive\+\_\+number\+\_\+cpu}
+    \subitem {functions.\+c}, \hyperpage{24}
+    \subitem {functions.\+h}, \hyperpage{26}
+  \item {record}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {record\+\_\+window}
+    \subitem {buttons.\+c}, \hyperpage{12}
+    \subitem {buttons.\+h}, \hyperpage{14}
+  \item {refresh}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {refresh\+\_\+devices\+\_\+data}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{37}
+  \item {refresh\+\_\+list\+\_\+item}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{37}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {refresh\+\_\+list\+\_\+item\+\_\+device}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{37}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {refresh\+\_\+task\+\_\+data}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{37}
+  \item {remove\+\_\+list\+\_\+item\+\_\+device}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{37}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {remove\+\_\+task\+\_\+item}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{37}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+
+  \indexspace
+
+  \item {scan\+\_\+numbers}
+    \subitem {functions.\+c}, \hyperpage{24}
+  \item {selection}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {semt}
+    \subitem {main.\+c}, \hyperpage{28}
+  \item {set\+\_\+record}
+    \subitem {main.\+c}, \hyperpage{28}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{31}
+  \item {show\+\_\+all}
+    \subitem {buttons.\+c}, \hyperpage{12}
+    \subitem {buttons.\+h}, \hyperpage{14}
+  \item {show\+\_\+hide}
+    \subitem {buttons.\+c}, \hyperpage{12}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {swap\+\_\+change}
+    \subitem {window.\+c}, \hyperpage{40}
+    \subitem {window.\+h}, \hyperpage{41}
+
+  \indexspace
+
+  \item {t}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {T\+\_\+\+Collection}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {T\+A\+SK}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {T\+E\+XT}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {Task}
+    \subitem {common.\+h}, \hyperpage{18}
+  \item {task}
+    \subitem {Task\+\_\+\+Collection}, \hyperpage{9}
+    \subitem {Unification}, \hyperpage{10}
+  \item {Task\+\_\+\+Collection}, \hyperpage{9}
+    \subitem {next}, \hyperpage{9}
+    \subitem {prev}, \hyperpage{9}
+    \subitem {task}, \hyperpage{9}
+  \item {task\+\_\+check}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{31}
+    \subitem {testing\+\_\+tree.\+c}, \hyperpage{37}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{39}
+  \item {task\+\_\+list}
+    \subitem {Mega\+\_\+\+Data}, \hyperpage{8}
+  \item {task\+\_\+num\+\_\+old}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {task\+\_\+popup}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {task\+\_\+sort}
+    \subitem {testing.\+c}, \hyperpage{34}
+    \subitem {testing.\+h}, \hyperpage{35}
+  \item {task\+\_\+write}
+    \subitem {testing.\+c}, \hyperpage{34}
+    \subitem {testing.\+h}, \hyperpage{35}
+  \item {tasks\+\_\+old}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {test\+\_\+recv}
+    \subitem {functions.\+c}, \hyperpage{24}
+    \subitem {functions.\+h}, \hyperpage{26}
+  \item {test\+\_\+send}
+    \subitem {functions.\+c}, \hyperpage{24}
+    \subitem {functions.\+h}, \hyperpage{26}
+  \item {test\+\_\+strtol}
+    \subitem {main.\+c}, \hyperpage{28}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{31}
+  \item {testing.\+c}, \hyperpage{33}
+    \subitem {cpu\+\_\+read}, \hyperpage{34}
+    \subitem {cpu\+\_\+write}, \hyperpage{34}
+    \subitem {device\+\_\+write}, \hyperpage{34}
+    \subitem {ifstat\+\_\+calculate}, \hyperpage{34}
+    \subitem {interrupts\+\_\+write}, \hyperpage{34}
+    \subitem {memory\+\_\+write}, \hyperpage{34}
+    \subitem {netw\+\_\+calculate}, \hyperpage{34}
+    \subitem {netw\+\_\+write}, \hyperpage{34}
+    \subitem {task\+\_\+sort}, \hyperpage{34}
+    \subitem {task\+\_\+write}, \hyperpage{34}
+  \item {testing.\+h}, \hyperpage{34}
+    \subitem {cpu\+\_\+read}, \hyperpage{35}
+    \subitem {cpu\+\_\+write}, \hyperpage{35}
+    \subitem {device\+\_\+write}, \hyperpage{35}
+    \subitem {ifstat\+\_\+calculate}, \hyperpage{35}
+    \subitem {interrupts\+\_\+write}, \hyperpage{35}
+    \subitem {memory\+\_\+write}, \hyperpage{35}
+    \subitem {netw\+\_\+calculate}, \hyperpage{35}
+    \subitem {netw\+\_\+write}, \hyperpage{35}
+    \subitem {task\+\_\+sort}, \hyperpage{35}
+    \subitem {task\+\_\+write}, \hyperpage{35}
+  \item {testing\+\_\+tree.\+c}, \hyperpage{35}
+    \subitem {add\+\_\+new\+\_\+dev}, \hyperpage{36}
+    \subitem {add\+\_\+new\+\_\+task}, \hyperpage{36}
+    \subitem {change\+\_\+list\+\_\+store\+\_\+view\+\_\+devices}, 
+		\hyperpage{36}
+    \subitem {change\+\_\+list\+\_\+store\+\_\+view\+\_\+process}, 
+		\hyperpage{36}
+    \subitem {compare\+\_\+int\+\_\+list\+\_\+item}, \hyperpage{36}
+    \subitem {compare\+\_\+int\+\_\+list\+\_\+item\+\_\+size}, 
+		\hyperpage{36}
+    \subitem {compare\+\_\+int\+\_\+list\+\_\+item\+\_\+time}, 
+		\hyperpage{36}
+    \subitem {compare\+\_\+string\+\_\+list\+\_\+item}, \hyperpage{36}
+    \subitem {create\+\_\+list\+\_\+store\+\_\+dev}, \hyperpage{36}
+    \subitem {create\+\_\+list\+\_\+store\+\_\+task}, \hyperpage{36}
+    \subitem {delete\+\_\+old\+\_\+dev}, \hyperpage{36}
+    \subitem {delete\+\_\+old\+\_\+tasks}, \hyperpage{36}
+    \subitem {device\+\_\+check}, \hyperpage{36}
+    \subitem {fill\+\_\+device\+\_\+item}, \hyperpage{36}
+    \subitem {fill\+\_\+task\+\_\+item}, \hyperpage{36}
+    \subitem {insert\+\_\+new\+\_\+devices}, \hyperpage{36}
+    \subitem {insert\+\_\+new\+\_\+tasks}, \hyperpage{36}
+    \subitem {refresh\+\_\+devices\+\_\+data}, \hyperpage{37}
+    \subitem {refresh\+\_\+list\+\_\+item}, \hyperpage{37}
+    \subitem {refresh\+\_\+list\+\_\+item\+\_\+device}, \hyperpage{37}
+    \subitem {refresh\+\_\+task\+\_\+data}, \hyperpage{37}
+    \subitem {remove\+\_\+list\+\_\+item\+\_\+device}, \hyperpage{37}
+    \subitem {remove\+\_\+task\+\_\+item}, \hyperpage{37}
+    \subitem {task\+\_\+check}, \hyperpage{37}
+  \item {testing\+\_\+tree.\+h}, \hyperpage{37}
+    \subitem {add\+\_\+new\+\_\+dev}, \hyperpage{39}
+    \subitem {add\+\_\+new\+\_\+task}, \hyperpage{39}
+    \subitem {C\+O\+L\+\_\+\+A\+V\+A\+I\+L\+A\+B\+LE}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+C\+PU}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+D\+EV}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+D\+IR}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+D\+UR}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+F\+R\+EE}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+P\+ID}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+P\+P\+ID}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+P\+R\+IO}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+R\+SS}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+S\+T\+A\+TE}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+T\+A\+SK}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+T\+O\+T\+AL}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+T\+Y\+PE}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+U\+N\+A\+ME}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+U\+S\+ED}, \hyperpage{38}
+    \subitem {C\+O\+L\+\_\+\+V\+SZ}, \hyperpage{38}
+    \subitem {cell\+\_\+renderer}, \hyperpage{39}
+    \subitem {change\+\_\+list\+\_\+store\+\_\+view\+\_\+devices}, 
+		\hyperpage{39}
+    \subitem {change\+\_\+list\+\_\+store\+\_\+view\+\_\+process}, 
+		\hyperpage{39}
+    \subitem {compare\+\_\+int\+\_\+list\+\_\+item}, \hyperpage{39}
+    \subitem {compare\+\_\+int\+\_\+list\+\_\+item\+\_\+size}, 
+		\hyperpage{39}
+    \subitem {compare\+\_\+int\+\_\+list\+\_\+item\+\_\+time}, 
+		\hyperpage{39}
+    \subitem {compare\+\_\+string\+\_\+list\+\_\+item}, \hyperpage{39}
+    \subitem {create\+\_\+list\+\_\+store\+\_\+dev}, \hyperpage{39}
+    \subitem {create\+\_\+list\+\_\+store\+\_\+task}, \hyperpage{39}
+    \subitem {delete\+\_\+old\+\_\+dev}, \hyperpage{39}
+    \subitem {delete\+\_\+old\+\_\+tasks}, \hyperpage{39}
+    \subitem {device\+\_\+check}, \hyperpage{39}
+    \subitem {fill\+\_\+device\+\_\+item}, \hyperpage{39}
+    \subitem {fill\+\_\+task\+\_\+item}, \hyperpage{39}
+    \subitem {list\+\_\+devices}, \hyperpage{39}
+    \subitem {list\+\_\+tasks}, \hyperpage{39}
+    \subitem {N\+U\+M\+\_\+\+C\+O\+L\+S\+\_\+\+D\+EV}, \hyperpage{38}
+    \subitem {N\+U\+M\+\_\+\+C\+O\+LS}, \hyperpage{38}
+    \subitem {refresh\+\_\+list\+\_\+item}, \hyperpage{39}
+    \subitem {refresh\+\_\+list\+\_\+item\+\_\+device}, \hyperpage{39}
+    \subitem {remove\+\_\+list\+\_\+item\+\_\+device}, \hyperpage{39}
+    \subitem {remove\+\_\+task\+\_\+item}, \hyperpage{39}
+    \subitem {selection}, \hyperpage{39}
+    \subitem {task\+\_\+check}, \hyperpage{39}
+    \subitem {treeview\+\_\+devices}, \hyperpage{40}
+    \subitem {treeview\+\_\+tasks}, \hyperpage{40}
+  \item {time\+\_\+step}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {timeout\+\_\+refresh}
+    \subitem {main.\+c}, \hyperpage{28}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{31}
+  \item {treeview\+\_\+devices}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{40}
+  \item {treeview\+\_\+tasks}
+    \subitem {testing\+\_\+tree.\+h}, \hyperpage{40}
+
+  \indexspace
+
+  \item {Unification}, \hyperpage{9}
+    \subitem {common.\+h}, \hyperpage{19}
+    \subitem {conformation}, \hyperpage{10}
+    \subitem {data\+\_\+pack}, \hyperpage{10}
+    \subitem {devices}, \hyperpage{10}
+    \subitem {interrupts}, \hyperpage{10}
+    \subitem {interrupts\+\_\+send}, \hyperpage{10}
+    \subitem {memory\+\_\+usage}, \hyperpage{10}
+    \subitem {network}, \hyperpage{10}
+    \subitem {task}, \hyperpage{10}
+
+  \indexspace
+
+  \item {viewport}
+    \subitem {window.\+h}, \hyperpage{42}
+
+  \indexspace
+
+  \item {window}
+    \subitem {main.\+c}, \hyperpage{28}
+  \item {window.\+c}, \hyperpage{40}
+    \subitem {cpu\+\_\+change}, \hyperpage{40}
+    \subitem {cpu\+\_\+window}, \hyperpage{40}
+    \subitem {main\+\_\+window}, \hyperpage{40}
+    \subitem {memory\+\_\+change}, \hyperpage{40}
+    \subitem {network\+\_\+change}, \hyperpage{40}
+    \subitem {swap\+\_\+change}, \hyperpage{40}
+  \item {window.\+h}, \hyperpage{41}
+    \subitem {adj}, \hyperpage{42}
+    \subitem {C\+P\+U\+\_\+\+W\+I\+N\+D\+OW}, \hyperpage{42}
+    \subitem {cpu\+\_\+change}, \hyperpage{41}
+    \subitem {cpu\+\_\+graphs}, \hyperpage{42}
+    \subitem {cpu\+\_\+window}, \hyperpage{41}
+    \subitem {graph1}, \hyperpage{42}
+    \subitem {graph\+\_\+inttrp}, \hyperpage{42}
+    \subitem {graph\+\_\+mem}, \hyperpage{42}
+    \subitem {graph\+\_\+net}, \hyperpage{42}
+    \subitem {graph\+\_\+write}, \hyperpage{42}
+    \subitem {interrupts\+\_\+swindow}, \hyperpage{42}
+    \subitem {label\+\_\+cpu0}, \hyperpage{42}
+    \subitem {label\+\_\+mem}, \hyperpage{42}
+    \subitem {label\+\_\+rec}, \hyperpage{42}
+    \subitem {label\+\_\+swap}, \hyperpage{42}
+    \subitem {label\+\_\+trans}, \hyperpage{42}
+    \subitem {main\+\_\+window}, \hyperpage{41}
+    \subitem {memory\+\_\+change}, \hyperpage{41}
+    \subitem {network\+\_\+change}, \hyperpage{41}
+    \subitem {swap\+\_\+change}, \hyperpage{41}
+    \subitem {viewport}, \hyperpage{42}
+  \item {window\+\_\+graphs}
+    \subitem {main\+\_\+header.\+h}, \hyperpage{33}
+  \item {wr\+\_\+window}
+    \subitem {buttons.\+h}, \hyperpage{16}
+  \item {write\+\_\+window}
+    \subitem {buttons.\+h}, \hyperpage{15}
+  \item {writing}
+    \subitem {main.\+c}, \hyperpage{28}
+  \item {writing\+\_\+interrupt\+\_\+names}
+    \subitem {drawing.\+h}, \hyperpage{23}
+  \item {writing\+\_\+interrupt\+\_\+names2}
+    \subitem {drawing.\+c}, \hyperpage{21}
+    \subitem {drawing.\+h}, \hyperpage{23}
+  \item {writing\+\_\+seconds}
+    \subitem {drawing.\+c}, \hyperpage{21}
+    \subitem {drawing.\+h}, \hyperpage{23}
+
+\end{theindex}

@@ -13,13 +13,17 @@ ssize_t test_recv(int socket);
 
 ssize_t test_send(int socket);
 
-
+void device_task_commands(char *signal, char *task_id);
 
 int
-data_transfer(int socket, Cpu_usage *cpu_usage1, Network *network, Memory_usage *memory_usage,
-              T_Collection **task_array, D_Collection **devices_array, int *task_num, int *dev_num);
+data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *memory_usage, T_Collection **task_array,
+              D_Collection **devices_array, __int32_t *task_num, __int32_t *dev_num, I_Collection2 **interrupts_p);
 int command_sender(char *text);
 
 void input_command();
+
+int connection(char *argv1, char *argv2);
+
+long receive_number_cpu(int socket);
 
 #endif //DIPLOMSKI_FUNCTIONS_H

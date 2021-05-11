@@ -1,0 +1,62 @@
+.TH "functions.h" 3 "Wed Apr 14 2021" "Version 1.1" "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+functions.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'gtk/gtk\&.h'\fP
+.br
+\fC#include 'common\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "ssize_t \fBtest_recv\fP (int socket)"
+.br
+.ti -1c
+.RI "ssize_t \fBtest_send\fP (int socket)"
+.br
+.ti -1c
+.RI "void \fBdevice_task_commands\fP (char *signal, char *task_id)"
+.br
+.ti -1c
+.RI "int \fBdata_transfer\fP (int socket, \fBCpu_usage\fP *cpu_usage, \fBNetwork\fP *network, \fBMemory_usage\fP *memory_usage, \fBT_Collection\fP **task_array, \fBD_Collection\fP **devices_array, __int32_t *task_num, __int32_t *dev_num, \fBI_Collection2\fP **interrupts_p)"
+.br
+.ti -1c
+.RI "int \fBcommand_sender\fP (char *text)"
+.br
+.ti -1c
+.RI "void \fBinput_command\fP ()"
+.br
+.ti -1c
+.RI "int \fBconnection\fP (char *argv1, char *argv2)"
+.br
+.ti -1c
+.RI "long \fBreceive_number_cpu\fP (int socket)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int command_sender (char * text)"
+function \fBcommand_sender()\fP: prepares a text command to be sent and sends it to server input: none output:return non zero value if something is wrong 
+.SS "int connection (char * argv1, char * argv2)"
+function \fBconnection()\fP: establishes a connection with the server input: port number and IP address output:return non zero value if something is wrong 
+.SS "int data_transfer (int socket, \fBCpu_usage\fP * cpu_usage, \fBNetwork\fP * network, \fBMemory_usage\fP * memory_usage, \fBT_Collection\fP ** task_array, \fBD_Collection\fP ** devices_array, __int32_t * task_num, __int32_t * dev_num, \fBI_Collection2\fP ** interrupts_p)"
+function \fBdata_transfer()\fP: receives TCP packets from the server and handles them depending on the type of file they are input: socket,pointer cpu usage structure, pointer to network usage structure, double pointer to a Task doubly linked list,double pointer to a Device doubly linked list, tasks number and devices number output:return non zero value if something is wrong 
+.SS "void device_task_commands (char * signal, char * task_id)"
+function \fBdevice_task_commands()\fP: sends command to server about what type of devices it wants to see input:pointer to signal and to task id output:none\&. 
+.SS "void input_command ()"
+function \fBinput_command()\fP: takes what we have typed in the entry widget and sends it to the server input: none output:none 
+.SS "long receive_number_cpu (int socket)"
+
+.SS "ssize_t test_recv (int socket)"
+function \fBtest_send()\fP: tests if the client can send TCP packets input: socket output:return non zero value if something is wrong 
+.SS "ssize_t test_send (int socket)"
+function \fBtest_send()\fP: tests if the server can send TCP packets input: socket output:return non zero value if something is wrong 
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

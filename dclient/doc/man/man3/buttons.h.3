@@ -1,0 +1,263 @@
+.TH "buttons.h" 3 "Wed Apr 14 2021" "Version 1.1" "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+buttons.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <gtk/gtk\&.h>\fP
+.br
+\fC#include <stdbool\&.h>\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "gboolean \fBon_treeview_tasks_button_press_event\fP (GtkButton *button, GdkEventButton *event)"
+.br
+.ti -1c
+.RI "GtkWidget * \fBcreateTask_pop_up\fP (void)"
+.br
+.ti -1c
+.RI "void \fBhandle_task_menu\fP (GtkWidget *widget, char *signal)"
+.br
+.ti -1c
+.RI "void \fBhandle_task_prio\fP (GtkWidget *widget, char *signal)"
+.br
+.ti -1c
+.RI "void \fBgraph_button_clicked\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBclose_window_toggled\fP ()"
+.br
+.ti -1c
+.RI "void \fBclose_window\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBclose_window_v1\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBshow_hide\fP (GtkWidget *button, GtkWidget *\fBwindow\fP)"
+.br
+.ti -1c
+.RI "void \fBdevice_window\fP ()"
+.br
+.ti -1c
+.RI "void \fBprocess_window\fP ()"
+.br
+.ti -1c
+.RI "void \fBrecord_window\fP ()"
+.br
+.ti -1c
+.RI "void \fBgraph_clicked\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBshow_all\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBwrite_window\fP ()"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "GtkWidget * \fBdev_window\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBproc_window\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBrec_window\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBwr_window\fP"
+.br
+.ti -1c
+.RI "bool \fBclosed_cpu_window\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBtask_popup\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_inc\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_dec\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_proc\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_dev\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_rec\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_graph\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_pause\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_device_devices\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_device_directory\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_device_type\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_device_avail\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_device_used\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_device_all\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_device_free\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_device_total\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_process_task\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_process_user\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_process_pid\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_process_ppid\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_process_state\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_process_vm_size\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_process_rss\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_process_cpu\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_process_prio\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBbutton_process_duration\fP"
+.br
+.ti -1c
+.RI "GtkWidget * \fBcpu_buttons\fP"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void close_window (GtkWidget * widget)"
+function \fBclose_window()\fP: closes a widget input:pointer to a widget\&. output:none\&. 
+.SS "void close_window_toggled ()"
+function \fBclose_window_toggled()\fP: when the graph window is closed we set the button graph to not be clicked input:none\&. output:none\&. 
+.SS "void close_window_v1 (GtkWidget * widget)"
+
+.SS "GtkWidget* createTask_pop_up (void)"
+
+.SS "void device_window ()"
+function \fBdevice_window()\fP: create a window with buttons that represent columns in the device list when a button is checked the column connected to that button is shown or hidden\&. The buttons are checked depending on the columns visibility input:none\&. output:none\&. 
+.SS "void graph_button_clicked (GtkWidget * widget)"
+
+.SS "void graph_clicked (GtkWidget * widget)"
+
+.SS "void handle_task_menu (GtkWidget * widget, char * signal)"
+
+.SS "void handle_task_prio (GtkWidget * widget, char * signal)"
+
+.SS "gboolean on_treeview_tasks_button_press_event (GtkButton * button, GdkEventButton * event)"
+function \fBon_treeview_tasks_button_press_event()\fP: reacts to a right click on a task in the list and then creates a pop up menu\&. input:gtk button and pointer to an event\&. output: return bool\&. 
+.SS "void process_window ()"
+function \fBprocess_window()\fP: create a window with buttons that represent columns in the task list when a button is checked the column connected to that button is shown or hidden\&. The buttons are checked depending on the columns visibility input:none\&. output:none\&. 
+.SS "void record_window ()"
+function \fBrecord_window()\fP creates a window that holds the record button input : none otput : none 
+.SS "void show_all (GtkWidget * widget)"
+
+.SS "void show_hide (GtkWidget * button, GtkWidget * window)"
+
+.SS "void write_window ()"
+
+.SH "Variable Documentation"
+.PP 
+.SS "GtkWidget* button_dec"
+
+.SS "GtkWidget* button_dev"
+
+.SS "GtkWidget* button_device_all"
+
+.SS "GtkWidget* button_device_avail"
+
+.SS "GtkWidget* button_device_devices"
+
+.SS "GtkWidget* button_device_directory"
+
+.SS "GtkWidget* button_device_free"
+
+.SS "GtkWidget* button_device_total"
+
+.SS "GtkWidget* button_device_type"
+
+.SS "GtkWidget* button_device_used"
+
+.SS "GtkWidget* button_graph"
+
+.SS "GtkWidget* button_inc"
+
+.SS "GtkWidget* button_pause"
+
+.SS "GtkWidget* button_proc"
+
+.SS "GtkWidget* button_process_cpu"
+
+.SS "GtkWidget* button_process_duration"
+
+.SS "GtkWidget* button_process_pid"
+
+.SS "GtkWidget* button_process_ppid"
+
+.SS "GtkWidget* button_process_prio"
+
+.SS "GtkWidget* button_process_rss"
+
+.SS "GtkWidget* button_process_state"
+
+.SS "GtkWidget* button_process_task"
+
+.SS "GtkWidget* button_process_user"
+
+.SS "GtkWidget* button_process_vm_size"
+
+.SS "GtkWidget* button_rec"
+
+.SS "bool closed_cpu_window"
+
+.SS "GtkWidget* cpu_buttons"
+
+.SS "GtkWidget* dev_window"
+
+.SS "GtkWidget* proc_window"
+
+.SS "GtkWidget* rec_window"
+
+.SS "GtkWidget* task_popup"
+
+.SS "GtkWidget* wr_window"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

@@ -1,0 +1,23 @@
+#config file
+
+APPLICATION_NAME: System resource monitor
+
+WINDOW_SIZE: 800 400
+
+# delay is in milliseconds  max is 20000
+
+DELAY: 1000
+
+#record data gathered in files
+
+RECORD: FALSE
+
+#display all file systems
+
+FILE_SYSTEMS: true
+
+#font for interrupts
+
+FONT:Arial 8
+
+

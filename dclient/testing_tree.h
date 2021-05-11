@@ -12,40 +12,53 @@
 
 #include "common.h"
 
-//GtkTreeStore *list_store1;
-
-GtkTreeSelection *selection;
 
 
-GtkWidget *treeview;
-GtkWidget *treeview1;
+GtkTreeSelection *selection; /*!so we know which task we clicked*/
+GtkCellRenderer *cell_renderer;
+GtkWidget *treeview_tasks; /*!treeview for tasks*/
+GtkWidget *treeview_devices;/*!treeview for devices*/
 
-GtkTreeStore *list_store;
-GtkTreeStore *list_store1;
+GtkTreeStore *list_tasks; /*!liststore for tasks*/
+GtkTreeStore *list_devices; /*!liststore for devices*/
 
+int insert_new_devices(D_Collection **array, D_Collection *devices_new);
 
-void remove_list_item(gint pid);
+int insert_new_tasks(T_Collection **array, T_Collection *tasks_new);
+
+int task_check(T_Collection *tasks_new, T_Collection **task_old);
+
+int device_check(D_Collection *devices_new, D_Collection **dev_old);
+
+int refresh_devices_data(D_Collection *devices_new, D_Collection *dev_old);
+
+int refresh_task_data(T_Collection *tasks_new, T_Collection *task_old);
+
+void delete_old_dev(D_Collection **array);
+
+void delete_old_tasks(T_Collection **array);
+
+void remove_task_item(gint pid);
 
 void remove_list_item_device(gchar *directory, gchar *name);
 
-void refresh_list_item(Task *task_item);
+void refresh_list_item(Task *task_item, int *array_i);
 
 void refresh_list_item_device(Devices *ref_temp);
 
-void fill_list_item(Task *task_item, GtkTreeIter *iter);
+int fill_task_item(Task *task_item, GtkTreeIter *iter, int *array_i);
 
-void fill_list_item_device(Devices *f_temp, GtkTreeIter *iter);
+int fill_device_item(Devices *f_temp, GtkTreeIter *iter);
 
+void change_list_store_view_devices(GtkWidget *widget);
 
-void change_list_store_view_devices(GtkWidget *widget, gboolean visible);
+void change_list_store_view_process(GtkWidget *widget);
 
-void change_list_store_view_process(GtkWidget *widget, gboolean visible);
+int add_new_task(Task *task_t);
 
-void add_new_list_item(Task *task_t);
+int add_new_dev(Devices *devices);
 
-void add_new_list_item_dev(Devices *d_temp);
-
-void create_list_store(void);
+void create_list_store_task(void);
 
 gint compare_string_list_item(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter *iter2, gpointer column);
 
@@ -57,9 +70,9 @@ gint compare_int_list_item(GtkTreeModel *model, GtkTreeIter *iter1, GtkTreeIter 
 
 void create_list_store_dev(void);
 
-void test_strtol(int val);
 
-enum {
+
+enum {/* task column id for sorting and for setting visibility*/
     COL_TASK = 0,
     COL_PID,
     COL_RSS,
@@ -73,7 +86,7 @@ enum {
     NUM_COLS
 };
 
-enum {
+enum {/*!device column id for sorting and for setting visibility*/
 
     COL_DEV = 0,
     COL_DIR,

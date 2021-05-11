@@ -1,22 +1,10 @@
-#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
 
 #IncludeRegexScan: ^.*$
 
 #IncludeRegexComplain: ^$
 
 #IncludeRegexTransform: 
-
-/home/dushn/Diplomski/diplomski/dclient/buttons.c
-sys/socket.h
--
-buttons.h
-/home/dushn/Diplomski/diplomski/dclient/buttons.h
-drawing.h
-/home/dushn/Diplomski/diplomski/dclient/drawing.h
-testing_tree.h
-/home/dushn/Diplomski/diplomski/dclient/testing_tree.h
-window.h
-/home/dushn/Diplomski/diplomski/dclient/window.h
 
 /home/dushn/Diplomski/diplomski/dclient/buttons.h
 gtk/gtk.h
@@ -29,84 +17,40 @@ stdbool.h
 -
 time.h
 -
-
-/home/dushn/Diplomski/diplomski/dclient/drawing.c
-inttypes.h
--
-drawing.h
-/home/dushn/Diplomski/diplomski/dclient/drawing.h
-
-/home/dushn/Diplomski/diplomski/dclient/drawing.h
-math.h
--
-sys/stat.h
--
-pwd.h
--
-unistd.h
--
-string.h
--
-stdio.h
--
-stdlib.h
+cairo.h
 -
 gtk/gtk.h
 -
-cairo.h
+
+/home/dushn/Diplomski/diplomski/dclient/main_header.h
+gtk/gtk.h
 -
 common.h
 /home/dushn/Diplomski/diplomski/dclient/common.h
+semaphore.h
+/home/dushn/Diplomski/diplomski/dclient/semaphore.h
+error.h
+/home/dushn/Diplomski/diplomski/dclient/error.h
+
+/home/dushn/Diplomski/diplomski/dclient/testing.c
+testing.h
+/home/dushn/Diplomski/diplomski/dclient/testing.h
 main_header.h
 /home/dushn/Diplomski/diplomski/dclient/main_header.h
-
-/home/dushn/Diplomski/diplomski/dclient/functions.c
-functions.h
-/home/dushn/Diplomski/diplomski/dclient/functions.h
+inttypes.h
+-
 memory.h
 -
 stdlib.h
 -
 errno.h
 -
-sys/socket.h
-/home/dushn/Diplomski/diplomski/dclient/sys/socket.h
+
+/home/dushn/Diplomski/diplomski/dclient/testing.h
+common.h
+/home/dushn/Diplomski/diplomski/dclient/common.h
 main_header.h
 /home/dushn/Diplomski/diplomski/dclient/main_header.h
-
-/home/dushn/Diplomski/diplomski/dclient/functions.h
-gtk/gtk.h
-/home/dushn/Diplomski/diplomski/dclient/gtk/gtk.h
-common.h
-/home/dushn/Diplomski/diplomski/dclient/common.h
-
-/home/dushn/Diplomski/diplomski/dclient/main.c
-drawing.h
-/home/dushn/Diplomski/diplomski/dclient/drawing.h
-testing_tree.h
-/home/dushn/Diplomski/diplomski/dclient/testing_tree.h
-window.h
-/home/dushn/Diplomski/diplomski/dclient/window.h
-buttons.h
-/home/dushn/Diplomski/diplomski/dclient/buttons.h
-sys/socket.h
-/home/dushn/Diplomski/diplomski/dclient/sys/socket.h
-netdb.h
--
-errno.h
--
-assert.h
--
-inttypes.h
--
-functions.h
-/home/dushn/Diplomski/diplomski/dclient/functions.h
-
-/home/dushn/Diplomski/diplomski/dclient/main_header.h
-gtk/gtk.h
--
-common.h
-/home/dushn/Diplomski/diplomski/dclient/common.h
 
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.c
 testing_tree.h
@@ -115,6 +59,8 @@ errno.h
 -
 buttons.h
 /home/dushn/Diplomski/diplomski/dclient/buttons.h
+main_header.h
+/home/dushn/Diplomski/diplomski/dclient/main_header.h
 
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
 string.h
@@ -123,20 +69,6 @@ gtk/gtk.h
 -
 stdlib.h
 -
-common.h
-/home/dushn/Diplomski/diplomski/dclient/common.h
-
-/home/dushn/Diplomski/diplomski/dclient/window.c
-window.h
-/home/dushn/Diplomski/diplomski/dclient/window.h
-testing_tree.h
-/home/dushn/Diplomski/diplomski/dclient/testing_tree.h
-buttons.h
-/home/dushn/Diplomski/diplomski/dclient/buttons.h
-
-/home/dushn/Diplomski/diplomski/dclient/window.h
-main_header.h
-/home/dushn/Diplomski/diplomski/dclient/main_header.h
 common.h
 /home/dushn/Diplomski/diplomski/dclient/common.h
 
@@ -417,9 +349,13 @@ glib-object.h
 -
 gio/gio.h
 -
+gdk-pixbuf/gdk-pixbuf-macros.h
+-
 
 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-enum-types.h
 glib-object.h
+-
+gdk-pixbuf/gdk-pixbuf-macros.h
 -
 
 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-features.h
@@ -450,6 +386,12 @@ gdk-pixbuf/gdk-pixbuf-animation.h
 gdk-pixbuf/gdk-pixbuf-io.h
 -
 
+/usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-macros.h
+glib.h
+-
+gdk-pixbuf/gdk-pixbuf-features.h
+-
+
 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-simple-anim.h
 gdk-pixbuf/gdk-pixbuf-animation.h
 -
@@ -462,6 +404,8 @@ gdk-pixbuf/gdk-pixbuf-core.h
 
 /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf.h
 glib.h
+-
+gdk-pixbuf/gdk-pixbuf-macros.h
 -
 gdk-pixbuf/gdk-pixbuf-features.h
 -
@@ -1555,6 +1499,8 @@ glib/gurifuncs.h
 -
 glib/gutils.h
 -
+glib/guuid.h
+-
 glib/gvarianttype.h
 -
 glib/gvariant.h
@@ -1633,6 +1579,8 @@ glib/gtypes.h
 /usr/include/glib-2.0/glib/gbacktrace.h
 glib/gtypes.h
 -
+sys/select.h
+-
 signal.h
 -
 
@@ -1703,6 +1651,8 @@ glib/gquark.h
 -
 
 /usr/include/glib-2.0/glib/gfileutils.h
+glibconfig.h
+-
 glib/gerror.h
 -
 
@@ -1739,6 +1689,8 @@ glib/gstring.h
 -
 
 /usr/include/glib-2.0/glib/gkeyfile.h
+glib/gbytes.h
+-
 glib/gerror.h
 -
 
@@ -1786,6 +1738,8 @@ stdarg.h
 glib/gtypes.h
 -
 glib/gmacros.h
+-
+glib/gvariant.h
 -
 
 /usr/include/glib-2.0/glib/gnode.h
@@ -1869,6 +1823,8 @@ glib/gmacros.h
 -
 glib/gtypes.h
 -
+glib/gerror.h
+-
 
 /usr/include/glib-2.0/glib/gstring.h
 glib/gtypes.h
@@ -1892,6 +1848,8 @@ glib/gstring.h
 glib/gerror.h
 -
 glib/gslist.h
+-
+string.h
 -
 
 /usr/include/glib-2.0/glib/gthread.h
@@ -1947,6 +1905,12 @@ glib/gtypes.h
 -
 stdarg.h
 -
+stdlib.h
+-
+
+/usr/include/glib-2.0/glib/guuid.h
+glib/gtypes.h
+-
 
 /usr/include/glib-2.0/glib/gvariant.h
 glib/gvarianttype.h
@@ -1957,8 +1921,6 @@ glib/gbytes.h
 -
 
 /usr/include/glib-2.0/glib/gvarianttype.h
-glib/gmessages.h
--
 glib/gtypes.h
 -
 
@@ -2097,6 +2059,10 @@ gdk/gdkcursor.h
 -
 gdk/gdkdevice.h
 -
+gdk/gdkdevicepad.h
+-
+gdk/gdkdevicetool.h
+-
 gdk/gdkdevicemanager.h
 -
 gdk/gdkdisplay.h
@@ -2104,6 +2070,8 @@ gdk/gdkdisplay.h
 gdk/gdkdisplaymanager.h
 -
 gdk/gdkdnd.h
+-
+gdk/gdkdrawingcontext.h
 -
 gdk/gdkenumtypes.h
 -
@@ -2121,6 +2089,8 @@ gdk/gdkkeysyms.h
 -
 gdk/gdkmain.h
 -
+gdk/gdkmonitor.h
+-
 gdk/gdkpango.h
 -
 gdk/gdkpixbuf.h
@@ -2132,6 +2102,8 @@ gdk/gdkrectangle.h
 gdk/gdkrgba.h
 -
 gdk/gdkscreen.h
+-
+gdk/gdkseat.h
 -
 gdk/gdkselection.h
 -
@@ -2167,6 +2139,8 @@ gdk/deprecated/gdkcolor.h
 -
 gdk/gdkrgba.h
 -
+gdk/gdkdrawingcontext.h
+-
 gdk/gdkpixbuf.h
 -
 pango/pangocairo.h
@@ -2196,6 +2170,18 @@ gdk/gdktypes.h
 gdk/gdkdevice.h
 -
 
+/usr/include/gtk-3.0/gdk/gdkdevicepad.h
+gdk/gdkversionmacros.h
+-
+gdk/gdktypes.h
+-
+
+/usr/include/gtk-3.0/gdk/gdkdevicetool.h
+gdk/gdkversionmacros.h
+-
+gdk/gdktypes.h
+-
+
 /usr/include/gtk-3.0/gdk/gdkdisplay.h
 gdk/gdkversionmacros.h
 -
@@ -2204,6 +2190,10 @@ gdk/gdktypes.h
 gdk/gdkevents.h
 -
 gdk/gdkdevicemanager.h
+-
+gdk/gdkseat.h
+-
+gdk/gdkmonitor.h
 -
 
 /usr/include/gtk-3.0/gdk/gdkdisplaymanager.h
@@ -2216,6 +2206,14 @@ gdk/gdkdisplay.h
 gdk/gdktypes.h
 -
 gdk/gdkdevice.h
+-
+gdk/gdkevents.h
+-
+
+/usr/include/gtk-3.0/gdk/gdkdrawingcontext.h
+gdk/gdkversionmacros.h
+-
+gdk/gdktypes.h
 -
 
 /usr/include/gtk-3.0/gdk/gdkenumtypes.h
@@ -2232,6 +2230,8 @@ gdk/gdktypes.h
 gdk/gdkdnd.h
 -
 gdk/gdkdevice.h
+-
+gdk/gdkdevicetool.h
 -
 
 /usr/include/gtk-3.0/gdk/gdkframeclock.h
@@ -2260,6 +2260,14 @@ gdk/gdktypes.h
 
 /usr/include/gtk-3.0/gdk/gdkmain.h
 gdk/gdkversionmacros.h
+-
+gdk/gdktypes.h
+-
+
+/usr/include/gtk-3.0/gdk/gdkmonitor.h
+gdk/gdkversionmacros.h
+-
+gdk/gdkrectangle.h
 -
 gdk/gdktypes.h
 -
@@ -2308,6 +2316,16 @@ gdk/gdktypes.h
 gdk/gdkdisplay.h
 -
 
+/usr/include/gtk-3.0/gdk/gdkseat.h
+glib-object.h
+-
+gdk/gdkwindow.h
+-
+gdk/gdkevents.h
+-
+gdk/gdktypes.h
+-
+
 /usr/include/gtk-3.0/gdk/gdkselection.h
 gdk/gdktypes.h
 -
@@ -2350,6 +2368,8 @@ gdk/gdkversionmacros.h
 gdk/gdkversionmacros.h
 -
 gdk/gdktypes.h
+-
+gdk/gdkdrawingcontext.h
 -
 gdk/gdkevents.h
 -
@@ -2685,6 +2705,10 @@ gtk/gtkdialog.h
 -
 gtk/gtkdnd.h
 -
+gtk/gtkdragdest.h
+-
+gtk/gtkdragsource.h
+-
 gtk/gtkdrawingarea.h
 -
 gtk/gtkeditable.h
@@ -2710,6 +2734,8 @@ gtk/gtkfilechooser.h
 gtk/gtkfilechooserbutton.h
 -
 gtk/gtkfilechooserdialog.h
+-
+gtk/gtkfilechoosernative.h
 -
 gtk/gtkfilechooserwidget.h
 -
@@ -2805,6 +2831,8 @@ gtk/gtkmodules.h
 -
 gtk/gtkmountoperation.h
 -
+gtk/gtknativedialog.h
+-
 gtk/gtknotebook.h
 -
 gtk/gtkoffscreenwindow.h
@@ -2812,6 +2840,8 @@ gtk/gtkoffscreenwindow.h
 gtk/gtkorientable.h
 -
 gtk/gtkoverlay.h
+-
+gtk/gtkpadcontroller.h
 -
 gtk/gtkpagesetup.h
 -
@@ -2882,6 +2912,16 @@ gtk/gtkseparatormenuitem.h
 gtk/gtkseparatortoolitem.h
 -
 gtk/gtksettings.h
+-
+gtk/gtkshortcutlabel.h
+-
+gtk/gtkshortcutsgroup.h
+-
+gtk/gtkshortcutssection.h
+-
+gtk/gtkshortcutsshortcut.h
+-
+gtk/gtkshortcutswindow.h
 -
 gtk/gtkshow.h
 -
@@ -3141,6 +3181,8 @@ gio/gio.h
 /usr/include/gtk-3.0/gtk/gtkapplicationwindow.h
 gtk/gtkwindow.h
 -
+gtk/gtkshortcutswindow.h
+-
 
 /usr/include/gtk-3.0/gtk/gtkaspectframe.h
 gtk/gtkframe.h
@@ -3352,6 +3394,18 @@ gtk/gtkwidget.h
 gtk/gtkselection.h
 -
 
+/usr/include/gtk-3.0/gtk/gtkdragdest.h
+gtk/gtkselection.h
+-
+gtk/gtkwidget.h
+-
+
+/usr/include/gtk-3.0/gtk/gtkdragsource.h
+gtk/gtkselection.h
+-
+gtk/gtkwidget.h
+-
+
 /usr/include/gtk-3.0/gtk/gtkdrawingarea.h
 gtk/gtkwidget.h
 -
@@ -3432,6 +3486,12 @@ gtk/gtkfilechooser.h
 gtk/gtkdialog.h
 -
 gtk/gtkfilechooser.h
+-
+
+/usr/include/gtk-3.0/gtk/gtkfilechoosernative.h
+gtk/gtkfilechooser.h
+-
+gtk/gtknativedialog.h
 -
 
 /usr/include/gtk-3.0/gtk/gtkfilechooserwidget.h
@@ -3688,6 +3748,10 @@ gdk/gdk.h
 
 /usr/include/gtk-3.0/gtk/gtkmountoperation.h
 
+/usr/include/gtk-3.0/gtk/gtknativedialog.h
+gtk/gtkwindow.h
+-
+
 /usr/include/gtk-3.0/gtk/gtknotebook.h
 gtk/gtkcontainer.h
 -
@@ -3702,6 +3766,12 @@ gtk/gtkwidget.h
 
 /usr/include/gtk-3.0/gtk/gtkoverlay.h
 gtk/gtkbin.h
+-
+
+/usr/include/gtk-3.0/gtk/gtkpadcontroller.h
+gdk/gdk.h
+-
+gtk/gtkeventcontroller.h
 -
 
 /usr/include/gtk-3.0/gtk/gtkpagesetup.h
@@ -3896,7 +3966,31 @@ gdk/gdk.h
 gtk/gtktypes.h
 -
 
+/usr/include/gtk-3.0/gtk/gtkshortcutlabel.h
+gtk/gtkbox.h
+-
+
+/usr/include/gtk-3.0/gtk/gtkshortcutsgroup.h
+gtk/gtkbox.h
+-
+
+/usr/include/gtk-3.0/gtk/gtkshortcutssection.h
+gtk/gtkbox.h
+-
+gtk/gtkshortcutsgroup.h
+-
+
+/usr/include/gtk-3.0/gtk/gtkshortcutsshortcut.h
+gtk/gtk.h
+-
+
+/usr/include/gtk-3.0/gtk/gtkshortcutswindow.h
+gtk/gtkwindow.h
+-
+
 /usr/include/gtk-3.0/gtk/gtkshow.h
+gtk/gtkwindow.h
+-
 
 /usr/include/gtk-3.0/gtk/gtksizegroup.h
 gtk/gtkwidget.h
@@ -4207,6 +4301,8 @@ glib-object.h
 /usr/include/pango-1.0/pango/pango-bidi-type.h
 glib.h
 -
+pango/pango-version-macros.h
+-
 
 /usr/include/pango-1.0/pango/pango-break.h
 glib.h
@@ -4225,6 +4321,8 @@ pango/pango-attributes.h
 /usr/include/pango-1.0/pango/pango-coverage.h
 glib.h
 -
+pango/pango-version-macros.h
+-
 
 /usr/include/pango-1.0/pango/pango-engine.h
 pango/pango-types.h
@@ -4240,6 +4338,8 @@ pango/pango-script.h
 
 /usr/include/pango-1.0/pango/pango-enum-types.h
 glib-object.h
+-
+pango/pango-version-macros.h
 -
 
 /usr/include/pango-1.0/pango/pango-features.h
@@ -4299,6 +4399,8 @@ glib.h
 -
 glib-object.h
 -
+pango/pango-version-macros.h
+-
 pango/pango-script.h
 -
 
@@ -4327,6 +4429,8 @@ pango/pango-layout.h
 /usr/include/pango-1.0/pango/pango-script.h
 glib.h
 -
+pango/pango-version-macros.h
+-
 pango/pango-language.h
 -
 
@@ -4338,6 +4442,8 @@ pango/pango-types.h
 glib.h
 -
 glib-object.h
+-
+pango/pango-version-macros.h
 -
 pango/pango-gravity.h
 -
@@ -4356,6 +4462,12 @@ stdio.h
 glib.h
 -
 pango/pango-font.h
+-
+
+/usr/include/pango-1.0/pango/pango-version-macros.h
+pango/pango-features.h
+-
+glib.h
 -
 
 /usr/include/pango-1.0/pango/pango.h
@@ -4402,6 +4514,8 @@ pango/pango-tabs.h
 pango/pango-types.h
 -
 pango/pango-utils.h
+-
+pango/pango-version-macros.h
 -
 
 /usr/include/pango-1.0/pango/pangocairo.h

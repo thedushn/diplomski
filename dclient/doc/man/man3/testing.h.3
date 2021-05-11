@@ -1,0 +1,72 @@
+.TH "testing.h" 3 "Wed Apr 14 2021" "Version 1.1" "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+testing.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'common\&.h'\fP
+.br
+\fC#include 'main_header\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBinterrupts_write\fP (\fBI_Collection2\fP *array)"
+.br
+.ti -1c
+.RI "int \fBcpu_write\fP (\fBCpu_usage\fP cpu_usage)"
+.br
+.ti -1c
+.RI "int \fBnetw_write\fP (unsigned long transmited, unsigned long received)"
+.br
+.ti -1c
+.RI "int \fBmemory_write\fP (\fBMemory_usage\fP *memory_usage)"
+.br
+.ti -1c
+.RI "int \fBtask_write\fP (\fBT_Collection\fP *array)"
+.br
+.ti -1c
+.RI "int \fBdevice_write\fP (\fBD_Collection\fP *array)"
+.br
+.ti -1c
+.RI "int \fBnetw_calculate\fP (float *transmited, float *received)"
+.br
+.ti -1c
+.RI "int \fBifstat_calculate\fP (float *received_kb, float *transmitted_kb)"
+.br
+.ti -1c
+.RI "int \fBtask_sort\fP (\fBT_Collection\fP **array, int number)"
+.br
+.ti -1c
+.RI "int \fBcpu_read\fP (\fBCpu_list\fP **array)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "int cpu_read (\fBCpu_list\fP ** array)"
+
+.SS "int cpu_write (\fBCpu_usage\fP cpu_usage)"
+
+.SS "int device_write (\fBD_Collection\fP * array)"
+
+.SS "int ifstat_calculate (float * received_kb, float * transmitted_kb)"
+
+.SS "int interrupts_write (\fBI_Collection2\fP * array)"
+
+.SS "int memory_write (\fBMemory_usage\fP * memory_usage)"
+
+.SS "int netw_calculate (float * transmited, float * received)"
+
+.SS "int netw_write (unsigned long transmited, unsigned long received)"
+
+.SS "int task_sort (\fBT_Collection\fP ** array, int number)"
+
+.SS "int task_write (\fBT_Collection\fP * array)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

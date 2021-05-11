@@ -3,263 +3,225 @@
 //
 
 
+
 #include"stdio.h"
 #include"stdlib.h"
 
-#include"sys/socket.h"
+
 #include"string.h"
-#include"netinet/in.h"
+
 #include"pthread.h"
 
 #include "functions.h"
 #include "cpu_usage.h"
-#include "task_manager.h"
+
 #include "network_bandwith.h"
+#include "time_managment.h"
 
-
-#include <arpa/inet.h>
-
-
-#include <netdb.h>
-#include <signal.h>
-#include <errno.h>
-#include <wait.h>
-
-
+//todo MAKE A function for cleaning up all the global data;
 
 #define BUFFER_SIZE 1024
 
+#define handle_error_en(en, msg) \
+               do { errno = en; perror(msg); exit(EXIT_FAILURE); } while (0)
+int test_strtol(long val) {
 
-static void sigchld_handler() {
 
-    int saved_errno = errno;
+    if ((errno == ERANGE && (val == LONG_MAX || val == LONG_MIN))
+        || (errno != 0 )) {
+        perror("strtol");
+        return -1;
 
-    while (waitpid(-1, NULL, WNOHANG) > 0);
-
-    errno = saved_errno;
-}
-
-void *get_in_addr(struct sockaddr *sa) {
-    if (sa->sa_family == AF_INET) {
-        return &(((struct sockaddr_in *) sa)->sin_addr);
     }
 
-    return &(((struct sockaddr_in6 *) sa)->sin6_addr);
+    return 0;
 }
+/*
+ * function main(): creates a TPC socket and waits for a connection of the client,if that was successful it gathers
+ * information about when the kernel started working and creates threads to send information to the client and receive
+ * commands from him, after the client wants to stop getting information about the servers host, the server closes the
+ * sockets and free the allocated memory from the gathering of the data
+ * input  : port number
+ * output : returns a non zero value if something goes wrong
+ * */
 
 int main(int argc, char *argv[]) {
 
-    hash_size=0;
-    task_details=NULL;
-    hash_network=NULL;
-    net_hash_size=0;
+    hash_size     = 0;
+    task_details  = NULL;
+    hash_network  = NULL;
+    net_hash_size = 0;
+    cpu_Number    = 0;
+    thread_break  = true;
 
 
-    pthread_t t2, t3;
-    int sockfd = 0;
-    int new_fd = 0;
-    int new_fd1 = 0;  // listen on sock_fd, new connection on new_fd
-    struct addrinfo hints, *servinfo, *p;
-    struct sockaddr_storage their_addr; // connector's address information
-    socklen_t sin_size;
-    struct sigaction sa;
-    int yes = 1;
-    char s[INET6_ADDRSTRLEN];
-    int rv, ret, ret2;
+    int socket_send     = 0;
+    int socket_command  = 0;  // listen on sock_fd, new connection on socket_send
+    int ret                ;
+    long test_s;
     char buffer[BUFFER_SIZE];
-    memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_UNSPEC;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_flags = AI_PASSIVE; // use my IP
+
+
+    struct DataItem     *temp;
+    struct DataItem_net *temp_net;
 
     if (argc < 2) {
 
         printf("no port provided");
         return -1;
     }
-
-
-    if ((rv = getaddrinfo(NULL, argv[1], &hints, &servinfo)) != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
-        freeaddrinfo(servinfo);
-        return 1;
-    }
-
-    // loop through all the results and bind to the first we can
-    for (p = servinfo; p != NULL; p = p->ai_next) {
-        if ((sockfd = socket(p->ai_family, p->ai_socktype,
-                             p->ai_protocol)) == -1) {
-            perror("server: socket");
-            continue;
-        }
-
-        if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes,
-                       sizeof(int)) == -1) {
-            perror("setsockopt");
-            freeaddrinfo(servinfo);
-           return -1;
-        }
-
-        if (bind(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
-            close(sockfd);
-            perror("server: bind");
-            continue;
-        }
-
-        break;
-    }
-
-    freeaddrinfo(servinfo); // all done with this structure
-
-    if (p == NULL) {
-        fprintf(stderr, "server: failed to bind\n");
-
+    test_s= strtol(argv[1], NULL, 10);
+    //TODO make a function to give the user the option to type in a new port
+    if(test_strtol(test_s)!=0){
+        printf("port number is not correct\n");
+        printf("input was %s\n",argv[1]);
+        perror("strtol");
         return -1;
     }
 
-    if (listen(sockfd, 10) == -1) {
-        perror("listen");
+
+
+
+
+
+
+   if( connection(argv[1],&socket_send,&socket_command)!=0){
+       printf("connection failed\n");
+       fflush(stdout);
        return -1;
+   }
+
+    if((cpu_Number=cpu_number())<=0){
+        printf("Reading cpu number failed \n");
+        printf("output was %d\n",cpu_Number);
+        return -1;
     }
 
-    sa.sa_handler =sigchld_handler; // reap all dead processes
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_RESTART;
-    if (sigaction(SIGCHLD, &sa, NULL) == -1) {
-        perror("sigaction");
+    if(send_cpu_num(socket_send,cpu_Number)<0){
+        close(socket_send);
+        close(socket_command);
+        return -1;
+    }
+
+    if(cpu_data_allocation()<0){
+        printf("allocation of memory failed\n");
+        fflush(stdout);
+        free_cpu_memory();
+        close(socket_send);
+        close(socket_command);
         return -1;
     }
 
 
-    {  // main accept() loop
-        sin_size = sizeof their_addr;
-        new_fd = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size);
-        if (sockfd == -1) {
-            perror("accept");
-            return -1;
-        }
-    }
 
 
-    inet_ntop(their_addr.ss_family,
-              get_in_addr((struct sockaddr *) &their_addr),
-              s, sizeof s);
+   if(uptime()){
+       close(socket_send);
+       close(socket_command);
+       free_cpu_memory();
+       return -1;
+   }
+    thr_p_main[0].socket=socket_send;
 
+    ret =  pthread_mutex_init(&mutex_send,NULL);
+   if (ret != 0){
+       errno = ret;
+       perror("pthread_mutex_init");
+       close(socket_send);
+       close(socket_command);
+       free_cpu_memory();
+       return -1;
 
-    {  // main accept() loop
-        sin_size = sizeof their_addr;
-        new_fd1 = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size);
-        if (new_fd1 == -1) {
-            perror("accept");
-            return -1;
-        }
-    }
-
-
-    inet_ntop(their_addr.ss_family,
-              get_in_addr((struct sockaddr *) &their_addr),
-              s, sizeof s);
-
-
-    FILE *fp;
-
-    int uptime1 = 0;
-    fp = fopen("/proc/uptime", "r");
-    if (fp != NULL) {
-
-        while (fgets(buffer, BUFFER_SIZE, fp) != NULL) {
-
-
-            sscanf(buffer, "%d", &uptime1);
-        }
-    } else {
-        int errnum;
-        errnum = errno;
-        fprintf(stderr, "Value of errno: %d\n", errno);
-        perror("Error printed by perror");
-        fprintf(stderr, "Error opening file: %s\n", strerror(errnum));
-        close(sockfd);
-        close(new_fd1);
-        close(new_fd);
-        return -1;
-    }
-
-    fclose(fp);
-
-
-    time_t time1 = time(NULL);
-    struct tm tm2 = *localtime(&time1);
-
-    int sec0, hr0, min0, t0;
-
-    struct tm1 stop_time;
-
-
-    hr0 = uptime1 / 3600;
-    t0 = uptime1 % 3600;
-    min0 = t0 / 60;
-    sec0 = t0 % 60;
-    stop_time.tm_hour = (__uint32_t) hr0; //when did the computer start running
-    stop_time.tm_min = (__uint32_t) min0;
-    stop_time.tm_sec = (__uint32_t) sec0;
-
-    differenceBetweenTimePeriod(tm2, stop_time, &begin_time);// time when linux started
+   }
 
 
 
-    ret2 = pthread_create(&t2, NULL, sending, &new_fd);
-    if (ret2 != 0) {
-
-        printf("ERROR: Return Code from pthread_create() is %d\n", ret2);
-        close(sockfd);
-        return -1;
-
-    }
-
-    ret = pthread_create(&t3, NULL, accept_c, &new_fd1);
-
-    if (ret != 0) {
-
+    if ((ret=pthread_create(&thr_p_main[0].thread_id, NULL, &sending, &thr_p_main[0])) != 0) {/*creating thread for sending data to client*/
+        errno = ret;
+        perror("pthread_create");
         printf("ERROR: Return Code from pthread_create() is %d\n", ret);
-        close(sockfd);
+        fflush(stdout);
+        close(socket_command);
+        close(socket_send);
+        free_cpu_memory();
+        ret=pthread_mutex_destroy(&mutex_send);
+        if(ret!=0){
+            errno = ret;
+            handle_error_en(ret,"pthread_mutex_destroy");
+        }
         return -1;
+
+    }
+    /*creating thread for receiving commands from client*/
+
+    if ((ret = pthread_create(&thr_p_main[1].thread_id, NULL, accept_command, &socket_command)) != 0) {
+
+        errno = ret;
+        perror("pthread_create");
+        printf("ERROR: Return Code from pthread_create() is %d\n", ret);
+        ret= pthread_mutex_lock(&mutex_send);
+        errno = ret;
+        perror("pthread_mutex_init");
+        thread_break = false;
+        pthread_mutex_unlock(&mutex_send);
+        close(socket_command);
+        close(socket_send);
+        free_cpu_memory();
+       // return -1;
 
     }
 
 
-    pthread_join(t2, NULL);
-    pthread_join(t3, NULL);
 
 
 
-        struct DataItem *temp;
-    for(int k=0;k<hash_size;k++){
-        // save reference to first link
-        temp = task_details;
+    if((ret= pthread_join(thr_p_main[0].thread_id, NULL))){
 
-        //mark next to first link as first
+        strerror_r(ret,buffer,sizeof(buffer));
+        fprintf(stderr,"error = %d (%s)\n",ret,buffer);
+        pthread_mutex_lock(&mutex_send);
+        thread_break = false;
+        pthread_mutex_unlock(&mutex_send);
+
+    }
+
+
+    if((ret= pthread_join(thr_p_main[1].thread_id, NULL ))){
+
+        strerror_r(ret,buffer,sizeof(buffer));
+        fprintf(stderr,"error = %d (%s)\n",ret,buffer);
+        pthread_mutex_lock(&mutex_send);
+        thread_break = false;
+        pthread_mutex_unlock(&mutex_send);
+    }
+
+    pthread_mutex_destroy(&mutex_send);
+
+
+
+
+//    for(int k=0;k<hash_size;k++){ /*freeing the list of task details*/
+    while(task_details){
+        temp         = task_details;
         task_details = task_details->next;
-
-        //return the deleted link
         free(temp);
 
     }
-    struct DataItem_net *temp_net;
-    for(int k=0;k<net_hash_size;k++){
-        // save reference to first link
-        temp_net = hash_network;
 
-        //mark next to first link as first
+    for(int k=0;k<net_hash_size;k++){/*freeing the list of network details*/
+
+        temp_net     = hash_network;
         hash_network = hash_network->next;
-
-        //return the deleted link
         free(temp_net);
 
     }
-    close(sockfd);
 
-
-
+  //  clean_interrupts2();
+    close(socket_command);
+    close(socket_send);
+    free_cpu_memory();
+    printf("we exited");
+    fflush(stdout);
 
     return 0;
 }

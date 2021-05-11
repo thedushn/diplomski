@@ -1,0 +1,141 @@
+.TH "drawing.h" 3 "Wed Apr 14 2021" "Version 1.1" "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+drawing.h \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <math\&.h>\fP
+.br
+\fC#include <sys/stat\&.h>\fP
+.br
+\fC#include <pwd\&.h>\fP
+.br
+\fC#include <unistd\&.h>\fP
+.br
+\fC#include <string\&.h>\fP
+.br
+\fC#include <stdio\&.h>\fP
+.br
+\fC#include <stdlib\&.h>\fP
+.br
+\fC#include <gtk/gtk\&.h>\fP
+.br
+\fC#include <cairo\&.h>\fP
+.br
+\fC#include 'common\&.h'\fP
+.br
+\fC#include 'main_header\&.h'\fP
+.br
+\fC#include 'window\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "gboolean \fBon_draw_event2\fP (GtkWidget *widget, cairo_t *cr, \fBCpu_list\fP *array)"
+.br
+.ti -1c
+.RI "gboolean \fBon_draw_event\fP (GtkWidget *widget, cairo_t *cr)"
+.br
+.ti -1c
+.RI "void \fBdo_drawing_net\fP (GtkWidget *widget, cairo_t *cr, guint \fBtime_step\fP, \fBMega_Data\fP *array)"
+.br
+.ti -1c
+.RI "void \fBdraw_graph_net\fP (cairo_t *cr, int r, int i, double width, double height, double font_size, double \fBtime_step\fP, float max_num, \fBMega_Data\fP *array)"
+.br
+.ti -1c
+.RI "void \fBdo_drawing_cpu\fP (GtkWidget *widget, cairo_t *cr, guint \fBtime_step\fP, \fBMega_Data\fP *array1)"
+.br
+.ti -1c
+.RI "void \fBdo_drawing_one_cpu\fP (GtkWidget *widget, cairo_t *cr, guint \fBtime_step\fP, \fBMega_Data\fP *array1, int index)"
+.br
+.ti -1c
+.RI "void \fBdo_drawing_mem\fP (GtkWidget *widget, cairo_t *cr, guint \fBtime_step\fP, \fBMega_Data\fP *array)"
+.br
+.ti -1c
+.RI "void \fBdraw_graph_mem\fP (cairo_t *cr, int r, int i, double width, double height, double font_size, double \fBtime_step\fP, \fBMega_Data\fP *array)"
+.br
+.ti -1c
+.RI "void \fBdo_drawing_int\fP (GtkWidget *widget, cairo_t *cr, \fBI_Collection\fP *interrupts1)"
+.br
+.ti -1c
+.RI "void \fBdo_drawing_int2\fP (GtkWidget *widget, cairo_t *cr, \fBI_Collection2\fP *interrupts1)"
+.br
+.ti -1c
+.RI "void \fBwriting_seconds\fP (cairo_t *cr, double width, double height, double font_size, int i)"
+.br
+.ti -1c
+.RI "void \fBdraw_frame\fP (cairo_t *cr, double width, double height, double font_size, int i)"
+.br
+.ti -1c
+.RI "void \fBdraw_percentages\fP (cairo_t *cr, double height, double font_size)"
+.br
+.ti -1c
+.RI "void \fBdraw_interrupts\fP (cairo_t *cr, int position, \fBInterrupts\fP *peak, double height, double font_size, __uint64_t max_num, double length)"
+.br
+.ti -1c
+.RI "void \fBwriting_interrupt_names\fP (cairo_t *cr, double font_size, double length, int position, const gchar *name1, const gchar *name2)"
+.br
+.ti -1c
+.RI "void \fBwriting_interrupt_names2\fP (cairo_t *cr, double font_size, double length, int position, const gchar *name1)"
+.br
+.ti -1c
+.RI "void \fBchecking_interrupt_names\fP (cairo_t *cr, double font_size, double length, int position, const char *ime1, const char *ime2, const char *name3, const char *name4)"
+.br
+.ti -1c
+.RI "void \fBdraw_graph\fP (cairo_t *cr, int r, double width, double height, double font_size, double \fBtime_step\fP, \fBMega_Data\fP *array)"
+.br
+.ti -1c
+.RI "void \fBdo_drawing_cpu2\fP (GtkWidget *widget, cairo_t *cr, guint \fBtime_step\fP, \fBCpu_list\fP *array1)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void checking_interrupt_names (cairo_t * cr, double font_size, double length, int position, const char * ime1, const char * ime2, const char * name3, const char * name4)"
+
+.SS "void do_drawing_cpu (GtkWidget * widget, cairo_t * cr, guint time_step, \fBMega_Data\fP * array1)"
+function \fBdo_drawing_cpu()\fP: draws the entire graph, the lines, the frame the seconds and the percentage input:pointer to the graph, pointer to the canvas, step between data, and pointer to the array of cpu usage output:none\&. display the cpus we want to be displayed 
+.SS "void do_drawing_cpu2 (GtkWidget * widget, cairo_t * cr, guint time_step, \fBCpu_list\fP * array1)"
+
+.SS "void do_drawing_int (GtkWidget * widget, cairo_t * cr, \fBI_Collection\fP * interrupts1)"
+
+.SS "void do_drawing_int2 (GtkWidget * widget, cairo_t * cr, \fBI_Collection2\fP * interrupts1)"
+
+.SS "void do_drawing_mem (GtkWidget * widget, cairo_t * cr, guint time_step, \fBMega_Data\fP * array)"
+
+.SS "void do_drawing_net (GtkWidget * widget, cairo_t * cr, guint time_step, \fBMega_Data\fP * array)"
+function \fBdo_drawing_net()\fP: draws the entire graph, by searching the array for the biggest number input:pointer to the graph, pointer to the canvas, step between data, and pointer to the array of network usage output:none\&. how many elements do we have in an array
+.PP
+seaching for the highest number in network usage 
+.SS "void do_drawing_one_cpu (GtkWidget * widget, cairo_t * cr, guint time_step, \fBMega_Data\fP * array1, int index)"
+
+.SS "void draw_frame (cairo_t * cr, double width, double height, double font_size, int i)"
+function \fBdraw_frame()\fP: drawing the frame of the graph input: pointer to the canvas,width of the graph,height of the graph, font size and position output:none\&. 
+.SS "void draw_graph (cairo_t * cr, int r, double width, double height, double font_size, double time_step, \fBMega_Data\fP * array)"
+function \fBdraw_graph()\fP: draws the lines on the graph input: pointer to the canvas,index of the data,width,height,font size, step between data, pointer to the array of data output:none\&. 
+.SS "void draw_graph_mem (cairo_t * cr, int r, int i, double width, double height, double font_size, double time_step, \fBMega_Data\fP * array)"
+function \fBdraw_graph_mem()\fP: draws the lines on the graph for memory usage input: pointer to the canvas,index of the data,type of graph,width,height,font size, step between data,max number for (network usage), pointer to the array of data output:none\&. 
+.SS "void draw_graph_net (cairo_t * cr, int r, int i, double width, double height, double font_size, double time_step, float max_num, \fBMega_Data\fP * array)"
+function \fBdraw_graph_net()\fP: draws the lines on the graph for network usage input: pointer to the canvas,index of the data,type of graph,width,height,font size, step between data,max number for (network usage), pointer to the array of data output:none\&. < the last line always touches the floor 
+.SS "void draw_interrupts (cairo_t * cr, int position, \fBInterrupts\fP * peak, double height, double font_size, __uint64_t max_num, double length)"
+
+.SS "void draw_percentages (cairo_t * cr, double height, double font_size)"
+
+.SS "gboolean on_draw_event (GtkWidget * widget, cairo_t * cr)"
+function \fBon_draw_event()\fP: creating graphs by sending the draw signal to the function we create a cairo_t structure
+.PP
+input:pointer to the graph ,and pointer to cairo_t on which to draw on output:if successful return true 
+.SS "gboolean on_draw_event2 (GtkWidget * widget, cairo_t * cr, \fBCpu_list\fP * array)"
+
+.SS "void writing_interrupt_names (cairo_t * cr, double font_size, double length, int position, const gchar * name1, const gchar * name2)"
+
+.SS "void writing_interrupt_names2 (cairo_t * cr, double font_size, double length, int position, const gchar * name1)"
+
+.SS "void writing_seconds (cairo_t * cr, double width, double height, double font_size, int i)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

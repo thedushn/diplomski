@@ -1,0 +1,91 @@
+.TH "buttons.c" 3 "Wed Apr 14 2021" "Version 1.1" "My Project" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+buttons.c \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include 'buttons\&.h'\fP
+.br
+\fC#include 'drawing\&.h'\fP
+.br
+\fC#include 'testing_tree\&.h'\fP
+.br
+\fC#include 'functions\&.h'\fP
+.br
+
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBprocess_window\fP ()"
+.br
+.ti -1c
+.RI "void \fBrecord_window\fP ()"
+.br
+.ti -1c
+.RI "void \fBdevice_window\fP ()"
+.br
+.ti -1c
+.RI "void \fBclose_window_toggled\fP ()"
+.br
+.ti -1c
+.RI "void \fBclose_window\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBgraph_button_clicked\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBshow_all\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBgraph_clicked\fP (GtkWidget *widget)"
+.br
+.ti -1c
+.RI "void \fBshow_hide\fP (GtkWidget *button, GtkWidget *\fBwindow\fP)"
+.br
+.ti -1c
+.RI "void \fBhandle_task_menu\fP (GtkWidget *widget, char *signal)"
+.br
+.ti -1c
+.RI "void \fBhandle_task_prio\fP (GtkWidget *widget, char *signal)"
+.br
+.ti -1c
+.RI "GtkWidget * \fBcreateTask_pop_up\fP (void)"
+.br
+.ti -1c
+.RI "gboolean \fBon_treeview_tasks_button_press_event\fP (GtkButton *button, GdkEventButton *event)"
+.br
+.in -1c
+.SH "Function Documentation"
+.PP 
+.SS "void close_window (GtkWidget * widget)"
+function \fBclose_window()\fP: closes a widget input:pointer to a widget\&. output:none\&. 
+.SS "void close_window_toggled ()"
+function \fBclose_window_toggled()\fP: when the graph window is closed we set the button graph to not be clicked input:none\&. output:none\&. 
+.SS "GtkWidget* createTask_pop_up (void)"
+
+.SS "void device_window ()"
+function \fBdevice_window()\fP: create a window with buttons that represent columns in the device list when a button is checked the column connected to that button is shown or hidden\&. The buttons are checked depending on the columns visibility input:none\&. output:none\&. 
+.SS "void graph_button_clicked (GtkWidget * widget)"
+
+.SS "void graph_clicked (GtkWidget * widget)"
+
+.SS "void handle_task_menu (GtkWidget * widget, char * signal)"
+
+.SS "void handle_task_prio (GtkWidget * widget, char * signal)"
+
+.SS "gboolean on_treeview_tasks_button_press_event (GtkButton * button, GdkEventButton * event)"
+function \fBon_treeview_tasks_button_press_event()\fP: reacts to a right click on a task in the list and then creates a pop up menu\&. input:gtk button and pointer to an event\&. output: return bool\&. 
+.SS "void process_window ()"
+function \fBprocess_window()\fP: create a window with buttons that represent columns in the task list when a button is checked the column connected to that button is shown or hidden\&. The buttons are checked depending on the columns visibility input:none\&. output:none\&. 
+.SS "void record_window ()"
+function \fBrecord_window()\fP creates a window that holds the record button input : none otput : none 
+.SS "void show_all (GtkWidget * widget)"
+
+.SS "void show_hide (GtkWidget * button, GtkWidget * window)"
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for My Project from the source code\&.

@@ -50,22 +50,19 @@
 					<Add directory="/usr/include/dbus-1.0"/>
 					<Add directory="/usr/lib/x86_64-linux-gnu/dbus-1.0/include"/>
 					<Add directory="/usr/include/gio-unix-2.0"/>
-					<Add directory="/usr/include/mirclient"/>
-					<Add directory="/usr/include/mircore"/>
-					<Add directory="/usr/include/mircookie"/>
 					<Add directory="/usr/include/cairo"/>
 					<Add directory="/usr/include/pango-1.0"/>
 					<Add directory="/usr/include/harfbuzz"/>
 					<Add directory="/usr/include/atk-1.0"/>
 					<Add directory="/usr/include/pixman-1"/>
 					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/libpng12"/>
+					<Add directory="/usr/include/libpng16"/>
 					<Add directory="/usr/include/gdk-pixbuf-2.0"/>
 					<Add directory="/usr/include/glib-2.0"/>
 					<Add directory="/usr/lib/x86_64-linux-gnu/glib-2.0/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
@@ -89,22 +86,19 @@
 					<Add directory="/usr/include/dbus-1.0"/>
 					<Add directory="/usr/lib/x86_64-linux-gnu/dbus-1.0/include"/>
 					<Add directory="/usr/include/gio-unix-2.0"/>
-					<Add directory="/usr/include/mirclient"/>
-					<Add directory="/usr/include/mircore"/>
-					<Add directory="/usr/include/mircookie"/>
 					<Add directory="/usr/include/cairo"/>
 					<Add directory="/usr/include/pango-1.0"/>
 					<Add directory="/usr/include/harfbuzz"/>
 					<Add directory="/usr/include/atk-1.0"/>
 					<Add directory="/usr/include/pixman-1"/>
 					<Add directory="/usr/include/freetype2"/>
-					<Add directory="/usr/include/libpng12"/>
+					<Add directory="/usr/include/libpng16"/>
 					<Add directory="/usr/include/gdk-pixbuf-2.0"/>
 					<Add directory="/usr/include/glib-2.0"/>
 					<Add directory="/usr/lib/x86_64-linux-gnu/glib-2.0/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
@@ -116,6 +110,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/cleanup.c">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/cleanup.h">
+			<Option target="server"/>
+		</Unit>
 		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/cpu_usage.c">
 			<Option target="server"/>
 		</Unit>
@@ -159,6 +159,18 @@
 			<Option target="server"/>
 		</Unit>
 		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/task_manager.h">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/testing.c">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/testing.h">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/time_managment.c">
+			<Option target="server"/>
+		</Unit>
+		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/time_managment.h">
 			<Option target="server"/>
 		</Unit>
 		<Unit filename="/home/dushn/Diplomski/diplomski/dserver/CMakeLists.txt">
