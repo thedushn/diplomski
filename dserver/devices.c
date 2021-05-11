@@ -13,48 +13,39 @@
 #include <memory.h>
 #include <sys/socket.h>
 
-/*
- * function send_devices(): send data about the devices  to client
- * input  : socket to send data to
- * output : returns a value less then zero if something did not work
- * */
+
 void * send_devices(void *socket){
 
-    int     sockfd=(*(int*)socket);
-    int     result;
+    int sockfd=(*(int*)socket);
+    int result;
     ssize_t ret;
 
     D_Collection *devices_c;
     D_Collection *temp_dev;
     __int32_t device_num = 0;
 
-
     Data data={0};
-    pthread_mutex_lock(&mutex_send);
-    while (thread_break == false) { /*if other threads have failed close this thread before it allocates any memory*/
-        ret = -100;
-        pthread_mutex_unlock(&mutex_send);
-        pthread_exit(&ret);
-    }
-    pthread_mutex_unlock(&mutex_send);
 
     result = mount_list(&devices_c, &device_num, devices_show);
     if (result != 0) {
         printf("error in mount_list\n");
         for(int k=0;k<device_num;k++){
+            // save reference to first link
+            temp_dev = devices_c;
 
-            temp_dev  = devices_c;
+            //mark next to first link as first
             devices_c = devices_c->next;
+
+            //return the deleted link
             free(temp_dev);
 
         }
-        ret = -100;
-        pthread_exit(&ret);
+        pthread_exit(NULL);
     }
 
 
     temp_dev=devices_c;
-    for (int i = 0; i < device_num; i++) {/*send all the data about devices to client*/
+    for (int i = 0; i < device_num; i++) {
         temp_dev->devices.checked=false;
         memset(&data,0,sizeof(Data));
         data.size=DEVICES;
@@ -65,60 +56,83 @@ void * send_devices(void *socket){
 
 
 
-        if (ret < 0) { /*if the socket broke SIGPIPE error free allocated memory*/
-
-            printf("Error sending data\n return = %d\n", (int) ret);
+        if (ret < 0) {
+            printf("Error sending data!\n\t");
             for(int k=0;k<device_num;k++){
-
+                // save reference to first link
                 temp_dev = devices_c;
+
+                //mark next to first link as first
                 devices_c = devices_c->next;
+
+                //return the deleted link
                 free(temp_dev);
 
             }
-            pthread_exit(&ret);
+            pthread_exit(NULL);
 
         }
         if (ret == 0) {
-            printf("Error sending data\n return = %d\n", (int) ret);
+
             printf("socket closed\n");
             for(int k=0;k<device_num;k++){
-
+                // save reference to first link
                 temp_dev = devices_c;
+
+                //mark next to first link as first
                 devices_c = devices_c->next;
+
+                //return the deleted link
                 free(temp_dev);
 
             }
-            ret = -100;
-            pthread_exit(&ret);
+           pthread_exit(NULL);
         }
 
+
+
+//        pthread_mutex_lock(&mutex_send);
+//        if( test_send(sockfd)<=0){
+//
+//            pthread_mutex_unlock(&mutex_send);
+//            for(int k=0;k<device_num;k++){
+//                // save reference to first link
+//                temp_dev = devices_c;
+//
+//                //mark next to first link as first
+//                devices_c = devices_c->next;
+//
+//                //return the deleted link
+//                free(temp_dev);
+//
+//            }
+//
+//            pthread_exit(NULL);
+//        }
+//        pthread_mutex_unlock(&mutex_send);
 
         temp_dev=temp_dev->next;
 
 
     }
-    for(int k=0;k<device_num;k++){ /*done with device list time to free memory*/
-
+    for(int k=0;k<device_num;k++){
+        // save reference to first link
         temp_dev = devices_c;
 
-
+        //mark next to first link as first
         devices_c = devices_c->next;
 
-
+        //return the deleted link
         free(temp_dev);
 
     }
 
-    ret = 0;
-    pthread_exit(&ret);
+
+    pthread_exit(NULL);
 
 }
-/*
- * function input_device_stats(): uses the function statvfs to get stats about  mounted device
- * input : pointer to Devices structure;
- * output : none.
- * */
-void input_device_stats(Devices *devices) {
+
+void testing_files(Devices *devices) {
 
     struct statvfs info;
 
@@ -134,12 +148,7 @@ void input_device_stats(Devices *devices) {
 
 }
 
-/*
- * function mount_list(): creates a list of mounted devices based on their type
- * input : Double pointer to a structure that contains stats about a device, pointer to the number of devices
- * and a bool that specifies which type of devices we want in our list
- * output : returns a non zero value if something goes wrong
- * */
+
 
 int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
@@ -162,7 +171,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
     }
     fseek(file, 0, SEEK_SET);
 
-    if (mount == true) {/*checking if the client wants all the mounted files */
+    if (mount == true) {
         while (fgets(buffer, 1024, file) != NULL) {
 
           temp_dev=  calloc(1, sizeof(D_Collection));
@@ -177,7 +186,7 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
             sscanf(buffer, "%63s %255s %63s", temp_dev->devices.name,temp_dev->devices.directory,temp_dev->devices.type);
 
-            input_device_stats(&temp_dev->devices);
+            testing_files(&temp_dev->devices);
             (*dev_num)++;
             temp_dev->next=*array;
             *array=temp_dev;
@@ -185,24 +194,29 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
         }
     } else {
-        while (fgets(buffer, 1024, file) != NULL) { /*if the client only wants Block devices */
+        while (fgets(buffer, 1024, file) != NULL) {
             Devices proxy={0};
 
 
 
             sscanf(buffer, "%s %s %s", proxy.name,proxy.directory,proxy.type);
 
+
+
             struct stat filestat={0};
+
+
+
 
 
             lstat(proxy.name, &filestat);
 
             switch (filestat.st_mode & S_IFMT) {
 
-                case S_IFBLK: {  /*checking to see if its a block device*/
+                case S_IFBLK: {
 
 
-                    input_device_stats(&proxy);
+                    testing_files(&proxy);
                     temp_dev=  (D_Collection *)calloc(1, sizeof(D_Collection));
                     if(temp_dev==NULL){
                         free(temp_dev);
@@ -212,24 +226,31 @@ int mount_list(D_Collection **array, __int32_t *dev_num, bool mount) {
 
 
                     }
-                    /*adding the the device to the list*/
+
                     (*dev_num)++;
                     temp_dev->devices=proxy;
                     temp_dev->next=*array;
                     *array=temp_dev;
 
+
+
                     break;
 
                 }
-                default: /*if its not a Block device we skip it*/
+                default:
 
                     break;
             }
+
+
+
 
         }
     }
 
     fclose(file);
+
+
 
 
     return 0;

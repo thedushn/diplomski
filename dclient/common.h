@@ -1,10 +1,7 @@
 //
 // Created by dushn on 23.7.20..
 //
-/**
- * add to doxygend asdfasdasffsdggsdfdasrfasd
- *
- * hello there please show this in doxygen*/
+
 #ifndef DIPLOMSKI_COMMON_H
 #define DIPLOMSKI_COMMON_H
 
@@ -14,18 +11,8 @@
 #include <time.h>
 
 
-/*!defines what type of data we are sending */
-#define CPU_USAGE   1
-#define NETWORK     2
-#define MEMORY      3
-#define TASK        4
-#define DEVICES     5
-#define INTERRUPTS  6
-#define TEXT        7
 
-#define CPU_NUM     4/*number of CPU*/
-
-struct __attribute__((__packed__))tm1 {/*structure that contains information about time used for tasks*/
+struct __attribute__((__packed__))tm1 {
     __uint32_t tm_sec;            /* Seconds.	[0-60] (1 leap second) */
     __uint32_t tm_min;            /* Minutes.	[0-59] */
     __uint32_t tm_hour;            /* Hours.	[0-23] */
@@ -37,29 +24,28 @@ struct __attribute__((__packed__))tm1 {/*structure that contains information abo
     __uint32_t tm_isdst;            /* DST.		[-1/0/1]*/
 
 };
-/**<<structure that contains task details */
 typedef struct _Task Task;
 
 struct __attribute__((__packed__)) _Task {
-    bool       checked;
-    __int16_t  prio;
+    bool checked;
+    __int16_t prio;
     __uint32_t uid;
     __uint32_t pid;
     __uint32_t ppid;
-    char       cpu_user[16];
-    char       cpu_system[16];
+    char cpu_user[16];
+    char cpu_system[16];
     __uint64_t vsz;
     __uint64_t rss;
     __uint64_t start_time;
     struct tm1 stime;
     struct tm1 duration;
-    char       state[16];
-    char       name[256];
-    char       uid_name[256];
+    char state[16];
+    char name[256];
+    char uid_name[256];
 
 
 };
-typedef struct _Network Network;/**structure that contains all the network usage*/
+typedef struct _Network Network;
 struct __attribute__((__packed__))_Network {
 
     __uint64_t received_bytes;
@@ -67,42 +53,40 @@ struct __attribute__((__packed__))_Network {
 
 
 };
-/**<<structure that contains cpu usage of all the different cpus */
 typedef struct _Cpu_usage Cpu_usage;
-struct __attribute__((__packed__)) _Cpu_usage {/**structure that contains cpu usage of all the different cpus */
+struct __attribute__((__packed__)) _Cpu_usage {
 
 
-    char percentage[CPU_NUM][16];/*<variable containg cpu percentage*/
-
+    char percentage0[16];
+    char percentage1[16];
+    char percentage2[16];
+    char percentage3[16];
 
 
 };
 
 
-
-typedef struct _Memory_usage Memory_usage;/*!structure that contains information about memory usage */
+typedef struct _Memory_usage Memory_usage;
 
 struct __attribute__((__packed__)) _Memory_usage {
-
     __uint64_t memory_used;
     __uint64_t memory_total;
-    char       swap_percentage[16];
+    char swap_percentage[16];
     __uint64_t swap_total;
     __uint64_t swap_used;
-    char       memory_percentage[16];
+    char memory_percentage[16];
 
 
 };
-/*!<structure that contains the information of a interrupt type*/
 typedef struct _Interrupts Interrupts;
 struct __attribute__((__packed__)) _Interrupts {
 
 
-    char       irq[64];
-    char       ime1[64];
-    char       ime2[64];
-    char       ime3[64];
-    char       ime4[64];
+    char name[64];
+    char ime1[64];
+    char ime2[64];
+    char ime3[64];
+    char ime4[64];
     __uint64_t CPU0;
     __uint64_t CPU1;
     __uint64_t CPU2;
@@ -116,55 +100,53 @@ typedef struct _Devices Devices;
 struct __attribute__((__packed__))_Devices {
 
 
-    bool       checked;
+    bool checked;
     __uint64_t used;
     __uint64_t total;
     __uint64_t free;
     __uint64_t avail;
     __uint64_t fid;
-    char       name[64];
-    char       type[64];
-    char       directory[256];
+    char name[64];
+    char type[64];
+    char directory[256];
 };
 
 
 
-typedef struct _Device_Collection D_Collection;/*!doubly linked list for devices*/
+typedef struct _Device_Collection D_Collection;
 struct _Device_Collection{
 
-    Devices        devices;
+    Devices devices;
     D_Collection * next;
-    D_Collection * prev;
 };
-/*!doubly linked list for tasks*/
+
 typedef struct _Task_Collection T_Collection;
 struct _Task_Collection{
 
-    Task           task;
+    Task task;
     T_Collection * next;
-    T_Collection * prev;
 };
 
-typedef union _Unification Unification ; /*!union data structure that uses the same memory space for all elements*/
+typedef union _Unification Unification ;
 
 union _Unification {
 
-    Task            task;
-    Network         network;
-    Memory_usage    memory_usage;
-    Cpu_usage       cpu_usage;
-    Interrupts      interrupts;
-    Devices         devices;
-    char            conformation[64];
+    Task task;
+    Network network;
+    Memory_usage memory_usage;
+    Cpu_usage cpu_usage;
+    Interrupts interrupts;
+    Devices devices;
+    char conformation[64];
 
 
 
 };
 
-typedef struct _Data Data;/*!the structure we use to send data*/
+typedef struct _Data Data;
 struct __attribute__((__packed__)) _Data{
 
-    int         size;
+    int size;
     Unification unification;
 
 };

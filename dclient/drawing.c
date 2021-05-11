@@ -9,108 +9,71 @@
 //
 
 #include <inttypes.h>
-#include <errno.h>
 #include "drawing.h"
 
-/*
- * function on_draw_event(): creating graphs by sending the draw signal to the function we create a cairo_t structure
- *
- * input:pointer to the graph ,and pointer to cairo_t on which to draw on
- * output:if successful return true
- * */
-gboolean on_draw_event(GtkWidget *widget, cairo_t *cr) {
+
+void writing_interrupts2(cairo_t *cr, double font_size, double length, int i, const gchar *name1, const gchar *name2) {
 
 
-    if (widget == graph1) {/*depending on which graph we want to draw on*/
-
-        do_drawing_cpu(widget, cr, time_step, cpu_list);
-    } else if (widget == graph2) {
-
-        do_drawing_net(widget, cr, time_step, net_list);
-    } else if (widget == graph3) {
-
-        do_drawing_mem(widget, cr, time_step, mem_list);
-    } else {
-
-        do_drawing_int(widget, cr, interrupts);
-
-    }
-
-
-    return TRUE;
-
-}
-/*
- * function writing_interrupt_names(): writing the name of the interrupts depending on the length of the names and the
- * size of the window,divide the name depending on how much space we have and writing them in rows
- * input: pointer to the canvas, font size , length of one interrupt graph,position on the interrupt graph,
- * first part of the name of the interrupt and the second part
- * output:none.
- * */
-void writing_interrupt_names(cairo_t *cr, double font_size, double length, int position, const gchar *name1,
-                             const gchar *name2) {
-
-    char * text_int;
+    double num = floor(length);
     int counter;
-    size_t row_length;//how many letters can stand in one row
-    row_length = (size_t) (floor(length) - 2);/*we subtract 2 because not all letters are the same size*/
-    int row_num = 0;//how many rows
-    size_t name_length;
-    size_t temp_length;
+    size_t g;//how many letters can stand in one row
+    g = (size_t) num - 2;
+    int q = 0;//how many rows
     if (name1[0] != '\0') {
 
 
-       name_length = strlen(name1);
+        size_t j = strlen(name1);
 
 
-        while (row_length < name_length) {
+        while (g < j) {
 
-            name_length -= row_length;
-            row_num++;//increase num  of rows
+            j -= g;
+            q++;//increase num  of rows
         }
-        if (row_num == 0) {
+        if (q == 0) {
 
-            cairo_move_to(cr, 5 * font_size + 5 * length * position, font_size);//move him to the start position
+            cairo_move_to(cr, 5 * font_size + 5 * length * i, font_size);//move him to the start position
             cairo_show_text(cr, name1);
         }
-        else {
+        if (q >= 1) {
 
-            for (int r = 0; r <= row_num; r++) {
+            for (int r = 0; r <= q; r++) {
                 //move him depending on how many rows we need
-                cairo_move_to(cr, 5 * font_size + 5 * length * position, font_size + (r * font_size));
-                temp_length = row_length;
-                name_length = strlen(name1);
+                cairo_move_to(cr, 5 * font_size + 5 * length * i, font_size + (r * font_size));
+                size_t y = g;
+                j = strlen(name1);
 
-                if (row_length > name_length) {
+                if (g > j) {
 
-                    temp_length = name_length;
+                    y = j;
 
                 }
 
-                if (r == row_num) {
+                if (r == q) {
+                    char text_int[y];
+                    memset(text_int, 0, y);
+                    for (int s = 0; s < y; s++) {
 
+
+                        text_int[s] = name1[s];
+                    }
 
                     cairo_show_text(cr, name1);
                 } else {
 
 
-                    text_int = (char *) calloc(1, sizeof(char) * temp_length + 1);
+                    char *text_int = (char *) calloc(1, sizeof(char) * y + 1);
 
-                    if(text_int==NULL){
-                        printf("calloc error %d \n", errno);
-                        free(text_int);
-                        if (gtk_main_level() > 0)
-                            gtk_main_quit();
-                        return;
-                    }
 
-                    for (int s = 0; s < temp_length; s++) {
+                    memset(text_int, 0, y);
+                    for (int s = 0; s < y; s++) {
 
 
                         text_int[s] = name1[s];
 
                     }
-                    counter = (int) temp_length;
+                    counter = (int) y;
                     for (int c = 0; c < counter; c++) {
                         name1++;
                     }
@@ -124,63 +87,57 @@ void writing_interrupt_names(cairo_t *cr, double font_size, double length, int p
             }
         }
 
-        int movement = row_num;
-        row_num = 0;
+        int movement = q;
+        q = 0;
 
         if (name2[0] != '\0') {
 
-            name_length = strlen(name2);
+            j = strlen(name2);
 
-            while (row_length < name_length) {
+            while (g < j) {
 
-                name_length -= row_length;
-                row_num++;// increase  num of rows
+                j -= g;
+                q++;// increase  num of rows
             }
-            if (row_num == 0) {
+            if (q == 0) {
 
-                cairo_move_to(cr, 5 * font_size + 5 * length * position,
+                cairo_move_to(cr, 5 * font_size + 5 * length * i,
                               2 * font_size + movement * font_size);//move him to the start position
 
 
+                gchar text_int[j];
+                memset(text_int, 0, j);
+                for (int s = 0; s < j; s++) {
 
+                    text_int[s] = name2[s];
+                }
                 cairo_show_text(cr, name2);
             } else {
 
-                for (int r = 0; r <= row_num; r++) {
+                for (int r = 0; r <= q; r++) {
                     //move him depending on how many rows we need
-                    cairo_move_to(cr, 5 * font_size + 5 * length * position,
+                    cairo_move_to(cr, 5 * font_size + 5 * length * i,
                                   2 * font_size + movement * font_size + r * font_size);
+                    size_t y = g;
+                    j = strlen(name2);
+                    if (g > j) {
 
-                    temp_length = row_length;
-                    name_length = strlen(name2);
-
-                    if (row_length > name_length) {
-
-                        temp_length = name_length;
+                        y = j;
 
                     }
 
-                    if (r == row_num) {
+                    if (r == q) {
 
 
                         cairo_show_text(cr, name2);
 
                     } else {
 
-                       text_int = (char *) calloc(1, sizeof(char) * temp_length + 1);
+                        char *text_int = (char *) calloc(1, sizeof(char) * y + 1);
 
-                        if(text_int==NULL){
-                            printf("calloc error %d \n", errno);
-                            free(text_int);
-                            if (gtk_main_level() > 0)
-                                gtk_main_quit();
-                            return;
-                        }
-
-
-
-                        strncpy(text_int, name2, temp_length);
-                        counter = (int) temp_length;
+                        memset(text_int, 0, y);
+                        strncpy(text_int, name2, y);
+                        counter = (int) y;
                         for (int c = 0; c < counter; c++) {
                             name2++;
                         }
@@ -198,43 +155,33 @@ void writing_interrupt_names(cairo_t *cr, double font_size, double length, int p
 
 
 }
-/*
- * function checking_interrupt_names(): checking to see how many names the interrupts has and acting accordingly
- * input: pointer to the canvas, font size , length of one interrupt graph,position on the interrupt graph,
- * and four pointers to the names of the interrupts
- * output:none.
- * */
-void checking_interrupt_names(cairo_t *cr, double font_size, double length, int position, const char *name1,
-                              const char *name2,
-                              const char *name3, const char *name4) {
+
+void writing_interrupts(cairo_t *cr, double font_size, double length, int i, const char *name1, const char *name2,
+                        const char *name3, const char *name4) {
 
 
     if (name4[0] != '\0') {
 
-        writing_interrupt_names(cr, font_size, length, position, name3, name4);
+        writing_interrupts2(cr, font_size, length, i, name3, name4);
     }
 
     if (name4[0] == '\0') {
 
         if (name3[0] != '\0') {
-            writing_interrupt_names(cr, font_size, length, position, name2, name3);
+            writing_interrupts2(cr, font_size, length, i, name2, name3);
 
         }
 
         if (name3[0] == '\0') {
 
-            writing_interrupt_names(cr, font_size, length, position, name1, name2);
+            writing_interrupts2(cr, font_size, length, i, name1, name2);
 
         }
     }
 
 
 }
-/*
- * function writing_seconds(): drawing the seconds on the graphs
- * input: pointer to the canvas,width of the graph,height of the graph, font size and position
- * output:none.
- * */
+
 void writing_seconds(cairo_t *cr, double width, double height, double font_size, int i) {
 
 
@@ -265,11 +212,7 @@ void writing_seconds(cairo_t *cr, double width, double height, double font_size,
 
 
 }
-/*
- * function draw_frame(): drawing the frame of the graph
- * input: pointer to the canvas,width of the graph,height of the graph, font size and position
- * output:none.
- * */
+
 void draw_frame(cairo_t *cr, double width, double height, double font_size, int i) {
 
 
@@ -294,11 +237,7 @@ void draw_frame(cairo_t *cr, double width, double height, double font_size, int 
 
 
 }
-/*
- * function draw_percentages(): drawing the percentages of the graph
- * input: pointer to the canvas,width of the graph,height of the graph, font size
- * output:none.
- * */
+
 void draw_percentages(cairo_t *cr, double height, double font_size) {
 
 
@@ -319,13 +258,8 @@ void draw_percentages(cairo_t *cr, double height, double font_size) {
 
 }
 
-/*
- * function draw_interrupts(): drawing the interrupts of the graph
- * input: pointer to the canvas,position on the graph,pointer to the interrupt ,height of the graph, font size,
- * max number of interrupts and the length of the interrupt piece
- * output:none.
- * */
-void draw_interrupts(cairo_t *cr, int position, Interrupts *peak, double height, double font_size, __uint64_t max_num,
+
+void draw_interrupts(cairo_t *cr, int i, Interrupts *peak, double height, double font_size, __uint64_t max_num,
                      double length) {
 
     double percentage;
@@ -336,32 +270,32 @@ void draw_interrupts(cairo_t *cr, int position, Interrupts *peak, double height,
     percentage = ((height - font_size) / max_num) * peak->CPU0;
 
 
-    checking_interrupt_names(cr, font_size, length, position, peak->ime1, peak->ime2, peak->ime3, peak->ime4);
+    writing_interrupts(cr, font_size, length, i, peak->ime1, peak->ime2, peak->ime3, peak->ime4);
 
 
-    cairo_rectangle(cr, 5 * font_size + 5 * length * position, height - font_size, length - 1, -percentage);
+    cairo_rectangle(cr, 5 * font_size + 5 * length * i, height - font_size, length - 1, -percentage);
     cairo_set_source_rgb(cr, 0, 0, 0);
     cairo_stroke_preserve(cr);
     cairo_set_source_rgba(cr, .7, .7, .7, 0.5);
-    cairo_move_to(cr, 5 * font_size + 5 * length * position, height - font_size);
-    cairo_line_to(cr, 5 * font_size + 5 * length * position, 0);
+    cairo_move_to(cr, 5 * font_size + 5 * length * i, height - font_size);
+    cairo_line_to(cr, 5 * font_size + 5 * length * i, 0);
     cairo_stroke_preserve(cr);
     cairo_set_source_rgb(cr, 1, 0, 0);
     cairo_fill(cr);
     percentage = ((height - font_size) / max_num) * peak->CPU1;
-    cairo_rectangle(cr, 5 * font_size + length * (5 * position + 1), height - font_size, length - 1, -percentage);
+    cairo_rectangle(cr, 5 * font_size + length * (5 * i + 1), height - font_size, length - 1, -percentage);
     cairo_set_source_rgb(cr, 0, 0, 0);
     cairo_stroke_preserve(cr);
     cairo_set_source_rgb(cr, 0, 1, 0);
     cairo_fill(cr);
     percentage = ((height - font_size) / max_num) * peak->CPU2;
-    cairo_rectangle(cr, 5 * font_size + length * (5 * position + 2), height - font_size, length - 1, -percentage);
+    cairo_rectangle(cr, 5 * font_size + length * (5 * i + 2), height - font_size, length - 1, -percentage);
     cairo_set_source_rgb(cr, 0, 0, 0);
     cairo_stroke_preserve(cr);
     cairo_set_source_rgb(cr, 0, 0, 1);
     cairo_fill(cr);
     percentage = ((height - font_size) / max_num) * peak->CPU3;
-    cairo_rectangle(cr, 5 * font_size + length * (5 * position + 3), height - font_size, length - 1, -percentage);
+    cairo_rectangle(cr, 5 * font_size + length * (5 * i + 3), height - font_size, length - 1, -percentage);
     cairo_set_source_rgb(cr, 0, 0, 0);
     cairo_stroke_preserve(cr);
     cairo_set_source_rgb(cr, 1, .5, 0);
@@ -369,40 +303,36 @@ void draw_interrupts(cairo_t *cr, int position, Interrupts *peak, double height,
 
 
 }
-/*
- * function draw_graph(): draws the lines on the graph
- * input: pointer to the canvas,index of the data,width,height,font size, step between
- * data, pointer to the array of data
- * output:none.
- * */
-void
-draw_graph(cairo_t *cr, int r, double width, double height, double font_size, double time_step, Cpu_list *array) {
 
-    Cpu_list *temp = array;
+void
+draw_graph(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step, float max_num,
+           Collection *array) {
+
+    Collection *temp = array;
     double prev = height - font_size; //zero
     double step = 0;
 
 
-    if (r == 0) {
+    if (r == 0 || r == 5) {
 
         cairo_set_source_rgb(cr, 1, 0, 0);//rgb
-    } else if (r == 1 ) {
+    } else if (r == 1 || r == 7) {
 
         cairo_set_source_rgb(cr, 0, 1, 0);
-    } else if (r == 2 ) {
+    } else if (r == 2 || r == 4 || r == 6) {
 
         cairo_set_source_rgb(cr, 0, 0, 1);
-    }  else if (r == 3 ) {
+    } else {
 
         cairo_set_source_rgb(cr, 1, 0.5, 0);
+
+
     }
 
 
-
-
     int g = (int) time_step;
-    if (list_num_size < time_step) {
-        g = list_num_size;
+    if (bjorg < time_step) {
+        g = bjorg;
     }
 
 
@@ -415,87 +345,15 @@ draw_graph(cairo_t *cr, int r, double width, double height, double font_size, do
         temp = temp->next;
 
 
-        cairo_move_to(cr, 3 * font_size, prev);
-
-
-
-            percentage = ((height - font_size) / 100) * peak;
-            step = (width - 3 * font_size - 3 * font_size) / time_step;
-
-
-        prev = height - font_size - percentage;
-
-        if (percentage == height) {
-            percentage = height - 1;
-        }
-
-
-        cairo_line_to(cr, step + 3 * font_size, height - font_size - percentage);
-
-        cairo_translate(cr, step, 0);
-
-
-    }
-
-
-    cairo_line_to(cr, 3 * font_size, height - font_size);/* the last line always touches the floor*/
-
-    cairo_stroke(cr);
-
-
-    cairo_translate(cr, -step * g, 0);  /*return to the start of the graph*/
-
-
-}
-/*
- * function draw_graph_net_mem(): draws the lines on the graph for memory usage or network usage
- * input: pointer to the canvas,index of the data,type of graph,width,height,font size, step between
- * data,max number for (network usage), pointer to the array of data
- * output:none.
- * */
-void
-draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step,
-                   float max_num, NetMem_list *array) {
-
-    NetMem_list *temp;
-    double prev = height - font_size; //zero
-    double step = 0;
-
-
-
-
-
-    __int32_t g = (__int32_t) time_step;
-    if (list_num_size < time_step) {
-        g = list_num_size;
-    }
-
-
-
-    if (r == 0) {
-        cairo_set_source_rgb(cr, 1, 0, 0);//rgb
-    } else {
-        cairo_set_source_rgb(cr, 0, 1, 0);
-    }
-    temp=array;
-    for (__int32_t j = 0; j < g; j++) {
-
-        gfloat peak;
-        double percentage;
-
-        peak = temp->data[r];
-        temp = temp->next;
-
-
         cairo_move_to(cr, i * font_size, prev);
 
 
-        if (i==5) {/*if its network usage we move the graph by 5 so we can have space for the data/s stat on the right*/
+        if (r == 4 || r == 5) {
 
 
             percentage = ((height - font_size) / max_num) * peak;
             step = (width - 5 * font_size - 5 * font_size) / time_step;
-        } else {/*if its memory usage we move the graph by 3 so we can have space for the percentage number on the right*/
+        } else {
             percentage = ((height - font_size) / 100) * peak;
             step = (width - 3 * font_size - 3 * font_size) / time_step;
         }
@@ -515,23 +373,18 @@ draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, doubl
     }
 
 
-    cairo_line_to(cr, i * font_size, height - font_size);/* the last line always touches the floor*/
+    cairo_line_to(cr, i * font_size, height - font_size);// the last line always touches the floor
 
     cairo_stroke(cr);
 
 
-    cairo_translate(cr, -step * g, 0);  /*return to the start of the graph*/
-
+    cairo_translate(cr, -step * g, 0);  //return to start of graph
 
 
 }
 
-/*
- * function do_drawing_mem(): draws the entire graph from the frame to the percetages to the lines
- * input:pointer to the graph, pointer to the canvas,step between data and the pointer to the array of data
- * output:none.
- * */
-void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list *array) {
+
+void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, Collection *mem_usage) {
     double width, height;
     height = (double) gtk_widget_get_allocated_height(widget);
     width = (double) gtk_widget_get_allocated_width(widget);
@@ -553,20 +406,20 @@ void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
     cairo_set_font_size(cr, font_size);
 
 
-
+    //frame
     draw_frame(cr, width, height, font_size, 3);
 
 
 
-
+    //Percentage
     draw_percentages(cr, height, font_size);
 
-
+    //seconds
     writing_seconds(cr, width, height, font_size, 3);
 
+    draw_graph(cr, 6, 3, width, height, font_size, time_step, 0, mem_usage);
+    draw_graph(cr, 7, 3, width, height, font_size, time_step, 0, mem_usage);
 
-    draw_graph_net_mem(cr, 0, 3, width, height, font_size, time_step, 0, array);
-    draw_graph_net_mem(cr, 1, 3, width, height, font_size, time_step, 0, array);
 
     if (graph_surface != NULL) {
         cairo_set_source_surface(cr, graph_surface, 0.0, 0.0);
@@ -576,11 +429,7 @@ void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
 
 
 }
-/*
- * function do_drawing_int(): draws the entire graph, by searching the interrupt with the highest number of interrupts
- * input:pointer to the graph, pointer to the canvas and pointer to the array of interrupts
- * output:none.
- * */
+
 void do_drawing_int(GtkWidget *widget, cairo_t *cr, Interrupts *interrupts1) {
 
     double width, height;
@@ -662,7 +511,7 @@ void do_drawing_int(GtkWidget *widget, cairo_t *cr, Interrupts *interrupts1) {
         peak = temp_p;
 
         cairo_move_to(cr, 5 * font_size + 5 * length * (i), height);
-        sprintf(name, "%s", peak->irq);
+        sprintf(name, "%s", peak->name);
 
         cairo_set_source_rgb(cr, 0, 0, 0);
         cairo_show_text(cr, name);
@@ -679,13 +528,8 @@ void do_drawing_int(GtkWidget *widget, cairo_t *cr, Interrupts *interrupts1) {
 
 
 }
-/*
- * function do_drawing_net(): draws the entire graph, by searching the array for the biggest number
- * input:pointer to the graph, pointer to the canvas, step between data, and pointer to the array of network usage
- * output:none.
- * */
-void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list *array) {
 
+void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, Collection *net_work) {
     double width, height;
 
     char num[5];
@@ -705,7 +549,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
     width = (double) gtk_widget_get_allocated_width(widget);
 
 
-    NetMem_list *temp;
+    Collection *temp;
 
 
     cairo_surface_t *graph_surface;
@@ -729,11 +573,11 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
     cairo_stroke(cr);
 
     int g = (int) time_step;
-    if (list_num_size < time_step) {/*how many elements do we have in an array*/
-        g = list_num_size;
+    if (bjorg < time_step) {
+        g = bjorg;
     }
-    for (int j = 0; j <= 1; j++) {/*seaching for the highest number in network usage*/
-        temp = array;
+    for (int j = 4; j <= 5; j++) {
+        temp = net_work;
         for (int i = 0; i < g; i++) {
 
             peak = temp->data[j];// kb
@@ -749,7 +593,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
 
     cairo_set_source_rgb(cr, 0, 0, 0);
 
-    if (max_num > 1024) {/*if highest number is larger then a mb*/
+    if (max_num > 1024) {
 
 
         rec_bytes = max_num / 1024;//mb
@@ -759,7 +603,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
 
         max_num = max_num + 1024;
 
-    } else if (max_num <= 1024 && max_num > 1) {/*if highest number is less then a mb and bigger then a kb*/
+    } else if (max_num <= 1024 && max_num > 1) {
 
         rec_bytes = max_num;//kb
 
@@ -768,7 +612,7 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
         max_num = max_num + 100;
 
 
-    } else { /*if its lesser then a kb*/
+    } else {
 
 
         rec_bytes = max_num * 1024;//bytes
@@ -801,10 +645,8 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
     cairo_show_text(cr, "0");
     cairo_show_text(cr, track);
 
-
-    draw_graph_net_mem(cr, 0, 5, width, height, font_size, time_step, max_num, array);
-    draw_graph_net_mem(cr, 1, 5, width, height, font_size, time_step, max_num, array);
-
+    draw_graph(cr, 4, 5, width, height, font_size, time_step, max_num, net_work);
+    draw_graph(cr, 5, 5, width, height, font_size, time_step, max_num, net_work);
 
     if (graph_surface != NULL) {
         cairo_set_source_surface(cr, graph_surface, 0.0, 0.0);
@@ -814,16 +656,13 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list
 
 
 }
-/**
- * function do_drawing_cpu(): draws the entire graph, the lines, the frame the seconds and the percentage
- * input:pointer to the graph, pointer to the canvas, step between data, and pointer to the array of cpu usage
- * output:none.
- * */
-void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *array1) {
+
+void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, const gboolean CPU0_line, const gboolean CPU1_line,
+                    const gboolean CPU2_line, const gboolean CPU3_line, Collection *array1) {
 
     double width, height;
     double font_size = 10;
-    bool *temp_bool=cpu_status;
+
 
     height = (double) gtk_widget_get_allocated_height(widget);
     width = (double) gtk_widget_get_allocated_width(widget);
@@ -845,16 +684,22 @@ void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *a
     draw_percentages(cr, height, font_size);
 
 
-    for(__int32_t i=0;i<CPU_NUM;i++){/*draws the lines*/
-
-        if((*temp_bool)==true){/*display the cpus we want to be displayed*/
-            draw_graph(cr, i, width, height, font_size, time_step, array1);
-        }
-        temp_bool++;
-
+    if (CPU0_line == TRUE) {
+        draw_graph(cr, 0, 3, width, height, font_size, time_step, 0, array1);
 
     }
+    if (CPU1_line == TRUE) {
+        draw_graph(cr, 1, 3, width, height, font_size, time_step, 0, array1);
 
+    }
+    if (CPU2_line == TRUE) {
+        draw_graph(cr, 2, 3, width, height, font_size, time_step, 0, array1);
+
+    }
+    if (CPU3_line == TRUE) {
+        draw_graph(cr, 3, 3, width, height, font_size, time_step, 0, array1);
+
+    }
     writing_seconds(cr, width, height, font_size, 3);
 
     if (graph_surface != NULL) {

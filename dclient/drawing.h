@@ -7,6 +7,11 @@
 
 
 
+//
+// Created by dushn on 8.9.17..
+//
+
+
 
 #include <math.h>
 #include <sys/stat.h>
@@ -21,15 +26,14 @@
 
 #include "common.h"
 #include "main_header.h"
-#include "window.h"
 
-gboolean on_draw_event(GtkWidget *widget, cairo_t *cr);
 
-void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list *array);
+void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, Collection *net_work);
 
-void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Cpu_list *collection);
+void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, const gboolean CPU0_line, const gboolean CPU1_line,
+                    const gboolean CPU2_line, const gboolean CPU3_line, Collection *collection);
 
-void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, NetMem_list *array);
+void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, Collection *mem_usage);
 
 void do_drawing_int(GtkWidget *widget, cairo_t *cr, Interrupts *interrupts1);
 
@@ -39,23 +43,18 @@ void draw_frame(cairo_t *cr, double width, double height, double font_size, int 
 
 void draw_percentages(cairo_t *cr, double height, double font_size);
 
-void draw_interrupts(cairo_t *cr, int position, Interrupts *peak, double height, double font_size, __uint64_t max_num,
+void draw_interrupts(cairo_t *cr, int i, Interrupts *peak, double height, double font_size, __uint64_t max_num,
                      double length);
 
-void writing_interrupt_names(cairo_t *cr, double font_size, double length, int position, const gchar *name1,
-                             const gchar *name2);
+void writing_interrupts2(cairo_t *cr, double font_size, double length, int i, const gchar *name1, const gchar *name2);
 
-void checking_interrupt_names(cairo_t *cr, double font_size, double length, int position, const char *ime1,
-                              const char *ime2,
-                              const char *name3, const char *name4);
+void writing_interrupts(cairo_t *cr, double font_size, double length, int i, const char *ime1, const char *ime2,
+                        const char *name3, const char *name4);
 
 
-void
-draw_graph(cairo_t *cr, int r, double width, double height, double font_size, double time_step, Cpu_list *array);
+void draw_graph(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step, float max_num,
+                Collection *array);
 
-void
-draw_graph_net_mem(cairo_t *cr, int r, int i, double width, double height, double font_size, double time_step,
-                   float max_num, NetMem_list *array);
 
 #endif //DIPLOMSKI_DRAWING_H
 

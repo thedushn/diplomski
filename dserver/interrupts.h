@@ -8,14 +8,11 @@
 #include "common.h"
 
 
-int interrupt_usage(Interrupts **array, __int32_t *num);
-
+int interrupt_usage2(Interrupts **array, __int32_t *j);
 void * send_interrupts(void *socket);
 
-void compare_interrupts(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts *send_interrupts, int n);
+void sort2(Interrupts *new_interrupts, Interrupts *old_interrupts, Interrupts **send_interrupts, int n);
 
-int myCompare(const void *a, const void *b);
-
+void sort(Interrupts *array, int n);
 void clean_interrupts();
-
 #endif //DIPLOMSKI_INTERRUPTS_H

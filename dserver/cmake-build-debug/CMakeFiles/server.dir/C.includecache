@@ -11,14 +11,14 @@ stdbool.h
 -
 time.h
 -
+pthread.h
+/home/dushn/Diplomski/diplomski/dserver/pthread.h
 
 /home/dushn/Diplomski/diplomski/dserver/cpu_usage.c
 cpu_usage.h
 /home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
 functions.h
 /home/dushn/Diplomski/diplomski/dserver/functions.h
-testing.h
-/home/dushn/Diplomski/diplomski/dserver/testing.h
 stdio.h
 -
 stdlib.h
@@ -31,12 +31,12 @@ errno.h
 -
 sys/socket.h
 -
+stdbool.h
+-
 
 /home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
 common.h
 /home/dushn/Diplomski/diplomski/dserver/common.h
-pthread.h
-/home/dushn/Diplomski/diplomski/dserver/pthread.h
 
 /home/dushn/Diplomski/diplomski/dserver/devices.c
 devices.h
@@ -71,6 +71,8 @@ stdio.h
 -
 stdlib.h
 -
+stdbool.h
+-
 sys/socket.h
 /home/dushn/Diplomski/diplomski/dserver/sys/socket.h
 interrupts.h
@@ -93,16 +95,12 @@ unistd.h
 -
 common.h
 /home/dushn/Diplomski/diplomski/dserver/common.h
-pthread.h
-/home/dushn/Diplomski/diplomski/dserver/pthread.h
 
 /home/dushn/Diplomski/diplomski/dserver/interrupts.c
 interrupts.h
 /home/dushn/Diplomski/diplomski/dserver/interrupts.h
 functions.h
 /home/dushn/Diplomski/diplomski/dserver/functions.h
-testing.h
-/home/dushn/Diplomski/diplomski/dserver/testing.h
 errno.h
 -
 inttypes.h
@@ -167,8 +165,6 @@ sys/socket.h
 -
 stdlib.h
 -
-testing.h
-/home/dushn/Diplomski/diplomski/dserver/testing.h
 
 /home/dushn/Diplomski/diplomski/dserver/memory_usage.h
 common.h
@@ -225,26 +221,8 @@ functions.h
 /home/dushn/Diplomski/diplomski/dserver/functions.h
 cpu_usage.h
 /home/dushn/Diplomski/diplomski/dserver/cpu_usage.h
-testing.h
-/home/dushn/Diplomski/diplomski/dserver/testing.h
 
 /home/dushn/Diplomski/diplomski/dserver/task_manager.h
-common.h
-/home/dushn/Diplomski/diplomski/dserver/common.h
-pthread.h
-/home/dushn/Diplomski/diplomski/dserver/pthread.h
-
-/home/dushn/Diplomski/diplomski/dserver/testing.c
-stdio.h
--
-inttypes.h
--
-memory.h
--
-testing.h
-/home/dushn/Diplomski/diplomski/dserver/testing.h
-
-/home/dushn/Diplomski/diplomski/dserver/testing.h
 common.h
 /home/dushn/Diplomski/diplomski/dserver/common.h
 

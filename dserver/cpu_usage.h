@@ -6,32 +6,29 @@
 #define DIPLOMSKI_CPU_USAGE_H
 
 #include "common.h"
-#include "pthread.h"
 
-pthread_mutex_t mutex_jiff; /* mutex that protects the task list */
 
-struct DataItem {           /*structure that contains cpu stats about a task */
-    __uint64_t      cpu_user;
-    __uint64_t      cpu_system;
-    unsigned int    pid;
-    char            name[256];
+pthread_mutex_t mutex_jiff;
+struct DataItem {
+    __uint64_t cpu_user;
+    __uint64_t cpu_system;
+    unsigned int pid;
+    char name[256];
     struct DataItem *next;
 };
-
-struct Cpu_data{ /*structure used for storing a tasks cpu stats*/
+struct Cpu_data{
     __uint64_t cpu_user;
     __uint64_t cpu_system;
 };
 
 
-struct DataItem *task_details; /*pointer to the link list of task cpu stats*/
+struct DataItem *task_details;
+int hash_size;
+int cpu_number();
 
-int hash_size;   /* number of tasks that are in the list */
-
-
-int cpu_percentage(Cpu_usage *array);
-
+int cpu_percentage(int ncpu, Cpu_usage *cpu_usage);
 void * send_cpu(void *socket);
+
 
 
 int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *task);

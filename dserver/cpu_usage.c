@@ -4,7 +4,6 @@
 
 #include "cpu_usage.h"
 #include "functions.h"
-#include "testing.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,90 +13,96 @@
 
 
 #define BUFFER_SIZE 1024
+static __uint64_t jiffies_total_delta[5] = {0, 0, 0, 0, 0};
 
-pthread_cond_t cpu_cond= PTHREAD_COND_INITIALIZER; /*cond_variable that checks if the jiffies_total_delta is being used */
-bool test;/*flag for checking if we need to wait for pthread_cond_signal */
+void * send_cpu(void *socket){
 
-__uint64_t jiffies_total_delta[CPU_NUM + 1]; /*total cpu jiffies that occurred */
-__uint64_t jiffies_system[CPU_NUM];
-__uint64_t jiffies_total[CPU_NUM];
-__uint64_t jiffies_user[CPU_NUM];
-__uint64_t jiffies_user_old[CPU_NUM];
-__uint64_t jiffies_system_old[CPU_NUM];
-__uint64_t jiffies_total_old[CPU_NUM];
+    int sockfd=(*(int*)socket);
+    Cpu_usage cpu_usage={0};
+    Data data={0};
+    __int32_t cpu_num;
 
-float      cpu_user[CPU_NUM];
-float      cpu_system[CPU_NUM];
-__uint64_t user[CPU_NUM];
-__uint64_t user_nice[CPU_NUM];
-__uint64_t idle[CPU_NUM];
-__uint64_t msystem[CPU_NUM];
-float      percentage[CPU_NUM];
-/*
- * function send_cpu():send data about cpu usage to client
- * input : socket to send data to
- * output : returns a value less then zero if something did not work
- * */
-void *send_cpu(void *socket) {
+    cpu_num = cpu_number();
 
-
-    ssize_t   ret;
-    Cpu_usage cpu_usage = {0};
-    Data      data;
-
-    pthread_mutex_lock(&mutex_send);
-    while (thread_break == false) { /*if other threads have failed close this thread before it allocates any memory*/
-        ret = -100;
-        pthread_mutex_unlock(&mutex_send);
-        pthread_exit(&ret);
-    }
-    pthread_mutex_unlock(&mutex_send);
-
-    ret = cpu_percentage(&cpu_usage);
+   ssize_t ret=  cpu_percentage(cpu_num, &cpu_usage);
     if (ret < 0) {
         printf("Error getting cpu data!\n\t");
-        pthread_exit(&ret);
+        pthread_exit(NULL);
 
     }
+    memset(&data,0,sizeof(Data));
+    data.size=CPU_USAGE;
 
-
-    memset(&data, 0, sizeof(Data));
-    data.size = CPU_USAGE;
-    cpu_write(cpu_usage);
-    data.unification.cpu_usage = cpu_usage;
+    data.unification.cpu_usage=(Cpu_usage)cpu_usage;
 
     pthread_mutex_lock(&mutex_send);
-
-    ret = send((*(int *) socket), &data, sizeof(Data), 0);
+    ret = send(sockfd, &data, sizeof(Data), 0);
     pthread_mutex_unlock(&mutex_send);
 
     if (ret < 0) {
-        printf("Error sending data\n return = %d\n", (int) ret);
-
-
-        pthread_exit(&ret);
+        printf("Error sending data!\n\t");
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(NULL);
 
     }
     if (ret == 0) {
-        printf("Error sending data\n return = %d\n", (int) ret);
+
         printf("socket closed\n");
-
-
-        ret = -1;
-        pthread_exit(&ret);
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(NULL);
     }
+//    pthread_mutex_lock(&mutex_send);
+//   if( test_send(sockfd)<=0){
+//
+//       pthread_mutex_unlock(&mutex_send);
+//       pthread_exit(NULL);
+//   }
+//    pthread_mutex_unlock(&mutex_send);
+    pthread_exit(NULL);
+}
+int cpu_number() {
+
+    int c = 1; //cpu number must be at least 1
+    FILE *file;
+    char *filename = "/proc/cpuinfo";
+    char buffer[1024];
+    char *buffer2 = "processor";
+
+    if ((file = fopen(filename, "r")) == NULL || fgets(buffer, 1024, file) == NULL)
+        exit(1);
+    while (fgets(buffer, 1024, file) != NULL) {
+        if (strncmp(buffer2, buffer, strlen(buffer2)) == 0) {
+
+            c++;
+        }
 
 
-    pthread_exit(&ret);
+    }
+    fclose(file);
+
+
+    return c;
 }
 
-/*
- * function cpu_percentage(): parsing data from /proc/stat
- * input : pointer to structure of data about cpu usage that we want to send to the client
- * output : returns a non zero value if something didn't work correctly
- * */
-int cpu_percentage(Cpu_usage *array) {
+int cpu_percentage(int cpu_count, Cpu_usage *cpu_usage) {
 
+
+    float cpu_user[4] = {0, 0, 0, 0};
+    float cpu_system[4] = {0, 0, 0, 0};
+    __uint64_t user[4] = {0, 0, 0, 0};
+    __uint64_t user_nice[4] = {0, 0, 0, 0};
+    __uint64_t idle[4] = {0, 0, 0, 0};
+    __uint64_t system[4] = {0, 0, 0, 0};
+    float percentage[4] = {0, 0, 0, 0};
+
+
+
+    static __uint64_t jiffies_system[4] = {0, 0, 0, 0};
+    static __uint64_t jiffies_total[4] = {0, 0, 0, 0};
+    static __uint64_t jiffies_user[4] = {0, 0, 0, 0};
+    static __uint64_t jiffies_user_old[4] = {0, 0, 0, 0};
+    static __uint64_t jiffies_system_old[4] = {0, 0, 0, 0};
+    static __uint64_t jiffies_total_old[4] = {0, 0, 0, 0};
 
     FILE *file;
     char *filename = "/proc/stat";
@@ -111,11 +116,12 @@ int cpu_percentage(Cpu_usage *array) {
     }
 
 
-    for (int j = 0; j < CPU_NUM; j++) {
+
+    for(int j=0;j<cpu_count;j++){
         if(fgets(buffer, BUFFER_SIZE, file) != NULL){
 
             sscanf(buffer, "%s %" SCNu64 " %" SCNu64 " %" SCNu64 " %" SCNu64 "", dummy, &user[j],
-                   &user_nice[j], &msystem[j], &idle[j]
+                   &user_nice[j], &system[j], &idle[j]
             );
         }
 
@@ -125,8 +131,7 @@ int cpu_percentage(Cpu_usage *array) {
     fclose(file);
 
     pthread_mutex_lock(&mutex_jiff);
-    test=false;
-    for (int i = 0; i < CPU_NUM; i++) {
+    for (int i = 0; i < cpu_count; i++) {
 
 
         jiffies_user_old[i] = jiffies_user[i];
@@ -134,7 +139,7 @@ int cpu_percentage(Cpu_usage *array) {
         jiffies_total_old[i] = jiffies_total[i];
 
         jiffies_user[i] = user[i] + user_nice[i];
-        jiffies_system[i] = msystem[i];
+        jiffies_system[i] = system[i];
 
         jiffies_total[i] = jiffies_user[i] + jiffies_system[i] + idle[i];
 
@@ -145,8 +150,8 @@ int cpu_percentage(Cpu_usage *array) {
 
             jiffies_total_delta[i] = jiffies_total[i] - jiffies_total_old[i];
 
-            cpu_user[i]   = (float)(jiffies_user[i] - jiffies_user_old[i])  / (float) (jiffies_total_delta[i]);
-            cpu_system[i] = (float)(jiffies_system[i] - jiffies_system_old[i]) / (float) (jiffies_total_delta[i]);
+            cpu_user[i] = (float)(jiffies_user[i] - jiffies_user_old[i])  / (float) (jiffies_total_delta[i]);
+            cpu_system[i] =(float) (jiffies_system[i] - jiffies_system_old[i]) / (float) (jiffies_total_delta[i]);
 
         }
 
@@ -155,39 +160,42 @@ int cpu_percentage(Cpu_usage *array) {
 
 
     }
-    jiffies_total_delta[CPU_NUM] = jiffies_total_delta[0]+jiffies_total_delta[1]+jiffies_total_delta[2]+ jiffies_total_delta[3];
 
+    jiffies_total_delta[4] =
+            jiffies_total_delta[0] + jiffies_total_delta[1] + jiffies_total_delta[2] + jiffies_total_delta[3];
 
 
         test=true;
-   pthread_cond_signal(&cpu_cond);
 
     pthread_mutex_unlock(&mutex_jiff);
 
 
-    for (int i = 0; i < CPU_NUM; i++) {
+    if (sprintf(cpu_usage->percentage0, "%f", percentage[0]) < 0) {
 
-
-        if (sprintf(array->percentage[i], "%f", percentage[i]) < 0) {
-
-            printf("converting didn't work %s \n", array->percentage[i]);
-
-
-            return -1;
-        }
+        printf("converting didn't work %s \n", cpu_usage->percentage0);
+        return -1;
     }
+    if (sprintf(cpu_usage->percentage1, "%f", percentage[1]) < 0) {
+
+        printf("converting didn't work %s \n", cpu_usage->percentage1);
+        return -1;
+    }
+    if (sprintf(cpu_usage->percentage2, "%f", percentage[2]) < 0) {
+
+        printf("converting didn't work %s \n", cpu_usage->percentage2);
+        return -1;
+    }
+    if (sprintf(cpu_usage->percentage3, "%f", percentage[3]) < 0) {
+
+        printf("converting didn't work %s \n", cpu_usage->percentage3);
+        return -1;
+    }
+
 
 
     return 0;
 }
-/*
- * function search(): searches the linked list to find a tasks cpu usage data save the old data and replace it with the
- * new cpu usage data
- * input : bool  pointer that we change to  true if the task is already in the list,
- * structure of data about cpu usage that we want to save in the list and the pointer to the task we are checking if it
- * exist in the list
- * output : returns a structure about a tasks cpu usage data
- * */
+
 
 struct Cpu_data search(bool *ima, struct Cpu_data new, Task *task) {
 
@@ -220,50 +228,45 @@ struct Cpu_data search(bool *ima, struct Cpu_data new, Task *task) {
 }
 
 
-/*
- * function get_cpu_percent(): calculates the cpu percentage that the task is doing
- *
- * input : jiffies_user, jiffies_system, and pointer to a structure Task to which we parse the cpu percent
- * output : returns a non zero value if something goes wrong
- * */
+
 int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *task) {
 
-    struct Cpu_data      old;
-    struct Cpu_data      new;
-    struct DataItem     *temp;
-    float  cpu_user   = 0;
-    float  cpu_system = 0;
-    bool   exists;
+    struct Cpu_data old;
+    struct Cpu_data new;
+   struct DataItem *temp;
+    float cpu_user=0;
+    float cpu_system=0;
 
-    pthread_mutex_lock(&mutex_jiff);
-    exists = false;
+
+
+    bool ima = false;
     new.cpu_system=jiffies_system;
     new.cpu_user=jiffies_user;
 
 
-    old= search(&exists, new, task);
+    pthread_mutex_lock(&mutex_jiff);
+
+    old= search(&ima, new, task);
 
 
-    if (exists == false) {/*if the task doesnt exist in the list*/
+
+
+    if (ima == false) {
 
         temp=(struct DataItem *) calloc(1, sizeof(struct DataItem));
 
         if (temp == NULL) {
             free(temp);
             printf("calloc error %d \n", errno);
-            pthread_mutex_unlock(&mutex_jiff);
             return -1;
         }
 
-
-        temp->cpu_user  =jiffies_user;
+        temp->cpu_user=jiffies_user;
         temp->cpu_system=jiffies_system;
-        temp->pid       =task->pid;
-
+        temp->pid=task->pid;
         strcpy(temp->name,task->name);
-
-        temp->next      =task_details;
-        task_details    =temp;
+        temp->next=task_details;
+        task_details=temp;
 
 
 
@@ -273,17 +276,19 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
 
     }
 
+    if (jiffies_user < old.cpu_user || jiffies_system < old.cpu_system) {
+
+
+        return 1;
+    }
 
 
 
-    while(test==false) /*if the cpu usage thread didn't acquire data about jiffies */
-    pthread_cond_wait(&cpu_cond,&mutex_jiff);
 
-    if (jiffies_total_delta[CPU_NUM] > 0) {
+    if (jiffies_total_delta[4] > 0) {
 
-
-        cpu_user   = (float) ((jiffies_user) - (old.cpu_user)) * 100 / (float) (jiffies_total_delta[CPU_NUM]);
-        cpu_system = (float) ((jiffies_system - old.cpu_system) * 100) / (float) jiffies_total_delta[CPU_NUM];
+        cpu_user = (float) (( jiffies_user) - (old.cpu_user))* 100 / (float) (jiffies_total_delta[4]);
+        cpu_system =(float) ((jiffies_system - old.cpu_system) * 100) / (float) jiffies_total_delta[4];
 
     } else {
 
@@ -307,4 +312,5 @@ int get_cpu_percent(__uint64_t jiffies_user, __uint64_t jiffies_system, Task *ta
 
     return 0;
 }
+
 

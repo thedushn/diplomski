@@ -7,17 +7,21 @@
 #IncludeRegexTransform: 
 
 /home/dushn/Diplomski/diplomski/dclient/buttons.c
+sys/socket.h
+-
 buttons.h
 /home/dushn/Diplomski/diplomski/dclient/buttons.h
 drawing.h
 /home/dushn/Diplomski/diplomski/dclient/drawing.h
 testing_tree.h
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
-functions.h
-/home/dushn/Diplomski/diplomski/dclient/functions.h
+window.h
+/home/dushn/Diplomski/diplomski/dclient/window.h
 
 /home/dushn/Diplomski/diplomski/dclient/buttons.h
 gtk/gtk.h
+-
+stdbool.h
 -
 
 /home/dushn/Diplomski/diplomski/dclient/common.h
@@ -28,8 +32,6 @@ time.h
 
 /home/dushn/Diplomski/diplomski/dclient/drawing.c
 inttypes.h
--
-errno.h
 -
 drawing.h
 /home/dushn/Diplomski/diplomski/dclient/drawing.h
@@ -57,8 +59,6 @@ common.h
 /home/dushn/Diplomski/diplomski/dclient/common.h
 main_header.h
 /home/dushn/Diplomski/diplomski/dclient/main_header.h
-window.h
-/home/dushn/Diplomski/diplomski/dclient/window.h
 
 /home/dushn/Diplomski/diplomski/dclient/functions.c
 functions.h
@@ -68,8 +68,6 @@ memory.h
 stdlib.h
 -
 errno.h
--
-netdb.h
 -
 sys/socket.h
 /home/dushn/Diplomski/diplomski/dclient/sys/socket.h
@@ -87,38 +85,26 @@ drawing.h
 /home/dushn/Diplomski/diplomski/dclient/drawing.h
 testing_tree.h
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
+window.h
+/home/dushn/Diplomski/diplomski/dclient/window.h
 buttons.h
 /home/dushn/Diplomski/diplomski/dclient/buttons.h
+sys/socket.h
+/home/dushn/Diplomski/diplomski/dclient/sys/socket.h
+netdb.h
+-
 errno.h
+-
+assert.h
+-
+inttypes.h
 -
 functions.h
 /home/dushn/Diplomski/diplomski/dclient/functions.h
-testing.h
-/home/dushn/Diplomski/diplomski/dclient/testing.h
-semaphore.h
--
-asm/errno.h
--
 
 /home/dushn/Diplomski/diplomski/dclient/main_header.h
 gtk/gtk.h
 -
-common.h
-/home/dushn/Diplomski/diplomski/dclient/common.h
-
-/home/dushn/Diplomski/diplomski/dclient/testing.c
-testing.h
-/home/dushn/Diplomski/diplomski/dclient/testing.h
-main_header.h
-/home/dushn/Diplomski/diplomski/dclient/main_header.h
-inttypes.h
--
-memory.h
--
-stdlib.h
--
-
-/home/dushn/Diplomski/diplomski/dclient/testing.h
 common.h
 /home/dushn/Diplomski/diplomski/dclient/common.h
 
@@ -127,12 +113,8 @@ testing_tree.h
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
 errno.h
 -
-asm/errno.h
--
 buttons.h
 /home/dushn/Diplomski/diplomski/dclient/buttons.h
-main_header.h
-/home/dushn/Diplomski/diplomski/dclient/main_header.h
 
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
 string.h
@@ -151,8 +133,6 @@ testing_tree.h
 /home/dushn/Diplomski/diplomski/dclient/testing_tree.h
 buttons.h
 /home/dushn/Diplomski/diplomski/dclient/buttons.h
-testing.h
-/home/dushn/Diplomski/diplomski/dclient/testing.h
 
 /home/dushn/Diplomski/diplomski/dclient/window.h
 main_header.h

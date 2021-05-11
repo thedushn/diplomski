@@ -1,32 +1,38 @@
-
+#include <sys/socket.h>
 #include "buttons.h"
 #include "drawing.h"
 #include "testing_tree.h"
-#include "functions.h"
+#include "window.h"
 
 
-/*
- * function process_window(): create a window with buttons that represent columns in the task list
- * when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on
- * the columns visibility
- * input:none.
- * output:none.
- * */
+static gboolean device_devices = TRUE;
+static gboolean device_type = TRUE;
+static gboolean device_directory = TRUE;
+static gboolean device_used = TRUE;
+static gboolean device_free = TRUE;
+static gboolean device_total = TRUE;
+static gboolean device_avail = TRUE;
+static bool device_all = FALSE;
+
+static gboolean process_task = TRUE;
+static gboolean process_user = TRUE;
+static gboolean process_prio = TRUE;
+static gboolean process_pid = TRUE;
+static gboolean process_ppid = TRUE;
+static gboolean process_cpu = TRUE;
+static gboolean process_vm_size = TRUE;
+static gboolean process_rss = TRUE;
+static gboolean process_state = TRUE;
+static gboolean process_duration = TRUE;
+
+
+static gboolean show_before = FALSE;
+
 void process_window() {
-
-    GList               *array;
-    GList               *temp;
-    GtkTreeViewColumn   *column;
-    gint                column_id;
-    GtkWidget           *box2;
-
-
-    if(proc_window !=NULL){
-        if (proc_window->parent_instance.qdata != NULL) {
-            if (gtk_widget_get_visible(proc_window)) {
-                gtk_widget_destroy(proc_window);
-
-            }
+    GtkWidget *box2;
+    if(proc_window!=NULL){
+        if(gtk_widget_get_visible(proc_window)){
+            gtk_widget_destroy(proc_window);
         }
     }
 
@@ -45,85 +51,37 @@ void process_window() {
 
     button_process_duration = gtk_check_button_new_with_label("Duration");
 
-
-
-    array= gtk_tree_view_get_columns(GTK_TREE_VIEW(treeview_tasks));
-    temp=array;
-
-    while(temp!=NULL) {
-
-        column = GTK_TREE_VIEW_COLUMN(temp->data);
-        column_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column), "column-id"));
-        switch (column_id) {
-
-            case COL_CPU:
-
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_cpu),
-                                             gtk_tree_view_column_get_visible(column));
-
-                break;
-            case COL_PID:
-
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_pid),
-                                             gtk_tree_view_column_get_visible(column));
-
-                break;
-            case COL_PPID:
-
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_ppid),
-                                             gtk_tree_view_column_get_visible(column));
-
-                break;
-            case COL_RSS:
-
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_rss),
-                                             gtk_tree_view_column_get_visible(column));
-
-                break;
-            case COL_STATE:
-
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_state),
-                                             gtk_tree_view_column_get_visible(column));
-
-                break;
-            case COL_TASK:
-
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_task),
-                                             gtk_tree_view_column_get_visible(column));
-
-                break;
-            case COL_VSZ:
-
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_vm_size),
-                                             gtk_tree_view_column_get_visible(column));
-
-                break;
-            case COL_UNAME:
-
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_user),
-                                             gtk_tree_view_column_get_visible(column));
-
-                break;
-            case COL_PRIO:
-
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_prio),
-                                             gtk_tree_view_column_get_visible(column));
-
-                break;
-            case COL_DUR:
-
-                gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_duration),
-                                             gtk_tree_view_column_get_visible(column));
-
-                break;
-            default:
-                break;
-
-        }
-        temp=temp->next;
+    if (process_cpu == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_cpu), TRUE);
+    }
+    if (process_pid == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_pid), TRUE);
+    }
+    if (process_ppid == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_ppid), TRUE);
+    }
+    if (process_rss == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_rss), TRUE);
     }
 
-
+    if (process_state == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_state), TRUE);
+    }
+    if (process_task == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_task), TRUE);
+    }
+    if (process_vm_size == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_vm_size), TRUE);
+    }
+    if (process_user == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_user), TRUE);
+    }
+    if (process_prio == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_prio), TRUE);
+    }
+    if (process_duration == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_process_duration), TRUE);
+    }
 
 
     gtk_window_set_title(GTK_WINDOW (proc_window), "Process window");
@@ -142,179 +100,149 @@ void process_window() {
     gtk_box_pack_start(GTK_BOX(box2), button_process_duration, 1, 1, 0);
 
 
-    g_signal_connect(button_process_user, "toggled", G_CALLBACK(change_list_store_view_process), NULL);
-    g_signal_connect(button_process_rss, "toggled", G_CALLBACK(change_list_store_view_process), NULL);
-    g_signal_connect(button_process_task, "toggled", G_CALLBACK(change_list_store_view_process), NULL);
-    g_signal_connect(button_process_vm_size, "toggled", G_CALLBACK(change_list_store_view_process), NULL);
-    g_signal_connect(button_process_state, "toggled", G_CALLBACK(change_list_store_view_process), NULL);
-    g_signal_connect(button_process_cpu, "toggled", G_CALLBACK(change_list_store_view_process), NULL);
-    g_signal_connect(button_process_pid, "toggled", G_CALLBACK(change_list_store_view_process), NULL);
-    g_signal_connect(button_process_ppid, "toggled", G_CALLBACK(change_list_store_view_process), NULL);
-    g_signal_connect(button_process_prio, "toggled", G_CALLBACK(change_list_store_view_process), NULL);
-    g_signal_connect(button_process_duration, "toggled", G_CALLBACK(change_list_store_view_process), NULL);
+    g_signal_connect(button_process_user, "toggled", G_CALLBACK(process_clicked), NULL);
+    g_signal_connect(button_process_rss, "toggled", G_CALLBACK(process_clicked), NULL);
+    g_signal_connect(button_process_task, "toggled", G_CALLBACK(process_clicked), NULL);
+    g_signal_connect(button_process_vm_size, "toggled", G_CALLBACK(process_clicked), NULL);
+    g_signal_connect(button_process_state, "toggled", G_CALLBACK(process_clicked), NULL);
+    g_signal_connect(button_process_cpu, "toggled", G_CALLBACK(process_clicked), NULL);
+    g_signal_connect(button_process_pid, "toggled", G_CALLBACK(process_clicked), NULL);
+    g_signal_connect(button_process_ppid, "toggled", G_CALLBACK(process_clicked), NULL);
+    g_signal_connect(button_process_prio, "toggled", G_CALLBACK(process_clicked), NULL);
+    g_signal_connect(button_process_duration, "toggled", G_CALLBACK(process_clicked), NULL);
 
 
     gtk_window_set_position(GTK_WINDOW(proc_window), GTK_WIN_POS_CENTER);
 
     g_signal_connect(G_OBJECT(proc_window), "destroy",
-                     G_CALLBACK(close_window), proc_window);
+                     G_CALLBACK(close_window2), proc_window);
 
     gtk_widget_show_all(proc_window);
 
-    g_list_free(array);
-
 }
 
-/*
- * function device_window(): create a window with buttons that represent columns in the device list
- * when a button is checked the column connected to that button is shown or hidden. The buttons are checked depending on
- * the columns visibility
- * input:none.
- * output:none.
- * */
 void device_window() {
 
 
-    GList *array,*temp;
-    GtkTreeViewColumn *column;
-    gint column_id;
+
     GtkWidget *box2;
-    if(dev_window !=NULL){
-        if (dev_window->parent_instance.qdata != NULL) {
-            if (gtk_widget_get_visible(dev_window)) {
-                gtk_widget_destroy(dev_window);
-
-
-
-            }
-
+    if (dev_window != NULL) {
+        if (gtk_widget_get_visible(dev_window)) {
+            gtk_widget_destroy(dev_window);
         }
     }
-        dev_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_default_size(GTK_WINDOW(dev_window), 200, 200);
-        button_device_devices = gtk_check_button_new_with_label("Devices");
-        button_device_directory = gtk_check_button_new_with_label("Directories");
-        button_device_total = gtk_check_button_new_with_label("Total size");
-        button_device_avail = gtk_check_button_new_with_label("available");
-        button_device_type = gtk_check_button_new_with_label("type");
-        button_device_free = gtk_check_button_new_with_label("free");
-        button_device_used = gtk_check_button_new_with_label("used");
-        button_device_all = gtk_check_button_new_with_label("Show_all");
 
 
-    array= gtk_tree_view_get_columns(GTK_TREE_VIEW(treeview_devices));
-    temp=array;
+    dev_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_default_size(GTK_WINDOW(dev_window), 200, 200);
+    button_device_devices = gtk_check_button_new_with_label("Devices");
+    button_device_directory = gtk_check_button_new_with_label("Directories");
+    button_device_total = gtk_check_button_new_with_label("Total size");
+    button_device_avail = gtk_check_button_new_with_label("available");
+    button_device_type = gtk_check_button_new_with_label("type");
+    button_device_free = gtk_check_button_new_with_label("free");
+    button_device_used = gtk_check_button_new_with_label("used");
+    button_device_all = gtk_check_button_new_with_label("Show_all");
 
-        while(temp!=NULL) {
+    if (device_devices == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_devices), TRUE);
+    }
+    if (device_all == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_all), TRUE);
+    }
+    if (device_directory == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_directory), TRUE);
+    }
+    if (device_used == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_used), TRUE);
+    }
+    if (device_free == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_free), TRUE);
+    }
 
-            column = GTK_TREE_VIEW_COLUMN(temp->data);
-            column_id = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(column), "column-id"));
-            switch (column_id) {
-
-                case COL_DEV:
-
-                    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_devices),
-                                                 gtk_tree_view_column_get_visible(column));
-
-                    break;
-                case COL_DIR:
-
-                    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_directory),
-                                                 gtk_tree_view_column_get_visible(column));
-
-                    break;
-                case COL_USED:
-
-                    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_used),
-                                                 gtk_tree_view_column_get_visible(column));
-
-                    break;
-                case COL_FREE:
-
-                    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_free),
-                                                 gtk_tree_view_column_get_visible(column));
-
-                    break;
-                case COL_TOTAL:
-
-                    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_total),
-                                                 gtk_tree_view_column_get_visible(column));
-
-                    break;
-                case COL_AVAILABLE:
-
-                    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_avail),
-                                                 gtk_tree_view_column_get_visible(column));
-
-                    break;
-                case COL_TYPE:
-
-                    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_type),
-                                                 gtk_tree_view_column_get_visible(column));
-
-                    break;
-                default:
-                    break;
-
-            }
-            temp=temp->next;
-        }
-
-        if (device_all == TRUE) {
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_all), TRUE);
-        }
+    if (device_total == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_total), TRUE);
+    }
+    if (device_avail == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_avail), TRUE);
+    }
+    if (device_type == TRUE) {
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_device_type), TRUE);
+    }
 
 
+    gtk_window_set_title(GTK_WINDOW (dev_window), "Device window");
+
+    box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_container_add(GTK_CONTAINER(dev_window), box2);
+    gtk_box_pack_start(GTK_BOX(box2), button_device_all, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(box2), button_device_devices, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(box2), button_device_directory, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(box2), button_device_avail, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(box2), button_device_total, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(box2), button_device_free, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(box2), button_device_used, 1, 1, 0);
+    gtk_box_pack_start(GTK_BOX(box2), button_device_type, 1, 1, 0);
+    g_signal_connect(button_device_devices, "toggled", G_CALLBACK(device_clicked), NULL);
+    g_signal_connect(button_device_all, "toggled", G_CALLBACK(show_all), NULL);
+    g_signal_connect(button_device_directory, "toggled", G_CALLBACK(device_clicked), NULL);
+    g_signal_connect(button_device_avail, "toggled", G_CALLBACK(device_clicked), NULL);
+    g_signal_connect(button_device_total, "toggled", G_CALLBACK(device_clicked), NULL);
+    g_signal_connect(button_device_free, "toggled", G_CALLBACK(device_clicked), NULL);
+    g_signal_connect(button_device_used, "toggled", G_CALLBACK(device_clicked), NULL);
+    g_signal_connect(button_device_type, "toggled", G_CALLBACK(device_clicked), NULL);
 
 
-        gtk_window_set_title(GTK_WINDOW (dev_window), "Device window");
+    gtk_window_set_position(GTK_WINDOW(dev_window), GTK_WIN_POS_CENTER);
 
-        box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-        gtk_container_add(GTK_CONTAINER(dev_window), box2);
-        gtk_box_pack_start(GTK_BOX(box2), button_device_all, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_device_devices, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_device_directory, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_device_avail, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_device_total, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_device_free, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_device_used, 1, 1, 0);
-        gtk_box_pack_start(GTK_BOX(box2), button_device_type, 1, 1, 0);
-        g_signal_connect(button_device_devices, "toggled", G_CALLBACK(change_list_store_view_devices), NULL);
-        g_signal_connect(button_device_all, "toggled", G_CALLBACK(show_all), NULL);
-        g_signal_connect(button_device_directory, "toggled", G_CALLBACK(change_list_store_view_devices), NULL);
-        g_signal_connect(button_device_avail, "toggled", G_CALLBACK(change_list_store_view_devices), NULL);
-        g_signal_connect(button_device_total, "toggled", G_CALLBACK(change_list_store_view_devices), NULL);
-        g_signal_connect(button_device_free, "toggled", G_CALLBACK(change_list_store_view_devices), NULL);
-        g_signal_connect(button_device_used, "toggled", G_CALLBACK(change_list_store_view_devices), NULL);
-        g_signal_connect(button_device_type, "toggled", G_CALLBACK(change_list_store_view_devices), NULL);
+    g_signal_connect(G_OBJECT(dev_window), "destroy",
+                     G_CALLBACK(close_window2), dev_window);
 
-
-        gtk_window_set_position(GTK_WINDOW(dev_window), GTK_WIN_POS_CENTER);
-
-        g_signal_connect(G_OBJECT(dev_window), "destroy",
-                         G_CALLBACK(close_window), dev_window);
-
-        gtk_widget_show_all(dev_window);
-
-
-
-    g_list_free(array);
-
-
-
-
-
+    gtk_widget_show_all(dev_window);
 
 
 }
 
 
-/*
- * function close_window_toggled(): when the graph window is closed we set the button graph to not be clicked
- * input:none.
- * output:none.
- * */
-void close_window_toggled() {
+
+void button_clicked_view_process(GtkWidget *widget) {
+
+
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
+
+
+        gtk_widget_show_all(process_swindow);
+
+
+    } else {
+
+        show_hide(widget, process_swindow);
+
+    }
+}
+
+
+
+void dev_button_clicked2(GtkWidget *widget) {
+
+
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
+
+
+        show_hide(widget, device_swindow);
+
+
+        gtk_widget_show_all(device_swindow);
+
+    } else {
+        show_hide(widget, device_swindow);
+
+    }
+
+}
+
+
+void close_window() {
 
 
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph),
@@ -322,78 +250,105 @@ void close_window_toggled() {
 
 
 };
-/*
- * function close_window(): closes a widget
- * input:pointer to a widget.
- * output:none.
- * */
-void close_window(GtkWidget *widget) {
+void close_window2(GtkWidget *widget) {
 
 
     gtk_widget_hide(widget);
     gtk_widget_destroyed(widget,&widget);
 
 
-
 };
 
-/*
- * function graph_button_clicked(): opens a window containing buttons that are connected to the displaying of cpu stats
- * input:pointer to a widget.
- * output:none.
- * */
+void start_stop(int show, char *signal, char *task_id) {
+    int ret;
+    char buffer[1500];
+
+    memset(buffer, 0, sizeof(buffer));
+
+    if (show == 1) {
+
+        show_before = !show_before;
+    }
+
+
+    if (signal != NULL && task_id != NULL) {
+        sprintf(buffer, "%d %s %s", device_all, signal, task_id);
+
+    } else {
+        sprintf(buffer, "%d", device_all);
+    }
+    printf("%s \n", buffer);
+    ret = (int) send(newsockfd1, &buffer, sizeof(buffer), 0);
+    if (ret < 0) {
+
+        printf("command did not get sent \n");
+        gtk_main_quit();
+
+
+    }
+    if (ret == 0) {
+
+        printf("command did not get sent \n");
+        printf("socket closed\n");
+        gtk_main_quit();
+
+
+    }
+
+}
+
 void graph_button_clicked(GtkWidget *widget) {
 
     GtkWidget *box2;
-    GtkWidget *temp;
-
-
-    char   string[10];
-
-
-
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
+        window2 = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
-        window_graphs = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-        gtk_window_set_title(GTK_WINDOW (window_graphs), "GRAPH buttons");
-        box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-        gtk_container_add(GTK_CONTAINER(window_graphs), box2);
+        button_graph0 = gtk_toggle_button_new_with_label("CPu0");
+        button_graph1 = gtk_toggle_button_new_with_label("CPu1");
+        button_graph2 = gtk_toggle_button_new_with_label("CPu2");
+        button_graph3 = gtk_toggle_button_new_with_label("CPu3");
 
-
-        for(int i=0;i<CPU_NUM;i++){
-
-            sprintf(string,"CPU%d",i);
-            temp=gtk_toggle_button_new_with_label(string);
-
-
-            if(cpu_status[i]==true){
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(temp), TRUE);
-            }
-            gtk_box_pack_start(GTK_BOX(box2), temp, 1, 1, 0);
-            g_signal_connect(temp, "toggled", G_CALLBACK(graph_clicked), NULL);
-            cpu_buttons[i]=*temp;
-
+        if (CPU0_line == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph0), TRUE);
+        }
+        if (CPU1_line == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph1), TRUE);
+        }
+        if (CPU2_line == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph2), TRUE);
+        }
+        if (CPU3_line == TRUE) {
+            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button_graph3), TRUE);
         }
 
-        gtk_window_set_position(GTK_WINDOW(window_graphs), GTK_WIN_POS_CENTER);
+        gtk_window_set_title(GTK_WINDOW (window2), "GRAPH buttons");
 
-        g_signal_connect(G_OBJECT(window_graphs), "destroy",
-                         G_CALLBACK(close_window_toggled), NULL);
+        box2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+        gtk_container_add(GTK_CONTAINER(window2), box2);
+        gtk_box_pack_start(GTK_BOX(box2), button_graph0, 1, 1, 0);
+        gtk_box_pack_start(GTK_BOX(box2), button_graph1, 1, 1, 0);
+        gtk_box_pack_start(GTK_BOX(box2), button_graph2, 1, 1, 0);
+        gtk_box_pack_start(GTK_BOX(box2), button_graph3, 1, 1, 0);
+        g_signal_connect(button_graph0, "toggled", G_CALLBACK(graph_clicked), NULL);
+        g_signal_connect(button_graph1, "toggled", G_CALLBACK(graph_clicked), NULL);
+        g_signal_connect(button_graph2, "toggled", G_CALLBACK(graph_clicked), NULL);
+        g_signal_connect(button_graph3, "toggled", G_CALLBACK(graph_clicked), NULL);
 
-        gtk_widget_show_all(window_graphs);
+
+        gtk_window_set_position(GTK_WINDOW(window2), GTK_WIN_POS_CENTER);
+
+        g_signal_connect(G_OBJECT(window2), "destroy",
+                         G_CALLBACK(close_window), NULL);
+
+        gtk_widget_show_all(window2);
 
     } else {
 
-        gtk_widget_destroy(window_graphs);
+        gtk_widget_destroy(window2);
 
     }
 };
 
-/*
- * function show_all(): sends command to server about what type of devices it wants to see
- * input:pointer to a widget.
- * output:none.
- * */
 void show_all(GtkWidget *widget) {
 
     char *proxy = NULL;
@@ -401,76 +356,267 @@ void show_all(GtkWidget *widget) {
 
         device_all = TRUE;
 
-        device_task_commands(proxy, proxy);
+        start_stop(1, proxy, proxy);
 
     } else {
         device_all = FALSE;
-        device_task_commands(proxy, proxy);
+        start_stop(1, proxy, proxy);
     }
 
 
-
+    timeout_refresh();
 
 
 };
 
+void device_clicked(GtkWidget *widget) {
 
-/*
- * function graph_clicked(): draws specific cpus depending on which button is pressed
- * input:pointer to a widget.
- * output:none.
- * */
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
+        if (widget == button_device_devices) {
+
+            device_devices = TRUE;
+
+            change_list_store_view_devices(widget, device_devices);
+
+        } else if (widget == button_device_directory) {
+
+            device_directory = TRUE;
+            change_list_store_view_devices(widget, device_directory);
+
+        } else if (widget == button_device_avail) {
+
+            device_avail = TRUE;
+            change_list_store_view_devices(widget, device_avail);
+
+        } else if (widget == button_device_total) {
+            device_total = TRUE;
+            change_list_store_view_devices(widget, device_total);
+
+        } else if (widget == button_device_used) {
+            device_used = TRUE;
+            change_list_store_view_devices(widget, device_used);
+
+        } else if (widget == button_device_type) {
+            device_type = TRUE;
+            change_list_store_view_devices(widget, device_type);
+
+        } else {
+            device_free = TRUE;
+            change_list_store_view_devices(widget, device_free);
+
+        }
+
+    } else {
+
+        if (widget == button_device_devices) {
+
+            device_devices = FALSE;
+
+            change_list_store_view_devices(widget, device_devices);
+
+
+        } else if (widget == button_device_directory) {
+
+            device_directory = FALSE;
+            change_list_store_view_devices(widget, device_directory);
+
+        } else if (widget == button_device_avail) {
+
+            device_avail = FALSE;
+            change_list_store_view_devices(widget, device_avail);
+
+        } else if (widget == button_device_total) {
+            device_total = FALSE;
+            change_list_store_view_devices(widget, device_total);
+
+        } else if (widget == button_device_used) {
+            device_used = FALSE;
+            change_list_store_view_devices(widget, device_used);
+
+        } else if (widget == button_device_type) {
+            device_type = FALSE;
+            change_list_store_view_devices(widget, device_type);
+
+        } else {
+            device_free = FALSE;
+            change_list_store_view_devices(widget, device_free);
+
+        }
+
+
+    }
+
+};
+
+void process_clicked(GtkWidget *widget) {
+
+
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
+        if (widget == button_process_task) {
+
+            process_task = TRUE;
+
+            change_list_store_view_process(widget, process_task);
+
+        } else if (widget == button_process_cpu) {
+
+            process_cpu = TRUE;
+
+            change_list_store_view_process(widget, process_cpu);
+
+        } else if (widget == button_process_prio) {
+
+            process_prio = TRUE;
+            change_list_store_view_process(widget, process_prio);
+
+        } else if (widget == button_process_pid) {
+
+            process_pid = TRUE;
+            change_list_store_view_process(widget, process_pid);
+
+        } else if (widget == button_process_ppid) {
+            process_ppid = TRUE;
+            change_list_store_view_process(widget, process_ppid);
+
+        } else if (widget == button_process_rss) {
+            process_rss = TRUE;
+            change_list_store_view_process(widget, process_rss);
+
+        } else if (widget == button_process_vm_size) {
+            process_vm_size = TRUE;
+            change_list_store_view_process(widget, process_vm_size);
+
+        } else if (widget == button_process_state) {
+            process_state = TRUE;
+            change_list_store_view_process(widget, process_state);
+
+        } else if (widget == button_process_duration) {
+            process_duration = TRUE;
+            change_list_store_view_process(widget, process_duration);
+        } else {
+
+            process_user = TRUE;
+            change_list_store_view_process(widget, process_user);
+
+        }
+
+    } else {
+
+        if (widget == button_process_task) {
+
+            process_task = FALSE;
+
+            change_list_store_view_process(widget, process_task);
+
+        } else if (widget == button_process_cpu) {
+
+            process_cpu = FALSE;
+            change_list_store_view_process(widget, process_cpu);
+
+        } else if (widget == button_process_prio) {
+
+            process_prio = FALSE;
+            change_list_store_view_process(widget, process_prio);
+
+        } else if (widget == button_process_pid) {
+
+            process_pid = FALSE;
+            change_list_store_view_process(widget, process_pid);
+
+        } else if (widget == button_process_ppid) {
+            process_ppid = FALSE;
+            change_list_store_view_process(widget, process_ppid);
+
+        } else if (widget == button_process_rss) {
+            process_rss = FALSE;
+            change_list_store_view_process(widget, process_rss);
+
+        } else if (widget == button_process_vm_size) {
+            process_vm_size = FALSE;
+            change_list_store_view_process(widget, process_vm_size);
+
+        } else if (widget == button_process_state) {
+            process_state = FALSE;
+            change_list_store_view_process(widget, process_state);
+
+        } else if (widget == button_process_duration) {
+            process_duration = FALSE;
+
+            change_list_store_view_process(widget, process_duration);
+        } else {
+
+            process_user = FALSE;
+            change_list_store_view_process(widget, process_user);
+
+        }
+
+
+    }
+
+};
 
 void graph_clicked(GtkWidget *widget) {
 
 
-    bool *temp_bool=cpu_status;
-    GtkWidget *temp_widget=cpu_buttons;
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {
+        if (widget == button_graph0) {
 
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (widget))) {/*if a button is toggled we set its bool to true*/
+            CPU0_line = TRUE;
+            graph_refresh(widget, CPU0_line);
 
-        for(int i=0;i<CPU_NUM;i++){
 
-            if(temp_widget->priv==widget->priv){
-                (*temp_bool)=true;
-                gtk_widget_queue_draw(graph1);
-            }
+        } else if (widget == button_graph1) {
 
-            temp_bool++;
-            temp_widget++;
+            CPU1_line = TRUE;
+            graph_refresh(widget, CPU1_line);
+
+        } else if (widget == button_graph2) {
+
+            CPU2_line = TRUE;
+            graph_refresh(widget, CPU2_line);
+
+        } else {
+
+            CPU3_line = TRUE;
+            graph_refresh(widget, CPU3_line);
 
         }
+
 
     } else {
 
-        for(int i=0;i<CPU_NUM;i++){
+        if (widget == button_graph0) {
 
-            if(temp_widget->priv==widget->priv){
+            CPU0_line = FALSE;
+            graph_refresh(widget, CPU0_line);
 
-                (*temp_bool)=false;
-                gtk_widget_queue_draw(graph1);
-            }
+        } else if (widget == button_graph1) {
 
-            temp_bool++;
-            temp_widget++;
+            CPU1_line = FALSE;
+            graph_refresh(widget, CPU1_line);
+
+        } else if (widget == button_graph2) {
+
+            CPU2_line = FALSE;
+            graph_refresh(widget, CPU2_line);
+
+        } else {
+
+            CPU3_line = FALSE;
+            graph_refresh(widget, CPU3_line);
+
         }
-
 
     }
 
 };
 
 
-/*
- * function show_hide(): shows or hides a window depending if the button is pressed or not
- * input:pointer to a button that is being pressed and pointer to window that is connected to that button
- * output:none.
- * */
 
 void show_hide(GtkWidget *button, GtkWidget *window) {
 
 
-    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (button) )) {
+    if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (button)) != FALSE) {
 
 
 
@@ -484,11 +630,7 @@ void show_hide(GtkWidget *button, GtkWidget *window) {
 
 
 };
-/*
- * function handle_task_menu(): gets the selected task and send it a signal
- * input:pointer to a button that is being pressed and pointer to the signal that we want to send
- * output:none.
- * */
+
 
 void handle_task_menu(GtkWidget *widget, char *signal) {
 
@@ -501,21 +643,16 @@ void handle_task_menu(GtkWidget *widget, char *signal) {
             GtkTreeModel *model;
             GtkTreeIter iter;
 
-            if (gtk_tree_selection_get_selected(selection, &model, &iter)) { /*get the tasks info*/
+            if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
                 gtk_tree_model_get(model, &iter, 1, &task_id, -1);
-                device_task_commands(signal, task_id);
-
+                start_stop(0, signal, task_id);
+                init_timeout();
             }
         }
     }
 }
-/*
- * function handle_task_prio(): gets the selected task and send it a signal
- * input:pointer to a button that is being pressed and pointer to the signal that we want to send
- * output:none.
- * */
-void handle_task_prio(GtkWidget *widget, char *signal) {
 
+void handle_task_prio(GtkWidget *widget, char *signal) {
     if (signal != NULL) {
 
 
@@ -527,17 +664,13 @@ void handle_task_prio(GtkWidget *widget, char *signal) {
 
             if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
                 gtk_tree_model_get(model, &iter, 1, &task_id, -1);
-                device_task_commands(signal, task_id);
+                start_stop(0, signal, task_id);
 
             }
         }
     }
 }
-/*
- * function create_taskpopup(): creates a popup menu
- * input:none.
- * output: return a pop_up_menu.
- * */
+
 GtkWidget *create_taskpopup(void) {
     GtkWidget *taskpopup;
 
@@ -605,21 +738,14 @@ GtkWidget *create_taskpopup(void) {
 
     return taskpopup;
 }
-/**
- * function on_treeview_tasks_button_press_event(): reacts to a right click on a task in the list and then creates a pop
- * up menu.
- * input:gtk button  and pointer to an event.
- * output: return bool.
- * */
-gboolean on_treeview_tasks_button_press_event(GtkButton *button, GdkEventButton *event) {
 
+gboolean on_treeview1_button_press_event(GtkButton *button, GdkEventButton *event) {
     if (event->button == 3) {
 
         GdkEventButton *mouseevent = event;
 
         if (task_popup == NULL)
             task_popup = create_taskpopup();
-
         gtk_menu_popup(GTK_MENU(task_popup), NULL, NULL, NULL, NULL, mouseevent->button, mouseevent->time);
 
     }

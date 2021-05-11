@@ -30,7 +30,7 @@ add_executable(server  main.c
         task_manager.c
         task_manager.h
 
-        testing.c testing.h)
+        )
 
 include_directories(${GTK3_INCLUDE_DIRS})
 

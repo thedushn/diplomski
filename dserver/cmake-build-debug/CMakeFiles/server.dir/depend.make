@@ -5,7 +5,6 @@ CMakeFiles/server.dir/cpu_usage.c.o: ../common.h
 CMakeFiles/server.dir/cpu_usage.c.o: ../cpu_usage.c
 CMakeFiles/server.dir/cpu_usage.c.o: ../cpu_usage.h
 CMakeFiles/server.dir/cpu_usage.c.o: ../functions.h
-CMakeFiles/server.dir/cpu_usage.c.o: ../testing.h
 
 CMakeFiles/server.dir/devices.c.o: ../common.h
 CMakeFiles/server.dir/devices.c.o: ../devices.c
@@ -26,7 +25,6 @@ CMakeFiles/server.dir/interrupts.c.o: ../common.h
 CMakeFiles/server.dir/interrupts.c.o: ../functions.h
 CMakeFiles/server.dir/interrupts.c.o: ../interrupts.c
 CMakeFiles/server.dir/interrupts.c.o: ../interrupts.h
-CMakeFiles/server.dir/interrupts.c.o: ../testing.h
 
 CMakeFiles/server.dir/main.c.o: ../common.h
 CMakeFiles/server.dir/main.c.o: ../cpu_usage.h
@@ -39,7 +37,6 @@ CMakeFiles/server.dir/memory_usage.c.o: ../common.h
 CMakeFiles/server.dir/memory_usage.c.o: ../functions.h
 CMakeFiles/server.dir/memory_usage.c.o: ../memory_usage.c
 CMakeFiles/server.dir/memory_usage.c.o: ../memory_usage.h
-CMakeFiles/server.dir/memory_usage.c.o: ../testing.h
 
 CMakeFiles/server.dir/network_bandwith.c.o: ../common.h
 CMakeFiles/server.dir/network_bandwith.c.o: ../functions.h
@@ -51,9 +48,4 @@ CMakeFiles/server.dir/task_manager.c.o: ../cpu_usage.h
 CMakeFiles/server.dir/task_manager.c.o: ../functions.h
 CMakeFiles/server.dir/task_manager.c.o: ../task_manager.c
 CMakeFiles/server.dir/task_manager.c.o: ../task_manager.h
-CMakeFiles/server.dir/task_manager.c.o: ../testing.h
-
-CMakeFiles/server.dir/testing.c.o: ../common.h
-CMakeFiles/server.dir/testing.c.o: ../testing.c
-CMakeFiles/server.dir/testing.c.o: ../testing.h
 

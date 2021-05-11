@@ -7,7 +7,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/server.dir/memory_usage.c.o"
   "CMakeFiles/server.dir/network_bandwith.c.o"
   "CMakeFiles/server.dir/task_manager.c.o"
-  "CMakeFiles/server.dir/testing.c.o"
   "server.pdb"
   "server"
 )

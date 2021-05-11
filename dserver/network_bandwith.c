@@ -13,35 +13,22 @@
 #include <sys/socket.h>
 
 
-
+#define BUFFER_SIZE2 64
 #define BUFFER_SIZE 1024
 
-static int letter_counter;
+static int number_bandwidth;
 
-/*
- * function send_network(); send data about network usage to client
- * input : socket to send data to
- * output : void
- * */
 void * send_network(void *socket){
-
     int sockfd=(*(int*)socket);
     int result;
     Data data={0};
     Network network={0};
     ssize_t ret;
 
-    pthread_mutex_lock(&mutex_send);
-    while (thread_break == false) {
-        ret = -100;
-        pthread_mutex_unlock(&mutex_send);
-        pthread_exit(&ret);
-    }
-    pthread_mutex_unlock(&mutex_send);
     result = interface_name(&network);
     if (result != 0) {
-        ret = -100;
-        pthread_exit(&ret);
+
+        pthread_exit(NULL);
     }
     memset(&data,0,sizeof(Data));
     data.size=NETWORK;
@@ -51,36 +38,31 @@ void * send_network(void *socket){
     pthread_mutex_unlock(&mutex_send);
 
     if (ret < 0) {
-        printf("Error sending data\n return = %d\n", (int) ret);
-
-        pthread_exit(&ret);
+        printf("Error sending data!\n\t");
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(NULL);
 
     }
     if (ret == 0) {
-        printf("Error sending data\n return = %d\n", (int) ret);
+
         printf("socket closed\n");
-        ret = -100;
-        pthread_exit(&ret);
+        pthread_mutex_unlock(&mutex_send);
+        pthread_exit(NULL);
     }
-
-    pthread_exit(&ret);
+//    pthread_mutex_lock(&mutex_send);
+//    if( test_send(sockfd)<=0){
+//
+//        pthread_mutex_unlock(&mutex_send);
+//        pthread_exit(NULL);
+//    }
+//    pthread_mutex_unlock(&mutex_send);
+    pthread_exit(NULL);
 }
-/*
- * function search_net(); searches the linked list to find a network devices and  save its old data and replace it with the
- * new data
- * input :char pointer that contains the name of the network device bool  pointer that we change to true if the network devices
- * is already in the list,
- * structure of data about network usage that we want to save in the list
- *
- * output : returns a structure about the  network devices network usage
- * */
 
+struct Net_data search_net(char *key, bool *ima, struct Net_data new_data) {
 
-Network search_net(char *key, bool *ima, Network new_data) {
-
-    Network             temp_data  = {0};
-    struct DataItem_net *temp_item  = hash_network;
-
+    struct Net_data temp_data={0};
+    struct DataItem_net *temp_item=hash_network;
     for (int i = 0; i < net_hash_size; i++) {
 
         if ((strcmp(temp_item->name, key)) == 0) {
@@ -89,21 +71,21 @@ Network search_net(char *key, bool *ima, Network new_data) {
 
 
 
-            if ( new_data.received_bytes < temp_item->net_data.received_bytes
-                    ||new_data.received_bytes < temp_item->net_data.transmited_bytes) { /*if the pseudo file reset*/
+            if ( new_data.received_data < temp_item->net_data.received_data
+                    ||new_data.received_data < temp_item->net_data.transfered_data) {
 
-                temp_item->net_data.received_bytes=new_data.received_bytes;
-                temp_item->net_data.transmited_bytes=new_data.transmited_bytes;
+                temp_item->net_data.received_data=new_data.received_data;
+                temp_item->net_data.transfered_data=new_data.transfered_data;
                 temp_item->check=true;
 
                 return temp_data;
             }
 
-            temp_data.transmited_bytes= temp_item->net_data.transmited_bytes;
-            temp_data.received_bytes= temp_item->net_data.received_bytes;
+            temp_data.transfered_data= temp_item->net_data.transfered_data;
+            temp_data.received_data= temp_item->net_data.received_data;
 
-            temp_item->net_data.received_bytes=new_data.received_bytes;
-            temp_item->net_data.transmited_bytes=new_data.transmited_bytes;
+            temp_item->net_data.received_data=new_data.received_data;
+            temp_item->net_data.transfered_data=new_data.transfered_data;
             temp_item->check=true;
 
 
@@ -120,40 +102,33 @@ Network search_net(char *key, bool *ima, Network new_data) {
     return temp_data;
 }
 
-/*
- * function get_rec_trans(): calculates the transmitted and received bytes of a network device and inputs it in a link list
- *
- * input : name of the network device, received bytes, pointer to received bytes that we calculate,transmitted bytes,
- * pointer to transmitted bytes that we calculate
- * output : returns a non zero value if something goes wrong
- * */
-int get_rec_trans(char *name, __uint64_t received, __uint64_t *received_calculated, __uint64_t transmitted,
-                  __uint64_t *transmitted_calculated) {
 
-   Network net_data_new;
-   Network net_data_old;
+void get_rec_trans(char *name, __uint64_t received, __uint64_t *received_struct, __uint64_t transmitted,
+                   __uint64_t *transmitted_struct) {
+    struct Net_data net_data_new;
+    struct Net_data net_data_old;
 
-    bool exists = false;
+    bool ima = false;
     struct DataItem_net *temp = NULL;
 
-    net_data_new.transmited_bytes=transmitted;
-    net_data_new.received_bytes=received;
+    net_data_new.transfered_data=transmitted;
+    net_data_new.received_data=received;
 
 
 
-    net_data_old=search_net(name, &exists, net_data_new);
+    net_data_old=search_net(name, &ima, net_data_new);
 
 
-    if (exists == false) { /*if the network device doesnt exist in the list*/
+    if (ima == false) {
         temp=(struct DataItem_net *) calloc(1, sizeof(struct DataItem_net));
         if (temp == NULL) {
             free(temp);
             printf("calloc error %d \n", errno);
-            return -1;
+            exit(1);
         }
 
-        temp->net_data.received_bytes=received;
-        temp->net_data.transmited_bytes=transmitted;
+        temp->net_data.received_data=received;
+        temp->net_data.transfered_data=transmitted;
         strcpy(temp->name,name);
         temp->check=true;
 
@@ -164,71 +139,68 @@ int get_rec_trans(char *name, __uint64_t received, __uint64_t *received_calculat
 
 
 
+
+
+
+
+
+
+
     }
 
 
-    if (net_data_old.received_bytes == 0) {
+    if (net_data_old.received_data == 0) {
 
-        *received_calculated = 0;
+        *received_struct = 0;
 
     }
-    if (net_data_old.transmited_bytes == 0) {
+    if (net_data_old.transfered_data == 0) {
 
 
-        *transmitted_calculated = 0;
+        *transmitted_struct = 0;
 
     } else {
 
-        if (received < net_data_old.received_bytes || transmitted < net_data_old.transmited_bytes) {
+        if (received < net_data_old.received_data || transmitted < net_data_old.transfered_data) {
 
-            *received_calculated = 0;
-            *transmitted_calculated = 0;
+            *received_struct = 0;
+            *transmitted_struct = 0;
         } else {
 
-            *received_calculated = (received - net_data_old.received_bytes);
-            *transmitted_calculated = (transmitted - net_data_old.transmited_bytes);
+            *received_struct = (received - net_data_old.received_data);
+            *transmitted_struct = (transmitted - net_data_old.transfered_data);
         }
 
 
     }
 
-    return 0;
+
 }
 
-/*
- * function interface_name(): finds all the network devices and then calculates their network usage and adds them all up
- *
- * input : pointer to Network structure;
- * output : returns a non zero value if something goes wrong
- * */
-int interface_name(Network *network) {
+int interface_name(Network *network1) {
 
 
-    char *dir_name = "/sys/class/net/";
+    char *v = "/sys/class/net/";
     struct dirent *pDirent;
-    DIR  *pDir;
-    FILE *file;
-    char *filename = "/proc/net/dev";
+    DIR *pDir;
+
     __uint64_t network_rc = 0;
     __uint64_t network_ts = 0;
-    char name[64];
-
-    char buffer[BUFFER_SIZE];
-    char buffer3[64];
+    char name[BUFFER_SIZE2];
     memset(name, 0, sizeof(name));
 
-    pDir = opendir(dir_name);
+    pDir = opendir(v);
 
     if (pDir == NULL) {
 
-        printf("Cannot open directory '%s'\n", dir_name);
+        printf("Cannot open directory '%s'\n", v);
         return 1;
 
     }
 
 
     while ((pDirent = readdir(pDir)) != NULL) {
-            /*skipping the names we know are not relevant*/
+
         if (!strcmp(pDirent->d_name, ".") || !strcmp(pDirent->d_name, "..") || !strcmp(pDirent->d_name, "lo")) {
 
 
@@ -236,7 +208,7 @@ int interface_name(Network *network) {
 
             sscanf(pDirent->d_name, "%s", name);
 
-            __uint64_t    received_bytes = 0;
+            __uint64_t received_bytes = 0;
             unsigned long received_packets = 0;
             unsigned long received_errors = 0;
             unsigned long received_drop = 0;
@@ -244,7 +216,7 @@ int interface_name(Network *network) {
             unsigned long received_frame = 0;
             unsigned long received_compressed = 0;
             unsigned long received_multicast = 0;
-            __uint64_t    transmit_bytes = 0;
+            __uint64_t transmit_bytes = 0;
             unsigned long transmit_packets = 0;
             unsigned long transmit_errors = 0;
             unsigned long transmit_drop = 0;
@@ -255,24 +227,26 @@ int interface_name(Network *network) {
             __uint64_t network_rc1 = 0;
             __uint64_t network_ts1 = 0;
 
-
+            FILE *file;
+            char buffer[1024];
+            char buffer3[BUFFER_SIZE2];
 
 
             memset(buffer, 0, BUFFER_SIZE);
-            memset(buffer3, 0, 64);
-            strncpy(buffer3, name, 64);
+            memset(buffer3, 0, BUFFER_SIZE2);
+            strncpy(buffer3, name, BUFFER_SIZE2);
 
 
-            for (int g = 0; g < 64; g++) { /*counting the number of letter the network device has*/
+            for (int g = 0; g < BUFFER_SIZE2; g++) {
 
                 if (buffer3[g] == '\0')
                     break;
                 else
-                    letter_counter++;
+                    number_bandwidth++;
             }
 
 
-
+            char *filename = "/proc/net/dev";
 
 
             if ((file = fopen(filename, "r")) == NULL || fgets(buffer, BUFFER_SIZE, file) == NULL) {
@@ -281,7 +255,7 @@ int interface_name(Network *network) {
             }
 
 
-            while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
+            while (fgets(buffer, 1024, file) != NULL) {
 
 
                 char *temp = buffer;
@@ -291,7 +265,7 @@ int interface_name(Network *network) {
                 }
 
 
-                if (strncmp(temp, buffer3, (size_t) letter_counter) == 0) {
+                if (strncmp(temp, buffer3, (size_t) number_bandwidth) == 0) {
 
                     break;
                 }
@@ -299,7 +273,7 @@ int interface_name(Network *network) {
 
             }
 
-            fclose(file);
+
             char *network_data = NULL;
             network_data = strchr(buffer, ':');
 
@@ -324,16 +298,14 @@ int interface_name(Network *network) {
             network_rc1 = 0;
             network_ts1 = 0;
 
-            if (get_rec_trans(name, received_bytes, &network_rc1, transmit_bytes, &network_ts1) != 0) {
-                closedir(pDir);
-                return -1;
-            }
+            get_rec_trans(name, received_bytes, &network_rc1, transmit_bytes, &network_ts1);
 
 
-            network_rc += network_rc1; /*accumulating all the networks received bytes*/
-            network_ts += network_ts1; /*accumulating all the networks transmitted bytes*/
+            network_rc += network_rc1;
+            network_ts += network_ts1;
 
-            letter_counter = 0;
+            number_bandwidth = 0;
+            fclose(file);
 
 
         }
@@ -342,12 +314,12 @@ int interface_name(Network *network) {
     }
 
 
-    network->received_bytes   = network_rc;
-    network->transmited_bytes = network_ts;
+    network1->received_bytes = network_rc;
+    network1->transmited_bytes = network_ts;
 
 
 
-    letter_counter = 0;
+    number_bandwidth = 0;
     closedir(pDir);
 
     check_for_old_net();
@@ -357,12 +329,6 @@ int interface_name(Network *network) {
 
 }
 
-/*
- * function check_for_old_net(): finds all the network devices that where not checked and removes them from the list
- *
- * input : none.
- * output : none.
- * */
 void check_for_old_net(){
     struct DataItem_net *temp=hash_network;
     for(int i=0;i<net_hash_size;i++){
