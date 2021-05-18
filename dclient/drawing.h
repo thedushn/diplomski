@@ -34,7 +34,7 @@ void do_drawing_one_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Da
 void do_drawing_mem(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Data *array);
 void draw_graph_mem(cairo_t *cr, int r, int index, double width, double height, double font_size, double time_step,
                     Mega_Data *array);
-void do_drawing_int(GtkWidget *widget, cairo_t *cr, I_Collection *interrupts1);
+
 void do_drawing_int2(GtkWidget *widget, cairo_t *cr, I_Collection2 *interrupts1);
 void writing_seconds(cairo_t *cr, double width, double height, double font_size, int i);
 /**
@@ -46,17 +46,13 @@ void draw_frame(cairo_t *cr, double width, double height, double font_size, int 
 
 void draw_percentages(cairo_t *cr, double height, double font_size);
 void draw_lines(cairo_t *cr, double width, double height, double font_size, int i, guint time_step, Mega_Data *temp);
-void draw_interrupts(cairo_t *cr, int position, Interrupts *peak, double height, double font_size, __uint64_t max_num,
-                     double length);
 
-void writing_interrupt_names(cairo_t *cr, double font_size, double length, int position, const gchar *name1,
-                             const gchar *name2);
+
+
 
 void writing_interrupt_names2(cairo_t *cr, double font_size, double length, int position, const gchar *name1);
 
-void checking_interrupt_names(cairo_t *cr, double font_size, double length, int position, const char *ime1,
-                              const char *ime2,
-                              const char *name3, const char *name4);
+
 
 
 void

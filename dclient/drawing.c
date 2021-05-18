@@ -2,12 +2,6 @@
 // Created by dushn on 23.7.20..
 //
 
-
-
-//
-// Created by dushn on 8.9.17..
-//
-
 #include <inttypes.h>
 #include "drawing.h"
 #include "buttons.h"
@@ -35,7 +29,7 @@ gboolean on_draw_event(GtkWidget *widget, cairo_t *cr) {
 
         do_drawing_mem(widget, cr, time_step, m_data);
     } else if (widget == graph_inttrp){
-            //TODO set size to the proper amount of interrupts
+
         gtk_widget_set_size_request(widget,(int)50*interrupt_num+100,gtk_widget_get_allocated_height(interrupts_swindow));
        // assert(interrupts);
        // do_drawing_int(widget, cr, interrupts);
@@ -222,16 +216,21 @@ void draw_percentages(cairo_t *cr, double height, double font_size) {
 
 
 }
-void draw_interrupts2(cairo_t *cr, int position, Interrupts2 *peak, double height, double font_size, __uint64_t max_num,
+void draw_interrupts2(cairo_t *cr, int position, I_Collection2 *peak, double height, double font_size, __uint64_t max_num,
                       double length) {
 
     double percentage;
 
-    writing_interrupt_names2(cr,font_size,length,position,peak->name);
+    writing_interrupt_names2(cr,font_size,length,position,peak->interrupts.name);
     cairo_set_line_width(cr, 1);
 
     for(int i=0;i<cpu_num;i++){
-        percentage = ((height - font_size) / (double)max_num) * (double)peak->CPU[i];
+        if(max_num==0){
+            percentage=font_size;
+        }else{
+            percentage = ((height - font_size) / (double)max_num) * (double)peak->CPU[i];
+        }
+
 
         cairo_rectangle(cr, (int)(cpu_num+1) * font_size + length * ((int)(cpu_num+1)*position+i), height - font_size, length - 1, -percentage);
        // cairo_set_source_rgb(cr, 0, 0, 0);
@@ -295,11 +294,13 @@ void draw_interrupts2(cairo_t *cr, int position, Interrupts2 *peak, double heigh
  * */
 void
 draw_graph(cairo_t *cr, int r, double width, double height, double font_size, double time_step, Mega_Data *array) {
-    int corner =5;
+    int corner      = 5;
     Mega_Data *temp = array;
-    double prev = height - font_size; //zero
-    double step = 0;
-
+    double prev     = height - font_size; //zero
+    double step     = 0;
+    double counter  = 0;
+    gfloat peak;
+    double percentage;
 
     if (r == 0) {
 
@@ -320,9 +321,7 @@ draw_graph(cairo_t *cr, int r, double width, double height, double font_size, do
 
 
 
-    double counter=0;
-    gfloat peak;
-    double percentage;
+
     while(temp){
 
 
@@ -666,7 +665,7 @@ void do_drawing_int2(GtkWidget *widget, cairo_t *cr, I_Collection2 *interrupts1)
     cairo_move_to(cr, 5 * font_size, height);
     while(temp_p) {
 
-        p=temp_p->interrupts.CPU;
+        p=temp_p->CPU;
         for(int i=0;i<cpu_num;i++){
             if(max_num<*p){
                 max_num=*p;
@@ -678,8 +677,9 @@ void do_drawing_int2(GtkWidget *widget, cairo_t *cr, I_Collection2 *interrupts1)
         temp_p=temp_p->next;
 
     }
+     if(max_num!=0)
+         max_num = max_num * 5 / 4;
 
-    max_num = max_num * 5 / 4;
     cairo_move_to(cr, 0, font_size);
     sprintf(num, "%"PRIu64, max_num);
     cairo_show_text(cr, num);
@@ -687,7 +687,12 @@ void do_drawing_int2(GtkWidget *widget, cairo_t *cr, I_Collection2 *interrupts1)
 
 
         cairo_move_to(cr, 0, (height - font_size) / 4 * (4 - i));
-        sprintf(num, "%"PRIu64, (max_num / 4 * i));
+        if(max_num!=0){
+            sprintf(num, "%"PRIu64, (max_num / 4 * i));
+        }else{
+            cairo_show_text(cr,"0");
+        }
+
         cairo_show_text(cr, num);
 
 
@@ -710,7 +715,7 @@ void do_drawing_int2(GtkWidget *widget, cairo_t *cr, I_Collection2 *interrupts1)
         cairo_set_source_rgb(cr, 0, 0, 0);
         cairo_show_text(cr, temp_p->interrupts.irq);
 
-        draw_interrupts2(cr, i, &temp_p->interrupts, height, font_size, max_num, font_size);
+        draw_interrupts2(cr, i, temp_p, height, font_size, max_num, font_size);
         temp_p=temp_p->next;
         i++;
     }
@@ -806,8 +811,12 @@ void do_drawing_net(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Data *
     g_free(recBytes);
    // cairo_show_text(cr, track);
     for (int i = 1; i <= 3; i++) {
+        if(max_num!=0){
+            recBytes = g_format_size_full(max_num/4*i, G_FORMAT_SIZE_IEC_UNITS);
+        }else{
+            recBytes = g_format_size_full(max_num,G_FORMAT_SIZE_IEC_UNITS);
+        }
 
-        recBytes = g_format_size_full(max_num/4*i, G_FORMAT_SIZE_IEC_UNITS);
 
 
         cairo_move_to(cr, 0, (height - font_size) / 4 * (4 - i));
@@ -896,15 +905,17 @@ void do_drawing_cpu(GtkWidget *widget, cairo_t *cr, guint time_step, Mega_Data *
     bool *temp_bool=cpu_status;
 
     height =    (double) gtk_widget_get_allocated_height(widget);
-    width =     (double) gtk_widget_get_allocated_width(widget);
     temp_d= width =     (double) gtk_widget_get_allocated_width(cpu_swindow);
     //!> divide the size of the scrolled window into time pieces, all the pieces combined make 60sec
     temp_d=temp_d-corner*2*font_size;
-    temp_d=temp_d/60000;
-    wanted_widht=2*corner*font_size+temp_d*gl_delay;
+    if(temp_d!=0){
+        temp_d=temp_d/60000;
+    }
+
+    wanted_widht=2*corner*font_size+temp_d*(double)gl_delay;
     printf("widht %f wanted_widht %f\n",width,wanted_widht);
     if(wanted_widht>width){
-        gtk_widget_set_size_request(widget,wanted_widht,gtk_widget_get_allocated_height(cpu_swindow));
+        gtk_widget_set_size_request(widget,(gint)wanted_widht,gtk_widget_get_allocated_height(cpu_swindow));
       //  width=wanted_widht;
     }
 

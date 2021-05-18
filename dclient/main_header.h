@@ -10,6 +10,21 @@
 #include "semaphore.h"
 #include "error.h"
 
+typedef struct Cpu_usage Cpu_usage;
+struct __attribute__((__packed__)) Cpu_usage {/**structure that contains cpu usage of all the cpus */
+
+    char (*percentage)[16];
+
+};
+
+typedef struct Interrupt_Collection2 I_Collection2;
+struct Interrupt_Collection2{
+
+    Interrupts_send     interrupts;
+    __uint64_t          * CPU;
+    I_Collection2       * next;
+    I_Collection2       * prev;
+};
 typedef struct ConfigS ConfigS;
 struct ConfigS{
     unsigned int width;
@@ -91,8 +106,9 @@ long cpu_num;
 int interrupt_num;
 ConfigS confy;
 #define LIST_SIZE 240 /*!the max size of list of cpu, network and memory usage*/
-
+PangoFontDescription *fontdesc;
 int read_config();
+void check_config();
 GtkApplication *gtkApplication;//!< application
 
 /**
@@ -154,7 +170,8 @@ void freeingMemory(void *array, __int32_t *array_size, int type);
  * @return void
  *
  * */
-void test_strtol(long val);
+
+int test_strtol(__uint64_t val);
 /**
  *set_record(): sets the record flag to true or false depending on if the button is clicked or not
  * @param widget
@@ -190,6 +207,12 @@ void  free_mega_data(Mega_Data **m_ptr);
  * */
 void allocate_stats(Mega_Data **n_ptr);
 
+int test_strtof(double val);
 
+int input_port_number(char *string);
+
+int input_ip(char *string);
+
+int validate_ip4dotted(char *string);
 
 #endif //DIPLOMSKI_MAIN_HEADER_H

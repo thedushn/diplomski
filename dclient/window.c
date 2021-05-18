@@ -5,9 +5,7 @@
 #include "window.h"
 #include "testing_tree.h"
 #include "buttons.h"
-
 #include "drawing.h"
-#include "functions.h"
 
 
 /**
@@ -53,11 +51,12 @@ void swap_change(Memory_usage *memoryUsage) {
 
     gchar *swapTotal, *swapUsed;
 
-//    float f;
-//    f = (float) atof(memoryUsage->swap_percentage);
 
-    //TODO check strtof
+
     m_data->mem_stats[1]=(float) strtof(memoryUsage->swap_percentage, NULL);
+    if(test_strtof(m_data->mem_stats[1])){
+        g_application_quit(G_APPLICATION(gtkApplication));
+    }
 
     swapUsed  = g_format_size_full((guint64) memoryUsage->swap_used, G_FORMAT_SIZE_IEC_UNITS);
     swapTotal = g_format_size_full((guint64) memoryUsage->swap_total, G_FORMAT_SIZE_IEC_UNITS);
@@ -83,11 +82,11 @@ void memoryChange(Memory_usage *memoryUsage) {
 
     gchar *used, *total, *memoryUsageText1;
 
-    //float f = 0;
-   // (float) atof(memoryUsage->memory_percentage);
-
     m_data->mem_stats [0]   = (float) strtof(memoryUsage->memory_percentage, NULL);
 
+    if(test_strtof( m_data->mem_stats [0])){
+        g_application_quit(G_APPLICATION(gtkApplication));
+    }
 
     used                = g_format_size_full((guint64) memoryUsage->memory_used, G_FORMAT_SIZE_IEC_UNITS);
 
@@ -116,9 +115,12 @@ void cpu_change(Cpu_usage *cpu_usage) {
 
     for(int i=0;i<cpu_num;i++){
 
-     // sscanf (cpu_usage.percentage[i],"%f",&cpu_list->data[i] ) ;
+
         m_data->cpu_stats[i]= strtof (cpu_usage->percentage[i],NULL) ;
 
+        if(test_strtof( m_data->cpu_stats[i])){
+            g_application_quit(G_APPLICATION(gtkApplication));
+        }
        }
 
     for(int i=0;i<cpu_num;i++){
@@ -155,22 +157,20 @@ void cpu_change(Cpu_usage *cpu_usage) {
 void network_change(Network *network) {
 
 
-//    m_data->net_stats[0] = (float) network->received_bytes / 1024;
-//    m_data->net_stats[1] = (float) network->transmited_bytes / 1024;
 
     m_data->network[0]    =     network->received_bytes ;
     m_data->network[1]    =     network->transmited_bytes ;
 
 
     gchar *recBytes = g_format_size_full(network->received_bytes, G_FORMAT_SIZE_IEC_UNITS);
-    gchar *trBytes = g_format_size_full(network->transmited_bytes, G_FORMAT_SIZE_IEC_UNITS);
+    gchar *trBytes  = g_format_size_full(network->transmited_bytes, G_FORMAT_SIZE_IEC_UNITS);
 
     gchar *networkUsageReceivedText      = g_strdup_printf("RECEIVED:  %s/s", recBytes);
     gchar *networkUsageTransmittedText   = g_strdup_printf("TRANSMITTED: %s/s", trBytes);
+
     gtk_label_set_text(GTK_LABEL (label_rec), networkUsageReceivedText);
-
-
     gtk_label_set_text(GTK_LABEL (label_trans), networkUsageTransmittedText);
+
     g_free(recBytes);
     g_free(trBytes);
     g_free(networkUsageReceivedText);

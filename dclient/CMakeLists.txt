@@ -20,7 +20,16 @@ add_executable(client main.c drawing.c
         testing.c testing.h application.c)
 
 include_directories(${GTK3_INCLUDE_DIRS})
+include(CTest)
+enable_testing()
 
+add_test(test   client  5000)
+add_test(test1  client 0000er)
+add_test(test2  client 5000)
+
+set_tests_properties(test  PROPERTIES PASS_REGULAR_EXPRESSION  "port number is not correct")
+set_tests_properties(test1 PROPERTIES PASS_REGULAR_EXPRESSION  "random chars found")
+set_tests_properties(test2 PROPERTIES PASS_REGULAR_EXPRESSION  "5000")
 link_directories(${GTK3_LIBRARY_DIRS})
 
 add_definitions(${GTK3_CFLAGS_OTHER})

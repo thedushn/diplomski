@@ -4,7 +4,7 @@
 
 #include "functions.h"
 
-#include <memory.h>
+
 #include <stdlib.h>
 #include <errno.h>
 #include <netdb.h>
@@ -34,7 +34,9 @@ bool scan_numbers(__uint64_t *CPU, char *ptr, int *cpu_index){
             errno=0;
             CPU[i]= strtol(num_buffer, 0, 10 );
             if(errno !=0){
-                test_strtol( CPU[i]) ;
+                if(test_strtol( CPU[i])<0){
+                    g_application_quit(G_APPLICATION(gtkApplication));
+                }
             }
 
            // sscanf(num_buffer, " %" SCNu64 "", &CPU[i]);
@@ -85,7 +87,7 @@ void device_task_commands(char *signal, char *task_id) {
     if (ret < 0) {
 
         printf("command did not get sent \n");
-        gtk_main_quit();
+        g_application_quit(G_APPLICATION(gtkApplication));
 
 
     }
@@ -93,7 +95,7 @@ void device_task_commands(char *signal, char *task_id) {
 
         printf("command did not get sent \n");
         printf("socket closed\n");
-        gtk_main_quit();
+        g_application_quit(G_APPLICATION(gtkApplication));
 
 
     }
@@ -104,7 +106,7 @@ void device_task_commands(char *signal, char *task_id) {
  * input: port number and IP address
  * output:return non zero value if something is wrong
  * */
-int connection(char *argv1, char *argv2) {
+int connection(char *port, char *ip_address) {
 
 
     struct addrinfo hints, *servinfo, *p;
@@ -115,7 +117,7 @@ int connection(char *argv1, char *argv2) {
     hints.ai_family = AF_UNSPEC; // use AF_INET6 to force IPv6
     hints.ai_socktype = SOCK_STREAM;
 
-    if ((rv = getaddrinfo(argv2, argv1, &hints, &servinfo)) != 0) {
+    if ((rv = getaddrinfo(ip_address, port, &hints, &servinfo)) != 0) {
         fprintf(stderr, "get_addr_info: %s\n", gai_strerror(rv));
         return -2;
     }
@@ -136,11 +138,16 @@ int connection(char *argv1, char *argv2) {
 
         break; // if we get here, we must have connected successfully
     }
+    free(servinfo);
+    servinfo=NULL;
 
     if (p == NULL) {
         // looped off the end of the list with no connection
-        free(servinfo);
+        close(socketfd);
+        socketfd=0;
         fprintf(stderr, "failed to connect\n");
+
+
         return -2;
 
     }
@@ -152,7 +159,7 @@ int connection(char *argv1, char *argv2) {
     }
 
 
-    free(servinfo);
+
     return socketfd;
 }
 /**
@@ -312,8 +319,8 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
 
     while(interrupts2){
         temp_i2=interrupts2;
-        if(temp_i2->interrupts.CPU){
-            free(temp_i2->interrupts.CPU);
+        if(temp_i2->CPU){
+            free(temp_i2->CPU);
         }
         interrupts2=interrupts2->next;
         free(temp_i2);
@@ -404,9 +411,9 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
                 temp_interrupts2->next=(*interrupts_p);
                 (*interrupts_p)= temp_interrupts2;
 
-                (*interrupts_p)->interrupts.CPU=calloc(cpu_num,sizeof(interrupts2->interrupts.CPU));
-                if((*interrupts_p)->interrupts.CPU==NULL){
-                    free((*interrupts_p)->interrupts.CPU);
+                (*interrupts_p)->CPU=calloc(cpu_num,sizeof(interrupts2->CPU));
+                if((*interrupts_p)->CPU==NULL){
+                    free((*interrupts_p)->CPU);
                     free(temp_interrupts2);
                     printf("calloc error %d \n", errno);
                     return 1;
@@ -450,7 +457,7 @@ data_transfer(int socket, Cpu_usage *cpu_usage, Network *network, Memory_usage *
                 break;
             case INT_PACK:
 
-                scan_numbers((*interrupts_p)->interrupts.CPU,data.unification.data_pack,&cpu_number);
+                scan_numbers((*interrupts_p)->CPU,data.unification.data_pack,&cpu_number);
 
                 break;
 

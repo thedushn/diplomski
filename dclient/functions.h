@@ -8,6 +8,7 @@
 
 #include "gtk/gtk.h"
 #include "common.h"
+#include "main_header.h"
 
 ssize_t test_recv(int socket);
 
@@ -22,7 +23,7 @@ int command_sender(char *text);
 
 void input_command();
 
-int connection(char *argv1, char *argv2);
+int connection(char *port, char *ip_address);
 
 long receive_number_cpu(int socket);
 

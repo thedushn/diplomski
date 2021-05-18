@@ -9,8 +9,8 @@
 
 #include <stdbool.h>
 #include <time.h>
-#include <cairo.h>
-#include <gtk/gtk.h>
+
+
 
 
 /*!defines what type of data we are sending */
@@ -69,16 +69,6 @@ struct __attribute__((__packed__))Network {
 
 };
 
-typedef struct Cpu_usage Cpu_usage;
-struct __attribute__((__packed__)) Cpu_usage {/**structure that contains cpu usage of all the cpus */
-
-
-    char (*percentage)[16];
-
-
-
-};
-
 
 
 typedef struct Memory_usage Memory_usage;/*!structure that contains information about memory usage */
@@ -100,38 +90,6 @@ struct __attribute__((__packed__)) Interrupts_send {
     __int64_t   total;
     char       irq[64];
     char       name[256];
-
-
-};
-typedef struct Interrupts2 Interrupts2;/*structure that contains the information of a interrupt type*/
-struct __attribute__((__packed__)) Interrupts2 {
-
-
-    bool        checked;
-    __uint64_t   *CPU;
-    __uint64_t   total;
-    char        irq[64];
-    char        name[256];
-    Interrupts2 *next;
-    Interrupts2 *prev;
-
-
-};
-
-/**structure that contains the information of a interrupt type*/
-typedef struct Interrupts Interrupts;
-struct __attribute__((__packed__)) Interrupts {
-
-
-    char       irq[64];
-    char       ime1[64];
-    char       ime2[64];
-    char       ime3[64];
-    char       ime4[64];
-    __uint64_t CPU0;
-    __uint64_t CPU1;
-    __uint64_t CPU2;
-    __uint64_t CPU3;
 
 
 };
@@ -170,21 +128,8 @@ struct Task_Collection{
     T_Collection * prev;
 };
 
-typedef struct Interrupt_Collection I_Collection;
-struct Interrupt_Collection{
 
-    Interrupts           interrupts;
-    I_Collection * next;
-    I_Collection * prev;
-}
-;
-typedef struct Interrupt_Collection2 I_Collection2;
-struct Interrupt_Collection2{
 
-    Interrupts2           interrupts;
-    I_Collection2 * next;
-    I_Collection2 * prev;
-};
 typedef union Unification Unification ; /*!union data structure that uses the same memory space for all elements*/
 
 union Unification {
@@ -192,7 +137,6 @@ union Unification {
     Task            task;
     Network         network;
     Memory_usage    memory_usage;
-    Interrupts      interrupts;
     Interrupts_send interrupts_send;
     Devices         devices;
     char            conformation[64];
@@ -209,9 +153,5 @@ struct __attribute__((__packed__)) Data{
 
 };
 
-
-
-
-PangoFontDescription *fontdesc;
 
 #endif //DIPLOMSKI_COMMON_H

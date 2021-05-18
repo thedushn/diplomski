@@ -22,7 +22,7 @@ int interrupts_write(I_Collection2 *array) {
     memset(buffer,0,sizeof(buffer));
     strcat(buffer,p_dir);
     strcat(buffer,filename);
-    ssize_t size;
+    size_t size;
     __uint64_t *ptr=NULL;
     if (array == NULL) {
 
@@ -48,22 +48,12 @@ int interrupts_write(I_Collection2 *array) {
 
     while(array){
         fprintf(fp, "%s: ",array->interrupts.irq);
-        ptr=array->interrupts.CPU;
+        ptr=array->CPU;
         for(int i=0;i<cpu_num;i++){
             fprintf(fp,"%"PRIu64" ",*ptr++);
         }
         fprintf(fp,"%s\n",array->interrupts.name);
-//        fprintf(fp, "%s %" PRIu64 " %" PRIu64 " %" PRIu64 " %" PRIu64 " %s %s %s %s \n",
-//                array->interrupts.irq,
-//                array->interrupts.CPU0,
-//                array->interrupts.CPU1,
-//                array->interrupts.CPU2,
-//                array->interrupts.CPU3,
-//                array->interrupts.ime1,
-//                array->interrupts.ime2,
-//                array->interrupts.ime3,
-//                array->interrupts.ime4
-//        );
+
 
 
 
@@ -82,7 +72,7 @@ int memory_write(Memory_usage *memory_usage){
     FILE *fp;
     char *filename = "memory.data";
     char *p;
-    ssize_t size;
+    size_t size;
     char buffer[256];
     memset(buffer,0,sizeof(buffer));
     strcat(buffer,p_dir);
@@ -129,7 +119,7 @@ int cpu_write(Cpu_usage cpu_usage) {
     FILE *fp;
     char *filename = "cpu.data";
     char *p;
-    ssize_t size;
+    size_t size;
     char buffer[256];
     memset(buffer,0,sizeof(buffer));
     strcat(buffer,p_dir);
@@ -308,7 +298,7 @@ int device_write(D_Collection *array){
     FILE *fp;
     char *filename = "device.data";
     char *p;
-    ssize_t size;
+    size_t size;
 
     char buffer[256];
     memset(buffer,0,sizeof(buffer));
@@ -365,7 +355,7 @@ int netw_write(uint64_t transmited, uint64_t received) {
     FILE *fp;
     char *filename = "network.data";
     char *p;
-    ssize_t size;
+    size_t size;
 
     char buffer[256];
     memset(buffer,0,sizeof(buffer));

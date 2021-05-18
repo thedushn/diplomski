@@ -359,7 +359,7 @@ void destroy_window(void) {
 
 }
 
-void test_strtol(long val) {
+int test_strtol(__uint64_t val) {
 
 
     if ((errno == ERANGE && (val == LONG_MAX || val == LONG_MIN))
@@ -367,12 +367,24 @@ void test_strtol(long val) {
         perror("strtol");
 
 
-        g_application_quit(G_APPLICATION(gtkApplication));
-
+        return -1;
 
     }
 
+    return 0;
+}
 
+int test_strtof(double val) {
+
+
+    if ((errno == ERANGE && (val == DBL_MAX || val == DBL_MIN))
+        || (errno != 0 )) {
+        perror("strtol");
+        return -1;
+
+    }
+
+    return 0;
 }
 
 void incRefresh() {
@@ -546,8 +558,8 @@ void freeingMemory(void *array, __int32_t *array_size, int type){
             while(temp_i2){
                 temp_i2f=temp_i2;
                 temp_i2=temp_i2->next;
-                if(temp_i2f->interrupts.CPU)
-                    free(temp_i2f->interrupts.CPU);
+                if(temp_i2f->CPU)
+                    free(temp_i2f->CPU);
                 free(temp_i2f);
             }
 
@@ -597,8 +609,8 @@ void  free_one_mega_data(Mega_Data *m_ptr){
         while(temp_ptr->interrupts_list){
             temp_i=temp_ptr->interrupts_list;
             temp_ptr->interrupts_list=temp_ptr->interrupts_list->next;
-            if(temp_i->interrupts.CPU)
-                free(temp_i->interrupts.CPU);
+            if(temp_i->CPU)
+                free(temp_i->CPU);
 
             free(temp_i);
         }
@@ -711,6 +723,28 @@ int read_config(){
 return 0;
 
 }
+
+void check_config(){
+
+    if(confy.delay<=0){
+        confy.delay=1000;
+    }
+
+
+    if(strlen(confy.name)==0){
+        strcpy(confy.name,"Appication");
+    }
+    if(confy.fontS<=0){
+        confy.fontS=8;
+    }
+    if(strlen(confy.font)<=0){
+        strcpy(confy.font,"Arial");
+    }
+
+
+
+}
+
 void  free_mega_data(Mega_Data **m_ptr){
     Mega_Data       *temp_ptr;
     T_Collection    *temp_task;
@@ -748,8 +782,8 @@ void  free_mega_data(Mega_Data **m_ptr){
         while(temp_ptr->interrupts_list){
             temp_i=temp_ptr->interrupts_list;
             temp_ptr->interrupts_list=temp_ptr->interrupts_list->next;
-            if(temp_i->interrupts.CPU)
-                free(temp_i->interrupts.CPU);
+            if(temp_i->CPU)
+                free(temp_i->CPU);
 
             free(temp_i);
         }
@@ -959,10 +993,16 @@ gboolean init_timeout() {
 
     printf("delay %lu delay/250 %lu\n",gl_delay,gl_delay/250);
     fflush(stdout);
+    static int counter =0;
+    if(counter ==10){
+        g_application_quit(G_APPLICATION(gtkApplication));
+
+    }
+    counter++;
 
     if(confy.record){
 
-
+        printf("writting \n");
         if(writing==true){//beginning
 
 
@@ -1027,13 +1067,6 @@ gboolean init_timeout() {
     gl_delay  += m_data->delay=confy.delay;
 
 
-//    printf("before delay %lu \n",gl_delay);
-//    fflush(stdout);
-//    if(gl_delay>60000){
-//        gl_delay-=mDataHead->delay;
-//    }
-//    printf("after delay %lu list_size %d\n",gl_delay,list_num_size);
-//    fflush(stdout);
     gtk_widget_queue_draw(graphCpu);
     gtk_widget_queue_draw(graphNet);
     gtk_widget_queue_draw(graphMem);
@@ -1048,13 +1081,16 @@ gboolean init_timeout() {
 
 
 
-
+    printf("pass %d \n",counter);
+    fflush(stdout);
     if (refresh == 0){
 
 
         refresh = g_timeout_add(confy.delay, (GSourceFunc) init_timeout, NULL);
 
     }
+
+
 
     if(flagTimeout== false){
 

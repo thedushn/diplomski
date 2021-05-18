@@ -1,0 +1,192 @@
+Time: Tue May 11 19:30:27 2021 Delay 1000
+LOC: 372 535 390 307 Local timer interrupts
+RES: 214 607 625 0 Rescheduling interrupts
+TLB: 119 88 66 0 TLB shootdowns
+CAL: 115 84 63 0 Function call interrupts
+20: 0 0 26 0 IO-APIC 20-fasteoi vboxguest
+12: 0 0 8 0 IO-APIC 12-edge i8042
+21: 0 0 3 0 IO-APIC 21-fasteoi ahci[0000:00:0d.0], snd_intel8x0
+19: 0 0 0 1 IO-APIC 19-fasteoi ehci_hcd:usb1, enp0s3
+0: 0 0 0 0 IO-APIC 2-edge timer
+1: 0 0 0 0 IO-APIC 1-edge i8042
+8: 0 0 0 0 IO-APIC 8-edge rtc0
+9: 0 0 0 0 IO-APIC 9-fasteoi acpi
+14: 0 0 0 0 IO-APIC 14-edge ata_piix
+15: 0 0 0 0 IO-APIC 15-edge ata_piix
+18: 0 0 0 0 IO-APIC 18-fasteoi vboxvideo
+22: 0 0 0 0 IO-APIC 22-fasteoi ohci_hcd:usb2
+NMI: 0 0 0 0 Non-maskable interrupts
+SPU: 0 0 0 0 Spurious interrupts
+PMI: 0 0 0 0 Performance monitoring interrupts
+IWI: 0 0 0 0 IRQ work interrupts
+RTR: 0 0 0 0 APIC ICR read retries
+TRM: 0 0 0 0 Thermal event interrupts
+THR: 0 0 0 0 Threshold APIC interrupts
+DFR: 0 0 0 0 Deferred Error APIC interrupts
+MCE: 0 0 0 0 Machine check exceptions
+MCP: 0 0 0 0 Machine check polls
+ERR: 0 0 0 0 
+MIS: 0 0 0 0 
+PIN: 0 0 0 0 Posted-interrupt notification event
+NPI: 0 0 0 0 Nested posted-interrupt event
+PIW: 0 0 0 0 Posted-interrupt wakeup event
+Time: Tue May 11 19:30:28 2021 Delay 1000
+RES: 425 693 709 1 Rescheduling interrupts
+LOC: 405 445 611 304 Local timer interrupts
+CAL: 95 270 128 0 Function call interrupts
+TLB: 95 270 128 0 TLB shootdowns
+20: 0 0 7 0 IO-APIC 20-fasteoi vboxguest
+14: 0 0 2 0 IO-APIC 14-edge ata_piix
+0: 0 0 0 0 IO-APIC 2-edge timer
+1: 0 0 0 0 IO-APIC 1-edge i8042
+8: 0 0 0 0 IO-APIC 8-edge rtc0
+9: 0 0 0 0 IO-APIC 9-fasteoi acpi
+12: 0 0 0 0 IO-APIC 12-edge i8042
+15: 0 0 0 0 IO-APIC 15-edge ata_piix
+18: 0 0 0 0 IO-APIC 18-fasteoi vboxvideo
+19: 0 0 0 0 IO-APIC 19-fasteoi ehci_hcd:usb1, enp0s3
+21: 0 0 0 0 IO-APIC 21-fasteoi ahci[0000:00:0d.0], snd_intel8x0
+22: 0 0 0 0 IO-APIC 22-fasteoi ohci_hcd:usb2
+NMI: 0 0 0 0 Non-maskable interrupts
+SPU: 0 0 0 0 Spurious interrupts
+PMI: 0 0 0 0 Performance monitoring interrupts
+IWI: 0 0 0 0 IRQ work interrupts
+RTR: 0 0 0 0 APIC ICR read retries
+TRM: 0 0 0 0 Thermal event interrupts
+THR: 0 0 0 0 Threshold APIC interrupts
+DFR: 0 0 0 0 Deferred Error APIC interrupts
+MCE: 0 0 0 0 Machine check exceptions
+MCP: 0 0 0 0 Machine check polls
+ERR: 0 0 0 0 
+MIS: 0 0 0 0 
+PIN: 0 0 0 0 Posted-interrupt notification event
+NPI: 0 0 0 0 Nested posted-interrupt event
+PIW: 0 0 0 0 Posted-interrupt wakeup event
+Time: Tue May 11 19:30:29 2021 Delay 1000
+LOC: 376 541 324 317 Local timer interrupts
+RES: 354 552 479 0 Rescheduling interrupts
+CAL: 93 234 100 0 Function call interrupts
+TLB: 93 234 100 0 TLB shootdowns
+20: 0 0 56 0 IO-APIC 20-fasteoi vboxguest
+19: 0 0 0 1 IO-APIC 19-fasteoi ehci_hcd:usb1, enp0s3
+0: 0 0 0 0 IO-APIC 2-edge timer
+1: 0 0 0 0 IO-APIC 1-edge i8042
+8: 0 0 0 0 IO-APIC 8-edge rtc0
+9: 0 0 0 0 IO-APIC 9-fasteoi acpi
+12: 0 0 0 0 IO-APIC 12-edge i8042
+14: 0 0 0 0 IO-APIC 14-edge ata_piix
+15: 0 0 0 0 IO-APIC 15-edge ata_piix
+18: 0 0 0 0 IO-APIC 18-fasteoi vboxvideo
+21: 0 0 0 0 IO-APIC 21-fasteoi ahci[0000:00:0d.0], snd_intel8x0
+22: 0 0 0 0 IO-APIC 22-fasteoi ohci_hcd:usb2
+NMI: 0 0 0 0 Non-maskable interrupts
+SPU: 0 0 0 0 Spurious interrupts
+PMI: 0 0 0 0 Performance monitoring interrupts
+IWI: 0 0 0 0 IRQ work interrupts
+RTR: 0 0 0 0 APIC ICR read retries
+TRM: 0 0 0 0 Thermal event interrupts
+THR: 0 0 0 0 Threshold APIC interrupts
+DFR: 0 0 0 0 Deferred Error APIC interrupts
+MCE: 0 0 0 0 Machine check exceptions
+MCP: 0 0 0 0 Machine check polls
+ERR: 0 0 0 0 
+MIS: 0 0 0 0 
+PIN: 0 0 0 0 Posted-interrupt notification event
+NPI: 0 0 0 0 Nested posted-interrupt event
+PIW: 0 0 0 0 Posted-interrupt wakeup event
+Time: Tue May 11 19:30:30 2021 Delay 1000
+LOC: 247 630 180 335 Local timer interrupts
+RES: 346 345 268 0 Rescheduling interrupts
+TLB: 266 100 99 0 TLB shootdowns
+CAL: 264 100 99 0 Function call interrupts
+14: 0 0 2 0 IO-APIC 14-edge ata_piix
+0: 0 0 0 0 IO-APIC 2-edge timer
+1: 0 0 0 0 IO-APIC 1-edge i8042
+8: 0 0 0 0 IO-APIC 8-edge rtc0
+9: 0 0 0 0 IO-APIC 9-fasteoi acpi
+12: 0 0 0 0 IO-APIC 12-edge i8042
+15: 0 0 0 0 IO-APIC 15-edge ata_piix
+18: 0 0 0 0 IO-APIC 18-fasteoi vboxvideo
+19: 0 0 0 0 IO-APIC 19-fasteoi ehci_hcd:usb1, enp0s3
+20: 0 0 0 0 IO-APIC 20-fasteoi vboxguest
+21: 0 0 0 0 IO-APIC 21-fasteoi ahci[0000:00:0d.0], snd_intel8x0
+22: 0 0 0 0 IO-APIC 22-fasteoi ohci_hcd:usb2
+NMI: 0 0 0 0 Non-maskable interrupts
+SPU: 0 0 0 0 Spurious interrupts
+PMI: 0 0 0 0 Performance monitoring interrupts
+IWI: 0 0 0 0 IRQ work interrupts
+RTR: 0 0 0 0 APIC ICR read retries
+TRM: 0 0 0 0 Thermal event interrupts
+THR: 0 0 0 0 Threshold APIC interrupts
+DFR: 0 0 0 0 Deferred Error APIC interrupts
+MCE: 0 0 0 0 Machine check exceptions
+MCP: 0 0 0 0 Machine check polls
+ERR: 0 0 0 0 
+MIS: 0 0 0 0 
+PIN: 0 0 0 0 Posted-interrupt notification event
+NPI: 0 0 0 0 Nested posted-interrupt event
+PIW: 0 0 0 0 Posted-interrupt wakeup event
+Time: Tue May 11 19:30:31 2021 Delay 1000
+RES: 579 708 358 0 Rescheduling interrupts
+LOC: 377 327 398 291 Local timer interrupts
+CAL: 110 307 125 0 Function call interrupts
+TLB: 107 307 125 0 TLB shootdowns
+21: 0 0 4 0 IO-APIC 21-fasteoi ahci[0000:00:0d.0], snd_intel8x0
+20: 0 0 2 0 IO-APIC 20-fasteoi vboxguest
+19: 0 0 0 1 IO-APIC 19-fasteoi ehci_hcd:usb1, enp0s3
+0: 0 0 0 0 IO-APIC 2-edge timer
+1: 0 0 0 0 IO-APIC 1-edge i8042
+8: 0 0 0 0 IO-APIC 8-edge rtc0
+9: 0 0 0 0 IO-APIC 9-fasteoi acpi
+12: 0 0 0 0 IO-APIC 12-edge i8042
+14: 0 0 0 0 IO-APIC 14-edge ata_piix
+15: 0 0 0 0 IO-APIC 15-edge ata_piix
+18: 0 0 0 0 IO-APIC 18-fasteoi vboxvideo
+22: 0 0 0 0 IO-APIC 22-fasteoi ohci_hcd:usb2
+NMI: 0 0 0 0 Non-maskable interrupts
+SPU: 0 0 0 0 Spurious interrupts
+PMI: 0 0 0 0 Performance monitoring interrupts
+IWI: 0 0 0 0 IRQ work interrupts
+RTR: 0 0 0 0 APIC ICR read retries
+TRM: 0 0 0 0 Thermal event interrupts
+THR: 0 0 0 0 Threshold APIC interrupts
+DFR: 0 0 0 0 Deferred Error APIC interrupts
+MCE: 0 0 0 0 Machine check exceptions
+MCP: 0 0 0 0 Machine check polls
+ERR: 0 0 0 0 
+MIS: 0 0 0 0 
+PIN: 0 0 0 0 Posted-interrupt notification event
+NPI: 0 0 0 0 Nested posted-interrupt event
+PIW: 0 0 0 0 Posted-interrupt wakeup event
+Time: Tue May 11 19:30:32 2021 Delay 1000
+RES: 636 590 273 0 Rescheduling interrupts
+LOC: 397 317 441 300 Local timer interrupts
+TLB: 229 129 153 0 TLB shootdowns
+CAL: 228 128 153 0 Function call interrupts
+14: 0 0 2 0 IO-APIC 14-edge ata_piix
+0: 0 0 0 0 IO-APIC 2-edge timer
+1: 0 0 0 0 IO-APIC 1-edge i8042
+8: 0 0 0 0 IO-APIC 8-edge rtc0
+9: 0 0 0 0 IO-APIC 9-fasteoi acpi
+12: 0 0 0 0 IO-APIC 12-edge i8042
+15: 0 0 0 0 IO-APIC 15-edge ata_piix
+18: 0 0 0 0 IO-APIC 18-fasteoi vboxvideo
+19: 0 0 0 0 IO-APIC 19-fasteoi ehci_hcd:usb1, enp0s3
+20: 0 0 0 0 IO-APIC 20-fasteoi vboxguest
+21: 0 0 0 0 IO-APIC 21-fasteoi ahci[0000:00:0d.0], snd_intel8x0
+22: 0 0 0 0 IO-APIC 22-fasteoi ohci_hcd:usb2
+NMI: 0 0 0 0 Non-maskable interrupts
+SPU: 0 0 0 0 Spurious interrupts
+PMI: 0 0 0 0 Performance monitoring interrupts
+IWI: 0 0 0 0 IRQ work interrupts
+RTR: 0 0 0 0 APIC ICR read retries
+TRM: 0 0 0 0 Thermal event interrupts
+THR: 0 0 0 0 Threshold APIC interrupts
+DFR: 0 0 0 0 Deferred Error APIC interrupts
+MCE: 0 0 0 0 Machine check exceptions
+MCP: 0 0 0 0 Machine check polls
+ERR: 0 0 0 0 
+MIS: 0 0 0 0 
+PIN: 0 0 0 0 Posted-interrupt notification event
+NPI: 0 0 0 0 Nested posted-interrupt event
+PIW: 0 0 0 0 Posted-interrupt wakeup event

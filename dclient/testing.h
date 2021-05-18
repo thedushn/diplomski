@@ -8,6 +8,7 @@
 
 #include "common.h"
 #include "main_header.h"
+#include "gtk/gtk.h"
 
 int interrupts_write(I_Collection2 *array);
 

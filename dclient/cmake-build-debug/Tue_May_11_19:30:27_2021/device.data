@@ -1,0 +1,42 @@
+Time: Tue May 11 19:30:27 2021 Delay 1000
+Devices /dev/sr0 available 0  free 0 type iso9660 directory /media/dushn/VBox_GAs_6.1.22 used 61020160 total 61020160
+Devices /dev/loop3 available 0  free 0 type squashfs directory /snap/clion/151 used 644218880 total 644218880
+Devices /dev/loop2 available 0  free 0 type squashfs directory /snap/core/10958 used 104071168 total 104071168
+Devices /dev/loop1 available 0  free 0 type squashfs directory /snap/core/10908 used 104071168 total 104071168
+Devices /dev/loop0 available 0  free 0 type squashfs directory /snap/clion/149 used 630063104 total 630063104
+Devices /dev/sda1 available 12709179392  free 15195561984 type ext4 directory / used 33287364608 total 48482926592
+Time: Tue May 11 19:30:28 2021 Delay 1000
+Devices /dev/sr0 available 0  free 0 type iso9660 directory /media/dushn/VBox_GAs_6.1.22 used 61020160 total 61020160
+Devices /dev/loop3 available 0  free 0 type squashfs directory /snap/clion/151 used 644218880 total 644218880
+Devices /dev/loop2 available 0  free 0 type squashfs directory /snap/core/10958 used 104071168 total 104071168
+Devices /dev/loop1 available 0  free 0 type squashfs directory /snap/core/10908 used 104071168 total 104071168
+Devices /dev/loop0 available 0  free 0 type squashfs directory /snap/clion/149 used 630063104 total 630063104
+Devices /dev/sda1 available 12709113856  free 15195496448 type ext4 directory / used 33287430144 total 48482926592
+Time: Tue May 11 19:30:29 2021 Delay 1000
+Devices /dev/sr0 available 0  free 0 type iso9660 directory /media/dushn/VBox_GAs_6.1.22 used 61020160 total 61020160
+Devices /dev/loop3 available 0  free 0 type squashfs directory /snap/clion/151 used 644218880 total 644218880
+Devices /dev/loop2 available 0  free 0 type squashfs directory /snap/core/10958 used 104071168 total 104071168
+Devices /dev/loop1 available 0  free 0 type squashfs directory /snap/core/10908 used 104071168 total 104071168
+Devices /dev/loop0 available 0  free 0 type squashfs directory /snap/clion/149 used 630063104 total 630063104
+Devices /dev/sda1 available 12709076992  free 15195459584 type ext4 directory / used 33287467008 total 48482926592
+Time: Tue May 11 19:30:30 2021 Delay 1000
+Devices /dev/sr0 available 0  free 0 type iso9660 directory /media/dushn/VBox_GAs_6.1.22 used 61020160 total 61020160
+Devices /dev/loop3 available 0  free 0 type squashfs directory /snap/clion/151 used 644218880 total 644218880
+Devices /dev/loop2 available 0  free 0 type squashfs directory /snap/core/10958 used 104071168 total 104071168
+Devices /dev/loop1 available 0  free 0 type squashfs directory /snap/core/10908 used 104071168 total 104071168
+Devices /dev/loop0 available 0  free 0 type squashfs directory /snap/clion/149 used 630063104 total 630063104
+Devices /dev/sda1 available 12709040128  free 15195422720 type ext4 directory / used 33287503872 total 48482926592
+Time: Tue May 11 19:30:31 2021 Delay 1000
+Devices /dev/sr0 available 0  free 0 type iso9660 directory /media/dushn/VBox_GAs_6.1.22 used 61020160 total 61020160
+Devices /dev/loop3 available 0  free 0 type squashfs directory /snap/clion/151 used 644218880 total 644218880
+Devices /dev/loop2 available 0  free 0 type squashfs directory /snap/core/10958 used 104071168 total 104071168
+Devices /dev/loop1 available 0  free 0 type squashfs directory /snap/core/10908 used 104071168 total 104071168
+Devices /dev/loop0 available 0  free 0 type squashfs directory /snap/clion/149 used 630063104 total 630063104
+Devices /dev/sda1 available 12708999168  free 15195381760 type ext4 directory / used 33287544832 total 48482926592
+Time: Tue May 11 19:30:32 2021 Delay 1000
+Devices /dev/sr0 available 0  free 0 type iso9660 directory /media/dushn/VBox_GAs_6.1.22 used 61020160 total 61020160
+Devices /dev/loop3 available 0  free 0 type squashfs directory /snap/clion/151 used 644218880 total 644218880
+Devices /dev/loop2 available 0  free 0 type squashfs directory /snap/core/10958 used 104071168 total 104071168
+Devices /dev/loop1 available 0  free 0 type squashfs directory /snap/core/10908 used 104071168 total 104071168
+Devices /dev/loop0 available 0  free 0 type squashfs directory /snap/clion/149 used 630063104 total 630063104
+Devices /dev/sda1 available 12708962304  free 15195344896 type ext4 directory / used 33287581696 total 48482926592

@@ -9,6 +9,7 @@
 #include "common.h"
 
 
+
 GtkWidget *graphCpu;/*graph for cpu usage*/
 GtkWidget *graphNet;/*graph for network usage*/
 GtkWidget *graphMem;/*graph for memory usage*/
